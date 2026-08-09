@@ -4,9 +4,9 @@ Every honest piece of work stands on three legs: the **intent** (why we're doing
 
 Assay offices have tested gold and struck it with a hallmark for seven hundred years, so provenance can be read at a glance. The office has a word for the failure SpecAssay exists to catch: **gilt**, base metal dressed to gleam like the real thing. AI makes gilt cheap. Assaying is the answer.
 
-**For a developer:** it's a [GitHub Spec Kit](https://github.com/github/spec-kit) bundle. It adds durable IDs to your templates, runs a deterministic Gate on every push, and emits a `trace-manifest.json` in your repo, readable raw or in [Loupe](https://loupe.dryfoos.com/). No fork, no daemon, no second system to keep in sync: the thread lives in the repo.
+**For a developer:** it's a [GitHub Spec Kit](https://github.com/github/spec-kit) bundle. It adds durable IDs to your templates, runs a deterministic Gate on every push, and emits a `trace-manifest.json` ([sample](./samples/homesflow.trace-manifest.json)) in your repo, readable raw or in [Loupe](https://loupe.dryfoos.com/). No fork, no daemon, no second system to keep in sync: the thread lives in the repo.
 
-[`PROMOTION-CONTRACT.md`](https://claude.ai/chat/PROMOTION-CONTRACT.md) defines the rules of promotion: what counts as covered, what counts as debt, what gets refused. The contract is the spec; SpecAssay carries it into your templates and enforces it at the Gate.
+[`PROMOTION-CONTRACT.md`](./PROMOTION-CONTRACT.md) defines the rules of promotion: what counts as covered, what counts as debt, what gets refused. The contract is the spec; SpecAssay carries it into your templates and enforces it at the Gate.
 
 ## The three legs
 
@@ -41,7 +41,7 @@ Silent-gap refusal is **AC-only** (acceptance criteria are the atomic unit of "c
 
 ## The trace-manifest (`trace-manifest.json`)
 
-Gate 2 always writes a portable, vendor-neutral **[trace-manifest](/samples/homesflow/trace.manifest.json)** (default path `trace-manifest.json`, configurable as `manifest_path`):
+Gate 2 always writes a portable, vendor-neutral **[trace-manifest](./samples/homesflow.trace-manifest.json)** (default path `trace-manifest.json`, configurable as `manifest_path`):
 
 - `format: "trace-manifest"`, `schemaVersion: 3`, `emitter: "specassay-check"`
 - Rows: id, statement, status (`proven` | `tracked-debt` | `GAP` | `backlog`), implementations, proofs
@@ -49,9 +49,9 @@ Gate 2 always writes a portable, vendor-neutral **[trace-manifest](/samples/home
 - Written even when the Gate fails, so silent AC gaps are visible in the file
 - **Exact-set** registry ≡ specs ≡ tasks (no unclaimed registry IDs), except **anointed backlog**
 
-The `format` value is deliberately vendor-neutral: `trace-manifest` belongs to no single tool, so any emitter can write one and any viewer can read it. Not ReqIF/OSLC; see [`docs/trace-manifest-schema.md`](https://claude.ai/chat/docs/trace-manifest-schema.md).
+The `format` value is deliberately vendor-neutral: `trace-manifest` belongs to no single tool, so any emitter can write one and any viewer can read it. Not ReqIF/OSLC; see [`docs/trace-manifest-schema.md`](./docs/trace-manifest-schema.md).
 
-**Reading a trace-manifest in SDLC terms** (intent → build → proof → Gate → Loupe): [`docs/reading-a-manifest.md`](https://claude.ai/chat/docs/reading-a-manifest.md). Visual tour with screenshots: [`docs/loupe-field-guide.md`](https://claude.ai/chat/docs/loupe-field-guide.md). **Does it work cold?** A zero-context agent on stock Spec Kit + this bundle delivered a PRD item end to end, Gate-clean: [`docs/evidence-cold-agent-trial.md`](https://claude.ai/chat/docs/evidence-cold-agent-trial.md).
+**Reading a trace-manifest in SDLC terms** (intent → build → proof → Gate → Loupe): [`docs/reading-a-manifest.md`](./docs/reading-a-manifest.md). Visual tour with screenshots: [`docs/loupe-field-guide.md`](./docs/loupe-field-guide.md). **Does it work cold?** A zero-context agent on stock Spec Kit + this bundle delivered a PRD item end to end, Gate-clean: [`docs/evidence-cold-agent-trial.md`](./docs/evidence-cold-agent-trial.md).
 
 ## What you get
 
@@ -114,7 +114,7 @@ specify extension add --dev /path/to/specassay/extensions/specassay-check
 
 Samples can be viewed in [Loupe](https://loupe.dryfoos.com/app) by uploading a local copy via Loupe's `Load Manifest...` button. 
 
-See [`samples/README.md`](https://claude.ai/chat/samples/README.md). 
+See [`samples/README.md`](./samples/README.md). 
 
 ## What SpecAssay is not
 
@@ -125,4 +125,4 @@ See [`samples/README.md`](https://claude.ai/chat/samples/README.md).
 
 ## License
 
-MIT. See [`LICENSE`](https://claude.ai/chat/LICENSE).
+MIT. See [`LICENSE`](./LICENSE).
