@@ -52,8 +52,8 @@ def main() -> None:
             "(and run the Gate there first)"
         )
     doc = json.loads(src.read_text(encoding="utf-8"))
-    if doc.get("schemaVersion") != 3 or doc.get("format") not in ACCEPTED_FORMATS:
-        raise SystemExit("not a schema v3 trace-manifest")
+    if doc.get("schemaVersion") not in (3, 4) or doc.get("format") not in ACCEPTED_FORMATS:
+        raise SystemExit("not a schema v3/v4 trace-manifest")
 
     text = json.dumps(doc, indent=2) + "\n"
     TWIN.parent.mkdir(parents=True, exist_ok=True)

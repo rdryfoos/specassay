@@ -13,7 +13,7 @@ Run the portable Gate 2 script shipped with this extension. It checks that:
 
 and **always writes a trace-manifest** (default `trace-manifest.json`, path configurable) — the SpecAssay matrix. The manifest is written even when the gate fails, so GAPs and `gate.failures` are visible.
 
-`trace-manifest.json` is a portable, vendor-neutral matrix (`format: "trace-manifest"`, schemaVersion 3). It is not ReqIF/OSLC. Loupe (the viewer) consumes this file; it does not re-scan the target.
+`trace-manifest.json` is a portable, vendor-neutral matrix (`format: "trace-manifest"`, schemaVersion 4). It is not ReqIF/OSLC. Loupe (the viewer) consumes this file; it does not re-scan the target.
 
 ## Steps
 

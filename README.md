@@ -43,7 +43,7 @@ Silent-gap refusal is **AC-only** (acceptance criteria are the atomic unit of "c
 
 Gate 2 always writes a portable, vendor-neutral **[trace-manifest](./samples/homesflow.trace-manifest.json)** (default path `trace-manifest.json`, configurable as `manifest_path`):
 
-- `format: "trace-manifest"`, `schemaVersion: 3`, `emitter: "specassay-check"`
+- `format: "trace-manifest"`, `schemaVersion: 4`, `emitter: "specassay-check"`
 - Rows: id, statement, status (`proven` | `tracked-debt` | `GAP` | `backlog`), implementations, proofs
 - Top-level `gate: { ok, failures[] }` so non-row refusals (orphans, drift, missing `Carries:`) are visible to viewers
 - Written even when the Gate fails, so silent AC gaps are visible in the file

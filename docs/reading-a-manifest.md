@@ -99,7 +99,7 @@ The story: an Owner story minted ahead of any work (a read-only procedure-share 
 - [ ] T901 Deliver read-only procedure sharing link — **Carries**: US-SHARE-01
 ```
 
-That TODO in `specs/backlog/tasks.md` is the whole thread, and that's the point. Manifest: status `backlog`, `debtTasks` lists the carrying TODO, `gate.ok: true`. Loupe shows the carrying TODO under the Intent. Delete the TODO without picking up the work, and the next Gate run fails exact-set.
+That TODO in `specs/backlog/tasks.md` is the whole thread, and that's the point. Manifest: status `backlog`, `carryingTasks` lists the carrying TODO, `gate.ok: true`. Loupe shows the carrying TODO under the Intent. Delete the TODO without picking up the work, and the next Gate run fails exact-set.
 
 ### What a GAP would look like (HomesFlow has none)
 

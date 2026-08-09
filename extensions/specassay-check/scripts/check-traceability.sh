@@ -423,12 +423,12 @@ for id_ in ids:
         "status": st,
         "implementations": impl_by.get(id_, []),
         "proofs": proof_by.get(id_, []),
-        "debtTasks": debt_by.get(id_, []),
+        "carryingTasks": debt_by.get(id_, []),
         "attestedBy": None,
     })
 
 doc = {
-    "schemaVersion": 3,
+    "schemaVersion": 4,
     "format": "trace-manifest",
     "emitter": "specassay-check",
     "targetName": target,

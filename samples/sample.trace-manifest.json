@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "format": "trace-manifest",
   "emitter": "specassay-check",
   "targetName": "example-app",
@@ -32,7 +32,7 @@
       "status": "backlog",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -46,7 +46,7 @@
       "status": "backlog",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -72,7 +72,7 @@
           "line": 31
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -92,7 +92,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/sync/tasks.md",
           "line": 9,
@@ -118,7 +118,7 @@
           "line": 14
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -132,7 +132,7 @@
       "status": "backlog",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -146,7 +146,7 @@
       "status": "backlog",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -160,7 +160,7 @@
       "status": "backlog",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/backlog/tasks.md",
           "line": 4,
@@ -180,7 +180,7 @@
       "status": "backlog",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -200,7 +200,7 @@
           "line": 22
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     }
   ]

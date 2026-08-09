@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "format": "trace-manifest",
   "emitter": "specassay-check",
   "targetName": "HomesFlow",
@@ -59,7 +59,7 @@
           "line": 22
         }
       ],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 245,
@@ -106,7 +106,7 @@
           "line": 42
         }
       ],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 245,
@@ -148,7 +148,7 @@
           "line": 53
         }
       ],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 245,
@@ -205,7 +205,7 @@
           "line": 10
         }
       ],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 221,
@@ -257,7 +257,7 @@
           "line": 40
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -288,7 +288,7 @@
           "line": 50
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -324,7 +324,7 @@
           "line": 71
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -355,7 +355,7 @@
           "line": 7
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -391,7 +391,7 @@
           "line": 5
         }
       ],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 96,
@@ -438,7 +438,7 @@
           "line": 17
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -494,7 +494,7 @@
           "line": 29
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -550,7 +550,7 @@
           "line": 29
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -596,7 +596,7 @@
           "line": 62
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -647,7 +647,7 @@
           "line": 33
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -693,7 +693,7 @@
           "line": 66
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -749,7 +749,7 @@
           "line": 118
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -769,7 +769,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 102,
@@ -805,7 +805,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 103,
@@ -836,7 +836,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 104,
@@ -908,7 +908,7 @@
           "line": 48
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -969,7 +969,7 @@
           "line": 136
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1030,7 +1030,7 @@
           "line": 217
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1056,7 +1056,7 @@
           "line": 5
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1102,7 +1102,7 @@
           "line": 9
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1148,7 +1148,7 @@
           "line": 28
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1184,7 +1184,7 @@
           "line": 51
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1225,7 +1225,7 @@
           "line": 58
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1261,7 +1261,7 @@
           "line": 77
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1297,7 +1297,7 @@
           "line": 107
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1343,7 +1343,7 @@
           "line": 25
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1384,7 +1384,7 @@
           "line": 37
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1415,7 +1415,7 @@
           "line": 60
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1466,7 +1466,7 @@
           "line": 36
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1522,7 +1522,7 @@
           "line": 86
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1558,7 +1558,7 @@
           "line": 93
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1604,7 +1604,7 @@
           "line": 50
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1650,7 +1650,7 @@
           "line": 31
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1726,7 +1726,7 @@
           "line": 109
         }
       ],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 116,
@@ -1752,7 +1752,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 139,
@@ -1794,7 +1794,7 @@
           "line": 160
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1835,7 +1835,7 @@
           "line": 34
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1876,7 +1876,7 @@
           "line": 14
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1912,7 +1912,7 @@
           "line": 90
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -1983,7 +1983,7 @@
           "line": 8
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2034,7 +2034,7 @@
           "line": 52
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2090,7 +2090,7 @@
           "line": 70
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2104,7 +2104,7 @@
       "status": "tracked-debt",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 116,
@@ -2156,7 +2156,7 @@
           "line": 84
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2187,7 +2187,7 @@
           "line": 88
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2218,7 +2218,7 @@
           "line": 106
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2259,7 +2259,7 @@
           "line": 141
         }
       ],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2314,7 +2314,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 75,
@@ -2360,7 +2360,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 252,
@@ -2391,7 +2391,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2446,7 +2446,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2481,7 +2481,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2521,7 +2521,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2541,7 +2541,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2571,7 +2571,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2621,7 +2621,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2666,7 +2666,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2686,7 +2686,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2721,7 +2721,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2756,7 +2756,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2786,7 +2786,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2821,7 +2821,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 252,
@@ -2867,7 +2867,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2902,7 +2902,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -2937,7 +2937,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 139,
@@ -2978,7 +2978,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 254,
@@ -2998,7 +2998,7 @@
       "status": "tracked-debt",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 256,
@@ -3018,7 +3018,7 @@
       "status": "tracked-debt",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 255,
@@ -3059,7 +3059,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 304,
@@ -3079,7 +3079,7 @@
       "status": "tracked-debt",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 254,
@@ -3105,7 +3105,7 @@
         }
       ],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 75,
@@ -3145,7 +3145,7 @@
       "status": "tracked-debt",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 116,
@@ -3170,7 +3170,7 @@
       "status": "backlog",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -3184,7 +3184,7 @@
       "status": "backlog",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -3198,7 +3198,7 @@
       "status": "backlog",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -3212,7 +3212,7 @@
       "status": "tracked-debt",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/001-mvp/tasks.md",
           "line": 221,
@@ -3232,7 +3232,7 @@
       "status": "backlog",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [],
+      "carryingTasks": [],
       "attestedBy": null
     },
     {
@@ -3246,7 +3246,7 @@
       "status": "backlog",
       "implementations": [],
       "proofs": [],
-      "debtTasks": [
+      "carryingTasks": [
         {
           "path": "specs/backlog/tasks.md",
           "line": 8,

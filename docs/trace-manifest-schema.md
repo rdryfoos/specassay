@@ -13,7 +13,7 @@ Portable, vendor-neutral **trace-manifest** (matrix artifact). Gate 2 always emi
 
 | Field | Meaning |
 |---|---|
-| `schemaVersion` | `3` |
+| `schemaVersion` | `4` |
 | `format` | Always `"trace-manifest"` |
 | `emitter` | `"specassay-check"` |
 | `targetName` | Project label |
@@ -53,7 +53,7 @@ Each failure: `{ kind, detail, id? }`.
 | `status` | `proven` \| `tracked-debt` \| `GAP` \| `backlog` |
 | `implementations` | `{ path, line, excerpt }` from coverage annotations |
 | `proofs` | `{ name, path, line }` from test-encoded AC IDs |
-| `debtTasks` | `{ path, line, excerpt }` open checkbox tasks that name this ID (usually via `Carries:`) — why `tracked-debt` is excused |
+| `carryingTasks` | `{ path, line, excerpt }` open checkbox tasks that name this ID (via `Carries:`) — the carriers that excuse **both** `tracked-debt` and anointed `backlog`. The row's `status` says which state they excuse; viewers must key color on `status`, not on the presence of carrying tasks. |
 | `attestedBy` | Optional operator stamp; `null` until attribution exists |
 
 ### Status vocabulary (coverage altitude)
@@ -61,14 +61,18 @@ Each failure: `{ kind, detail, id? }`.
 | Status | Who | Meaning |
 |---|---|---|
 | `proven` | AC: named proof; US/FR/NFR: `@covers` or named proof | Named carrier exists (not “tests ran green”) |
-| `tracked-debt` | Any | Work started (spec/impl presence), proof missing, excused by an open task with Carries (`debtTasks` lists those tasks) |
+| `tracked-debt` | Any | Work started (spec/impl presence), proof missing, excused by an open task with Carries (`carryingTasks` lists those tasks) |
 | `GAP` | **AC only** (silent gap) | Neither named proof nor open debt — Gate refuses; viewer frays |
 | `backlog` | Any | Planning altitude: US/FR/NFR without own carrier, or any ID **anointed into backlog** (registry entry + open `Carries:` TODO and nothing else) — **not** a silent gap; do not fray |
 
 Backlog rows are “covered” in the promotion-contract sense when their child ACs are proven or debt — not by requiring `@covers` on the US/FR/NFR ID itself.
 
-Older manifest files may omit `debtTasks` / `registry` or still carry unused `blocked` / `blockedCount` fields. Gate emits `debtTasks` (possibly empty) and `registry` (possibly `null`); Loupe treats missing fields as `[]` / absent.
+Older manifest files may omit `carryingTasks` / `registry` or still carry unused `blocked` / `blockedCount` fields. Gate emits `carryingTasks` (possibly empty) and `registry` (possibly `null`); Loupe treats missing fields as `[]` / absent. (Schema v3 carried this field under its former name — readers alias it on load; see **Version history**.)
 
 ## Consumers
 
 **Loupe** (viewer) reads `trace-manifest.json` only. It must not re-scan the target. Every rendering must carry its meaning at rest — printed or screenshotted, it still testifies; links, hovers, expands, and live source fetches are courtesies to the reader, never load-bearing parts of the record.
+
+## Version history
+
+- **v4** — renames the row field `debtTasks` → `carryingTasks`. **Semantics unchanged.** The field holds the open `Carries:` tasks that excuse a row, and those tasks excuse **two** honest states: `tracked-debt` (work started, proof missing) and anointed `backlog` (minted ahead of the work, one open TODO). The old name implied everything in it was debt; the accurate name is `carryingTasks`, and the row's `status` says which state the carriers excuse. **Viewer authors: key color on `status`, never on the presence of carrying tasks** — amber for `tracked-debt`, blue for `backlog`. Readers accept schema `3` and `4` and alias `debtTasks` → `carryingTasks` on load; no data moved, so a v3 file and its v4 twin are identical apart from this key and the version integer. The rename was cheap here because the format has a single emitter and a single viewer, both first-party, with no external adopters yet.
