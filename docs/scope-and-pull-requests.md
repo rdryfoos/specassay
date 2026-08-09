@@ -20,10 +20,10 @@ intent:
 
 - **exact-set drift** — registry ≢ specs, or registry ≢ tasks
 - **missing `Carries:`** — a task that names no ID
-- **untraced scope** — an `@covers` or test whose ID **is not in the registry**
 - **silent AC gap** — a registry AC with neither a test nor an open `Carries:` TODO
+- **untraced scope** — an `@covers` or test whose ID **is not in the registry**
 
-Read that third one carefully, because its name misleads: *"untraced scope"*
+Read that last one carefully, because its name misleads: *"untraced scope"*
 fires when code claims a **fake** ID, never when code claims **no** ID. The gate
 never enumerates the source tree and asks "does this file correspond to an
 intent?" There is no **build → intent** direction.
@@ -74,9 +74,9 @@ The design response is **not** to add a refusal. It is to make the review
 reviewer a spotlight on what traces to nothing. The rest of this note is *how* —
 organized around a single frame, the three-rung ladder.
 
-## 3. The three-rung ladder (proposed frame)
+## 3. The three-rung ladder 
 
-Everything that follows sits on one frame — three postures the machine can take,
+Everything that follows stands on a single ladder — three levels the machine can take,
 in **increasing intervention and decreasing frequency**:
 
 - **Illuminate** — surface it; render no verdict, force no action. The default,
