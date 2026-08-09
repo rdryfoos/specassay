@@ -119,7 +119,7 @@ See [`samples/README.md`](./samples/README.md).
 ## What SpecAssay is not
 
 - **Not a fork of Spec Kit**, and not a replacement: a bundle that overlays the stock workflow.
-- **Not Thorsten Schlathölter's [`clew`](https://ariadne-thread.io/)** (an inner-loop, code-anchored constructor). SpecAssay is complementary altitude, promotion and refusal on the outer loop, and cites `clew` as prior art. The shared `trace-manifest` format is designed so both can emit one for the same viewer.
+- **Not Thorsten Schlathölter's [`clew`](https://ariadne-thread.io/)** (an inner-loop, code-anchored constructor). SpecAssay is complementary altitude — promotion and refusal on the outer loop — and cites `clew` as prior art.
 - **Not a visualizer.** [Loupe](https://loupe.dryfoos.com/) (or any viewer) may read `trace-manifest.json`; viewers never mint IDs or re-scan the target.
 - **Not agent kanban / human-approval lanes**, and not HomesFlow-specific paths (those stay in HomesFlow as a worked example).
 

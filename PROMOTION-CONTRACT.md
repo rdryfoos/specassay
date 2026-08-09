@@ -40,7 +40,7 @@ Mint durable IDs at intent; refuse silent gaps; allow tracked debt to stay visib
 ## What SpecAssay is not
 
 - Not a fork of Spec Kit, and not a replacement: a bundle that overlays the stock workflow.
-- Not Thorsten Schlathölter's [`clew`](https://ariadne-thread.io) (an inner-loop, code-anchored constructor). SpecAssay is complementary altitude, promotion and refusal on the outer loop, and cites `clew` as prior art. The shared `trace-manifest` format is designed so both can emit one for the same viewer.
+- Not Thorsten Schlathölter's [`clew`](https://ariadne-thread.io) (an inner-loop, code-anchored constructor). SpecAssay is complementary altitude — promotion and refusal on the outer loop — and cites `clew` as prior art.
 - Not agent kanban or human-lane orchestration (a separate concern).
 - Not a visualizer. [Loupe](https://loupe.dryfoos.com) (or any viewer) may read `trace-manifest.json`; viewers never mint IDs or re-scan the target.
 

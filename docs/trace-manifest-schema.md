@@ -7,7 +7,7 @@ Portable, vendor-neutral **trace-manifest** (matrix artifact). Gate 2 always emi
 - **Practice lineage:** software RTM discipline (safety-critical / Spec Kit outer loop). Not a claim of certification.
 - **Not** OMG ReqIF or OSLC (requirements exchange / live linking). Those remain optional future adapters.
 - **Not** W3C supply-chain “traceability” vocabularies.
-- The `format` value is deliberately vendor-neutral: `trace-manifest` belongs to no single tool, so complementary emitters (e.g. Thorsten Schlathölter's CAS-DD / `clew` tool) can write the same shape for one viewer. `format` + `schemaVersion` are the interop contract.
+- The `format` value is deliberately vendor-neutral: `trace-manifest` belongs to no single tool, so any emitter can write the same shape for one viewer. `format` + `schemaVersion` are the interop contract.
 
 ## Top-level shape
 
