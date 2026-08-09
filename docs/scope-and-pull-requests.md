@@ -202,7 +202,7 @@ What SpecAssay can add on top:
     moved in lockstep. SpecAssay's job is coherence — no orphaned proofs, no ACs
     pointing at deleted code, immutability intact.
 
-## 6. Friction stance and build order — the *refuse* rung (proposed)
+## 6. Friction stance — the *refuse* rung (proposed)
 
 A bolt-alongside **gate** on undeclared code is both high-friction and wrong for
 honest developers, so we hold a hard line: **the machine may only refuse what it
@@ -218,19 +218,12 @@ machine-decidable:
 - **immutability** — never renumber, never reuse
 - **coherence after an intent change** — no orphaned proofs
 
-Build order, converging strategies rather than one silver bullet:
-
-1. **Manifest diff + Thread Report** (§4) — a script over data already emitted,
-   plus a Loupe "PR view" that diffs two manifests. Friction-negative. Build
-   first.
-2. **Intent-diff legibility + immutability gate** (§5) — small.
-3. **Blast-radius / re-confirm on intent change** (§5) — the highest-leverage
-   piece for anyone who values the bidirectional thread.
-4. **Full intent-PR workflow** (§5) — the destination.
-
-None of it asks the developer to tag more code. The value comes from *reading
-the diff against the thread you already have* and *handing author and reviewer a
-briefing instead of a checkmark.*
+The build order for everything tagged **(proposed)** above — manifest diff first,
+then the immutability gate, then blast-radius, then the full intent-PR workflow —
+lives in [`docs/backlog.md`](./backlog.md) under *Roadmap*. None of it asks the
+developer to tag more code: the value comes from *reading the diff against the
+thread you already have* and *handing author and reviewer a briefing instead of a
+checkmark.*
 
 ## 7. What a refusal actually means (shipped)
 
@@ -258,32 +251,9 @@ how often it alarms.
 
 ## Vocabulary (applied)
 
-The consolidated vocabulary is decided and propagated across the schema, gate,
-Loupe UI, samples, and docs.
-
-- **The three legs (the stool): Intent → Build → Proof.** The three co-equal
-  supports every honest claim stands on — miss one and it topples. As verbs:
-  **intend → build → prove.** As artifacts: an intent, a build, a proof.
-- **Retired:** "requirement" (spec-vs-requirement confusion; bridges poorly to
-  the business) and "wish → work → proof" (fairy-tale drift). "Intent" also
-  absorbs the minting act — "mint durable IDs at intent" = mint the intent.
-- **Status rename `verified` → `proven`.** "Verified/verification" collided with
-  formal V&V; "proven" pairs with the Proof leg and stays honest (a named proof
-  exists, not a correctness claim). Other statuses unchanged (tracked-debt,
-  backlog, GAP).
-- **Metaphor lanes (kept distinct, not merged):** *assay / hallmark* = the
-  judgment (test the gold, strike the mark, refuse the gilt); *Golden Thread* =
-  the linkage binding the three legs; *three-legged stool* = the structure the
-  legs form (Dryfoos ≈ Dreifuß ≈ tripod — the name earns the shape). The
-  illuminate / affirm / refuse **ladder stays a ladder** (escalation, not a
-  stool).
-- **ID grammar kept:** `US / FR / NFR / AC` as immutable type codes. `NFR` stays
-  (entrenched acronym). "Intent" is the umbrella; FR/NFR are not expanded as
-  "…Requirement" in headline prose.
-- **Tracked debt — `FR` (deferred).** `FR` expands to "Functional Requirement,"
-  which conflicts with the intent framing. Candidate replacements: **`FI` =
-  Functional Intent** (on-message, but asymmetric beside a kept `NFR` — intent vs
-  requirement), or **`FUNC` = Functional** (neutral — carries neither
-  "requirement" nor "intent," so it sidesteps the asymmetry; longer prefix).
-  Zero-cost fallback: keep both `FR`/`NFR` as opaque type codes. Migrating `FR`
-  is a full tombstone-and-remint of every `FR` ID (immutability). Not yet done.
+The consolidated vocabulary — Intent → Build → Proof, status `proven`, the
+retired terms, the metaphor lanes, and the ID grammar — is locked and propagated
+across the schema, gate, Loupe UI, samples, and docs. It lives as the source of
+truth in [`presets/specassay/GLOSSARY.md`](../presets/specassay/GLOSSARY.md); the
+one open item, a replacement for `FR`, is tracked in
+[`docs/backlog.md`](./backlog.md).
