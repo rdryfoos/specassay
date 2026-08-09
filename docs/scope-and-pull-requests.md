@@ -72,11 +72,11 @@ the conditions SpecAssay exists for:
 The design response is **not** to add a refusal. It is to make the review
 *legible*: decompose the single green check into named claims, and hand the
 reviewer a spotlight on what traces to nothing. The rest of this note is *how* —
-organized around a single frame, the three-rung ladder.
+organized around a single ladder, three rungs of it.
 
-## 3. The three-rung ladder 
+## 3. The three-rung ladder
 
-Everything that follows stands on a single ladder — three levels the machine can take,
+Everything that follows stands on a single ladder — three postures the machine can take,
 in **increasing intervention and decreasing frequency**:
 
 - **Illuminate** — surface it; render no verdict, force no action. The default,
