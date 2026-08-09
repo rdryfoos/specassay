@@ -8,9 +8,7 @@ decisions** we've named but not settled, and the **roadmap** of proposed work.
 
 **Status:** anointed backlog (minted, carried by this note, not yet tested).
 
-**Hypothesis to falsify:** SpecAssay only makes sense when a project (and the
-org around it) starts fresh — durable IDs from day one, no legacy sea, Spec Kit
-already in hand.
+**Hypothesis to falsify:** SpecAssay only makes sense when a project starts fresh — durable IDs from day one, no legacy sea, Spec Kit already in hand.
 
 **Why we suspect it's *false* (codebase axis):** the gate governs only
 *declared* intent; it never enumerates all code, so un-marked legacy is invisible
@@ -61,10 +59,7 @@ silver bullet:
    emitted, plus a Loupe "PR view" that diffs two manifests. Friction-negative.
    **Build first.**
 2. **Intent-diff legibility + immutability gate** (§5) — small.
-3. **Blast-radius / re-confirm on intent change** (§5) — the highest-leverage
-   piece for anyone who values the bidirectional thread.
-4. **Full intent-PR workflow** (§5) — the destination.
-
-None of it asks the developer to tag more code. The value comes from *reading the
-diff against the thread you already have* and *handing author and reviewer a
-briefing instead of a checkmark.*
+3. **Full intent-PR workflow** (§5) — the destination.|
+   None of it asks the developer to tag more code. The value comes from *reading the
+   diff against the thread you already have* and *handing author and reviewer a
+   briefing instead of a checkmark.*
