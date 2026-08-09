@@ -1,7 +1,8 @@
-# SpecAssay backlog — hypotheses to test
+# SpecAssay backlog
 
-Product-level open questions, minted so they don't evaporate. Not code tasks —
-things we believe or suspect and want to put to the test.
+Product-level open questions and the proposed build order, minted so they don't
+evaporate. Three kinds of entry: **hypotheses** we want to put to the test, **open
+decisions** we've named but not settled, and the **roadmap** of proposed work.
 
 ## H1 — Does SpecAssay only work in a greenfield environment?
 
@@ -30,3 +31,40 @@ greenfield on *both* axes, so the incremental-brownfield story is untested.
 only* — empty/small registry, mark just the new intents, leave the legacy
 un-gated — and see whether the thread grows cleanly at the margin without a
 retrofit, and whether a team actually tolerates the ceremony mid-stream.
+
+## Open decision — a replacement for `FR`
+
+**Status:** named, not settled. The `FR` type code expands to "Functional
+Requirement," which fights the intent framing now that "requirement" is retired.
+`NFR` stays (entrenched acronym), which makes `FR` the lone holdout.
+
+**Candidates:**
+
+- **`FI` = Functional Intent** — on-message, but asymmetric beside a kept `NFR`
+  (intent vs requirement).
+- **`FUNC` = Functional** — neutral; carries neither "requirement" nor "intent",
+  so it sidesteps the asymmetry, at the cost of a longer prefix.
+- **Zero-cost fallback** — keep both `FR` / `NFR` as opaque type codes and stop
+  expanding them in prose.
+
+**Cost of doing it:** migrating `FR` is a full tombstone-and-remint of every `FR`
+ID (immutability forbids in-place renumbering). Not worth it as a standalone
+change — fold it into the next time the registry churns for another reason.
+
+## Roadmap — proposed build order
+
+Lifted from `scope-and-pull-requests.md` §6. Every item there is tagged
+**(proposed)**; this is the order to build them in. Converging strategies, not one
+silver bullet:
+
+1. **Manifest diff + Thread Report** (scope note §4) — a script over data already
+   emitted, plus a Loupe "PR view" that diffs two manifests. Friction-negative.
+   **Build first.**
+2. **Intent-diff legibility + immutability gate** (§5) — small.
+3. **Blast-radius / re-confirm on intent change** (§5) — the highest-leverage
+   piece for anyone who values the bidirectional thread.
+4. **Full intent-PR workflow** (§5) — the destination.
+
+None of it asks the developer to tag more code. The value comes from *reading the
+diff against the thread you already have* and *handing author and reviewer a
+briefing instead of a checkmark.*
