@@ -2,7 +2,7 @@
 
 This guide teaches you to read a SpecAssay **trace-manifest** (`trace-manifest.json`) the way the workflow means it: intent → build → proof, then what the Gate wrote down, then what **Loupe** paints.
 
-Field-level schema details live in [`trace-manifest-schema.md`](https://claude.ai/chat/trace-manifest-schema.md). This is the story version.
+Field-level schema details live in [`trace-manifest-schema.md`](./trace-manifest-schema.md). This is the story version.
 
 ## What a trace-manifest is
 
@@ -125,8 +125,8 @@ Gate 1 judgment (`/speckit.analyze` and human review) still matters. Gate 2 is t
 
 ## Further reading
 
-- [`loupe-field-guide.md`](https://claude.ai/chat/loupe-field-guide.md): the same story with screenshots
-- [`../PROMOTION-CONTRACT.md`](https://claude.ai/PROMOTION-CONTRACT.md): the rules this doc walks through
-- [`trace-manifest-schema.md`](https://claude.ai/chat/trace-manifest-schema.md): field-level shape
-- [`../presets/specassay/GLOSSARY.md`](https://claude.ai/presets/specassay/GLOSSARY.md): the vocabulary registry
-- [`../samples/README.md`](https://claude.ai/samples/README.md): regenerating the HomesFlow sample
+- [`loupe-field-guide.md`](./loupe-field-guide.md): the same story with screenshots
+- [`../PROMOTION-CONTRACT.md`](../PROMOTION-CONTRACT.md): the rules this doc walks through
+- [`trace-manifest-schema.md`](./trace-manifest-schema.md): field-level shape
+- [`../presets/specassay/GLOSSARY.md`](../presets/specassay/GLOSSARY.md): the vocabulary registry
+- [`../samples/README.md`](../samples/README.md): regenerating the HomesFlow sample
