@@ -126,7 +126,7 @@ Gate 1 judgment (`/speckit.analyze` and human review) still matters. Gate 2 is t
 
 ## Further reading
 
-- [`field-guide.md`](./field-guide.md): the same story with screenshots
+- [the field guide](https://specassay.com/field-guide): the same story with screenshots
 - [`../PROMOTION-CONTRACT.md`](../PROMOTION-CONTRACT.md): the rules this doc walks through
 - [`trace-manifest-schema.md`](./trace-manifest-schema.md): field-level shape
 - [`../presets/specassay/GLOSSARY.md`](../presets/specassay/GLOSSARY.md): the vocabulary registry
