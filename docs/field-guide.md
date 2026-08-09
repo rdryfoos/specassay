@@ -66,23 +66,23 @@ Every claim in the descent can be opened to the file and line that backs it, int
 
 ### A proven AC, proof and all
 
-![Proven descent](images/03-verified-descent.png)
+![Proven descent](images/03-proven-descent.png)
 
-`AC-GUEST-01` end to end: the intent statement with its registry line (`HomesFlow.prd.md:258`), six `@covers` marks each labeled by file and line, and a named proof `test_AC_GUEST_01_guest_fields_only`, expanded to the real test code. Green nodes, solid braid. This is what "proven" means: a named artifact you can open, not "the tests passed once."
+`AC-GUEST-01` end to end: the intent statement with its registry line (`HomesFlow.prd.md:258`), six `@covers` marks each labeled by file and line, and a named proof `test_AC_GUEST_01_guest_fields_only`. Green nodes, solid braid. This is what "proven" means: a named artifact you can open, not "the tests passed once."
 
 Note this proven row also carries an **Open debt (Carries:)** block, an XCUITest still open on `T064`. Proven with additional open work is a normal, honest state.
 
-### Tracked debt: red, but nothing is hidden
+### Tracked debt: amber, but nothing is hidden
 
 ![Tracked-debt descent](images/04-tracked-debt-descent.png)
 
 `AC-HOME-10` is not done, and nobody is pretending otherwise.
 
-- The top of the Thread is red: the intent is real, the build is incomplete.
+- The top of the Thread is **amber**: the intent is real and owed.
 - Right under it, an open task admits the gap (`T024e`: still needs a snapshot/UI test). That admission is what makes this debt instead of a lie.
-- The middle is green: code already claims this ID. The bottom is red again: no named proof yet. The braid between them stays solid.
+- The middle is green: code already claims this ID. The bottom is **blue**: no named proof yet, but honestly so. The braid between them stays solid.
 
-Red without fray means *incomplete but excused*. Someone wrote it down on a task, so the Golden Thread stays intact.
+Amber or blue without fray means *incomplete but excused* — amber for owed debt, blue for not-yet. Someone wrote it down, so the Golden Thread stays intact.
 
 ## 4. Anointed backlog: minted on purpose, carried by a TODO
 
@@ -96,9 +96,9 @@ Filter tile `Backlog` reads 5: four planning-altitude stories plus the anointed 
 
 ## 5. Backlog altitude: waiting, not broken
 
-**NEED SCREENSHOT HERE** — a plain backlog descent (e.g. `US-EDIT-01` or `FR-GUEST-02`): red nodes, solid braid, Proof tier reading "backlog altitude (not a silent gap)."
+![Backlog altitude descent](images/05b-backlog-altitude-descent.png)
 
-Stories and features (`US-…`, `FR-…`, `NFR-…`) are covered through their child ACs, not by stapling `@covers US-…` onto a file. When they have no carrier of their own, they ride as backlog: red nodes, solid braid, and the Proof tier spells it out: "backlog altitude (not a silent gap)." Silent-gap refusal is AC-only.
+Stories and features (`US-…`, `FR-…`, `NFR-…`) are covered through their child ACs, not by stapling `@covers US-…` onto a file. When they have no carrier of their own, they ride as backlog: **blue** nodes, solid braid, and the Proof tier spells it out: "backlog altitude (not a silent gap)." Silent-gap refusal is AC-only.
 
 ## 6. Golden Thread broken: what frays and what does not
 
@@ -120,7 +120,7 @@ That hot GAP tile is the assay office's whole reason for being. A silent gap is 
 
 ### Proven rows stay green even while the Golden Thread is broken
 
-![Proven proof under Golden Thread broken](images/08-verified-proof-under-gate-fail.png)
+![Proven proof under Golden Thread broken](images/08-proven-proof-under-gate-fail.png)
 
 `AC-A11Y-01` during the same broken run: named proofs exist, so its Proof tier stays green and its braid stays solid. A break elsewhere does not un-prove this row's evidence.
 
@@ -129,12 +129,13 @@ That hot GAP tile is the assay office's whole reason for being. A silent gap is 
 | You see                    | It means                                                     |
 | -------------------------- | ------------------------------------------------------------ |
 | Solid braid, green nodes   | Golden Thread holds; proof exists                            |
-| Solid braid, red node(s)   | Incomplete but excused: tracked debt or backlog altitude     |
+| Solid braid, amber node    | Owed — tracked debt, admitted on an open task                |
+| Solid braid, blue node     | Not yet — backlog altitude, or an honest-missing step        |
 | Open debt (Carries:) block | The exact open task that excuses (or carries) the incompleteness |
 | ▸ file:line / ▸ test name  | Expand to the actual source behind the claim                 |
 | Frayed braid               | Golden Thread broken: silent gap, or the manifest was refused as a whole |
 | Red banner, hot GAP tile   | At least one AC has neither proof nor admitted debt          |
 
-One sentence version: **green is proven, red-on-solid is honest debt, fray is a broken Golden Thread.**
+One sentence version: **green is proven, amber is owed debt, blue is not-yet, fray is a broken Golden Thread.**
 
 And the soft landing: you do not have to be scary-good at this. SpecAssay refuses the silent stuff; Loupe shows the rest. Follow the Golden Thread.

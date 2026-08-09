@@ -48,10 +48,11 @@ For any ID, ask five questions in order:
 | Signal                | Meaning                                                      |
 | --------------------- | ------------------------------------------------------------ |
 | Green node            | A carrier is present for that step.                          |
-| Red node, braid solid | That step is incomplete but *excused*: tracked debt, a missing `@covers`, or an empty backlog step. The Golden Thread is intact. |
+| Amber node, braid solid | Owed — tracked debt, admitted on an open task. The Golden Thread is intact. |
+| Blue node, braid solid | Not yet — an empty backlog step or an honest-missing carrier. The Golden Thread is intact. |
 | Fray / red banner     | The Golden Thread is broken: a silent AC gap, or any other refusal (`gate.ok: false`). |
 
-Red does not mean broken. Red on a solid braid means "unfinished and admitted." Only fray means broken, and fray appears only when the Gate refused.
+Amber and blue don't mean broken. On a solid braid they mean "unfinished and admitted" — amber for owed, blue for not-yet. Only fray means broken, and fray appears only when the Gate refused.
 
 ## Worked examples (HomesFlow)
 
@@ -77,11 +78,11 @@ The story: the iPad layout work shipped, but its snapshot test is waiting on tes
 2. **Build done:** task `T021a` is checked off.
 3. **Proof still open:** task `T024d` (snapshot/UI test, deferred until XCUITest infra lands; manual iPad pass until then) carries the admission: `Carries: AC-HOME-09`.
 4. **Manifest:** `implementations: []`, `proofs: []`, status `tracked-debt`. The ID rides on an open checkbox task.
-5. **Loupe:** Intent red with the open `Carries:` task listed; Build red (no `@covers`); Proof red with "No proof — tracked as debt." Braid solid, because nothing is hidden.
+5. **Loupe:** Intent **amber** (owed) with the open `Carries:` task listed; Build **blue** (no `@covers` yet); Proof **blue** with "No proof — tracked as debt." Braid solid, because nothing is hidden.
 
 ### `AC-HOME-10`: tracked-debt, build further along
 
-Same shape as AC-HOME-09, one difference: the code carries `@covers AC-HOME-10`, so the Build step has a carrier even though the named proof is still open (task `T024e`). Manifest: `implementations: [{…}]`, `proofs: []`, status `tracked-debt`. In Loupe, Build is green with an expandable file:line source; Proof is red but excused; braid solid.
+Same shape as AC-HOME-09, one difference: the code carries `@covers AC-HOME-10`, so the Build step has a carrier even though the named proof is still open (task `T024e`). Manifest: `implementations: [{…}]`, `proofs: []`, status `tracked-debt`. In Loupe, Build is green with an expandable file:line source; Proof is blue but excused; braid solid.
 
 This pair is worth comparing: two ACs, same status, different amounts of progress. `tracked-debt` is a range, not a point, and the manifest shows where in the range you are.
 
@@ -125,7 +126,7 @@ Gate 1 judgment (`/speckit.analyze` and human review) still matters. Gate 2 is t
 
 ## Further reading
 
-- [`loupe-field-guide.md`](./loupe-field-guide.md): the same story with screenshots
+- [`field-guide.md`](./field-guide.md): the same story with screenshots
 - [`../PROMOTION-CONTRACT.md`](../PROMOTION-CONTRACT.md): the rules this doc walks through
 - [`trace-manifest-schema.md`](./trace-manifest-schema.md): field-level shape
 - [`../presets/specassay/GLOSSARY.md`](../presets/specassay/GLOSSARY.md): the vocabulary registry
