@@ -5,15 +5,15 @@ Diffs a base trace-manifest against a PR-head trace-manifest and buckets the
 PR's changed files, then emits a Markdown **Thread Report** for a PR comment:
 
   1. What moved — status changes, IDs minted / retired, proofs & covers added.
-  2. The thread now — per domain touched by the PR (untouched backlog rows hidden).
-  3. Far from the thread — changed files that carry no mark tying them to any
-     intent this PR moved. Not a defect; a visibility call.
+  2. Thread Status — per domain touched by the PR (untouched backlog rows hidden).
+  3. Off Thread — changed files that carry no mark tying them to any intent this
+     PR moved. Not a defect; a visibility call.
 
 Doctrine: this **illuminates, never refuses**. It always exits 0 and never
 blocks a merge — even when the head Gate is broken, it posts a briefing that
 *explains* the break (the blocking ✗ is a separate CI step, not this tool).
-"Far from the thread" is not machine-decidable as a defect (a refactor and a
-rogue feature look identical), so it earns a briefing, not a gate. A team can
+"Off thread" is not machine-decidable as a defect (a refactor and a rogue
+feature look identical), so it earns a briefing, not a gate. A team can
 escalate the off-thread signal to a human tick via `offthread_ack` in the
 SpecAssay config.
 
@@ -40,8 +40,6 @@ import sys
 from pathlib import Path
 
 BADGE = {"proven": "🟢", "tracked-debt": "🟠", "backlog": "🔵", "GAP": "🔴"}
-# Rank for describing a status move as advance (⬆) or regress (⬇).
-RANK = {"GAP": 0, "backlog": 1, "tracked-debt": 2, "proven": 3}
 ACK_CHOICES = ("off", "record", "required")
 
 
@@ -236,14 +234,6 @@ def what_moved(base: dict, head: dict) -> dict:
 
 # ---- render ----
 
-def arrow(frm: str, to: str) -> str:
-    if RANK.get(to, 0) > RANK.get(frm, 0):
-        return "⬆"
-    if RANK.get(to, 0) < RANK.get(frm, 0):
-        return "⬇"
-    return ""
-
-
 def render(base: dict, head: dict, near: list, far: list, ack: str,
            link: Linker | None = None) -> str:
     moved = what_moved(base, head)
@@ -288,15 +278,22 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             parts.append(f"[`{label}`]({link.file_hunk(p)})" if (link and link.ok) else f"`{label}`")
         return " · " + " ".join(parts)
 
+    def changed_marker(id_: str) -> str:
+        """`◀ changed` — linked to the diff hunk of the carrier that moved this
+        row (proof preferred, then `@covers`), when we have PR context."""
+        hits = changed_carriers(id_)
+        if link and link.ok and hits:
+            return f"[◀ changed]({link.file_hunk(hits[0][1])})"
+        return "◀ changed"
+
     # 1. What moved
     out.append("### What moved")
     lines = []
     for c in moved["changes"]:
         if c["kind"] == "status":
-            a = arrow(c["from"], c["to"])
             lines.append(
                 f"- {BADGE.get(c['to'],'')} **{fmt_id(c['id'])}** — `{c['from']}` → "
-                f"**`{c['to']}`** {a}{carrier_suffix(c['id'])}".rstrip()
+                f"**`{c['to']}`**{carrier_suffix(c['id'])}".rstrip()
             )
         else:
             got = []
@@ -320,7 +317,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     touched = sorted({domain_of(c["id"]) for c in moved["changes"]}
                      | {domain_of(i) for i in moved["minted"]})
     if touched:
-        out.append("### The thread now")
+        out.append("### Thread Status")
         moved_ids = {c["id"] for c in moved["changes"]} | set(moved["minted"])
         for dom in touched:
             fam = [r for r in head.get("rows", []) if domain_of(r["id"]) == dom]
@@ -333,22 +330,22 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             out.append("| ID | Status | |")
             out.append("|----|--------|--|")
             for r in shown:
-                mark = "◀ changed" if r["id"] in moved_ids else ""
+                mark = changed_marker(r["id"]) if r["id"] in moved_ids else ""
                 out.append(f"| {fmt_id(r['id'])} | {BADGE.get(r['status'],'')} {r['status']} | {mark} |")
             if hidden:
                 noun = "row" if hidden == 1 else "rows"
                 out.append(f"\n<sub>+{hidden} untouched backlog {noun} not shown.</sub>")
             out.append("")
 
-    # 3. Far from the thread
-    out.append("### Far from the thread")
+    # 3. Off thread
+    out.append("### Off Thread")
     if far:
         n = len(far)
         verb = "sits" if n == 1 else "sit"
         noun = "file" if n == 1 else "files"
         pron = "it" if n == 1 else "them"
         out.append(
-            f"{n} changed {noun} {verb} **far from the thread** — changed, but nothing "
+            f"{n} changed {noun} {verb} **off the thread** — changed, but nothing "
             f"in {pron} carries a mark tying it to an intent this PR moved. Not a defect "
             "(a refactor and unwanted scope look identical here); just worth a glance:"
         )
@@ -365,7 +362,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
         elif ack == "required":
             out.append("> ☐ **These untraced changes are incidental.** _(a human must tick this before merge — `offthread_ack: required`)_")
     else:
-        out.append("_Every changed file carries a mark tying it to an intent. Nothing sits far from the thread._")
+        out.append("_Every changed file carries a mark tying it to an intent. Nothing sits off the thread._")
     out.append("")
 
     out.append("---")
@@ -376,7 +373,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     )
     out.append(
         "<sub>Thread Report **illuminates; it does not refuse.** "
-        f"\"Far from the thread\" is a visibility call, not a gate. {ack_note}</sub>"
+        f"\"Off thread\" is a visibility call, not a gate. {ack_note}</sub>"
     )
     return "\n".join(out).rstrip() + "\n"
 
