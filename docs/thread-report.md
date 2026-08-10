@@ -1,10 +1,11 @@
-# The Thread Report — the *illuminate* rung
+# Thread Report — the *illuminate* rung
 
 > **Status: shipped.** The tool
 > (`extensions/specassay-check/scripts/thread-report.py`), the CI workflow
-> (`.github/workflows/thread-report.yml`), and a live example
-> ([PR #1](https://github.com/rdryfoos/specassay/pull/1) on the bundled
-> `examples/example-app`) all exist today. This note is the reference; the
+> (`.github/workflows/thread-report.yml`), and two live examples — green
+> [PR #1](https://github.com/rdryfoos/specassay/pull/1) and broken
+> [PR #2](https://github.com/rdryfoos/specassay/pull/2) on the bundled
+> `examples/example-app` — all exist today. This note is the reference; the
 > *why* lives in [`scope-and-pull-requests.md` §4](scope-and-pull-requests.md),
 > and the designed walkthrough lives at
 > [specassay.com/thread-report](https://specassay.com/thread-report).
@@ -23,52 +24,61 @@ changes nothing about it — not the title, not the description, not the diff.
 
 ## What it posts
 
-The comment has three sections plus a one-line header. This is the real report
-from [PR #1](https://github.com/rdryfoos/specassay/pull/1), where a developer
-paid off tracked debt (`AC-SYNC-02`, the disjoint-field merge) by adding the
-proof that was owed, and dropped in a small `metrics.py` along the way.
+The comment has a one-line header plus three sections. This is the real report
+from green [PR #1](https://github.com/rdryfoos/specassay/pull/1), where a
+developer paid off tracked debt (`AC-SYNC-02`, the disjoint-field merge) by
+adding the proof that was owed, and dropped in a small `metrics.py` along the
+way.
 
 ### Header — the Gate line
 
 ```
-**Gate:** ✅ Golden Thread intact  ·  **This PR:** +1 proven
+## 🧵 Thread Report
+
+🟢 **Golden Thread intact**
 ```
 
-Read from the manifest's `gate.ok` plus the base↔head diff. A passing Gate does
-**not** mean "everything is done" — it means nothing *unfinished* is *hidden* at
-AC altitude. The summary counts what actually moved: proofs promoted to
-`proven`, other status moves, carriers added, IDs minted or retired.
+One line, one fact: does the thread hold. `🟢 Golden Thread intact` when
+`gate.ok` is true; `🔴 Golden Thread broken` when it isn't (see *The broken
+path* below). No colour on the word — the dot carries it, so it reads the same
+in a comment (where GitHub strips inline colour) and on the page. A passing Gate
+does **not** mean "everything is done"; it means nothing *unfinished* is
+*hidden* at AC altitude.
 
 ### 1. What moved
 
 The base-vs-head manifest diff, in prose:
 
 ```
-- 🟢 **AC-SYNC-02** — `tracked-debt` → **`proven`** ⬆
+- 🟢 **AC-SYNC-02** — `tracked-debt` → **`proven`** ⬆ · `test_sync.py` `sync.py`
 ```
 
 Status changes (with an ⬆/⬇ arrow by rank: `GAP < backlog < tracked-debt <
-proven`), carriers added (`@covers` or `test_AC_*` appearing where the status
-already held), IDs **🆕 minted**, IDs **🪦 retired**. If nothing on the thread
-moved, it says so plainly.
+proven`), carriers added, IDs **🆕 minted**, IDs **🪦 retired**. The trailing
+files are the **on-thread** files *this PR changed* that carry the moved ID —
+its proof and `@covers` — rendered so the reviewer can click straight to the
+change that did the moving.
 
 ### 2. The thread now
 
 For each **domain** the PR touched (the middle ID token — `US-SYNC-01` →
-`SYNC`), the whole family walked top-down (`US → FR → NFR → AC`) as it stands
-*after* this PR, with the moved rows flagged `◀ changed`:
+`SYNC`), the family walked top-down (`US → FR → NFR → AC`) as it stands *after*
+this PR, with moved rows flagged `◀ changed`:
 
 ```
 **SYNC**
 | ID          | Status     |           |
 |-------------|------------|-----------|
-| `US-SYNC-01`| 🔵 backlog |           |
-| `FR-SYNC-01`| 🔵 backlog |           |
 | `AC-SYNC-01`| 🟢 proven  |           |
 | `AC-SYNC-02`| 🟢 proven  | ◀ changed |
+
++2 untouched backlog rows not shown.
 ```
 
-A reviewer sees the entire thread the change lives on, not just the diff lines.
+**Untouched `backlog` rows are hidden** — a story this PR didn't move doesn't
+need its inert planning rows reprinted every time. The count of what's hidden is
+stated, never silently dropped. A reviewer sees the live part of the thread the
+change lives on, not the whole planning tree.
 
 ### 3. Far from the thread
 
@@ -76,8 +86,8 @@ The whole point. Changed files that carry **no mark** tying them to an intent
 this PR moved:
 
 ```
-1 changed file(s) sit **far from the thread** …
-- `src/metrics.py`
+1 changed file sits **far from the thread** …
+- src/metrics.py
 ```
 
 `metrics.py` changed, but nothing in it carries an `@covers`, is a named proof,
@@ -85,6 +95,19 @@ or edits the registry / a spec / a tasks file. A legitimate refactor and
 unwanted scope look **identical** from here, so the machine refuses to guess. It
 hands the reviewer a spotlight, not a verdict. If every changed file carries a
 mark, the section says so.
+
+## Clickable — a spotlight you can click
+
+Given `--pr-url` (and `--head-sha`), the report renders live links, so the
+reviewer moves from briefing to exact line in one click:
+
+- **Changed files** (the far-list, and the on-thread carriers in *What moved*)
+  → their **diff hunk in this PR**: `…/pull/N/files#diff-<sha256(path)>`.
+- **IDs** → their **registry line**: `…/blob/<head-sha>/<registry>#L<line>`.
+
+The `#diff-<sha256>` anchor is GitHub's stable (if undocumented) convention; the
+blob link is the fully-documented form. Without `--pr-url` the report degrades
+gracefully to plain code spans, so running it by hand still works.
 
 ## How it decides "far"
 
@@ -108,15 +131,31 @@ field is reserved so a future grader (same-directory, import-adjacent,
 call-graph proximity) can refine "far" into degrees without a schema change. The
 report today speaks in the honest binary — *on the thread* or *far from it*.
 
+## The broken path — post the report, then block
+
+When the head Gate refuses (a silent AC gap, an invented ID, exact-set drift),
+the Thread Report **still posts** — headed `🔴 Golden Thread broken`, with the
+offending row shown moving *into* `GAP`. That is the most illuminating moment the
+feature has, so it is not silent. The report tool **always exits 0**; refusing
+is not its job.
+
+The **block** is a separate step. The workflow's emit steps tolerate a broken
+Gate (the Gate always *writes* the manifest, then exits non-zero — the workflow
+reads the written manifest and moves on). After the comment posts, a final
+`Gate verdict` step re-reads `gate.ok` and fails the job if the thread is
+broken. So the comment illuminates and the check refuses — two steps, never one.
+See broken [PR #2](https://github.com/rdryfoos/specassay/pull/2): the red report
+is posted *and* the check is failed.
+
 ## Doctrine — illuminate, affirm, refuse
 
 Three postures, in increasing intervention and decreasing frequency:
 
-- **Illuminate — always on.** The briefing above. It surfaces what's
-  decision-relevant and renders no verdict. "Far from the thread" lives here.
-  The tool **always exits 0**; it never fails a build.
+- **Illuminate — always on.** The briefing. It surfaces what's decision-relevant
+  and renders no verdict. "Far from the thread" lives here. The tool never fails
+  a build.
 - **Affirm — opt-in.** A team can escalate the off-thread list to a one-click
-  human tick (see `offthread_ack` below). That is a *person's* verdict behind a
+  human tick (`offthread_ack`, below). That is a *person's* verdict behind a
   lightweight config — never the machine's.
 - **Refuse — rare, provable.** The Gate blocks only on what it can **prove** is a
   defect: a silent AC gap, an invented ID, exact-set drift. Off-thread is not
@@ -127,20 +166,17 @@ Three postures, in increasing intervention and decreasing frequency:
 
 ## Configuration
 
-Two controls split the off-thread signal into *information* and *ceremony*:
+`offthread_ack` is a real key in the SpecAssay config, read by the tool
+(`--offthread-ack` overrides it):
 
-- **`offthread_list: always`** — the information: the named list is in every
-  report. Pure illuminate, not a toggle.
-- **`offthread_ack: off | record | required`** — the ceremony (CLI flag
-  `--offthread-ack`):
-  - `off` (default) — pure illuminate; just the list.
-  - `record` — adds a *"these untraced changes are incidental"* tick to record,
-    informational only.
-  - `required` — the **affirm** rung: a human must tick before merge. Wire the
-    block in a separate CI step; the report tool itself still exits 0.
+- **`off`** (default) — pure illuminate: the far-list is shown, no tick.
+- **`record`** — adds a *"these untraced changes are incidental"* tick to
+  record, informational only.
+- **`required`** — the **affirm** rung: a human must tick before merge. Wire the
+  actual block in a separate CI step; the report tool itself still exits 0.
 
-The report also reads `registry`, `specs`, and `tasks` from the SpecAssay config
-to know which paths are intrinsically on-thread.
+The report also reads `registry`, `specs`, and `tasks` from the config to know
+which paths are intrinsically on-thread.
 
 ## Running it
 
@@ -152,27 +188,31 @@ python3 extensions/specassay-check/scripts/thread-report.py \
   --head  head.trace-manifest.json \
   --changed-files changed.txt \
   --config examples/example-app/specassay-check-config.yml \
-  --offthread-ack off \
+  --pr-url https://github.com/OWNER/REPO/pull/N \
+  --head-sha "$HEAD_SHA" \
   --out report.md
 ```
 
-`--changed-files` takes a file (one path per line) or `-` for stdin. It reads
-schema v3 / v4 manifests and has zero dependencies.
+`--changed-files` takes a file (one path per line) or `-` for stdin. `--pr-url`
+/ `--head-sha` are optional (they enable links). It reads schema v3 / v4
+manifests and has zero dependencies.
 
 ### In CI
 
 `.github/workflows/thread-report.yml` runs on `pull_request` and:
 
-1. Emits the **head** manifest with Gate 2 against the PR checkout.
+1. Emits the **head** manifest with Gate 2 (tolerating a broken Gate — it relies
+   on the manifest the Gate always writes).
 2. Emits the **base** manifest via `git worktree add` at
-   `pull_request.base.sha`, run through the *same* checker (stable emitter).
+   `pull_request.base.sha`, the same way.
 3. Collects changed files with `git diff --name-only base...HEAD`.
-4. Builds the report and posts it as a **sticky** comment (marker
-   `<!-- specassay-thread-report -->`, updated in place on each push) via
-   `actions/github-script`.
+4. Builds the report (passing `--pr-url` / `--head-sha` from the event) and posts
+   it as a **sticky** comment (marker `<!-- specassay-thread-report -->`, updated
+   in place on each push).
+5. A final `Gate verdict` step re-reads `gate.ok` and **fails the job** if the
+   thread is broken — the block, posted separately from the briefing.
 
-It needs `permissions: pull-requests: write` and always succeeds — the report is
-a comment, never a check.
+It needs `permissions: pull-requests: write`.
 
 ## Scope note
 
