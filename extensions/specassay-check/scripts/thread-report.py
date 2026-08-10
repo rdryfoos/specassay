@@ -5,6 +5,8 @@ Diffs a base trace-manifest against a PR-head trace-manifest and buckets the
 PR's changed files, then emits a Markdown **Thread Report** for a PR comment:
 
   1. What moved — status changes, IDs minted / retired, proofs & covers added.
+  1b. Intent Changed — intents whose wording was restated, with the blast-radius
+     re-confirm list (carriers written against the old wording).
   2. Thread Status — per domain touched by the PR (untouched backlog rows hidden).
   3. Off Thread — changed files that carry no mark tying them to any intent this
      PR moved. Not a defect; a visibility call.
@@ -105,6 +107,17 @@ def glob_to_regex(glob: str) -> re.Pattern:
 
 def norm(p: str) -> str:
     return p.lstrip("./").replace("\\", "/")
+
+
+def norm_ws(s: str) -> str:
+    """Collapse whitespace so only substantive wording changes count as a
+    restatement (a typo/reflow in whitespace alone is not a restatement)."""
+    return re.sub(r"\s+", " ", s or "").strip()
+
+
+def strip_id_prefix(id_: str, statement: str) -> str:
+    """`AC-SYNC-02 — Disjoint field edits…` -> `Disjoint field edits…` for display."""
+    return re.sub(rf"^\s*{re.escape(id_)}\s*[—–-]\s*", "", statement or "").strip()
 
 
 # ---- links (optional; only when PR context is supplied) ----
@@ -212,10 +225,15 @@ def what_moved(base: dict, head: dict) -> dict:
     minted = [i for i in h if i not in b]
     retired = [i for i in b if i not in h]
     changes = []
+    restated = []
     for id_ in h:
         if id_ not in b:
             continue
         bo, ho = b[id_], h[id_]
+        # Restatement: the intent's own wording moved (whitespace-insensitive).
+        bs, hs = bo.get("statement", ""), ho.get("statement", "")
+        if bs and hs and norm_ws(bs) != norm_ws(hs):
+            restated.append({"id": id_, "was": bs, "now": hs})
         if bo.get("status") != ho.get("status"):
             changes.append({
                 "id": id_, "from": bo.get("status"), "to": ho.get("status"),
@@ -229,7 +247,7 @@ def what_moved(base: dict, head: dict) -> dict:
                     "id": id_, "kind": "carrier",
                     "proofs": added_proof, "covers": added_cover,
                 })
-    return {"minted": minted, "retired": retired, "changes": changes}
+    return {"minted": minted, "retired": retired, "changes": changes, "restated": restated}
 
 
 # ---- render ----
@@ -310,15 +328,50 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
         lines.append(f"- 🆕 **{fmt_id(i)}** — minted ({st})")
     for i in moved["retired"]:
         lines.append(f"- 🪦 **`{i}`** — retired (tombstoned)")
-    out.append("\n".join(lines) if lines else "_Nothing on the thread changed in this PR._")
+    out.append("\n".join(lines) if lines else "_No status changes in this PR._")
     out.append("")
 
+    # 1b. Intent Changed — restated intents + blast-radius re-confirm list
+    if moved["restated"]:
+        out.append("### Intent Changed")
+        n = len(moved["restated"])
+        lead = "intent was" if n == 1 else "intents were"
+        out.append(
+            f"⚠️ {n} {lead} restated — the wording moved under carriers written "
+            "against the old text. Re-confirm each still satisfies the new statement."
+        )
+        out.append("")
+        for r in moved["restated"]:
+            id_ = r["id"]
+            out.append(f"- **{fmt_id(id_)}** — restated")
+            out.append(f"  - was: _{strip_id_prefix(id_, r['was'])}_")
+            out.append(f"  - now: _{strip_id_prefix(id_, r['now'])}_")
+            row = h.get(id_) or {}
+            carriers = []
+            for c in row.get("implementations", []) + row.get("proofs", []):
+                p = norm(c.get("path", ""))
+                if not p:
+                    continue
+                ln = c.get("line")
+                label = p.rsplit("/", 1)[-1] + (f":{ln}" if ln else "")
+                if link and link.ok:
+                    carriers.append(f"[`{label}`]({link.blob_line(p, ln)})")
+                else:
+                    carriers.append(f"`{label}`")
+            if carriers:
+                out.append(f"  - re-confirm: {' · '.join(carriers)}")
+            else:
+                out.append("  - _no carriers to re-confirm (backlog intent)._")
+        out.append("")
+
     # 2. The thread now, per domain the PR touched (untouched backlog rows hidden)
+    restated_ids = {r["id"] for r in moved["restated"]}
     touched = sorted({domain_of(c["id"]) for c in moved["changes"]}
-                     | {domain_of(i) for i in moved["minted"]})
+                     | {domain_of(i) for i in moved["minted"]}
+                     | {domain_of(i) for i in restated_ids})
     if touched:
         out.append("### Thread Status")
-        moved_ids = {c["id"] for c in moved["changes"]} | set(moved["minted"])
+        moved_ids = {c["id"] for c in moved["changes"]} | set(moved["minted"]) | restated_ids
         for dom in touched:
             fam = [r for r in head.get("rows", []) if domain_of(r["id"]) == dom]
             type_rank = {"US": 0, "FR": 1, "NFR": 2, "AC": 3}
