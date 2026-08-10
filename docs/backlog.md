@@ -55,9 +55,11 @@ Lifted from `scope-and-pull-requests.md` §6. Every item there is tagged
 **(proposed)**; this is the order to build them in. Converging strategies, not one
 silver bullet:
 
-1. **Manifest diff + Thread Report** (scope note §4) — a script over data already
-   emitted, plus a Loupe "PR view" that diffs two manifests. Friction-negative.
-   **Build first.**
+1. **Manifest diff + Thread Report** (scope note §4) — ✅ **shipped.** The
+   base↔head diff, changed-file bucketing, and the sticky PR briefing all exist:
+   see [`thread-report.md`](thread-report.md) and live
+   [PR #1](https://github.com/rdryfoos/specassay/pull/1). (Still open: a Loupe
+   "PR view" that renders the same diff visually.)
 2. **Intent-diff legibility + immutability gate** (§5) — small.
 3. **Full intent-PR workflow** (§5) — the destination.|
    None of it asks the developer to tag more code. The value comes from *reading the

@@ -30,3 +30,9 @@ carries_regex: "\*\*(Carries|Traces)\*\*:"
 
 # How AC IDs appear inside test names (e.g. test_AC_SYNC_01_...)
 test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
+
+# Thread Report: the affirm ceremony on the off-thread list.
+#   off      — pure illuminate: the list is shown, no tick (default)
+#   record   — a "these untraced changes are incidental" tick, informational
+#   required — a human must tick before merge (wire the block in a separate step)
+offthread_ack: "off"

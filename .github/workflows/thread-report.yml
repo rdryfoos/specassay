@@ -1,8 +1,11 @@
 name: SpecAssay Thread Report
 
-# Illuminate, never refuse: this posts a briefing on the PR. It never fails the
-# build and never blocks a merge. (A team wanting the affirm rung sets
-# offthread_ack: required and gates on a separate human-affirmation step.)
+# Illuminate first, refuse second — and as separate steps. The report ALWAYS
+# posts a briefing on the PR, even when the Gate is broken (so the comment
+# explains *what* broke in thread terms). A final step then re-reads the head
+# Gate and fails the job if the thread is broken — that ✗ is the block; the
+# comment is never the block. A team wanting the affirm rung sets
+# offthread_ack: required in the config and gates on a separate human step.
 on:
   pull_request:
     paths:
@@ -21,25 +24,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Gate 2 — emit the PR-head manifest
+      - name: Gate 2 — emit the PR-head manifest (tolerate a broken Gate)
         run: |
-          set -euo pipefail
+          set -uo pipefail
           APP="$PWD/examples/example-app"
+          # The Gate always WRITES the manifest, then exits non-zero if broken.
+          # We rely on the written manifest here and carry the block later, so a
+          # broken thread still gets a report instead of a silent failed step.
           SPECASSAY_PROJECT_ROOT="$APP" \
           SPECASSAY_CONFIG="$APP/specassay-check-config.yml" \
-            bash extensions/specassay-check/scripts/check-traceability.sh
+            bash extensions/specassay-check/scripts/check-traceability.sh || true
           cp "$APP/trace-manifest.json" /tmp/head.json
 
       - name: Gate 2 — emit the base manifest (from the PR base commit)
         run: |
-          set -euo pipefail
+          set -uo pipefail
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
           git worktree add --quiet /tmp/base "$BASE_SHA"
           BAPP="/tmp/base/examples/example-app"
-          # Emit with the HEAD checker (stable emitter) against the base tree.
           SPECASSAY_PROJECT_ROOT="$BAPP" \
           SPECASSAY_CONFIG="$BAPP/specassay-check-config.yml" \
-            bash extensions/specassay-check/scripts/check-traceability.sh
+            bash extensions/specassay-check/scripts/check-traceability.sh || true
           cp "$BAPP/trace-manifest.json" /tmp/base.json
           git worktree remove --force /tmp/base
 
@@ -54,7 +59,8 @@ jobs:
             --base /tmp/base.json --head /tmp/head.json \
             --changed-files /tmp/changed.txt \
             --config examples/example-app/specassay-check-config.yml \
-            --offthread-ack off \
+            --pr-url "${{ github.event.pull_request.html_url }}" \
+            --head-sha "${{ github.event.pull_request.head.sha }}" \
             --out /tmp/report.md
           echo "----- report -----"; cat /tmp/report.md
 
@@ -76,3 +82,14 @@ jobs:
             } else {
               await github.rest.issues.createComment({ owner, repo, issue_number, body });
             }
+
+      - name: Gate verdict — refuse a broken thread (the block, posted separately)
+        run: |
+          set -euo pipefail
+          ok=$(python3 -c "import json,sys; print(json.load(open('/tmp/head.json')).get('gate',{}).get('ok', True))")
+          if [ "$ok" != "True" ]; then
+            echo "::error::Golden Thread broken — the Gate refuses. See the Thread Report comment above."
+            python3 -c "import json; [print(' -', f.get('kind'), f.get('detail','')) for f in json.load(open('/tmp/head.json')).get('gate',{}).get('failures',[])]"
+            exit 1
+          fi
+          echo "Golden Thread intact."
