@@ -258,6 +258,9 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     h = rows_by_id(head)
     gate_ok = head.get("gate", {}).get("ok", True)
     near_set = {n["path"] for n in near}
+    # Rows whose move is a registry edit (minted or restated) rather than a carrier
+    # change — for these, the change that moved the row lives in the registry file.
+    registry_moved = set(moved["minted"]) | {r["id"] for r in moved["restated"]}
     out = []
 
     # Header — the name, then a single gate-state line (no color; the dot carries it).
@@ -297,11 +300,19 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
         return " · " + " ".join(parts)
 
     def changed_marker(id_: str) -> str:
-        """`◀ changed` — linked to the diff hunk of the carrier that moved this
-        row (proof preferred, then `@covers`), when we have PR context."""
+        """`◀ changed` — linked to the diff that moved this row. A carrier change
+        points at the carrier's diff hunk (proof preferred, then `@covers`); a
+        registry move (restated wording / minted) points at the registry file's
+        diff, since that's where the change lives."""
+        if not (link and link.ok):
+            return "◀ changed"
         hits = changed_carriers(id_)
-        if link and link.ok and hits:
+        if hits:
             return f"[◀ changed]({link.file_hunk(hits[0][1])})"
+        if id_ in registry_moved:
+            reg = (h.get(id_) or {}).get("registry", {}).get("path")
+            if reg:
+                return f"[◀ changed]({link.file_hunk(reg)})"
         return "◀ changed"
 
     # 1. What moved
