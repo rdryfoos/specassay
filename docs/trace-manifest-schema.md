@@ -40,7 +40,7 @@ Each failure: `{ kind, detail, id? }`.
 
 **Registry drift:** Gate 2 requires **exact set** match: registry IDs ≡ IDs found under configured `specs` globs ≡ IDs found under configured `tasks` globs. Feature specs inherit; they do not mint. Registry IDs may not wait unclaimed.
 
-**Invariant for viewers:** Gate PASS (`gate.ok`) ⇔ contiguous descent braid; Gate FAIL ⇔ fray, the Golden Thread broken. Tracked debt and excused incompleteness may still show red nodes without fray.
+**Invariant for viewers:** Gate PASS (`gate.ok`) ⇔ contiguous descent braid; Gate FAIL ⇔ fray, the Golden Thread broken. Tracked debt and excused incompleteness may still show amber (owed) or blue (not-yet) nodes without fray.
 
 ## Row shape
 

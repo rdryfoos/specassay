@@ -1,17 +1,29 @@
 # Sample `trace-manifest.json` files
 
+All three are **real Gate 2 emits** — no hand-curated JSON.
+
 | File | What |
 |------|------|
-| `homesflow.trace-manifest.json` | Real Gate 2 emit against HomesFlow — fully SpecAssay-native (`**Carries**:`, no `clew`/`Traces`); 82 rows, `gate.ok: true`, 0 GAP |
-| `sample.trace-manifest.json` | Clean synthetic demo (`example-app`) — the shareable "shape" artifact and Loupe's preview default |
-| `sample-gap.trace-manifest.json` | The `example-app` demo with one AC gilted into a silent **GAP** — `gate.ok: false`, one frayed row. Demos the refusal / broken-thread state. |
+| `homesflow.trace-manifest.json` | Real emit against HomesFlow — 82 rows, `gate.ok: true`, 0 GAP. The production-scale baseline. |
+| `sample.trace-manifest.json` | Real emit from the shipped [`examples/example-app`](../examples/example-app) playground — 10 rows (3 proven / 1 tracked-debt / 6 backlog), `gate.ok: true`. The shareable "shape" artifact and Loupe's preview fallback. |
+| `sample-gap.trace-manifest.json` | The same `example-app` emit with one acceptance criterion's proof removed, so it gilts into a silent **GAP** — `gate.ok: false`, one frayed row. Demos the refusal / broken-thread state. |
 
-`homesflow.trace-manifest.json` is the real baseline; `sample.trace-manifest.json` is a curated synthetic demo, and `sample-gap.trace-manifest.json` is that same demo with a single silent gap so viewers can see a fray. All three are clean, post-rename manifests.
+## Regenerating them
 
-Regenerate the HomesFlow twin (the synthetic `sample` is curated by hand, not synced):
+**`sample`** — re-run Gate 2 against the bundled example project and copy it in (then scrub the absolute `repoPath` to `example-app`):
 
 ```bash
-# from a machine (or CI) that can see HomesFlow
+SPECASSAY_PROJECT_ROOT="$PWD/examples/example-app" \
+SPECASSAY_CONFIG="$PWD/examples/example-app/specassay-check-config.yml" \
+bash extensions/specassay-check/scripts/check-traceability.sh
+cp examples/example-app/trace-manifest.json samples/sample.trace-manifest.json
+```
+
+**`sample-gap`** — `sample` with one AC's proof removed (`AC-SYNC-01` → `GAP`, `gate.ok: false`). It exists only to show a fray; regenerate it from `sample` after refreshing that file.
+
+**`homesflow`** — from a machine (or CI) that can see HomesFlow:
+
+```bash
 cd /path/to/HomesFlow && bash .specify/extensions/specassay-check/scripts/check-traceability.sh
 cp /path/to/HomesFlow/trace-manifest.json samples/homesflow.trace-manifest.json
 ```
