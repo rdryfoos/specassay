@@ -117,7 +117,12 @@ conflated: green stays **proven**; illuminate has no color of its own (it is the
 lens the colors are seen *through*); affirm gets its own affordance — a
 chip/checkbox — not a node color.
 
-## 4. The pull request as a briefing — the *illuminate* rung (proposed)
+## 4. The pull request as a briefing — the *illuminate* rung (shipped)
+
+> The mechanism below now ships as the **Thread Report** — tool, CI workflow,
+> and a live [PR #1](https://github.com/rdryfoos/specassay/pull/1). This section
+> is the argument; [`thread-report.md`](thread-report.md) is the reference.
+
 
 Threat model: the **honest** developer who side-tracks, not the adversary who
 mislabels. For honest developers the goal is not to *refuse* — it is to make the
@@ -130,7 +135,7 @@ low-friction (often friction-*negative*):
    the whole tree. The diff is small, it is already the review unit, and it is
    the one altitude where build → intent is affordable.
 
-### 4a. The manifest diff (proposed)
+### 4a. The manifest diff (shipped)
 
 Gate 2 already emits a trace-manifest per commit, so CI has two: **base** and
 **PR head**. Diff them, and diff the code, and bucket every changed file:
@@ -146,7 +151,7 @@ cannot tell a legitimate refactor from unwanted scope; both land off-thread.
 What it does is collapse the reviewer's search space from *the whole diff* to
 *the untraced subset*, and label it. For an honest team that is the whole game.
 
-### 4b. The Thread Report (proposed)
+### 4b. The Thread Report (shipped)
 
 On every PR, SpecAssay posts a generated briefing — friction-negative, because
 the developer receives more than they give:
