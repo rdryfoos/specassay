@@ -58,6 +58,38 @@ trailing files are the **on-thread** files *this PR changed* that carry the
 moved ID — its proof and `@covers` — rendered so the reviewer can click straight
 to the change that did the moving.
 
+### 1b. Intent Changed
+
+The one section that's about the intent itself, not the code. When a PR
+**restates** an existing registry ID — changes its *wording* — the report
+surfaces it, because the carriers written against the old wording may now be
+subtly wrong while still passing:
+
+```
+### Intent Changed
+⚠️ 1 intent was restated — the wording moved under carriers written against the
+old text. Re-confirm each still satisfies the new statement.
+
+- **AC-SYNC-01** — restated
+  - was: _A change made offline appears on a second device within 5s of reconnect._
+  - now: _A change made offline appears on a second device within 3s of reconnect._
+  - re-confirm: `sync.py:51` · `test_sync.py:18`
+```
+
+Detection is whitespace-insensitive (a reflow or typo-in-spacing is not a
+restatement); *any* substantive wording change flags. The **re-confirm** list is
+the row's carriers (`implementations` + `proofs`), linked to their **current
+code** (`blob@head`) — the reviewer clicks each and checks it still satisfies the
+new statement. In the example the proof still asserts *5s*; the criterion now
+says *3s*; the test is green and wrong. That's the blast radius, made mechanical
+— the integrity property from
+[`bidirectional-traceability.md`](bidirectional-traceability.md), surfaced on the
+PR that moves the intent. Pure illuminate: it never blocks (enforcing re-confirm
+is a later slice). A restated intent also lights up *Thread Status* (`◀ changed`).
+
+With minted / retired (in *What moved*) and restated here, the report now covers
+all three legible-intent-diff types.
+
 ### 2. Thread Status
 
 For each **domain** the PR touched (the middle ID token — `US-SYNC-01` →
@@ -105,6 +137,9 @@ reviewer moves from briefing to exact line in one click:
 - **IDs** → their **registry line**: `…/blob/<head-sha>/<registry>#L<line>`.
 - **`◀ changed`** (in *Thread Status*) → the **diff hunk** of the carrier that
   moved that row (its proof or `@covers`), so each moved row jumps to its change.
+- **Re-confirm carriers** (in *Intent Changed*) → the carrier's **current code**
+  (`blob@head`), not a diff — the carrier usually didn't change; you're being
+  sent *to* it to re-check it against the new wording.
 
 The `#diff-<sha256>` anchor is GitHub's stable (if undocumented) convention; the
 blob link is the fully-documented form. Without `--pr-url` the report degrades
