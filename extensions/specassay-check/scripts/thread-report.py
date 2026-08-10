@@ -5,28 +5,35 @@ Diffs a base trace-manifest against a PR-head trace-manifest and buckets the
 PR's changed files, then emits a Markdown **Thread Report** for a PR comment:
 
   1. What moved — status changes, IDs minted / retired, proofs & covers added.
-  2. The thread now — per domain touched by the PR.
+  2. The thread now — per domain touched by the PR (untouched backlog rows hidden).
   3. Far from the thread — changed files that carry no mark tying them to any
      intent this PR moved. Not a defect; a visibility call.
 
 Doctrine: this **illuminates, never refuses**. It always exits 0 and never
-blocks a merge. "Far from the thread" is not machine-decidable as a defect
-(a refactor and a rogue feature look identical), so it earns a briefing, not
-a gate. A team can escalate the off-thread signal to a human-affirmation step
-via `offthread_ack` (see the config), but that is a *human* verdict, not this
-tool's.
+blocks a merge — even when the head Gate is broken, it posts a briefing that
+*explains* the break (the blocking ✗ is a separate CI step, not this tool).
+"Far from the thread" is not machine-decidable as a defect (a refactor and a
+rogue feature look identical), so it earns a briefing, not a gate. A team can
+escalate the off-thread signal to a human tick via `offthread_ack` in the
+SpecAssay config.
+
+When given `--pr-url` (and ideally `--head-sha`), files and IDs render as links:
+changed files point at their diff hunk in the PR; IDs point at their registry
+line. Without PR context the report degrades gracefully to plain code spans.
 
 Zero dependencies. Reads schema v3 / v4 trace-manifests.
 
 Usage:
   thread-report.py --base base.json --head head.json \
       --changed-files changed.txt [--config specassay-check-config.yml]
+      [--pr-url https://github.com/o/r/pull/1] [--head-sha SHA]
       [--offthread-ack off|record|required]
 
   --changed-files accepts a file (one path per line) or `-` for stdin.
 """
 from __future__ import annotations
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -35,6 +42,7 @@ from pathlib import Path
 BADGE = {"proven": "🟢", "tracked-debt": "🟠", "backlog": "🔵", "GAP": "🔴"}
 # Rank for describing a status move as advance (⬆) or regress (⬇).
 RANK = {"GAP": 0, "backlog": 1, "tracked-debt": 2, "proven": 3}
+ACK_CHOICES = ("off", "record", "required")
 
 
 def load_manifest(path: str) -> dict:
@@ -57,15 +65,25 @@ def domain_of(id_: str) -> str:
 # ---- config (minimal, zero-dep reader for the few keys we need) ----
 
 def read_config(path: str | None) -> dict:
-    """Pull registry / specs / tasks globs from the SpecAssay config. Only the
-    simple `key: "value"` lines matter here; unknown lines are ignored."""
-    cfg = {"registry": "PRD.md", "specs": "specs/**/spec.md", "tasks": "specs/**/tasks.md"}
+    """Pull registry / specs / tasks globs and offthread_ack from the SpecAssay
+    config. Only simple `key: "value"` lines matter here; unknown lines ignored."""
+    cfg = {
+        "registry": "PRD.md",
+        "specs": "specs/**/spec.md",
+        "tasks": "specs/**/tasks.md",
+        "offthread_ack": "off",
+    }
     if not path or not Path(path).is_file():
         return cfg
     for line in Path(path).read_text(encoding="utf-8").splitlines():
-        m = re.match(r'^\s*(registry|specs|tasks)\s*:\s*["\']?([^"\'#]+?)["\']?\s*(#.*)?$', line)
+        m = re.match(
+            r'^\s*(registry|specs|tasks|offthread_ack)\s*:\s*["\']?([^"\'#]+?)["\']?\s*(#.*)?$',
+            line,
+        )
         if m:
             cfg[m.group(1)] = m.group(2).strip()
+    if cfg["offthread_ack"] not in ACK_CHOICES:
+        cfg["offthread_ack"] = "off"
     return cfg
 
 
@@ -89,6 +107,40 @@ def glob_to_regex(glob: str) -> re.Pattern:
 
 def norm(p: str) -> str:
     return p.lstrip("./").replace("\\", "/")
+
+
+# ---- links (optional; only when PR context is supplied) ----
+
+class Linker:
+    """Builds GitHub URLs for files (PR diff hunk) and IDs (registry line).
+
+    Diff-hunk anchors use `#diff-<sha256(repo-relative path)>`, GitHub's stable
+    (if undocumented) convention. Blob links are the fully-documented fallback.
+    `project_prefix` re-prepends the project dir stripped for manifest matching,
+    so a project-relative path becomes repo-relative for the URL.
+    """
+
+    def __init__(self, pr_url: str, head_sha: str | None, project_prefix: str):
+        m = re.match(r"(https?://[^/]+/[^/]+/[^/]+)/pull/(\d+)", pr_url.rstrip("/"))
+        self.ok = bool(m)
+        self.pr_url = pr_url.rstrip("/")
+        self.repo_url = m.group(1) if m else ""
+        self.head_sha = head_sha or "HEAD"
+        self.prefix = norm(project_prefix).rstrip("/")
+
+    def _repo_rel(self, project_rel: str) -> str:
+        p = norm(project_rel)
+        return f"{self.prefix}/{p}" if self.prefix else p
+
+    def file_hunk(self, project_rel: str) -> str:
+        rr = self._repo_rel(project_rel)
+        digest = hashlib.sha256(rr.encode("utf-8")).hexdigest()
+        return f"{self.pr_url}/files#diff-{digest}"
+
+    def blob_line(self, project_rel: str, line: int | None) -> str:
+        rr = self._repo_rel(project_rel)
+        anchor = f"#L{line}" if line else ""
+        return f"{self.repo_url}/blob/{self.head_sha}/{rr}{anchor}"
 
 
 # ---- classification ----
@@ -192,32 +244,49 @@ def arrow(frm: str, to: str) -> str:
     return ""
 
 
-def render(base: dict, head: dict, near: list, far: list, ack: str) -> str:
+def render(base: dict, head: dict, near: list, far: list, ack: str,
+           link: Linker | None = None) -> str:
     moved = what_moved(base, head)
     h = rows_by_id(head)
     gate_ok = head.get("gate", {}).get("ok", True)
+    near_set = {n["path"] for n in near}
     out = []
-    out.append("## 🧵 SpecAssay Thread Report")
+
+    # Header — the name, then a single gate-state line (no color; the dot carries it).
+    out.append("## 🧵 Thread Report")
     out.append("")
-    gate_line = "✅ Golden Thread intact" if gate_ok else "🔴 Golden Thread broken — the Gate refuses"
-    status_changes = [c for c in moved["changes"] if c["kind"] == "status"]
-    proven_up = sum(1 for c in status_changes if c.get("to") == "proven")
-    other_moves = len(status_changes) - proven_up
-    carriers = sum(1 for c in moved["changes"] if c["kind"] == "carrier")
-    bits = []
-    if proven_up:
-        bits.append(f"+{proven_up} proven")
-    if other_moves:
-        bits.append(f"{other_moves} moved")
-    if carriers:
-        bits.append(f"{carriers} carrier{'s' if carriers != 1 else ''} added")
-    if moved["minted"]:
-        bits.append(f"{len(moved['minted'])} minted")
-    if moved["retired"]:
-        bits.append(f"{len(moved['retired'])} retired")
-    summary = " · ".join(bits) if bits else "no thread changes"
-    out.append(f"**Gate:** {gate_line}  ·  **This PR:** {summary}")
+    out.append("🟢 **Golden Thread intact**" if gate_ok else "🔴 **Golden Thread broken**")
     out.append("")
+
+    def fmt_id(id_: str) -> str:
+        row = h.get(id_)
+        reg = (row or {}).get("registry") or {}
+        if link and link.ok and reg.get("path"):
+            return f"[`{id_}`]({link.blob_line(reg['path'], reg.get('line'))})"
+        return f"`{id_}`"
+
+    def changed_carriers(id_: str) -> list:
+        """The proof/impl files this PR changed that carry this ID — on-thread
+        files, rendered inline so the reviewer can click straight to the change."""
+        row = h.get(id_) or {}
+        seen, hits = set(), []
+        for kind, key in (("proof", "proofs"), ("covers", "implementations")):
+            for c in row.get(key, []):
+                p = norm(c.get("path", ""))
+                if p and p in near_set and p not in seen:
+                    seen.add(p)
+                    hits.append((kind, p))
+        return hits
+
+    def carrier_suffix(id_: str) -> str:
+        hits = changed_carriers(id_)
+        if not hits:
+            return ""
+        parts = []
+        for _kind, p in hits:
+            label = p.rsplit("/", 1)[-1]
+            parts.append(f"[`{label}`]({link.file_hunk(p)})" if (link and link.ok) else f"`{label}`")
+        return " · " + " ".join(parts)
 
     # 1. What moved
     out.append("### What moved")
@@ -226,7 +295,8 @@ def render(base: dict, head: dict, near: list, far: list, ack: str) -> str:
         if c["kind"] == "status":
             a = arrow(c["from"], c["to"])
             lines.append(
-                f"- {BADGE.get(c['to'],'')} **{c['id']}** — `{c['from']}` → **`{c['to']}`** {a}".rstrip()
+                f"- {BADGE.get(c['to'],'')} **{fmt_id(c['id'])}** — `{c['from']}` → "
+                f"**`{c['to']}`** {a}{carrier_suffix(c['id'])}".rstrip()
             )
         else:
             got = []
@@ -234,16 +304,19 @@ def render(base: dict, head: dict, near: list, far: list, ack: str) -> str:
                 got.append(f"+{c['covers']} `@covers`")
             if c.get("proofs", 0) > 0:
                 got.append(f"+{c['proofs']} proof")
-            lines.append(f"- **{c['id']}** — carrier added ({', '.join(got)}), status held")
+            lines.append(
+                f"- **{fmt_id(c['id'])}** — carrier added ({', '.join(got)}), "
+                f"status held{carrier_suffix(c['id'])}"
+            )
     for i in moved["minted"]:
         st = h.get(i, {}).get("status", "backlog")
-        lines.append(f"- 🆕 **{i}** — minted ({st})")
+        lines.append(f"- 🆕 **{fmt_id(i)}** — minted ({st})")
     for i in moved["retired"]:
-        lines.append(f"- 🪦 **{i}** — retired (tombstoned)")
+        lines.append(f"- 🪦 **`{i}`** — retired (tombstoned)")
     out.append("\n".join(lines) if lines else "_Nothing on the thread changed in this PR._")
     out.append("")
 
-    # 2. The thread now, per domain the PR touched
+    # 2. The thread now, per domain the PR touched (untouched backlog rows hidden)
     touched = sorted({domain_of(c["id"]) for c in moved["changes"]}
                      | {domain_of(i) for i in moved["minted"]})
     if touched:
@@ -251,29 +324,41 @@ def render(base: dict, head: dict, near: list, far: list, ack: str) -> str:
         moved_ids = {c["id"] for c in moved["changes"]} | set(moved["minted"])
         for dom in touched:
             fam = [r for r in head.get("rows", []) if domain_of(r["id"]) == dom]
-            # Top-down thread order: story -> feature -> non-functional -> criterion.
             type_rank = {"US": 0, "FR": 1, "NFR": 2, "AC": 3}
             fam.sort(key=lambda r: (type_rank.get(r["id"].split("-")[0], 9), r["id"]))
+            shown = [r for r in fam if r["status"] != "backlog" or r["id"] in moved_ids]
+            hidden = len(fam) - len(shown)
             out.append(f"**{dom}**")
             out.append("")
             out.append("| ID | Status | |")
             out.append("|----|--------|--|")
-            for r in fam:
+            for r in shown:
                 mark = "◀ changed" if r["id"] in moved_ids else ""
-                out.append(f"| `{r['id']}` | {BADGE.get(r['status'],'')} {r['status']} | {mark} |")
+                out.append(f"| {fmt_id(r['id'])} | {BADGE.get(r['status'],'')} {r['status']} | {mark} |")
+            if hidden:
+                noun = "row" if hidden == 1 else "rows"
+                out.append(f"\n<sub>+{hidden} untouched backlog {noun} not shown.</sub>")
             out.append("")
 
     # 3. Far from the thread
     out.append("### Far from the thread")
     if far:
+        n = len(far)
+        verb = "sits" if n == 1 else "sit"
+        noun = "file" if n == 1 else "files"
+        pron = "it" if n == 1 else "them"
         out.append(
-            f"{len(far)} changed file(s) sit **far from the thread** — they changed, "
-            "but nothing in them carries a mark tying it to an intent this PR moved. "
-            "Not a defect (a refactor and unwanted scope look identical here); just worth a glance:"
+            f"{n} changed {noun} {verb} **far from the thread** — changed, but nothing "
+            f"in {pron} carries a mark tying it to an intent this PR moved. Not a defect "
+            "(a refactor and unwanted scope look identical here); just worth a glance:"
         )
         out.append("")
         for f in far:
-            out.append(f"- `{f['path']}`")
+            p = f["path"]
+            if link and link.ok:
+                out.append(f"- [`{p}`]({link.file_hunk(p)})")
+            else:
+                out.append(f"- `{p}`")
         out.append("")
         if ack == "record":
             out.append("> ☐ **These untraced changes are incidental.** _(tick to record — informational)_")
@@ -284,10 +369,14 @@ def render(base: dict, head: dict, near: list, far: list, ack: str) -> str:
     out.append("")
 
     out.append("---")
+    ack_note = (
+        "Set `offthread_ack: record|required` in the SpecAssay config to add a human tick."
+        if ack == "off"
+        else f"Off-thread acknowledgement: **{ack}**."
+    )
     out.append(
-        "<sub>SpecAssay **illuminates; it does not refuse.** "
-        "\"Far from the thread\" is a visibility call, not a gate. "
-        "Tune the signal with `offthread_list` / `offthread_ack`.</sub>"
+        "<sub>Thread Report **illuminates; it does not refuse.** "
+        f"\"Far from the thread\" is a visibility call, not a gate. {ack_note}</sub>"
     )
     return "\n".join(out).rstrip() + "\n"
 
@@ -305,13 +394,16 @@ def main() -> int:
     ap.add_argument("--base", required=True, help="base-branch trace-manifest.json")
     ap.add_argument("--head", required=True, help="PR-head trace-manifest.json")
     ap.add_argument("--changed-files", required=True, help="file with one changed path per line, or - for stdin")
-    ap.add_argument("--config", default=None, help="specassay-check-config.yml (for registry/specs/tasks globs)")
+    ap.add_argument("--config", default=None, help="specassay-check-config.yml (registry/specs/tasks/offthread_ack)")
     ap.add_argument("--project-root", default=None,
                     help="project dir within the repo (e.g. examples/example-app); "
                          "defaults to the --config file's directory. Bridges repo-relative "
                          "changed paths to the project-relative manifest paths.")
-    ap.add_argument("--offthread-ack", default="off", choices=["off", "record", "required"],
-                    help="the affirm ceremony on the off-thread list (default off = pure illuminate)")
+    ap.add_argument("--pr-url", default=None,
+                    help="PR URL (https://github.com/o/r/pull/N); enables file/ID links")
+    ap.add_argument("--head-sha", default=None, help="head commit SHA for blob (ID) links")
+    ap.add_argument("--offthread-ack", default=None, choices=ACK_CHOICES,
+                    help="the affirm ceremony on the off-thread list; overrides the config key")
     ap.add_argument("--out", default="-", help="write report here (default stdout)")
     args = ap.parse_args()
 
@@ -322,8 +414,13 @@ def main() -> int:
     project_root = args.project_root
     if project_root is None and args.config:
         project_root = str(Path(args.config).parent)
-    near, far = classify_changed(changed, head, cfg, project_root or "")
-    report = render(base, head, near, far, args.offthread_ack)
+    project_root = project_root or ""
+
+    ack = args.offthread_ack if args.offthread_ack is not None else cfg.get("offthread_ack", "off")
+    link = Linker(args.pr_url, args.head_sha, project_root) if args.pr_url else None
+
+    near, far = classify_changed(changed, head, cfg, project_root)
+    report = render(base, head, near, far, ack, link)
 
     if args.out == "-":
         sys.stdout.write(report)
