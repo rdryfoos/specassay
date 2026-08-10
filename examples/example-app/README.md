@@ -32,7 +32,7 @@ examples/example-app/
 │   ├── test_a11y.py              # test_AC_A11Y_01_*
 │   └── test_edit.py              # commit-on-blur behavior (no undo AC yet)
 ├── specassay-check-config.yml    # Gate 2 config for this project
-└── trace-manifest.json           # emitted Gate output (committed)
+└── trace-manifest.json           # emitted Gate output (git-ignored; run the Gate)
 ```
 
 ## Run the tests

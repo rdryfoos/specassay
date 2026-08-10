@@ -110,32 +110,48 @@ def on_thread_paths(head: dict) -> set:
     return paths
 
 
-def classify_changed(changed: list, head: dict, cfg: dict) -> tuple:
+def classify_changed(changed: list, head: dict, cfg: dict, project_prefix: str = "") -> tuple:
     """Split changed files into on-thread vs far-from-thread.
 
     On the thread = the file carries a mark tying it to an intent (it appears in
     the head manifest's coverage/proofs/registry) OR it is a registry / spec /
     tasks file (glob match). Everything else changed is 'far'.
+
+    `changed` paths are repo-relative (as `git diff` gives them); manifest paths
+    and config globs are relative to the *project* root. `project_prefix` (the
+    project dir within the repo, e.g. "examples/example-app") bridges the two:
+    files under it are matched project-relative; files outside it belong to no
+    SpecAssay project here and are skipped.
     """
     on_paths = on_thread_paths(head)
     reg = norm(cfg.get("registry", ""))
     spec_re = glob_to_regex(cfg.get("specs", "specs/**/spec.md"))
     task_re = glob_to_regex(cfg.get("tasks", "specs/**/tasks.md"))
+    pref = norm(project_prefix).rstrip("/")
 
     near, far = [], []
     for raw in changed:
         p = norm(raw)
         if not p:
             continue
+        if pref:
+            if p == pref:
+                continue
+            if p.startswith(pref + "/"):
+                rel = p[len(pref) + 1:]
+            else:
+                continue  # outside the governed project — not this thread's concern
+        else:
+            rel = p
         is_on = (
-            p in on_paths
-            or p == reg
-            or bool(spec_re.match(p))
-            or bool(task_re.match(p))
+            rel in on_paths
+            or rel == reg
+            or bool(spec_re.match(rel))
+            or bool(task_re.match(rel))
         )
         # `distance` is binary today (0 on-thread / 1 far); the field is reserved
         # so a future grader (same-dir, import-adjacent, call-graph) can refine it.
-        (near if is_on else far).append({"path": p, "distance": 0 if is_on else 1})
+        (near if is_on else far).append({"path": rel, "distance": 0 if is_on else 1})
     return near, far
 
 
@@ -290,6 +306,10 @@ def main() -> int:
     ap.add_argument("--head", required=True, help="PR-head trace-manifest.json")
     ap.add_argument("--changed-files", required=True, help="file with one changed path per line, or - for stdin")
     ap.add_argument("--config", default=None, help="specassay-check-config.yml (for registry/specs/tasks globs)")
+    ap.add_argument("--project-root", default=None,
+                    help="project dir within the repo (e.g. examples/example-app); "
+                         "defaults to the --config file's directory. Bridges repo-relative "
+                         "changed paths to the project-relative manifest paths.")
     ap.add_argument("--offthread-ack", default="off", choices=["off", "record", "required"],
                     help="the affirm ceremony on the off-thread list (default off = pure illuminate)")
     ap.add_argument("--out", default="-", help="write report here (default stdout)")
@@ -299,7 +319,10 @@ def main() -> int:
     head = load_manifest(args.head)
     cfg = read_config(args.config)
     changed = read_changed(args.changed_files)
-    near, far = classify_changed(changed, head, cfg)
+    project_root = args.project_root
+    if project_root is None and args.config:
+        project_root = str(Path(args.config).parent)
+    near, far = classify_changed(changed, head, cfg, project_root or "")
     report = render(base, head, near, far, args.offthread_ack)
 
     if args.out == "-":
