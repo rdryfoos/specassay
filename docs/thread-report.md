@@ -18,7 +18,7 @@ diff to find them.
 
 The Thread Report closes that gap without adding a gate. On every pull request,
 SpecAssay posts **one comment** — a briefing of what moved on the thread, the
-touched story walked end to end, and the changed files that sit *far from the
+touched story walked end to end, and the changed files that sit *off the
 thread*. It **illuminates; it never refuses**. It posts **beside** your PR and
 changes nothing about it — not the title, not the description, not the diff.
 
@@ -50,16 +50,15 @@ does **not** mean "everything is done"; it means nothing *unfinished* is
 The base-vs-head manifest diff, in prose:
 
 ```
-- 🟢 **AC-SYNC-02** — `tracked-debt` → **`proven`** ⬆ · `test_sync.py` `sync.py`
+- 🟢 **AC-SYNC-02** — `tracked-debt` → **`proven`** · `test_sync.py` `sync.py`
 ```
 
-Status changes (with an ⬆/⬇ arrow by rank: `GAP < backlog < tracked-debt <
-proven`), carriers added, IDs **🆕 minted**, IDs **🪦 retired**. The trailing
-files are the **on-thread** files *this PR changed* that carry the moved ID —
-its proof and `@covers` — rendered so the reviewer can click straight to the
-change that did the moving.
+Status changes, carriers added, IDs **🆕 minted**, IDs **🪦 retired**. The
+trailing files are the **on-thread** files *this PR changed* that carry the
+moved ID — its proof and `@covers` — rendered so the reviewer can click straight
+to the change that did the moving.
 
-### 2. The thread now
+### 2. Thread Status
 
 For each **domain** the PR touched (the middle ID token — `US-SYNC-01` →
 `SYNC`), the family walked top-down (`US → FR → NFR → AC`) as it stands *after*
@@ -80,13 +79,13 @@ need its inert planning rows reprinted every time. The count of what's hidden is
 stated, never silently dropped. A reviewer sees the live part of the thread the
 change lives on, not the whole planning tree.
 
-### 3. Far from the thread
+### 3. Off Thread
 
 The whole point. Changed files that carry **no mark** tying them to an intent
 this PR moved:
 
 ```
-1 changed file sits **far from the thread** …
+1 changed file sits **off the thread** …
 - src/metrics.py
 ```
 
@@ -101,35 +100,38 @@ mark, the section says so.
 Given `--pr-url` (and `--head-sha`), the report renders live links, so the
 reviewer moves from briefing to exact line in one click:
 
-- **Changed files** (the far-list, and the on-thread carriers in *What moved*)
-  → their **diff hunk in this PR**: `…/pull/N/files#diff-<sha256(path)>`.
+- **Changed files** (the off-thread list, and the on-thread carriers in *What
+  moved*) → their **diff hunk in this PR**: `…/pull/N/files#diff-<sha256(path)>`.
 - **IDs** → their **registry line**: `…/blob/<head-sha>/<registry>#L<line>`.
+- **`◀ changed`** (in *Thread Status*) → the **diff hunk** of the carrier that
+  moved that row (its proof or `@covers`), so each moved row jumps to its change.
 
 The `#diff-<sha256>` anchor is GitHub's stable (if undocumented) convention; the
 blob link is the fully-documented form. Without `--pr-url` the report degrades
 gracefully to plain code spans, so running it by hand still works.
 
-## How it decides "far"
+## How it decides on-thread vs off
 
-`classify_changed()` buckets each changed path as **on-thread** or **far**:
+`classify_changed()` buckets each changed path as **on-thread** or **off**:
 
 - **on-thread** if the path is in the head manifest's coverage
   (`implementations`) or `proofs`, is the `registry` file, or matches the
   `specs` / `tasks` globs from the config.
-- **far** otherwise.
+- **off-thread** otherwise.
 
 One subtlety it handles: `git diff --name-only` gives **repo-relative** paths
 (`examples/example-app/src/sync.py`), but the manifest and config globs are
 **project-relative** (`src/sync.py`). The `--project-root` (defaulting to the
 config file's directory) bridges them — files under it are matched
 project-relative; files **outside** the governed project are skipped, not
-flagged. Without this bridge every changed file would read as "far."
+flagged. Without this bridge every changed file would read as "off-thread."
 
 Each bucketed file records a reserved `distance` field — binary today
-(`0` on-thread / `1` far). It is deliberately not surfaced as a number yet: the
+(`0` on-thread / `1` off). It is deliberately not surfaced as a number yet: the
 field is reserved so a future grader (same-directory, import-adjacent,
-call-graph proximity) can refine "far" into degrees without a schema change. The
-report today speaks in the honest binary — *on the thread* or *far from it*.
+call-graph proximity) can refine "off-thread" into degrees without a schema
+change. The report today speaks in the honest binary — *on the thread* or *off
+it*.
 
 ## The broken path — post the report, then block
 
@@ -152,7 +154,7 @@ is posted *and* the check is failed.
 Three postures, in increasing intervention and decreasing frequency:
 
 - **Illuminate — always on.** The briefing. It surfaces what's decision-relevant
-  and renders no verdict. "Far from the thread" lives here. The tool never fails
+  and renders no verdict. "Off thread" lives here. The tool never fails
   a build.
 - **Affirm — opt-in.** A team can escalate the off-thread list to a one-click
   human tick (`offthread_ack`, below). That is a *person's* verdict behind a
@@ -169,7 +171,7 @@ Three postures, in increasing intervention and decreasing frequency:
 `offthread_ack` is a real key in the SpecAssay config, read by the tool
 (`--offthread-ack` overrides it):
 
-- **`off`** (default) — pure illuminate: the far-list is shown, no tick.
+- **`off`** (default) — pure illuminate: the off-thread list is shown, no tick.
 - **`record`** — adds a *"these untraced changes are incidental"* tick to
   record, informational only.
 - **`required`** — the **affirm** rung: a human must tick before merge. Wire the
