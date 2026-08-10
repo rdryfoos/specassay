@@ -184,10 +184,17 @@ def render(base: dict, head: dict, near: list, far: list, ack: str) -> str:
     out.append("## 🧵 SpecAssay Thread Report")
     out.append("")
     gate_line = "✅ Golden Thread intact" if gate_ok else "🔴 Golden Thread broken — the Gate refuses"
-    proven_up = sum(1 for c in moved["changes"] if c.get("to") == "proven")
+    status_changes = [c for c in moved["changes"] if c["kind"] == "status"]
+    proven_up = sum(1 for c in status_changes if c.get("to") == "proven")
+    other_moves = len(status_changes) - proven_up
+    carriers = sum(1 for c in moved["changes"] if c["kind"] == "carrier")
     bits = []
     if proven_up:
         bits.append(f"+{proven_up} proven")
+    if other_moves:
+        bits.append(f"{other_moves} moved")
+    if carriers:
+        bits.append(f"{carriers} carrier{'s' if carriers != 1 else ''} added")
     if moved["minted"]:
         bits.append(f"{len(moved['minted'])} minted")
     if moved["retired"]:

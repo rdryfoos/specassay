@@ -1,0 +1,32 @@
+# SpecAssay Check (Gate 2) config for the example-app project.
+
+# Authoritative ID registry (the PRD)
+registry: "PRD.md"
+
+# Display name in the emitted trace-manifest
+target_name: "example-app"
+
+# Where the check writes the trace-manifest (relative to the project root)
+manifest_path: "trace-manifest.json"
+
+# Spec Kit feature artifacts (globs relative to project root)
+specs: "specs/**/spec.md"
+tasks: "specs/**/tasks.md"
+
+# Implementation + test trees
+src_globs:
+  - "src/**"
+test_globs:
+  - "tests/**"
+
+# ID grammar (HomesFlow-compatible default)
+id_regex: "(FR|NFR|AC|US)-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?"
+
+# How coverage annotations appear in source
+covers_regex: "@covers[[:space:]]+.*"
+
+# The task-side mark. Accepts both **Carries**: (new) and **Traces**: (pre-rename).
+carries_regex: "\*\*(Carries|Traces)\*\*:"
+
+# How AC IDs appear inside test names (e.g. test_AC_SYNC_01_...)
+test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
