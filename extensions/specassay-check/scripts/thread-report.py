@@ -120,6 +120,36 @@ def strip_id_prefix(id_: str, statement: str) -> str:
     return re.sub(rf"^\s*{re.escape(id_)}\s*[—–-]\s*", "", statement or "").strip()
 
 
+# A "concrete token": a value a reword might change that could be objectively
+# grepped for in the code — a number-with-optional-unit (5s, 200ms, 60fps, 1000,
+# 3.5), a quoted string literal, or an ALL-CAPS identifier/acronym. Ordinary
+# words are excluded so prose rewording doesn't false-flag.
+CONCRETE_TOKEN = re.compile(
+    r'"[^"]*"|\'[^\']*\'|\b\d+(?:\.\d+)?[A-Za-z%]*\b|\b[A-Z][A-Z0-9_]{2,}\b'
+)
+
+
+def concrete_tokens(s: str) -> set:
+    return set(CONCRETE_TOKEN.findall(s or ""))
+
+
+def find_token_in_file(text: str, tok: str):
+    """Return (matched, line_no) if `tok` (verbatim) or its numeric core appears
+    in `text`, else None. Verbatim wins; the numeric fallback catches `5s` in the
+    statement landing as a bare `5` / `5.0` in code."""
+    lines = text.split("\n")
+    for i, ln in enumerate(lines, 1):
+        if tok and tok in ln:
+            return tok, i
+    m = re.match(r"^(\d+(?:\.\d+)?)", tok or "")
+    if m:
+        pat = re.compile(r"\b" + re.escape(m.group(1)) + r"\b")
+        for i, ln in enumerate(lines, 1):
+            if pat.search(ln):
+                return m.group(1), i
+    return None
+
+
 # ---- links (optional; only when PR context is supplied) ----
 
 class Linker:
@@ -253,7 +283,7 @@ def what_moved(base: dict, head: dict) -> dict:
 # ---- render ----
 
 def render(base: dict, head: dict, near: list, far: list, ack: str,
-           link: Linker | None = None) -> str:
+           link: Linker | None = None, project_root: str = "") -> str:
     moved = what_moved(base, head)
     h = rows_by_id(head)
     gate_ok = head.get("gate", {}).get("ok", True)
@@ -344,12 +374,29 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
 
     # 1b. Intent Changed — restated intents + blast-radius re-confirm list
     if moved["restated"]:
+        _carrier_cache: dict = {}
+
+        def carrier_text(prel: str) -> str:
+            if prel not in _carrier_cache:
+                try:
+                    base_dir = Path(project_root) if project_root else Path(".")
+                    _carrier_cache[prel] = (base_dir / prel).read_text(
+                        encoding="utf-8", errors="replace")
+                except OSError:
+                    _carrier_cache[prel] = ""
+            return _carrier_cache[prel]
+
+        def clink(p: str, ln, matched_line=None) -> str:
+            target = matched_line or ln
+            label = p.rsplit("/", 1)[-1] + (f":{target}" if target else "")
+            return f"[`{label}`]({link.blob_line(p, target)})" if (link and link.ok) else f"`{label}`"
+
         out.append("### Intent Changed")
         n = len(moved["restated"])
         lead = "intent was" if n == 1 else "intents were"
         out.append(
-            f"⚠️ {n} {lead} restated — the wording moved under carriers written "
-            "against the old text. Re-confirm each still satisfies the new statement."
+            f"⚠️ {n} {lead} restated — its wording moved under the code and tests "
+            "written against the old text. Re-confirm each still satisfies the new statement."
         )
         out.append("")
         for r in moved["restated"]:
@@ -358,21 +405,49 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             out.append(f"  - was: _{strip_id_prefix(id_, r['was'])}_")
             out.append(f"  - now: _{strip_id_prefix(id_, r['now'])}_")
             row = h.get(id_) or {}
-            carriers = []
-            for c in row.get("implementations", []) + row.get("proofs", []):
-                p = norm(c.get("path", ""))
-                if not p:
-                    continue
-                ln = c.get("line")
-                label = p.rsplit("/", 1)[-1] + (f":{ln}" if ln else "")
-                if link and link.ok:
-                    carriers.append(f"[`{label}`]({link.blob_line(p, ln)})")
-                else:
-                    carriers.append(f"`{label}`")
-            if carriers:
-                out.append(f"  - re-confirm: {' · '.join(carriers)}")
-            else:
-                out.append("  - _no carriers to re-confirm (backlog intent)._")
+            carriers = [(norm(c["path"]), c.get("line"))
+                        for c in row.get("implementations", []) + row.get("proofs", [])
+                        if c.get("path")]
+            left = concrete_tokens(r["was"]) - concrete_tokens(r["now"])
+            arrived = concrete_tokens(r["now"]) - concrete_tokens(r["was"])
+
+            if not carriers:
+                out.append("  - _no code or tests to re-confirm (backlog intent)._")
+                continue
+
+            # Look for an old concrete value still living in a carrier (Tier 1).
+            hits: dict = {}
+            if left:
+                for (p, ln) in carriers:
+                    txt = carrier_text(p)
+                    for tok in sorted(left):
+                        found = find_token_in_file(txt, tok) if txt else None
+                        if found:
+                            hits[(p, ln)] = found  # (matched, line_no)
+                            break
+
+            if hits:  # Tier 1 — pinpointed
+                out.append("  - re-confirm:")
+                for (p, ln) in carriers:
+                    if (p, ln) in hits:
+                        matched, mline = hits[(p, ln)]
+                        out.append(f"    - {clink(p, ln, mline)} — ⚠ still contains the old `{matched}`")
+                    else:
+                        out.append(f"    - {clink(p, ln)}")
+            elif left:  # Tier 2 — value changed, not found verbatim
+                chg = "`" + "`, `".join(sorted(left)) + "`"
+                to = (" → `" + "`, `".join(sorted(arrived)) + "`") if arrived else ""
+                out.append(
+                    f"  - _Value {chg}{to} changed, but not found verbatim in the "
+                    "code or tests — re-confirm by reading._"
+                )
+                out.append("  - re-confirm: " + " · ".join(clink(p, ln) for (p, ln) in carriers))
+            else:  # Tier 3 — prose / semantic, the default
+                out.append(
+                    "  - _Prose change — no literal value to pin down; re-confirm the "
+                    "code and its test by reading them against the new wording._"
+                )
+                out.append("  - re-confirm: " + " · ".join(clink(p, ln) for (p, ln) in carriers))
         out.append("")
 
     # 2. The thread now, per domain the PR touched (untouched backlog rows hidden)
@@ -481,7 +556,7 @@ def main() -> int:
     link = Linker(args.pr_url, args.head_sha, project_root) if args.pr_url else None
 
     near, far = classify_changed(changed, head, cfg, project_root)
-    report = render(base, head, near, far, ack, link)
+    report = render(base, head, near, far, ack, link, project_root)
 
     if args.out == "-":
         sys.stdout.write(report)
