@@ -1,4 +1,4 @@
-name: SpecAssay Thread Report
+name: Thread Report
 
 # Illuminate first, refuse second — and as separate steps. The report ALWAYS
 # posts a briefing on the PR, even when the Gate is broken (so the comment

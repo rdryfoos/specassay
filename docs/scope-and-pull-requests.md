@@ -174,7 +174,7 @@ This is the direct counter to the automation-bias trap: not one green check, but
 the green decomposed into legible claims, including an explicit "here is what
 traces to nothing."
 
-## 5. Pull requests that change intents (proposed)
+## 5. Pull requests that change intents (surfacing shipped; enforcement proposed)
 
 The reason SpecAssay is *unusually* suited to this: mint-at-intent, immutable
 IDs, and registry-as-source-of-truth already made intents **first-class
@@ -186,16 +186,20 @@ tracker with no durable identity; here they live in git.
 What SpecAssay can add on top:
 
 - **Legible intent diffs.** A PR touching the registry shows IDs *added*
-  (minted), *retired* (tombstoned), *restated* (wording changed). Immutability
-  becomes a cheap, rare, high-value gate on the diff: renumber or reuse an ID →
-  fail. It almost never fires, so it costs no friction.
+  (minted), *retired* (tombstoned), *restated* (wording changed). This surfacing
+  **ships** in the Thread Report (*What moved* plus *Intent Changed*). The
+  immutability **gate** is the proposed part: renumber or reuse an ID → fail —
+  cheap, rare, high-value. It almost never fires, so it costs no friction.
 
 - **Blast-radius on intent change** — the integrity property from the
   *Bidirectional Traceability* field note, made mechanical. When an AC's
-  statement changes, its carriers (the `@covers` code and the `test_AC_…` proof)
-  were written against the *old* wording. SpecAssay lists them and marks them
-  **"re-confirm — the intent moved under the proof."** The PR that changes the
-  intent carries its own list of what it may have invalidated.
+  statement changes, its build and proof (the `@covers` code and the `test_AC_…`
+  proof) were written against the *old* wording. SpecAssay lists them and marks
+  them **"re-confirm — the intent moved under the proof."** This surfacing
+  **ships** today as the Thread Report's *Intent Changed* section
+  ([`thread-report.md`](thread-report.md)); *enforcing* the re-confirm is the
+  proposed part. The PR that changes the intent carries its own list of what it
+  may have invalidated.
 
 - **Two honest shapes of intent-PR:**
   - **Intent-only PR** (intent changes, no code): the changed ID rides as
@@ -223,8 +227,9 @@ machine-decidable:
 - **immutability** — never renumber, never reuse
 - **coherence after an intent change** — no orphaned proofs
 
-The build order for everything tagged **(proposed)** above — manifest diff first,
-then the immutability gate, then blast-radius, then the full intent-PR workflow —
+The build order for everything still tagged **(proposed)** above — the
+immutability gate, then blast-radius *enforcement*, then the full intent-PR
+workflow (the manifest diff and restatement surfacing already shipped) —
 lives in [`docs/backlog.md`](./backlog.md) under *Roadmap*. None of it asks the
 developer to tag more code: the value comes from *reading the diff against the
 thread you already have* and *handing author and reviewer a briefing instead of a

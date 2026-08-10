@@ -69,8 +69,6 @@ COVERS_RE="$(yaml_scalar covers_regex)"
 CARRIES_RE="$(yaml_scalar carries_regex)"
 TEST_AC_RE="$(yaml_scalar test_ac_regex)"
 MANIFEST_OUT="$(yaml_scalar manifest_path)"
-# Back-compat: accept the pre-rename config key clew_path if manifest_path is unset.
-[[ -n "$MANIFEST_OUT" ]] || MANIFEST_OUT="$(yaml_scalar clew_path)"
 TARGET_NAME="$(yaml_scalar target_name)"
 
 [[ -n "$REGISTRY" ]] || { echo "FAIL: config missing registry" >&2; exit 2; }
@@ -153,7 +151,7 @@ sort -u "$tmp/spec.txt" -o "$tmp/spec.txt"
 while IFS= read -r f; do
   [[ -f "$f" ]] || continue
   grep -Eoh "$ID_RE" "$f" | sort -u >> "$tmp/tasks.txt" || true
-  # Open checkbox tasks that name registry IDs (usually via Carries:) — debt carriers.
+  # Open checkbox tasks that name registry IDs (usually via Carries:) — the tracked-debt tasks.
   grep -nE '^- \[ \]' "$f" 2>/dev/null | while IFS= read -r line; do
     lineno="${line%%:*}"
     rest="${line#*:}"

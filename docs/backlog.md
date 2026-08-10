@@ -60,8 +60,12 @@ silver bullet:
    see [`thread-report.md`](thread-report.md) and live
    [PR #1](https://github.com/rdryfoos/specassay/pull/1). (Still open: a Loupe
    "PR view" that renders the same diff visually.)
-2. **Intent-diff legibility + immutability gate** (§5) — small.
-3. **Full intent-PR workflow** (§5) — the destination.|
-   None of it asks the developer to tag more code. The value comes from *reading the
-   diff against the thread you already have* and *handing author and reviewer a
-   briefing instead of a checkmark.*
+2. **Intent-diff legibility** (§5) — surfacing ✅ **shipped** as the Thread
+   Report's *What moved* + *Intent Changed* (see
+   [`thread-report.md`](thread-report.md)); the **immutability gate** on the same
+   diff remains proposed — small.
+3. **Full intent-PR workflow** (§5) — the destination.
+
+None of it asks the developer to tag more code. The value comes from *reading the
+diff against the thread you already have* and *handing author and reviewer a
+briefing instead of a checkmark.*

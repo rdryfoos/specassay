@@ -4,7 +4,7 @@ description: Run SpecAssay Check (Gate 2) — fail on silent gaps; emit trace-ma
 
 # SpecAssay Check (Gate 2)
 
-3. Run the portable Gate 2 script shipped with SpecAssay. It checks that:
+1. Run the portable Gate 2 script shipped with SpecAssay. It checks that:
 
    * registry IDs ≡ IDs in specs ≡ IDs in tasks (exact-set drift),
    * durable IDs are either proven (named proof) or tracked as debt (open task) for ACs,
@@ -18,3 +18,12 @@ description: Run SpecAssay Check (Gate 2) — fail on silent gaps; emit trace-ma
 
    1. Confirm `.specify/extensions/specassay-check/specassay-check-config.yml` exists (copy from `config-template.yml` if missing) and points at this project's registry, specs, tasks, and source/test trees. Set `manifest_path` if you do not want `trace-manifest.json` at the project root.
    2. From the project root, run:
+
+      ```sh
+      SPECASSAY_PROJECT_ROOT="$PWD" \
+      SPECASSAY_CONFIG="$PWD/.specify/extensions/specassay-check/specassay-check-config.yml" \
+        bash .specify/extensions/specassay-check/scripts/check-traceability.sh
+      ```
+
+      The script writes `trace-manifest.json` (or the `manifest_path` from the
+      config) and exits non-zero if the Gate refuses.

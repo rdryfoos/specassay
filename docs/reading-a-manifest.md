@@ -39,7 +39,7 @@ For any ID, ask five questions in order:
 
 1. **Where does the intent live?** Find the ID's statement in the PRD / registry.
 2. **What build work is done vs open?** Look for `Carries:` on checkbox tasks.
-3. **What carriers exist?** `@covers` marks in source; tests named for the AC.
+3. **What build and proof exist?** `@covers` marks in source; tests named for the AC.
 4. **What did the Gate emit?** The row's `status`, `implementations[]`, and `proofs[]`.
 5. **What does Loupe paint?** Colors on Intent / Build / Proof, and whether the braid frays.
 
@@ -64,7 +64,7 @@ The story: a guest opens a home and sees only guest-marked fields, with edit con
 
 1. **Intent:** the PRD owns the guest-visibility AC.
 2. **Build:** the guest restriction work is done and traced in tasks.
-3. **Carriers:** `@covers AC-GUEST-01, …` on the guest test module, and a named proof: `test_AC_GUEST_01_guest_fields_only`.
+3. **Build and proof:** `@covers AC-GUEST-01, …` on the guest test module, and a named proof: `test_AC_GUEST_01_guest_fields_only`.
 4. **Manifest:** `implementations: [{…}]`, `proofs: [{ name: test_AC_GUEST_01_… }]`, status `proven`.
 5. **Loupe:** Intent, Build, and Proof green. Braid solid.
 

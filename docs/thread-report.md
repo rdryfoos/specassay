@@ -105,8 +105,8 @@ decreasing confidence:
 
 The line holds throughout: the machine may **illuminate** richer detail (tier 1),
 but it only ever asks a human to look — it never *refuses* on a restatement. This
-is the blast-radius integrity property from
-[`bidirectional-traceability.md`](bidirectional-traceability.md), made mechanical
+is the blast-radius integrity property argued in
+[`scope-and-pull-requests.md` §5](scope-and-pull-requests.md), made mechanical
 and surfaced on the PR that moves the intent (enforcing re-confirm is a later
 slice). A restated intent also lights up *Thread Status* (`◀ changed`).
 
@@ -155,16 +155,16 @@ mark, the section says so.
 Given `--pr-url` (and `--head-sha`), the report renders live links, so the
 reviewer moves from briefing to exact line in one click:
 
-- **Changed files** (the off-thread list, and the on-thread carriers in *What
-  moved*) → their **diff hunk in this PR**: `…/pull/N/files#diff-<sha256(path)>`.
+- **Changed files** (the off-thread list, and the on-thread build and proof in
+  *What moved*) → their **diff hunk in this PR**: `…/pull/N/files#diff-<sha256(path)>`.
 - **IDs** → their **registry line**: `…/blob/<head-sha>/<registry>#L<line>`.
 - **`◀ changed`** (in *Thread Status*) → the **diff** that moved that row: the
   carrier's hunk (proof / `@covers`) for a code move, or the **registry file's**
   hunk when the move is a restatement or a mint (the change is the wording
   itself), so each moved row jumps to its change.
-- **Re-confirm carriers** (in *Intent Changed*) → the carrier's **current code**
-  (`blob@head`), not a diff — the carrier usually didn't change; you're being
-  sent *to* it to re-check it against the new wording.
+- **Re-confirm build and proof** (in *Intent Changed*) → their **current code**
+  (`blob@head`), not a diff — the build and proof usually didn't change; you're
+  being sent *to* them to re-check against the new wording.
 
 The `#diff-<sha256>` anchor is GitHub's stable (if undocumented) convention; the
 blob link is the fully-documented form. Without `--pr-url` the report degrades

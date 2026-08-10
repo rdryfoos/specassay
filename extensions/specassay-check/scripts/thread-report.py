@@ -6,7 +6,7 @@ PR's changed files, then emits a Markdown **Thread Report** for a PR comment:
 
   1. What moved — status changes, IDs minted / retired, proofs & covers added.
   1b. Intent Changed — intents whose wording was restated, with the blast-radius
-     re-confirm list (carriers written against the old wording).
+     re-confirm list (the build and proof written against the old wording).
   2. Thread Status — per domain touched by the PR (untouched backlog rows hidden).
   3. Off Thread — changed files that carry no mark tying them to any intent this
      PR moved. Not a defect; a visibility call.
@@ -204,11 +204,11 @@ def on_thread_paths(head: dict) -> set:
 
 
 def classify_changed(changed: list, head: dict, cfg: dict, project_prefix: str = "") -> tuple:
-    """Split changed files into on-thread vs far-from-thread.
+    """Split changed files into on-thread vs off-thread.
 
     On the thread = the file carries a mark tying it to an intent (it appears in
     the head manifest's coverage/proofs/registry) OR it is a registry / spec /
-    tasks file (glob match). Everything else changed is 'far'.
+    tasks file (glob match). Everything else changed is 'off'.
 
     `changed` paths are repo-relative (as `git diff` gives them); manifest paths
     and config globs are relative to the *project* root. `project_prefix` (the
@@ -450,7 +450,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                 out.append("  - re-confirm: " + " · ".join(clink(p, ln) for (p, ln) in carriers))
         out.append("")
 
-    # 2. The thread now, per domain the PR touched (untouched backlog rows hidden)
+    # 2. Thread Status, per domain the PR touched (untouched backlog rows hidden)
     restated_ids = {r["id"] for r in moved["restated"]}
     touched = sorted({domain_of(c["id"]) for c in moved["changes"]}
                      | {domain_of(i) for i in moved["minted"]}
@@ -526,7 +526,7 @@ def read_changed(arg: str) -> list:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Emit a SpecAssay Thread Report (Markdown).")
+    ap = argparse.ArgumentParser(description="Emit a Thread Report (Markdown).")
     ap.add_argument("--base", required=True, help="base-branch trace-manifest.json")
     ap.add_argument("--head", required=True, help="PR-head trace-manifest.json")
     ap.add_argument("--changed-files", required=True, help="file with one changed path per line, or - for stdin")
