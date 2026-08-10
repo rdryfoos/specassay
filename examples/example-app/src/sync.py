@@ -66,8 +66,7 @@ class SyncHub:
 
 
 # @covers AC-SYNC-02 — field-level merge: disjoint fields never collide; a
-# same-field collision resolves last-write-wins by timestamp. (Tracked debt:
-# the disjoint-merge proof is deferred — see specs/sync/tasks.md T005.)
+# same-field collision resolves last-write-wins by timestamp.
 def merge_op(items, op):
     """Merge one op into an items map, keeping per-field write timestamps."""
     rec = items.setdefault(op.item_id, {})
