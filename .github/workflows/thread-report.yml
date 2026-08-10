@@ -1,0 +1,78 @@
+name: SpecAssay Thread Report
+
+# Illuminate, never refuse: this posts a briefing on the PR. It never fails the
+# build and never blocks a merge. (A team wanting the affirm rung sets
+# offthread_ack: required and gates on a separate human-affirmation step.)
+on:
+  pull_request:
+    paths:
+      - "examples/example-app/**"   # demo scope: the bundled example project
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  thread-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head (full history for base + head)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gate 2 — emit the PR-head manifest
+        run: |
+          set -euo pipefail
+          APP="$PWD/examples/example-app"
+          SPECASSAY_PROJECT_ROOT="$APP" \
+          SPECASSAY_CONFIG="$APP/specassay-check-config.yml" \
+            bash extensions/specassay-check/scripts/check-traceability.sh
+          cp "$APP/trace-manifest.json" /tmp/head.json
+
+      - name: Gate 2 — emit the base manifest (from the PR base commit)
+        run: |
+          set -euo pipefail
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          git worktree add --quiet /tmp/base "$BASE_SHA"
+          BAPP="/tmp/base/examples/example-app"
+          # Emit with the HEAD checker (stable emitter) against the base tree.
+          SPECASSAY_PROJECT_ROOT="$BAPP" \
+          SPECASSAY_CONFIG="$BAPP/specassay-check-config.yml" \
+            bash extensions/specassay-check/scripts/check-traceability.sh
+          cp "$BAPP/trace-manifest.json" /tmp/base.json
+          git worktree remove --force /tmp/base
+
+      - name: Changed files in this PR
+        run: |
+          git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" > /tmp/changed.txt
+          echo "Changed:"; cat /tmp/changed.txt
+
+      - name: Build the Thread Report
+        run: |
+          python3 extensions/specassay-check/scripts/thread-report.py \
+            --base /tmp/base.json --head /tmp/head.json \
+            --changed-files /tmp/changed.txt \
+            --config examples/example-app/specassay-check-config.yml \
+            --offthread-ack off \
+            --out /tmp/report.md
+          echo "----- report -----"; cat /tmp/report.md
+
+      - name: Post / update the Thread Report comment (sticky)
+        uses: actions/github-script@v7
+        env:
+          REPORT_PATH: /tmp/report.md
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- specassay-thread-report -->';
+            const body = marker + '\n' + fs.readFileSync(process.env.REPORT_PATH, 'utf8');
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const { data: comments } = await github.rest.issues.listComments({ owner, repo, issue_number });
+            const existing = comments.find(c => c.body && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
