@@ -62,30 +62,53 @@ to the change that did the moving.
 
 The one section that's about the intent itself, not the code. When a PR
 **restates** an existing registry ID — changes its *wording* — the report
-surfaces it, because the carriers written against the old wording may now be
-subtly wrong while still passing:
+surfaces it, because the **build and proof** written against the old wording may
+now be subtly wrong while still passing:
 
 ```
 ### Intent Changed
-⚠️ 1 intent was restated — the wording moved under carriers written against the
-old text. Re-confirm each still satisfies the new statement.
+⚠️ 1 intent was restated — its wording moved under the code and tests written
+against the old text. Re-confirm each still satisfies the new statement.
 
 - **AC-SYNC-01** — restated
   - was: _A change made offline appears on a second device within 5s of reconnect._
   - now: _A change made offline appears on a second device within 3s of reconnect._
-  - re-confirm: `sync.py:51` · `test_sync.py:18`
+  - re-confirm:
+    - `sync.py:51`
+    - `test_sync.py:37` — ⚠ still contains the old `5s`
 ```
+
+(The report says *code and tests*; here in the reference we use the vocabulary —
+the **build** and its **proof**.)
 
 Detection is whitespace-insensitive (a reflow or typo-in-spacing is not a
 restatement); *any* substantive wording change flags. The **re-confirm** list is
-the row's carriers (`implementations` + `proofs`), linked to their **current
-code** (`blob@head`) — the reviewer clicks each and checks it still satisfies the
-new statement. In the example the proof still asserts *5s*; the criterion now
-says *3s*; the test is green and wrong. That's the blast radius, made mechanical
-— the integrity property from
-[`bidirectional-traceability.md`](bidirectional-traceability.md), surfaced on the
-PR that moves the intent. Pure illuminate: it never blocks (enforcing re-confirm
-is a later slice). A restated intent also lights up *Thread Status* (`◀ changed`).
+the row's build + proof (`implementations` + `proofs`), linked to their
+**current code** (`blob@head`) — the reviewer clicks each and checks it still
+satisfies the new statement.
+
+**How hard the report leans depends on what it can prove** — three tiers, in
+decreasing confidence:
+
+1. **Pinpointed.** The reword changed a *concrete token* (a number-with-unit like
+   `5s`, a quoted literal, an ALL-CAPS identifier) **and** that old value still
+   appears in the build or proof. The report flags the exact line: *"still
+   contains the old `5s`."* In the example the proof still asserts *5s* while the
+   criterion now says *3s* — green and wrong, caught mechanically.
+2. **Value changed, not located.** A concrete token changed, but it isn't found
+   verbatim in the code or tests: *"Value `200ms` → `100ms` changed, but not
+   found verbatim… re-confirm by reading."* Honest that it can't point at a line.
+3. **Prose.** No concrete token changed (a sentence was tightened): *"Prose
+   change — no literal value to pin down; re-confirm the build and its proof by
+   reading them against the new wording."* The default — it admits the machine
+   can't judge and hands the human the list.
+
+The line holds throughout: the machine may **illuminate** richer detail (tier 1),
+but it only ever asks a human to look — it never *refuses* on a restatement. This
+is the blast-radius integrity property from
+[`bidirectional-traceability.md`](bidirectional-traceability.md), made mechanical
+and surfaced on the PR that moves the intent (enforcing re-confirm is a later
+slice). A restated intent also lights up *Thread Status* (`◀ changed`).
 
 With minted / retired (in *What moved*) and restated here, the report now covers
 all three legible-intent-diff types.
