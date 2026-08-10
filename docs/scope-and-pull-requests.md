@@ -197,9 +197,11 @@ What SpecAssay can add on top:
   proof) were written against the *old* wording. SpecAssay lists them and marks
   them **"re-confirm — the intent moved under the proof."** This surfacing
   **ships** today as the Thread Report's *Intent Changed* section
-  ([`thread-report.md`](thread-report.md)); *enforcing* the re-confirm is the
-  proposed part. The PR that changes the intent carries its own list of what it
-  may have invalidated.
+  ([`thread-report.md`](thread-report.md)). The **affirm** rung ships too, via
+  `intent_ack: off | record | required` — the twin of `offthread_ack`: at
+  `required`, a human must tick that each restated intent still holds before
+  merge. The PR that changes the intent carries its own list of what it may have
+  invalidated.
 
 - **Two honest shapes of intent-PR:**
   - **Intent-only PR** (intent changes, no code): the changed ID rides as

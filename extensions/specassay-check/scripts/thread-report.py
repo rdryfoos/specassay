@@ -72,18 +72,20 @@ def read_config(path: str | None) -> dict:
         "specs": "specs/**/spec.md",
         "tasks": "specs/**/tasks.md",
         "offthread_ack": "off",
+        "intent_ack": "off",
     }
     if not path or not Path(path).is_file():
         return cfg
     for line in Path(path).read_text(encoding="utf-8").splitlines():
         m = re.match(
-            r'^\s*(registry|specs|tasks|offthread_ack)\s*:\s*["\']?([^"\'#]+?)["\']?\s*(#.*)?$',
+            r'^\s*(registry|specs|tasks|offthread_ack|intent_ack)\s*:\s*["\']?([^"\'#]+?)["\']?\s*(#.*)?$',
             line,
         )
         if m:
             cfg[m.group(1)] = m.group(2).strip()
-    if cfg["offthread_ack"] not in ACK_CHOICES:
-        cfg["offthread_ack"] = "off"
+    for key in ("offthread_ack", "intent_ack"):
+        if cfg[key] not in ACK_CHOICES:
+            cfg[key] = "off"
     return cfg
 
 
@@ -283,7 +285,8 @@ def what_moved(base: dict, head: dict) -> dict:
 # ---- render ----
 
 def render(base: dict, head: dict, near: list, far: list, ack: str,
-           link: Linker | None = None, project_root: str = "") -> str:
+           link: Linker | None = None, project_root: str = "",
+           intent_ack: str = "off") -> str:
     moved = what_moved(base, head)
     h = rows_by_id(head)
     gate_ok = head.get("gate", {}).get("ok", True)
@@ -448,6 +451,13 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                     "code and its test by reading them against the new wording._"
                 )
                 out.append("  - re-confirm: " + " · ".join(clink(p, ln) for (p, ln) in carriers))
+        # Affirm rung: escalate re-confirmation to a human tick via `intent_ack`.
+        if intent_ack == "record":
+            out.append("")
+            out.append("> ☐ **Each restated intent still holds — its code and tests re-confirmed.** _(tick to record — informational)_")
+        elif intent_ack == "required":
+            out.append("")
+            out.append("> ☐ **Each restated intent still holds — its code and tests re-confirmed.** _(a human must tick this before merge — `intent_ack: required`)_")
         out.append("")
 
     # 2. Thread Status, per domain the PR touched (untouched backlog rows hidden)
@@ -540,6 +550,8 @@ def main() -> int:
     ap.add_argument("--head-sha", default=None, help="head commit SHA for blob (ID) links")
     ap.add_argument("--offthread-ack", default=None, choices=ACK_CHOICES,
                     help="the affirm ceremony on the off-thread list; overrides the config key")
+    ap.add_argument("--intent-ack", default=None, choices=ACK_CHOICES,
+                    help="the affirm ceremony on restated intents; overrides the config key")
     ap.add_argument("--out", default="-", help="write report here (default stdout)")
     args = ap.parse_args()
 
@@ -553,10 +565,11 @@ def main() -> int:
     project_root = project_root or ""
 
     ack = args.offthread_ack if args.offthread_ack is not None else cfg.get("offthread_ack", "off")
+    intent_ack = args.intent_ack if args.intent_ack is not None else cfg.get("intent_ack", "off")
     link = Linker(args.pr_url, args.head_sha, project_root) if args.pr_url else None
 
     near, far = classify_changed(changed, head, cfg, project_root)
-    report = render(base, head, near, far, ack, link, project_root)
+    report = render(base, head, near, far, ack, link, project_root, intent_ack=intent_ack)
 
     if args.out == "-":
         sys.stdout.write(report)

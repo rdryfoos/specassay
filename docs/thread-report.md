@@ -237,6 +237,13 @@ Three postures, in increasing intervention and decreasing frequency:
 - **`required`** — the **affirm** rung: a human must tick before merge. Wire the
   actual block in a separate CI step; the report tool itself still exits 0.
 
+`intent_ack` is the twin key for the **Intent Changed** section (`--intent-ack`
+overrides it), with the same three settings — `off` illuminates, `record` adds
+an informational tick, `required` makes a human confirm each restated intent
+still holds before merge. The tick only appears on a PR that actually restates
+an intent. Same doctrine as `offthread_ack`: the report illuminates and records
+the human's verdict; it never renders the verdict itself.
+
 The report also reads `registry`, `specs`, and `tasks` from the config to know
 which paths are intrinsically on-thread.
 
