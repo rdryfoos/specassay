@@ -221,6 +221,48 @@ What SpecAssay can add on top:
     coherence. SpecAssay's job is coherence — no orphaned proofs, no ACs
     pointing at deleted code, immutability intact.
 
+### 5a. Who may move the wording? The seam, made reviewable (shipped mechanics; policy is the org's)
+
+Putting Product and Dev inside one repo does not erase the seam between them —
+it changes what the seam is *made of*. In the old world it was a **tool
+boundary**: requirements in Jira or ALM, code in the repo, and news crossed by
+ticket and meeting while the two artifacts drifted. In a SpecAssay-governed
+repo the registry is a file, so the seam becomes a **review gate** — and Git
+has fifteen years of machinery for exactly that kind of seam. The primitive is
+[`CODEOWNERS`](../.github/CODEOWNERS): put the registry under Product's
+ownership, and (with branch protection's *Require review from Code Owners* on)
+no PR that touches an intent's wording merges without a product human's
+approval.
+
+Three consequences, all healthy:
+
+- **A discovery PR becomes the ask.** Dev hits ground truth, restates the
+  criterion, moves the proof in the same diff — and the CODEOWNERS gate routes
+  it to Product automatically. The request arrives *on the diff*, with the
+  Thread Report's was/now and blast radius attached, instead of in a meeting
+  after the code shipped. Product never lost authority by moving into the
+  repo; authority became **reviewable** instead of **territorial**.
+- **A proposal-only PR is honest too.** Dev may want the wording changed
+  *before* building against it: restate the criterion, touch no carriers. In
+  shape terms that is a PR from Intent, and *Intent Changed* will flag the
+  untouched carriers — truthfully, because once Product accepts the new
+  wording the proof owes an update. The disciplined move is to pair the
+  restatement with an anointed `Carries:` task ("update the proof to the new
+  budget"), so the owed work rides as **tracked-debt, admitted** — the alarm
+  state used deliberately, with the debt on the books.
+- **The same gate is the agent defense.** An agent's "cleanup" that drifts a
+  statement now has to get past *both* the tripwire (*Intent Changed* — no
+  restatement lands silently) and the lock (CODEOWNERS — no restatement merges
+  without a named human's approval). Jira never diffed a requirement edit or
+  demanded a signature on one.
+
+One line stays sacred at the seam: **who types the words is separate from who
+approves them.** Dev — or an agent — may *draft* a restatement; drafts are
+cheap now. Product *approves* it, and the durable ID guarantees the approval
+is about wording, never renumbering. Two ticks, two questions: Product's
+review answers *"do we want this promise?"*; `intent_ack` answers *"does the
+code still keep it?"* The report briefs both reviewers from the same section.
+
 ## 6. Friction stance — the *refuse* rung (proposed)
 
 A bolt-alongside **gate** on undeclared code is both high-friction and wrong for
