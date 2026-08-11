@@ -1,7 +1,9 @@
 # Preset Submission draft — specassay
 
-Paste-ready answers for Spec Kit's **Preset Submission** issue form
-(`https://github.com/github/spec-kit/issues/new?template=preset_submission.yml`).
+Paste-ready answers for Spec Kit's **Preset Submission** form
+(<https://github.com/github/spec-kit/issues/new?template=preset_submission.yml>).
+Fields below appear in the form's exact order.
+Title: `[Preset]: Add specassay`.
 
 ---
 
@@ -23,56 +25,53 @@ tasks, and constitution templates.
 https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-preset-0.2.0.zip
 
 **Documentation URL:**
-https://github.com/rdryfoos/specassay/blob/main/PROMOTION-CONTRACT.md
+https://github.com/rdryfoos/specassay/blob/main/presets/specassay/README.md
+*(preset-scoped README; contains the `specify preset add --from <download-url>`
+command the form requires)*
 
 **License:** MIT
 
 **Required Spec Kit Version:** >=0.14.0
 
-**Provides:** 3 templates (spec, tasks, constitution), append strategy —
-stock Spec Kit templates stay intact; SpecAssay's durable-ID and `Carries:`
-requirements are appended.
+**Required Extensions (optional):** *(leave empty — works standalone; pairs
+with `specassay-check`, noted under Key Features)*
+
+**Templates Provided:**
+
+```
+- spec-template.md — append: inherited durable IDs (US-/FR-/NFR-/AC-) and a risk table traced to FR/AC IDs
+- tasks-template.md — append: `Carries:` required on every task
+- constitution-template.md — append: End-to-End Traceability article and the SpecAssay vocabulary
+```
+
+**Commands Provided:**
+
+```
+None
+```
+
+**Number of Scripts (optional):** *(leave empty)*
 
 **Tags:** traceability, durable-ids, governance, sdd
 
-**What it does:**
-Gives every intent a durable ID (`US-`/`FR-`/`NFR-`/`AC-`) minted at intent
-time, requires `Carries:` marks on open tasks, and makes the constitution's
-vocabulary article self-sufficient (mark/`@covers`, `Carries:`, anointed
-backlog). Pairs with the `specassay-check` extension, which enforces the
-contract at the Gate.
+**Key Features:**
 
-**Proposed Catalog Entry:**
-```json
-{
-  "specassay": {
-    "name": "SpecAssay",
-    "id": "specassay",
-    "version": "0.2.0",
-    "description": "Appends durable-ID and Carries requirements onto Spec Kit spec, tasks, and constitution templates.",
-    "author": "Rik Dryfoos / Dryfoos Consulting",
-    "repository": "https://github.com/rdryfoos/specassay",
-    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-preset-0.2.0.zip",
-    "homepage": "https://github.com/rdryfoos/specassay",
-    "documentation": "https://github.com/rdryfoos/specassay/blob/main/PROMOTION-CONTRACT.md",
-    "license": "MIT",
-    "requires": {
-      "speckit_version": ">=0.14.0"
-    },
-    "provides": {
-      "templates": 3,
-      "commands": 0
-    },
-    "tags": [
-      "traceability",
-      "durable-ids",
-      "governance",
-      "sdd"
-    ],
-    "created_at": "2026-08-06T00:00:00Z",
-    "updated_at": "2026-08-06T00:00:00Z"
-  }
-}
+```
+- Durable IDs minted once at spec time and inherited downstream, never re-derived
+- `Carries:` marks connect every open task to the intent it serves
+- Constitution vocabulary article is self-sufficient (maker's mark/@covers, Carries:, anointed backlog rows)
+- Pure `append` strategy — layers onto stock Spec Kit templates without replacing the workflow
+- Pairs with the specassay-check extension, which enforces this contract at the Gate
 ```
 
-*(kept in sync with [`catalogs/presets.json`](https://github.com/rdryfoos/specassay/blob/main/catalogs/presets.json), which the catalogs point installers at)*
+**Testing Checklist:** tick all four — install and template-resolution
+evidence is in
+[test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md);
+the real-project run is HomesFlow
+(<https://github.com/rdryfoos/HomesFlow>).
+
+**Submission Requirements:** tick all five.
+
+*(This form has no Testing Details, Example Usage, or Proposed Catalog Entry
+fields. For reference, the live catalog entry is the `specassay` object in
+[`catalogs/presets.json`](https://github.com/rdryfoos/specassay/blob/main/catalogs/presets.json).)*

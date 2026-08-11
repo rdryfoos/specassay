@@ -9,7 +9,7 @@ extension:
   effect: "read-write"
   author: "Rik Dryfoos / Dryfoos Consulting"
   license: "MIT"
-  homepage: "https://github.com/rdryfoos/specassay"
+  homepage: "https://www.specassay.com"
   repository: "https://github.com/rdryfoos/specassay"
 
 requires:

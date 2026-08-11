@@ -7,7 +7,7 @@ preset:
   description: "Appends durable-ID, Carries, and SpecAssay vocabulary onto Spec Kit spec, tasks, and constitution templates."
   author: "Rik Dryfoos / Dryfoos Consulting"
   license: "MIT"
-  homepage: "https://github.com/rdryfoos/specassay"
+  homepage: "https://www.specassay.com"
   repository: "https://github.com/rdryfoos/specassay"
 
 requires:

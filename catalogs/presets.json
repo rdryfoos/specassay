@@ -7,11 +7,11 @@
       "name": "SpecAssay",
       "id": "specassay",
       "version": "0.2.0",
-      "description": "Appends durable-ID and Carries requirements onto Spec Kit spec, tasks, and constitution templates.",
+      "description": "Appends durable-ID, Carries, and SpecAssay vocabulary onto Spec Kit spec, tasks, and constitution templates.",
       "author": "Rik Dryfoos / Dryfoos Consulting",
       "repository": "https://github.com/rdryfoos/specassay",
       "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-preset-0.2.0.zip",
-      "homepage": "https://github.com/rdryfoos/specassay",
+      "homepage": "https://www.specassay.com",
       "documentation": "https://github.com/rdryfoos/specassay/blob/main/PROMOTION-CONTRACT.md",
       "license": "MIT",
       "requires": {

@@ -2,7 +2,13 @@
 
 Appends SpecAssay's durable-ID rules and vocabulary onto Spec Kit core templates via `append` strategy. Does not replace Spec Kit's workflow.
 
-Install:
+Install from the released pack:
+
+```bash
+specify preset add --from https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-preset-0.2.0.zip
+```
+
+Or from a checkout, for development:
 
 ```bash
 specify preset add --dev /path/to/specassay/presets/specassay
