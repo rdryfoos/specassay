@@ -28,4 +28,4 @@ Terms are minted once in `GLOSSARY.md`; this article restates them so the consti
 | **anointed backlog** | An ID minted ahead of its build: registry entry plus one open `Carries:` TODO. An honest “coming soon,” not a broken thread — how new scope enters without creating a GAP. |
 | **mark** / **`@covers`** | A one-line comment in source naming the durable ID(s) that code serves. Greppable; author-written; the Gate reads it; Loupe shows it under Build. |
 | **`Carries:`** | Mark on a task checkbox naming the ID(s) that task carries — usually open debt or anointed backlog. |
-| **Gate 2** | Deterministic SpecAssay check + manifest emit (`speckit.specassay.check`). |
+| **Gate 2** | Deterministic SpecAssay check + manifest emit (`speckit.specassay-check.gate`). |

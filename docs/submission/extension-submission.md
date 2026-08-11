@@ -9,7 +9,7 @@ Paste-ready answers for Spec Kit's **Extension Submission** issue form
 
 **Extension Name:** SpecAssay Check
 
-**Version:** 0.3.0
+**Version:** 0.3.1
 
 **Description:**
 Gate 2 — refuse silent gaps and emit a trace-manifest (`trace-manifest.json`).
@@ -21,7 +21,7 @@ Gate 2 — refuse silent gaps and emit a trace-manifest (`trace-manifest.json`).
 **Repository URL:** https://github.com/rdryfoos/specassay
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.3.0/specassay-check-0.3.0.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-check-0.3.1.zip
 
 **Documentation URL:**
 https://github.com/rdryfoos/specassay/blob/main/extensions/specassay-check/README.md
@@ -30,7 +30,7 @@ https://github.com/rdryfoos/specassay/blob/main/extensions/specassay-check/READM
 
 **Required Spec Kit Version:** >=0.14.0
 
-**Provides:** 1 command (`speckit.specassay.check`), 1 optional
+**Provides:** 1 command (`speckit.specassay-check.gate`), 1 optional
 `after_implement` hook, 1 required config template
 (`specassay-check-config.yml`).
 

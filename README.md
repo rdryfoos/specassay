@@ -21,7 +21,7 @@ The **Golden Thread** is the line that ties the three together, intent to build 
 1. **Intend.** The business settles a story; you mint its IDs into the registry. Not building it yet? Mint the ID *and* write one open `Carries:` TODO. That's **anointed backlog**: an honest "coming soon," not a broken thread.
 2. **Build.** You (or your AI, using the Spec Kit workflow) implement it, leaving `@covers ID` on the source that carries each intent and `**Carries**:` on each task.
 3. **Prove.** You write the test named to the acceptance criterion it answers for.
-4. **Gate.** `speckit.specassay.check` (Gate 2) scans registry, specs, tasks, `@covers`, and named tests, and refuses on silent AC gaps, untraced scope, or registry↔spec↔tasks drift. It writes the trace-manifest **even when it fails**, so the break is visible, not hidden.
+4. **Gate.** `speckit.specassay-check.gate` (Gate 2) scans registry, specs, tasks, `@covers`, and named tests, and refuses on silent AC gaps, untraced scope, or registry↔spec↔tasks drift. It writes the trace-manifest **even when it fails**, so the break is visible, not hidden.
 5. **Read.** [Loupe](https://loupe.dryfoos.com/) reads that trace-manifest and shows each intent walked top to bottom: proven (green), honest debt (amber), waiting (blue), or a frayed gap (red).
 
 **CI is the property line.** A Gate on a compliant laptop is a courtesy; a cowboy (or a cold agent) with no local install can still push unmarked work. Run Gate 2 in CI on every PR and every commit to a protected branch, and fail the build when the thread breaks. Local Gate is optional hygiene; the CI Gate is what protects the thread. The emitted `trace-manifest.json` is the refusal's evidence trail.
@@ -58,7 +58,7 @@ The `format` value is deliberately vendor-neutral: `trace-manifest` belongs to n
 | Component | Id                | Role                                                         |
 | --------- | ----------------- | ------------------------------------------------------------ |
 | Preset    | `specassay`       | Appends durable-ID / `Carries:` grammar onto Spec Kit's `spec-template`, `tasks-template`, and `constitution-template` |
-| Extension | `specassay-check` | Gate 2 check + **trace-manifest emitter** (`speckit.specassay.check`) |
+| Extension | `specassay-check` | Gate 2 check + **trace-manifest emitter** (`speckit.specassay-check.gate`) |
 
 Bundle id: `specassay`.
 
@@ -94,7 +94,7 @@ Run Gate 2 locally (fast feedback):
 
 ```bash
 bash .specify/extensions/specassay-check/scripts/check-traceability.sh
-# writes trace-manifest.json; or via the agent command: /speckit.specassay.check
+# writes trace-manifest.json; or via the agent command: /speckit.specassay-check.gate
 ```
 
 **Dev path:**

@@ -20,7 +20,7 @@ tasks, and constitution templates.
 **Repository URL:** https://github.com/rdryfoos/specassay
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.3.0/specassay-preset-0.2.0.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-preset-0.2.0.zip
 
 **Documentation URL:**
 https://github.com/rdryfoos/specassay/blob/main/PROMOTION-CONTRACT.md

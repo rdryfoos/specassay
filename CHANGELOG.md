@@ -3,6 +3,14 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.3.1 — 2026-08-11
+
+- Command renamed `speckit.specassay.check` → **`speckit.specassay-check.gate`**
+  to satisfy Spec Kit's extension-namespace rule (commands must follow
+  `speckit.{extension-id}.{command}`). Behavior unchanged.
+
+Components: bundle 0.3.1 · extension `specassay-check` 0.3.1 · preset 0.2.0.
+
 ## 0.3.0 — 2026-08-11
 
 The productization release: the bundle is now **SpecAssay** end to end, and the

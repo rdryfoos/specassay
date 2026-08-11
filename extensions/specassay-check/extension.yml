@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "specassay-check"
   name: "SpecAssay Check"
-  version: "0.3.0"
+  version: "0.3.1"
   description: "Gate 2 — refuse silent gaps and emit a trace-manifest (`trace-manifest.json`)."
   category: "visibility"
   effect: "read-write"
@@ -18,8 +18,8 @@ requires:
 
 provides:
   commands:
-    - name: "speckit.specassay.check"
-      file: "commands/speckit.specassay.check.md"
+    - name: "speckit.specassay-check.gate"
+      file: "commands/speckit.specassay-check.gate.md"
       description: "Run SpecAssay Check / Gate 2 (silent gaps fail; write trace-manifest.json)"
 
   config:
@@ -30,7 +30,7 @@ provides:
 
 hooks:
   after_implement:
-    command: "speckit.specassay.check"
+    command: "speckit.specassay-check.gate"
     optional: true
     prompt: "Run SpecAssay Check (Gate 2 traceability)?"
     description: "Refuse silent gaps after implementation; refresh trace-manifest.json"

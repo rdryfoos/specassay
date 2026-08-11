@@ -11,7 +11,7 @@ submissions alongside it so the component catalogs graduate too.
 
 **Bundle Name:** SpecAssay
 
-**Version:** 0.3.0
+**Version:** 0.3.1
 
 **Role or Team:** developer
 
@@ -26,7 +26,7 @@ refuses silent acceptance-criterion gaps and emits a vendor-neutral
 **Repository URL:** https://github.com/rdryfoos/specassay
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.3.0/specassay-0.3.0.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-0.3.1.zip
 *(built by `specify bundle build`)*
 
 **Documentation URL:** https://github.com/rdryfoos/specassay#readme
@@ -39,7 +39,7 @@ https://github.com/rdryfoos/specassay/releases/download/v0.3.0/specassay-0.3.0.z
 **Integration Target:** *(empty — integration-agnostic)*
 
 **Components Provided:**
-- Extension `specassay-check` 0.3.0 — the Gate (`speckit.specassay.check`
+- Extension `specassay-check` 0.3.1 — the Gate (`speckit.specassay-check.gate`
   command + `after_implement` hook): refuses silent AC gaps, invented IDs, and
   registry↔specs↔tasks drift; emits `trace-manifest.json` on every run,
   including failures. Ships the Thread Report CI tooling (PR briefing comment,
@@ -95,7 +95,7 @@ specify bundle catalog add --name specassay --install-allowed \
 specify bundle install specassay
 
 # Configure the Gate (registry path, globs, ID grammar), then:
-#   /speckit.specassay.check   — run Gate 2; emits trace-manifest.json
+#   /speckit.specassay-check.gate   — run Gate 2; emits trace-manifest.json
 # CI: run the Gate on every PR; see .github/workflows/thread-report.yml
 # in the bundle repo for the Thread Report wiring.
 ```
