@@ -263,6 +263,24 @@ is about wording, never renumbering. Two ticks, two questions: Product's
 review answers *"do we want this promise?"*; `intent_ack` answers *"does the
 code still keep it?"* The report briefs both reviewers from the same section.
 
+The sign-off structure terminates — no gate needs a gate. The two sides own
+different artifacts, so each gets a different instrument, and the asymmetry
+that makes both necessary is this: **`CODEOWNERS` gates what the diff
+*touches*; `intent_ack` gates what the diff *obligates*.** A Product-only
+restatement touches no Dev file — a file-based gate can never fire for Dev on
+that PR — but it obligates Dev's carriers all the same, and that is exactly
+the gap the tick covers. One gate per owned artifact, once each, whoever
+initiated; the initiator never creates a new shape. (Product-initiated
+intent-first PRs get the mirrored moves from above: Dev completes the PR —
+converting it to the discovery shape, the *updated in this PR* marks showing
+it — or the owed re-confirm is anointed as tracked-debt.)
+
+|                | Product's gate                 | Dev's gate                        |
+| -------------- | ------------------------------ | --------------------------------- |
+| **Instrument** | `CODEOWNERS` review            | `intent_ack` tick                 |
+| **Fires when** | the wording is touched         | an intent is restated             |
+| **Question**   | *"Do we want this promise?"*   | *"Does the code still keep it?"*  |
+
 ## 6. Friction stance — the *refuse* rung (proposed)
 
 A bolt-alongside **gate** on undeclared code is both high-friction and wrong for
