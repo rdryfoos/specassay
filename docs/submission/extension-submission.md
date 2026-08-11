@@ -16,7 +16,7 @@ matching field. Title: `[Extension]: Add specassay-check`.
 **Description:**
 Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).
 
-**Author:** Rik Dryfoos / Dryfoos Consulting
+**Author:** Rik Dryfoos
 
 **Repository URL:** https://github.com/rdryfoos/specassay
 
@@ -101,7 +101,7 @@ specify extension add specassay-check --from https://github.com/rdryfoos/specass
     "id": "specassay-check",
     "version": "0.3.1",
     "description": "Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).",
-    "author": "Rik Dryfoos / Dryfoos Consulting",
+    "author": "Rik Dryfoos",
     "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-check-0.3.1.zip",
     "repository": "https://github.com/rdryfoos/specassay",
     "homepage": "https://www.specassay.com",

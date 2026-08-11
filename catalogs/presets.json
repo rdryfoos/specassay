@@ -8,7 +8,7 @@
       "id": "specassay",
       "version": "0.2.0",
       "description": "Appends durable-ID, Carries, and SpecAssay vocabulary onto Spec Kit spec, tasks, and constitution templates.",
-      "author": "Rik Dryfoos / Dryfoos Consulting",
+      "author": "Rik Dryfoos",
       "repository": "https://github.com/rdryfoos/specassay",
       "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-preset-0.2.0.zip",
       "homepage": "https://www.specassay.com",

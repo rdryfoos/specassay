@@ -23,7 +23,7 @@ issues first — the bundle references both (see Additional Context below).
 Durable-ID promotion for stock Spec Kit: templates, Gate 2 refusal, and
 trace-manifest emission.
 
-**Author:** Rik Dryfoos / Dryfoos Consulting
+**Author:** Rik Dryfoos
 
 **Repository URL:** https://github.com/rdryfoos/specassay
 
@@ -118,7 +118,7 @@ specify bundle install ./specassay-0.3.1.zip
     "version": "0.3.1",
     "role": "developer",
     "description": "Durable-ID promotion for stock Spec Kit: templates, Gate 2 refusal, and trace-manifest emission.",
-    "author": "Rik Dryfoos / Dryfoos Consulting",
+    "author": "Rik Dryfoos",
     "license": "MIT",
     "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-0.3.1.zip",
     "repository": "https://github.com/rdryfoos/specassay",

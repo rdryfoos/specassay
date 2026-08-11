@@ -7,7 +7,7 @@ extension:
   description: "Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`)."
   category: "visibility"
   effect: "read-write"
-  author: "Rik Dryfoos / Dryfoos Consulting"
+  author: "Rik Dryfoos"
   license: "MIT"
   homepage: "https://www.specassay.com"
   repository: "https://github.com/rdryfoos/specassay"

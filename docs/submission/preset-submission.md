@@ -17,7 +17,7 @@ Title: `[Preset]: Add specassay`.
 Appends durable-ID, Carries, and SpecAssay vocabulary onto Spec Kit spec,
 tasks, and constitution templates.
 
-**Author:** Rik Dryfoos / Dryfoos Consulting
+**Author:** Rik Dryfoos
 
 **Repository URL:** https://github.com/rdryfoos/specassay
 
