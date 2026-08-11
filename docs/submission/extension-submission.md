@@ -47,5 +47,40 @@ restated-intent detection and optional human-tick gates
 (`offthread_ack` / `intent_ack`).
 
 **Proposed Catalog Entry:**
-*(the `specassay-check` object from
-[`catalogs/extensions.json`](https://github.com/rdryfoos/specassay/blob/main/catalogs/extensions.json))*
+```json
+{
+  "specassay-check": {
+    "name": "SpecAssay Check",
+    "id": "specassay-check",
+    "version": "0.3.1",
+    "description": "Gate 2 — refuse silent gaps and emit a trace-manifest (`trace-manifest.json`).",
+    "author": "Rik Dryfoos / Dryfoos Consulting",
+    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-check-0.3.1.zip",
+    "repository": "https://github.com/rdryfoos/specassay",
+    "homepage": "https://github.com/rdryfoos/specassay",
+    "documentation": "https://github.com/rdryfoos/specassay/blob/main/extensions/specassay-check/README.md",
+    "license": "MIT",
+    "category": "visibility",
+    "effect": "read-write",
+    "requires": {
+      "speckit_version": ">=0.14.0"
+    },
+    "provides": {
+      "commands": 1,
+      "hooks": 1
+    },
+    "tags": [
+      "traceability",
+      "gate",
+      "ci",
+      "governance",
+      "sdd"
+    ],
+    "verified": false,
+    "created_at": "2026-08-06T00:00:00Z",
+    "updated_at": "2026-08-06T00:00:00Z"
+  }
+}
+```
+
+*(kept in sync with [`catalogs/extensions.json`](https://github.com/rdryfoos/specassay/blob/main/catalogs/extensions.json), which the catalogs point installers at)*

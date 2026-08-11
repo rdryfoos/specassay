@@ -101,9 +101,40 @@ specify bundle install specassay
 ```
 
 **Proposed Catalog Entry:**
-*(the `specassay` object from
-[`catalogs/bundles.json`](https://github.com/rdryfoos/specassay/blob/main/catalogs/bundles.json) — paste it verbatim
-under the top-level `bundles` object)*
+```json
+{
+  "specassay": {
+    "name": "SpecAssay",
+    "id": "specassay",
+    "version": "0.3.1",
+    "role": "developer",
+    "description": "Durable-ID promotion for stock Spec Kit: templates, Gate 2 refusal, and trace-manifest emission.",
+    "author": "Rik Dryfoos / Dryfoos Consulting",
+    "license": "MIT",
+    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-0.3.1.zip",
+    "repository": "https://github.com/rdryfoos/specassay",
+    "requires": {
+      "speckit_version": ">=0.14.0"
+    },
+    "provides": {
+      "extensions": 1,
+      "presets": 1,
+      "steps": 0,
+      "workflows": 0
+    },
+    "tags": [
+      "traceability",
+      "governance",
+      "durable-ids",
+      "gate",
+      "sdd"
+    ],
+    "verified": false
+  }
+}
+```
+
+*(kept in sync with [`catalogs/bundles.json`](https://github.com/rdryfoos/specassay/blob/main/catalogs/bundles.json), which the catalogs point installers at; paste it verbatim under the top-level `bundles` object)*
 
 **Additional Context:**
 The trace-manifest format is deliberately vendor-neutral (`format` +

@@ -35,7 +35,8 @@ catalog entry and URLs (3–7 business days; they do not audit code).
 
 ## Cutting the next release 🔁
 
-Bump versions in the three manifests + `catalogs/*.json`, update
+Bump versions in the three manifests + `catalogs/*.json` (and refresh the
+catalog entries inlined in the three issue bodies here), update
 CHANGELOG.md, then run the **Release** workflow
 (`Actions → Release → Run workflow`) with the new tag (e.g. `v0.4.0`) — it
 creates the tag, validates and builds with the real CLI through the hosted
