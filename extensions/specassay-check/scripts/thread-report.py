@@ -394,6 +394,18 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             label = p.rsplit("/", 1)[-1] + (f":{target}" if target else "")
             return f"[`{label}`]({link.blob_line(p, target)})" if (link and link.ok) else f"`{label}`"
 
+        # The two honest shapes of an intent PR, told apart by the carriers:
+        # a discovery PR moves them in the same PR as the restatement (coherent),
+        # an intent-first PR leaves them untouched (they owe a re-confirm).
+        changed_set = {n["path"] for n in near} | {f["path"] for f in far}
+
+        def updated_mark(p: str, inline: bool = False) -> str:
+            if p not in changed_set:
+                return ""
+            label = "updated here" if inline else "◀ updated in this PR"
+            body = f"[{label}]({link.file_hunk(p)})" if (link and link.ok) else label
+            return f" ({body})" if inline else f" — {body}"
+
         out.append("### Intent Changed")
         n = len(moved["restated"])
         lead = "intent was" if n == 1 else "intents were"
@@ -434,9 +446,9 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                 for (p, ln) in carriers:
                     if (p, ln) in hits:
                         matched, mline = hits[(p, ln)]
-                        out.append(f"    - {clink(p, ln, mline)} — ⚠ still contains the old `{matched}`")
+                        out.append(f"    - {clink(p, ln, mline)} — ⚠ still contains the old `{matched}`{updated_mark(p)}")
                     else:
-                        out.append(f"    - {clink(p, ln)}")
+                        out.append(f"    - {clink(p, ln)}{updated_mark(p)}")
             elif left:  # Tier 2 — value changed, not found verbatim
                 chg = "`" + "`, `".join(sorted(left)) + "`"
                 to = (" → `" + "`, `".join(sorted(arrived)) + "`") if arrived else ""
@@ -444,13 +456,13 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                     f"  - _Value {chg}{to} changed, but not found verbatim in the "
                     "code or tests — re-confirm by reading._"
                 )
-                out.append("  - re-confirm: " + " · ".join(clink(p, ln) for (p, ln) in carriers))
+                out.append("  - re-confirm: " + " · ".join(f"{clink(p, ln)}{updated_mark(p, inline=True)}" for (p, ln) in carriers))
             else:  # Tier 3 — prose / semantic, the default
                 out.append(
                     "  - _Prose change — no literal value to pin down; re-confirm the "
                     "code and its test by reading them against the new wording._"
                 )
-                out.append("  - re-confirm: " + " · ".join(clink(p, ln) for (p, ln) in carriers))
+                out.append("  - re-confirm: " + " · ".join(f"{clink(p, ln)}{updated_mark(p, inline=True)}" for (p, ln) in carriers))
         # Affirm rung: escalate re-confirmation to a human tick via `intent_ack`.
         if intent_ack == "record":
             out.append("")
