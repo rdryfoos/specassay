@@ -114,7 +114,7 @@ work's *state*. Two different axes:
 They coincide at exactly one point — **refuse = red** (a Gate refusal and a
 broken thread are the same event: Gate fail ⇔ fray). Elsewhere they must not be
 conflated: green stays **proven**; illuminate has no color of its own (it is the
-lens the colors are seen *through*); affirm gets its own affordance — a
+glass the colors are read *through*); affirm gets its own affordance — a
 chip/checkbox — not a node color.
 
 ## 4. The pull request as a briefing — the *illuminate* rung (shipped)
