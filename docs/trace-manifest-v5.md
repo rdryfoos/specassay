@@ -1,9 +1,14 @@
-# trace-manifest v5 — interop rev (draft proposal)
+# trace-manifest v5 — interop rev (beta)
 
-**Status:** draft. Targets `schemaVersion: 5`. Nothing here is emitted yet — this is the
-artifact we iterate on before touching the emitter, the Loupe reader, or the samples. When
-it settles, it folds into [`trace-manifest-schema.md`](trace-manifest-schema.md) and the
-version integer bumps.
+**Status: beta.** `schemaVersion: 5` is live but explicitly revisable — field names and
+shapes here may still move as the first external emitter (clew) pushes on them, without a
+version bump. Loupe reads schema **3–5** today, uploads included. Two v5 samples ship in
+[`samples/`](../samples/): [`sample-v5.trace-manifest.json`](../samples/sample-v5.trace-manifest.json)
+(FieldKit — SpecAssay-dialect, tiers + parents + rollups, ~31 rows) and
+[`clew-style-v5.trace-manifest.json`](../samples/clew-style-v5.trace-manifest.json)
+(ledger origins, Swift symbol anchors, `nativeStatus`). SpecAssay's own Gate still emits v4;
+it bumps once the beta settles. When it does, this doc folds into
+[`trace-manifest-schema.md`](trace-manifest-schema.md).
 
 ## Why v5
 
