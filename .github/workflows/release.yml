@@ -13,6 +13,11 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v0.3.0); created at the run's commit if it doesn't exist"
+        required: true
 
 permissions:
   contents: write
@@ -27,6 +32,8 @@ jobs:
         run: pip install --quiet "git+https://github.com/github/spec-kit.git"
 
       - name: Scratch Spec Kit project with this repo's catalogs active
+        env:
+          TAG: ${{ inputs.tag }}
         run: |
           set -euo pipefail
           mkdir -p /tmp/proj && cd /tmp/proj
@@ -58,8 +65,11 @@ jobs:
       - name: Publish the release
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
         run: |
           set -euo pipefail
-          gh release create "$GITHUB_REF_NAME" dist/*.zip \
-            --title "SpecAssay $GITHUB_REF_NAME" \
+          TAG="${TAG:-$GITHUB_REF_NAME}"
+          gh release create "$TAG" dist/*.zip \
+            --target "$GITHUB_SHA" \
+            --title "SpecAssay $TAG" \
             --notes "See [CHANGELOG.md](https://github.com/${GITHUB_REPOSITORY}/blob/main/CHANGELOG.md) for what shipped. Catalogs: \`catalogs/*.json\` at this ref."
