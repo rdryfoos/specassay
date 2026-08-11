@@ -4,7 +4,7 @@ extension:
   id: "specassay-check"
   name: "SpecAssay Check"
   version: "0.3.1"
-  description: "Gate 2 — refuse silent gaps and emit a trace-manifest (`trace-manifest.json`)."
+  description: "Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`)."
   category: "visibility"
   effect: "read-write"
   author: "Rik Dryfoos / Dryfoos Consulting"

@@ -12,7 +12,7 @@ Paste-ready answers for Spec Kit's **Extension Submission** issue form
 **Version:** 0.3.1
 
 **Description:**
-Gate 2 — refuse silent gaps and emit a trace-manifest (`trace-manifest.json`).
+Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).
 
 **Category:** visibility · **Effect:** read-write
 
@@ -53,7 +53,7 @@ restated-intent detection and optional human-tick gates
     "name": "SpecAssay Check",
     "id": "specassay-check",
     "version": "0.3.1",
-    "description": "Gate 2 — refuse silent gaps and emit a trace-manifest (`trace-manifest.json`).",
+    "description": "Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).",
     "author": "Rik Dryfoos / Dryfoos Consulting",
     "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-check-0.3.1.zip",
     "repository": "https://github.com/rdryfoos/specassay",
