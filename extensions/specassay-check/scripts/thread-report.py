@@ -72,18 +72,20 @@ def read_config(path: str | None) -> dict:
         "specs": "specs/**/spec.md",
         "tasks": "specs/**/tasks.md",
         "offthread_ack": "off",
+        "intent_ack": "off",
     }
     if not path or not Path(path).is_file():
         return cfg
     for line in Path(path).read_text(encoding="utf-8").splitlines():
         m = re.match(
-            r'^\s*(registry|specs|tasks|offthread_ack)\s*:\s*["\']?([^"\'#]+?)["\']?\s*(#.*)?$',
+            r'^\s*(registry|specs|tasks|offthread_ack|intent_ack)\s*:\s*["\']?([^"\'#]+?)["\']?\s*(#.*)?$',
             line,
         )
         if m:
             cfg[m.group(1)] = m.group(2).strip()
-    if cfg["offthread_ack"] not in ACK_CHOICES:
-        cfg["offthread_ack"] = "off"
+    for key in ("offthread_ack", "intent_ack"):
+        if cfg[key] not in ACK_CHOICES:
+            cfg[key] = "off"
     return cfg
 
 
@@ -283,7 +285,8 @@ def what_moved(base: dict, head: dict) -> dict:
 # ---- render ----
 
 def render(base: dict, head: dict, near: list, far: list, ack: str,
-           link: Linker | None = None, project_root: str = "") -> str:
+           link: Linker | None = None, project_root: str = "",
+           intent_ack: str = "off") -> str:
     moved = what_moved(base, head)
     h = rows_by_id(head)
     gate_ok = head.get("gate", {}).get("ok", True)
@@ -391,6 +394,18 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             label = p.rsplit("/", 1)[-1] + (f":{target}" if target else "")
             return f"[`{label}`]({link.blob_line(p, target)})" if (link and link.ok) else f"`{label}`"
 
+        # The two honest shapes of an intent PR, told apart by the carriers:
+        # a discovery PR moves them in the same PR as the restatement (coherent),
+        # an intent-first PR leaves them untouched (they owe a re-confirm).
+        changed_set = {n["path"] for n in near} | {f["path"] for f in far}
+
+        def updated_mark(p: str, inline: bool = False) -> str:
+            if p not in changed_set:
+                return ""
+            label = "updated here" if inline else "◀ updated in this PR"
+            body = f"[{label}]({link.file_hunk(p)})" if (link and link.ok) else label
+            return f" ({body})" if inline else f" — {body}"
+
         out.append("### Intent Changed")
         n = len(moved["restated"])
         lead = "intent was" if n == 1 else "intents were"
@@ -431,9 +446,9 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                 for (p, ln) in carriers:
                     if (p, ln) in hits:
                         matched, mline = hits[(p, ln)]
-                        out.append(f"    - {clink(p, ln, mline)} — ⚠ still contains the old `{matched}`")
+                        out.append(f"    - {clink(p, ln, mline)} — ⚠ still contains the old `{matched}`{updated_mark(p)}")
                     else:
-                        out.append(f"    - {clink(p, ln)}")
+                        out.append(f"    - {clink(p, ln)}{updated_mark(p)}")
             elif left:  # Tier 2 — value changed, not found verbatim
                 chg = "`" + "`, `".join(sorted(left)) + "`"
                 to = (" → `" + "`, `".join(sorted(arrived)) + "`") if arrived else ""
@@ -441,13 +456,20 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                     f"  - _Value {chg}{to} changed, but not found verbatim in the "
                     "code or tests — re-confirm by reading._"
                 )
-                out.append("  - re-confirm: " + " · ".join(clink(p, ln) for (p, ln) in carriers))
+                out.append("  - re-confirm: " + " · ".join(f"{clink(p, ln)}{updated_mark(p, inline=True)}" for (p, ln) in carriers))
             else:  # Tier 3 — prose / semantic, the default
                 out.append(
                     "  - _Prose change — no literal value to pin down; re-confirm the "
                     "code and its test by reading them against the new wording._"
                 )
-                out.append("  - re-confirm: " + " · ".join(clink(p, ln) for (p, ln) in carriers))
+                out.append("  - re-confirm: " + " · ".join(f"{clink(p, ln)}{updated_mark(p, inline=True)}" for (p, ln) in carriers))
+        # Affirm rung: escalate re-confirmation to a human tick via `intent_ack`.
+        if intent_ack == "record":
+            out.append("")
+            out.append("> ☐ **Each restated intent still holds — its code and tests re-confirmed.** _(tick to record — informational)_")
+        elif intent_ack == "required":
+            out.append("")
+            out.append("> ☐ **Each restated intent still holds — its code and tests re-confirmed.** _(a human must tick this before merge — `intent_ack: required`)_")
         out.append("")
 
     # 2. Thread Status, per domain the PR touched (untouched backlog rows hidden)
@@ -540,6 +562,8 @@ def main() -> int:
     ap.add_argument("--head-sha", default=None, help="head commit SHA for blob (ID) links")
     ap.add_argument("--offthread-ack", default=None, choices=ACK_CHOICES,
                     help="the affirm ceremony on the off-thread list; overrides the config key")
+    ap.add_argument("--intent-ack", default=None, choices=ACK_CHOICES,
+                    help="the affirm ceremony on restated intents; overrides the config key")
     ap.add_argument("--out", default="-", help="write report here (default stdout)")
     args = ap.parse_args()
 
@@ -553,10 +577,11 @@ def main() -> int:
     project_root = project_root or ""
 
     ack = args.offthread_ack if args.offthread_ack is not None else cfg.get("offthread_ack", "off")
+    intent_ack = args.intent_ack if args.intent_ack is not None else cfg.get("intent_ack", "off")
     link = Linker(args.pr_url, args.head_sha, project_root) if args.pr_url else None
 
     near, far = classify_changed(changed, head, cfg, project_root)
-    report = render(base, head, near, far, ack, link, project_root)
+    report = render(base, head, near, far, ack, link, project_root, intent_ack=intent_ack)
 
     if args.out == "-":
         sys.stdout.write(report)

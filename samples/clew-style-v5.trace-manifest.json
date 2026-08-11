@@ -1,0 +1,257 @@
+{
+  "schemaVersion": 5,
+  "format": "trace-manifest",
+  "emitter": {
+    "name": "clew",
+    "version": "0.9.0"
+  },
+  "targetName": "ariadne-demo",
+  "repoPath": "/work/ariadne-demo",
+  "generatedAt": "2026-08-11T12:00:00Z",
+  "gate": {
+    "ok": true,
+    "failures": []
+  },
+  "totals": {
+    "registryIdCount": 8,
+    "acCount": 5,
+    "coveredCount": 3
+  },
+  "statusCounts": {
+    "proven": 4,
+    "tracked-debt": 2,
+    "GAP": 0,
+    "backlog": 2
+  },
+  "rows": [
+    {
+      "id": "REQ-0041",
+      "type": "requirement",
+      "tier": "requirement",
+      "statement": "Observations captured offline reconcile across the team.",
+      "origin": {
+        "kind": "ledger",
+        "ledger": ".clew/ledger",
+        "seq": 41
+      },
+      "status": "proven",
+      "nativeStatus": "anchored",
+      "parents": [],
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "rollup": {
+        "covered": true,
+        "children": [
+          "CRIT-0043",
+          "CRIT-0044"
+        ],
+        "coveredChildren": 2
+      }
+    },
+    {
+      "id": "CRIT-0043",
+      "type": "acceptance-criterion",
+      "tier": "criterion",
+      "statement": "A change made offline appears on a second device within 2s of reconnect.",
+      "origin": {
+        "kind": "ledger",
+        "ledger": ".clew/ledger",
+        "seq": 43
+      },
+      "status": "proven",
+      "nativeStatus": "anchored",
+      "parents": [
+        "REQ-0041"
+      ],
+      "implementations": [
+        {
+          "path": "Sources/Sync/Reconcile.swift",
+          "line": 88,
+          "symbol": "reconcile",
+          "excerpt": "// clew:CRIT-0043"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "testReconcileWithinBudget",
+          "path": "Tests/SyncTests.swift",
+          "line": 40
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null
+    },
+    {
+      "id": "CRIT-0044",
+      "type": "acceptance-criterion",
+      "tier": "criterion",
+      "statement": "Concurrent disjoint edits merge without a conflict prompt.",
+      "origin": {
+        "kind": "ledger",
+        "ledger": ".clew/ledger",
+        "seq": 44
+      },
+      "status": "proven",
+      "nativeStatus": "anchored",
+      "parents": [
+        "REQ-0041"
+      ],
+      "implementations": [
+        {
+          "path": "Sources/Sync/Merge.swift",
+          "line": 31,
+          "symbol": "mergeDisjoint",
+          "excerpt": "// clew:CRIT-0044"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "testDisjointMergeSilent",
+          "path": "Tests/SyncTests.swift",
+          "line": 72
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null
+    },
+    {
+      "id": "REQ-0052",
+      "type": "requirement",
+      "tier": "requirement",
+      "statement": "Every export carries its capture provenance.",
+      "origin": {
+        "kind": "ledger",
+        "ledger": ".clew/ledger",
+        "seq": 52
+      },
+      "status": "tracked-debt",
+      "nativeStatus": "partial",
+      "parents": [],
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "rollup": {
+        "covered": true,
+        "children": [
+          "CRIT-0053",
+          "CRIT-0054"
+        ],
+        "coveredChildren": 2
+      }
+    },
+    {
+      "id": "CRIT-0053",
+      "type": "acceptance-criterion",
+      "tier": "criterion",
+      "statement": "A PDF export embeds capture timestamp and device ID per observation.",
+      "origin": {
+        "kind": "ledger",
+        "ledger": ".clew/ledger",
+        "seq": 53
+      },
+      "status": "proven",
+      "nativeStatus": "anchored",
+      "parents": [
+        "REQ-0052"
+      ],
+      "implementations": [
+        {
+          "path": "Sources/Export/Provenance.swift",
+          "line": 19,
+          "symbol": "stampProvenance",
+          "excerpt": "// clew:CRIT-0053"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "testPdfEmbedsProvenance",
+          "path": "Tests/ExportTests.swift",
+          "line": 25
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null
+    },
+    {
+      "id": "CRIT-0054",
+      "type": "acceptance-criterion",
+      "tier": "criterion",
+      "statement": "A CSV export round-trips through re-import with provenance intact.",
+      "origin": {
+        "kind": "ledger",
+        "ledger": ".clew/ledger",
+        "seq": 54
+      },
+      "status": "tracked-debt",
+      "nativeStatus": "partial",
+      "parents": [
+        "REQ-0052"
+      ],
+      "implementations": [
+        {
+          "path": "Sources/Export/Csv.swift",
+          "line": 47,
+          "symbol": "writeCsv",
+          "excerpt": "// clew:CRIT-0054"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null
+    },
+    {
+      "id": "REQ-0060",
+      "type": "requirement",
+      "tier": "requirement",
+      "statement": "Map view of all observations.",
+      "origin": {
+        "kind": "ledger",
+        "ledger": ".clew/ledger",
+        "seq": 60
+      },
+      "status": "backlog",
+      "nativeStatus": "pending",
+      "parents": [],
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "rollup": {
+        "covered": false,
+        "children": [
+          "CRIT-0061"
+        ],
+        "coveredChildren": 0
+      }
+    },
+    {
+      "id": "CRIT-0061",
+      "type": "acceptance-criterion",
+      "tier": "criterion",
+      "statement": "Pins cluster and zoom on tap.",
+      "origin": {
+        "kind": "ledger",
+        "ledger": ".clew/ledger",
+        "seq": 61
+      },
+      "status": "backlog",
+      "nativeStatus": "pending",
+      "parents": [
+        "REQ-0060"
+      ],
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null
+    }
+  ],
+  "ext": {
+    "clew": {
+      "methodology": "CAS-DD",
+      "ledgerHead": 61
+    }
+  }
+}

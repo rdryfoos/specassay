@@ -114,7 +114,7 @@ work's *state*. Two different axes:
 They coincide at exactly one point — **refuse = red** (a Gate refusal and a
 broken thread are the same event: Gate fail ⇔ fray). Elsewhere they must not be
 conflated: green stays **proven**; illuminate has no color of its own (it is the
-lens the colors are seen *through*); affirm gets its own affordance — a
+glass the colors are read *through*); affirm gets its own affordance — a
 chip/checkbox — not a node color.
 
 ## 4. The pull request as a briefing — the *illuminate* rung (shipped)
@@ -197,19 +197,71 @@ What SpecAssay can add on top:
   proof) were written against the *old* wording. SpecAssay lists them and marks
   them **"re-confirm — the intent moved under the proof."** This surfacing
   **ships** today as the Thread Report's *Intent Changed* section
-  ([`thread-report.md`](thread-report.md)); *enforcing* the re-confirm is the
-  proposed part. The PR that changes the intent carries its own list of what it
-  may have invalidated.
+  ([`thread-report.md`](thread-report.md)). The **affirm** rung ships too, via
+  `intent_ack: off | record | required` — the twin of `offthread_ack`: at
+  `required`, a human must tick that each restated intent still holds before
+  merge. The PR that changes the intent carries its own list of what it may have
+  invalidated.
 
-- **Two honest shapes of intent-PR:**
-  - **Intent-only PR** (intent changes, no code): the changed ID rides as
-    `backlog` — minted, no carrier yet. The Gate stays green *and honest*:
-    "intent moved; here is the new open thread." A later code PR closes it; the
-    durable ID stitches the two across time.
-  - **Discovery PR** (mid-build, the spec was found wrong): changes the
-    intent *and* the code together, reviewed as one, the thread showing both
-    moved in lockstep. SpecAssay's job is coherence — no orphaned proofs, no ACs
+- **Two honest shapes of intent-PR** (shipped — the Thread Report tells them
+  apart by whether the carriers moved, and each has a live demo):
+  - **PR from Intent** (the wording moves alone — live
+    [PR #4](https://github.com/rdryfoos/specassay/pull/4)): a decision lands in
+    the registry, or an agent's "cleanup" drifts a statement, and the build and
+    proof written against the old text sit untouched. For a *new* ID the row
+    rides as `backlog` — minted, no carrier yet; the Gate stays green *and
+    honest*: "intent moved; here is the new open thread." For a *restated* ID
+    this is the alarm state: *Intent Changed* lists the untouched carriers —
+    pinpointing a stale value when it can — because they now owe a re-confirm.
+  - **PR from the Field — the discovery PR** (mid-build, ground truth corrects
+    the spec — live [PR #5](https://github.com/rdryfoos/specassay/pull/5)):
+    changes the intent *and* the code together, reviewed as one, the thread
+    showing both moved in lockstep. *Intent Changed* marks each carrier
+    *updated in this PR*, so the pairing itself reads as the evidence of
+    coherence. SpecAssay's job is coherence — no orphaned proofs, no ACs
     pointing at deleted code, immutability intact.
+
+### 5a. Who may move the wording? The seam, made reviewable (shipped mechanics; policy is the org's)
+
+Putting Product and Dev inside one repo does not erase the seam between them —
+it changes what the seam is *made of*. In the old world it was a **tool
+boundary**: requirements in Jira or ALM, code in the repo, and news crossed by
+ticket and meeting while the two artifacts drifted. In a SpecAssay-governed
+repo the registry is a file, so the seam becomes a **review gate** — and Git
+has fifteen years of machinery for exactly that kind of seam. The primitive is
+[`CODEOWNERS`](../.github/CODEOWNERS): put the registry under Product's
+ownership, and (with branch protection's *Require review from Code Owners* on)
+no PR that touches an intent's wording merges without a product human's
+approval.
+
+Three consequences, all healthy:
+
+- **A discovery PR becomes the ask.** Dev hits ground truth, restates the
+  criterion, moves the proof in the same diff — and the CODEOWNERS gate routes
+  it to Product automatically. The request arrives *on the diff*, with the
+  Thread Report's was/now and blast radius attached, instead of in a meeting
+  after the code shipped. Product never lost authority by moving into the
+  repo; authority became **reviewable** instead of **territorial**.
+- **A proposal-only PR is honest too.** Dev may want the wording changed
+  *before* building against it: restate the criterion, touch no carriers. In
+  shape terms that is a PR from Intent, and *Intent Changed* will flag the
+  untouched carriers — truthfully, because once Product accepts the new
+  wording the proof owes an update. The disciplined move is to pair the
+  restatement with an anointed `Carries:` task ("update the proof to the new
+  budget"), so the owed work rides as **tracked-debt, admitted** — the alarm
+  state used deliberately, with the debt on the books.
+- **The same gate is the agent defense.** An agent's "cleanup" that drifts a
+  statement now has to get past *both* the tripwire (*Intent Changed* — no
+  restatement lands silently) and the lock (CODEOWNERS — no restatement merges
+  without a named human's approval). Jira never diffed a requirement edit or
+  demanded a signature on one.
+
+One line stays sacred at the seam: **who types the words is separate from who
+approves them.** Dev — or an agent — may *draft* a restatement; drafts are
+cheap now. Product *approves* it, and the durable ID guarantees the approval
+is about wording, never renumbering. Two ticks, two questions: Product's
+review answers *"do we want this promise?"*; `intent_ack` answers *"does the
+code still keep it?"* The report briefs both reviewers from the same section.
 
 ## 6. Friction stance — the *refuse* rung (proposed)
 

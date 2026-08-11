@@ -36,3 +36,9 @@ test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
 #   record   — a "these untraced changes are incidental" tick, informational
 #   required — a human must tick before merge (wire the block in a separate step)
 offthread_ack: "off"
+
+# Thread Report: the affirm ceremony on restated intents (the Intent Changed
+# section). Same three settings — off illuminates, record adds an informational
+# tick, required makes a human confirm each restated intent still holds before
+# merge. Only appears when a PR actually restates an intent.
+intent_ack: "off"

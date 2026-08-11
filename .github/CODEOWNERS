@@ -1,0 +1,18 @@
+# Ownership seams, made reviewable.
+#
+# GitHub reads this file from .github/ at the repo root; each line pairs a path
+# with the owners whose review a change needs (it bites once branch
+# protection's "Require review from Code Owners" is switched on).
+#
+# The seam that matters in a SpecAssay-governed repo is the registry — the
+# intent side of the thread. Dev, or an agent, may DRAFT a restatement; the
+# owner APPROVES it. The Thread Report's Intent Changed section is the
+# tripwire (no restatement lands silently); this file is the lock (no
+# restatement merges without a named human). See
+# docs/scope-and-pull-requests.md §5a.
+#
+# In your own repo the line reads e.g.:
+#   PRD.md  @your-org/product
+
+# The example app's registry (its PRD) answers to the product owner.
+/examples/example-app/PRD.md @rdryfoos
