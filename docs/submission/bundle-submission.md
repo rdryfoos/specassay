@@ -2,7 +2,7 @@
 
 Paste-ready answers for Spec Kit's **Bundle Submission** issue form
 (`https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml`).
-File the [extension](extension-submission.md) and [preset](preset-submission.md)
+File the [extension](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md) and [preset](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md)
 submissions alongside it so the component catalogs graduate too.
 
 ---
@@ -79,7 +79,7 @@ Validated and built with the real CLI (`specify 0.16.3.dev0`) from a clean
 `specify init` project with the repo's catalogs added (`--install-allowed`):
 `specify bundle validate --path <repo>` → *"specassay is well-formed and
 valid"*; `specify bundle build` → the submitted artifact. Full transcript:
-[test-evidence.md](test-evidence.md). Install was exercised end to end from
+[test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md). Install was exercised end to end from
 the built artifact and from the catalog stack in the same clean project.
 
 **Example Usage:**
@@ -102,7 +102,7 @@ specify bundle install specassay
 
 **Proposed Catalog Entry:**
 *(the `specassay` object from
-[`catalogs/bundles.json`](../../catalogs/bundles.json) — paste it verbatim
+[`catalogs/bundles.json`](https://github.com/rdryfoos/specassay/blob/main/catalogs/bundles.json) — paste it verbatim
 under the top-level `bundles` object)*
 
 **Additional Context:**

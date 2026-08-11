@@ -44,4 +44,4 @@ contract at the Gate.
 
 **Proposed Catalog Entry:**
 *(the `specassay` object from
-[`catalogs/presets.json`](../../catalogs/presets.json))*
+[`catalogs/presets.json`](https://github.com/rdryfoos/specassay/blob/main/catalogs/presets.json))*

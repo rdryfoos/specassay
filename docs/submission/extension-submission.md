@@ -48,4 +48,4 @@ restated-intent detection and optional human-tick gates
 
 **Proposed Catalog Entry:**
 *(the `specassay-check` object from
-[`catalogs/extensions.json`](../../catalogs/extensions.json))*
+[`catalogs/extensions.json`](https://github.com/rdryfoos/specassay/blob/main/catalogs/extensions.json))*
