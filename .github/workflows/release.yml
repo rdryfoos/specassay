@@ -1,0 +1,65 @@
+name: Release
+
+# Tag vX.Y.Z and this builds the distributable artifacts and publishes the
+# GitHub release the catalogs point at:
+#   specassay-<bundle>.zip        — built by `specify bundle build` (the real
+#                                   artifact the community submission requires)
+#   specassay-check-<ext>.zip     — the extension component pack
+#   specassay-preset-<preset>.zip — the preset component pack
+# The bundle build resolves component references through this repo's own
+# hosted catalogs (catalogs/*.json at the tagged ref), the same way an
+# adopter's project would.
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Spec Kit CLI
+        run: pip install --quiet "git+https://github.com/github/spec-kit.git"
+
+      - name: Scratch Spec Kit project with this repo's catalogs active
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/proj && cd /tmp/proj
+          specify init --here --integration claude --script sh --ignore-agent-tools
+          REF="${GITHUB_REF_NAME}"
+          specify extension catalog add --name specassay \
+            "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${REF}/catalogs/extensions.json"
+          specify preset catalog add --name specassay \
+            "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${REF}/catalogs/presets.json"
+          sed -i 's/install_allowed: false/install_allowed: true/' \
+            .specify/extension-catalogs.yml .specify/preset-catalogs.yml
+
+      - name: Validate and build the bundle artifact
+        run: |
+          set -euo pipefail
+          cd /tmp/proj
+          specify bundle validate --path "$GITHUB_WORKSPACE"
+          specify bundle build --path "$GITHUB_WORKSPACE" --output "$GITHUB_WORKSPACE/dist"
+
+      - name: Build component packs (extension + preset)
+        run: |
+          set -euo pipefail
+          EXT_V=$(grep -m1 '  version:' extensions/specassay-check/extension.yml | sed 's/.*"\(.*\)"/\1/')
+          PRE_V=$(grep -m1 '  version:' presets/specassay/preset.yml | sed 's/.*"\(.*\)"/\1/')
+          (cd extensions/specassay-check && zip -qr "$GITHUB_WORKSPACE/dist/specassay-check-${EXT_V}.zip" .)
+          (cd presets/specassay && zip -qr "$GITHUB_WORKSPACE/dist/specassay-preset-${PRE_V}.zip" .)
+          ls -la dist/
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release create "$GITHUB_REF_NAME" dist/*.zip \
+            --title "SpecAssay $GITHUB_REF_NAME" \
+            --notes "See [CHANGELOG.md](https://github.com/${GITHUB_REPOSITORY}/blob/main/CHANGELOG.md) for what shipped. Catalogs: \`catalogs/*.json\` at this ref."
