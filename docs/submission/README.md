@@ -1,6 +1,13 @@
 # Submission package — status and checklist
 
-**Filing today? Start with the [cheat sheet](https://github.com/rdryfoos/specassay/blob/main/docs/submission/CHEATSHEET.md)** — three links, three pastes.
+**Filed 2026-08-11** — all three issues are in Spec Kit's queue:
+[#4057](https://github.com/github/spec-kit/issues/4057) (extension) ·
+[#4058](https://github.com/github/spec-kit/issues/4058) (preset) ·
+[#4059](https://github.com/github/spec-kit/issues/4059) (bundle).
+A maintainer applies the submission label at triage, which starts automated
+catalog validation (3–7 business days). The
+[cheat sheet](https://github.com/rdryfoos/specassay/blob/main/docs/submission/CHEATSHEET.md)
+stays for the next version-update filing.
 
 Everything Spec Kit's community submission process asks for, what state it's
 in, and what remains. The submission path is **issues, not PRs**: file one
@@ -19,7 +26,7 @@ catalog entry and URLs (3–7 business days; they do not audit code).
 | Command namespace rule (`speckit.{extension-id}.{command}`) | `speckit.specassay-check.gate` | installer accepts ✓ (it refused the old name — see CHANGELOG 0.3.1) |
 | Paste-ready issue bodies | [bundle](https://github.com/rdryfoos/specassay/blob/main/docs/submission/bundle-submission.md) · [extension](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md) · [preset](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md) | mirror the actual issue-form fields |
 
-## What a human does (the actual filing) 🖐
+## What a human does (the actual filing) 🖐 — done 2026-08-11, see issue links above
 
 1. File the **Extension Submission** issue → paste from
    [extension-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md).
