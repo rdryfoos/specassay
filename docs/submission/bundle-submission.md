@@ -143,7 +143,7 @@ paste it verbatim under the top-level `bundles` object)*
 **Additional Context:**
 
 ```
-Component submissions for the two bundled components: extension issue #___ and preset issue #___ (fill in after filing those first).
+Component submissions for the two bundled components: extension issue #4057 and preset issue #4058.
 
 The emitted trace-manifest is deliberately vendor-neutral (`format` + `schemaVersion` are the contract); a v5 interop revision is in beta with a second emitter (docs/trace-manifest-v5.md). The walkthrough site (https://www.specassay.com) shows the Thread Report and intent-PR behavior on live PRs in this repository.
 ```
