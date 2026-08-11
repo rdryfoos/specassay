@@ -107,8 +107,20 @@ The line holds throughout: the machine may **illuminate** richer detail (tier 1)
 but it only ever asks a human to look — it never *refuses* on a restatement. This
 is the blast-radius integrity property argued in
 [`scope-and-pull-requests.md` §5](scope-and-pull-requests.md), made mechanical
-and surfaced on the PR that moves the intent (enforcing re-confirm is a later
-slice). A restated intent also lights up *Thread Status* (`◀ changed`).
+and surfaced on the PR that moves the intent (`intent_ack` escalates it to a
+human tick — see *Configuration*). A restated intent also lights up *Thread
+Status* (`◀ changed`).
+
+**The two shapes, told apart by the carriers.** A restatement arrives either as
+a **PR from Intent** (the wording moves alone — live
+[PR #4](https://github.com/rdryfoos/specassay/pull/4)) or a **PR from the
+Field**, the discovery PR (the carriers move in the same PR — live
+[PR #5](https://github.com/rdryfoos/specassay/pull/5)). The re-confirm list
+annotates each carrier that was touched in this PR — *`◀ updated in this PR`*,
+linked to its diff — so the shapes read differently at a glance: untouched
+carriers owe a re-confirm; updated ones carry their re-confirmation in the same
+diff. The partial case renders both marks at once: *updated in this PR* yet
+*still contains the old value*.
 
 With minted / retired (in *What moved*) and restated here, the report now covers
 all three legible-intent-diff types.

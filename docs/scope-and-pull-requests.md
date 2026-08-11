@@ -203,14 +203,22 @@ What SpecAssay can add on top:
   merge. The PR that changes the intent carries its own list of what it may have
   invalidated.
 
-- **Two honest shapes of intent-PR:**
-  - **Intent-only PR** (intent changes, no code): the changed ID rides as
-    `backlog` — minted, no carrier yet. The Gate stays green *and honest*:
-    "intent moved; here is the new open thread." A later code PR closes it; the
-    durable ID stitches the two across time.
-  - **Discovery PR** (mid-build, the spec was found wrong): changes the
-    intent *and* the code together, reviewed as one, the thread showing both
-    moved in lockstep. SpecAssay's job is coherence — no orphaned proofs, no ACs
+- **Two honest shapes of intent-PR** (shipped — the Thread Report tells them
+  apart by whether the carriers moved, and each has a live demo):
+  - **PR from Intent** (the wording moves alone — live
+    [PR #4](https://github.com/rdryfoos/specassay/pull/4)): a decision lands in
+    the registry, or an agent's "cleanup" drifts a statement, and the build and
+    proof written against the old text sit untouched. For a *new* ID the row
+    rides as `backlog` — minted, no carrier yet; the Gate stays green *and
+    honest*: "intent moved; here is the new open thread." For a *restated* ID
+    this is the alarm state: *Intent Changed* lists the untouched carriers —
+    pinpointing a stale value when it can — because they now owe a re-confirm.
+  - **PR from the Field — the discovery PR** (mid-build, ground truth corrects
+    the spec — live [PR #5](https://github.com/rdryfoos/specassay/pull/5)):
+    changes the intent *and* the code together, reviewed as one, the thread
+    showing both moved in lockstep. *Intent Changed* marks each carrier
+    *updated in this PR*, so the pairing itself reads as the evidence of
+    coherence. SpecAssay's job is coherence — no orphaned proofs, no ACs
     pointing at deleted code, immutability intact.
 
 ## 6. Friction stance — the *refuse* rung (proposed)
