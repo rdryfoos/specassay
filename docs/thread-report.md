@@ -246,8 +246,9 @@ Three postures, in increasing intervention and decreasing frequency:
 - **`off`** (default) — pure illuminate: the off-thread list is shown, no tick.
 - **`record`** — adds a *"these untraced changes are incidental"* tick to
   record, informational only.
-- **`required`** — the **affirm** rung: a human must tick before merge. Wire the
-  actual block in a separate CI step; the report tool itself still exits 0.
+- **`required`** — the **affirm** rung: a human must tick before merge. The
+  report tool itself still exits 0; enforcement is separate wiring, and it
+  ships (below).
 
 `intent_ack` is the twin key for the **Intent Changed** section (`--intent-ack`
 overrides it), with the same three settings — `off` illuminates, `record` adds
@@ -255,6 +256,18 @@ an informational tick, `required` makes a human confirm each restated intent
 still holds before merge. The tick only appears on a PR that actually restates
 an intent. Same doctrine as `offthread_ack`: the report illuminates and records
 the human's verdict; it never renders the verdict itself.
+
+**How `required` blocks (shipped).** The ticks are real GitHub task-list
+checkboxes in the report comment — anyone with write access can tick them.
+After posting, the workflow sets a **`specassay/ack`** commit status on the PR
+head: *failure* while any required box is unticked. Ticking a box edits the
+comment, which fires [`ack-gate.yml`](../.github/workflows/ack-gate.yml); it
+re-reads the boxes and flips the status to *success* when all required ticks
+are given. To make the status a hard stop, add `specassay/ack` to the branch's
+required status checks (branch protection) — without that it's a visible
+red/green signal, not a block. Ticks **reset on every new push**: the report
+reposts with fresh boxes, because a tick attests to a specific head, not to
+the PR forever.
 
 The report also reads `registry`, `specs`, and `tasks` from the config to know
 which paths are intrinsically on-thread.

@@ -466,10 +466,10 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
         # Affirm rung: escalate re-confirmation to a human tick via `intent_ack`.
         if intent_ack == "record":
             out.append("")
-            out.append("> ☐ **Each restated intent still holds — its code and tests re-confirmed.** _(tick to record — informational)_")
+            out.append("- [ ] **Each restated intent still holds — its code and tests re-confirmed.** _(tick to record — informational)_")
         elif intent_ack == "required":
             out.append("")
-            out.append("> ☐ **Each restated intent still holds — its code and tests re-confirmed.** _(a human must tick this before merge — `intent_ack: required`)_")
+            out.append("- [ ] **Each restated intent still holds — its code and tests re-confirmed.** _(a human must tick this before merge — `intent_ack: required`)_")
         out.append("")
 
     # 2. Thread Status, per domain the PR touched (untouched backlog rows hidden)
@@ -519,9 +519,9 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                 out.append(f"- `{p}`")
         out.append("")
         if ack == "record":
-            out.append("> ☐ **These untraced changes are incidental.** _(tick to record — informational)_")
+            out.append("- [ ] **These untraced changes are incidental.** _(tick to record — informational)_")
         elif ack == "required":
-            out.append("> ☐ **These untraced changes are incidental.** _(a human must tick this before merge — `offthread_ack: required`)_")
+            out.append("- [ ] **These untraced changes are incidental.** _(a human must tick this before merge — `offthread_ack: required`)_")
     else:
         out.append("_Every changed file carries a mark tying it to an intent. Nothing sits off the thread._")
     out.append("")

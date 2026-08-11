@@ -4,8 +4,10 @@ name: Thread Report
 # posts a briefing on the PR, even when the Gate is broken (so the comment
 # explains *what* broke in thread terms). A final step then re-reads the head
 # Gate and fails the job if the thread is broken — that ✗ is the block; the
-# comment is never the block. A team wanting the affirm rung sets
-# offthread_ack: required in the config and gates on a separate human step.
+# comment is never the block. The affirm rung (offthread_ack / intent_ack:
+# required) renders real checkboxes in the comment; the Ack status step below
+# sets specassay/ack to failure until a human ticks them, and ack-gate.yml
+# re-reads the ticks on every comment edit.
 on:
   pull_request:
     paths:
@@ -14,6 +16,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  statuses: write
 
 jobs:
   thread-report:
@@ -82,6 +85,32 @@ jobs:
             } else {
               await github.rest.issues.createComment({ owner, repo, issue_number, body });
             }
+
+      - name: Ack status — required human ticks (the affirm rung)
+        uses: actions/github-script@v7
+        env:
+          REPORT_PATH: /tmp/report.md
+        with:
+          script: |
+            // Required ack boxes render as task-list items whose suffix names
+            // the `..._ack: required` key. A fresh post is always unticked, so
+            // the status starts red; ack-gate.yml flips it when a human ticks.
+            // No required boxes -> no status at all (nothing to gate).
+            const fs = require('fs');
+            const body = fs.readFileSync(process.env.REPORT_PATH, 'utf8');
+            const required = body.match(/^- \[[ x]\] .*required`\)_\s*$/gm) || [];
+            if (required.length === 0) return;
+            const unticked = required.filter(l => l.startsWith('- [ ]')).length;
+            await github.rest.repos.createCommitStatus({
+              ...context.repo,
+              sha: context.payload.pull_request.head.sha,
+              context: 'specassay/ack',
+              state: unticked ? 'failure' : 'success',
+              description: unticked
+                ? `${unticked} human tick(s) required — tick the box in the Thread Report`
+                : 'All required ticks given',
+              target_url: context.payload.pull_request.html_url,
+            });
 
       - name: Gate verdict — refuse a broken thread (the block, posted separately)
         run: |

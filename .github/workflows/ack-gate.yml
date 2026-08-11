@@ -1,0 +1,50 @@
+name: Ack Gate
+
+# The affirm rung's enforcement half. When the SpecAssay config sets
+# offthread_ack: required or intent_ack: required, the Thread Report renders
+# real task-list checkboxes in its PR comment. This workflow re-reads those
+# boxes whenever the comment is edited — ticking a box edits the comment —
+# and updates the specassay/ack commit status on the PR head: failure while
+# any required box is unticked, success once all are ticked.
+#
+# To make the status BLOCK merging, add specassay/ack to the branch's
+# required status checks (branch protection). Without that, it's a visible
+# red/green signal but not a hard stop.
+#
+# Ticks reset whenever the report reposts on a new push: a tick attests to a
+# specific head, not to the PR forever. New commits, new look, new tick.
+on:
+  issue_comment:
+    types: [edited]
+
+permissions:
+  statuses: write
+  pull-requests: read
+
+jobs:
+  ack-gate:
+    if: github.event.issue.pull_request && contains(github.event.comment.body, 'specassay-thread-report')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Re-read the ticks, update the status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.comment.body || '';
+            const required = body.match(/^- \[[ x]\] .*required`\)_\s*$/gm) || [];
+            if (required.length === 0) return;
+            const { data: pr } = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: context.payload.issue.number,
+            });
+            const unticked = required.filter(l => l.startsWith('- [ ]')).length;
+            await github.rest.repos.createCommitStatus({
+              ...context.repo,
+              sha: pr.head.sha,
+              context: 'specassay/ack',
+              state: unticked ? 'failure' : 'success',
+              description: unticked
+                ? `${unticked} human tick(s) required — tick the box in the Thread Report`
+                : 'All required ticks given',
+              target_url: pr.html_url,
+            });

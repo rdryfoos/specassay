@@ -34,11 +34,13 @@ test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
 # Thread Report: the affirm ceremony on the off-thread list.
 #   off      — pure illuminate: the list is shown, no tick (default)
 #   record   — a "these untraced changes are incidental" tick, informational
-#   required — a human must tick before merge (wire the block in a separate step)
+#   required — a human must tick before merge (the specassay/ack status stays
+#              red until ticked; add it to required checks to make it a hard stop)
 offthread_ack: "off"
 
 # Thread Report: the affirm ceremony on restated intents (the Intent Changed
 # section). Same three settings — off illuminates, record adds an informational
 # tick, required makes a human confirm each restated intent still holds before
-# merge. Only appears when a PR actually restates an intent.
+# merge (enforced the same way, via the specassay/ack status). Only appears
+# when a PR actually restates an intent.
 intent_ack: "off"
