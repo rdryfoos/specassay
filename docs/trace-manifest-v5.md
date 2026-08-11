@@ -150,7 +150,7 @@ An emitter whose model doesn't divide the world this way records its own `native
 
 ## Emitter-conformance checklist
 
-The minimum a manifest needs for Loupe to render the wish → work → proof descent truthfully.
+The minimum a manifest needs for Loupe to render the intent → build → proof descent truthfully.
 **This is the page to hand a new emitter** — the schema doc is the reference; this is the
 contract.
 
