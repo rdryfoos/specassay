@@ -1,5 +1,7 @@
 # Submission package — status and checklist
 
+**Filing today? Start with the [cheat sheet](https://github.com/rdryfoos/specassay/blob/main/docs/submission/CHEATSHEET.md)** — three links, three pastes.
+
 Everything Spec Kit's community submission process asks for, what state it's
 in, and what remains. The submission path is **issues, not PRs**: file one
 issue per component using Spec Kit's templates; a maintainer validates the
