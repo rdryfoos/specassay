@@ -45,7 +45,10 @@ the `...` menu on the first comment, choose **Edit**.
 Two review rounds have needed this. The first (author metadata, v0.3.2) is
 closed. The second is below.
 
-### Round 2, 2026-08-13: required tools and version alignment
+### Round 2, 2026-08-13: required tools and version alignment (done)
+
+All three issues were edited to 0.3.3 and both replies posted on
+2026-08-13. Kept as the worked example of what a review round takes.
 
 Two findings, from Copilot review on the generated PRs:
 
