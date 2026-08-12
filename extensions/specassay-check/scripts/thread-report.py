@@ -5,7 +5,7 @@ Diffs a base trace-manifest against a PR-head trace-manifest and buckets the
 PR's changed files, then emits a Markdown **Thread Report** for a PR comment:
 
   1. What moved — status changes, IDs minted / retired, proofs & covers added.
-  1b. Intent Changed — intents whose wording was restated, with the blast-radius
+  1b. Intent Changed — statements of intent whose wording was restated, with the blast-radius
      re-confirm list (the build and proof written against the old wording).
   2. Thread Status — per domain touched by the PR (untouched backlog rows hidden).
   3. Off Thread — changed files that carry no mark tying them to any intent this
@@ -375,7 +375,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     out.append("\n".join(lines) if lines else "_No status changes in this PR._")
     out.append("")
 
-    # 1b. Intent Changed — restated intents + blast-radius re-confirm list
+    # 1b. Intent Changed — restated statements of intent + blast-radius re-confirm list
     if moved["restated"]:
         _carrier_cache: dict = {}
 
@@ -408,9 +408,10 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
 
         out.append("### Intent Changed")
         n = len(moved["restated"])
-        lead = "intent was" if n == 1 else "intents were"
+        lead = "statement of intent was" if n == 1 else "statements of intent were"
+        poss = "its" if n == 1 else "their"
         out.append(
-            f"⚠️ {n} {lead} restated — its wording moved under the code and tests "
+            f"⚠️ {n} {lead} restated — {poss} wording moved under the code and tests "
             "written against the old text. Re-confirm each still satisfies the new statement."
         )
         out.append("")
@@ -563,7 +564,7 @@ def main() -> int:
     ap.add_argument("--offthread-ack", default=None, choices=ACK_CHOICES,
                     help="the affirm ceremony on the off-thread list; overrides the config key")
     ap.add_argument("--intent-ack", default=None, choices=ACK_CHOICES,
-                    help="the affirm ceremony on restated intents; overrides the config key")
+                    help="the affirm ceremony on restated intent; overrides the config key")
     ap.add_argument("--out", default="-", help="write report here (default stdout)")
     args = ap.parse_args()
 

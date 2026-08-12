@@ -26,7 +26,7 @@ Process inertia and politics, not the technique, are the real risk. HomesFlow wa
 greenfield on *both* axes, so the incremental-brownfield story is untested.
 
 **How we'd test it:** adopt SpecAssay on a real brownfield repo for *new work
-only* — empty/small registry, mark just the new intents, leave the legacy
+only* — empty/small registry, mark just the new statements of intent, leave the legacy
 un-gated — and see whether the thread grows cleanly at the margin without a
 retrofit, and whether a team actually tolerates the ceremony mid-stream.
 

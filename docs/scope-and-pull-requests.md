@@ -9,7 +9,7 @@ SpecAssay hallmarks the Golden Thread from intent to build to proof. This note i
 about the *edge* of that guarantee: what a passing Gate does and does not
 promise, why the pull request is the backstop for the rest, and how the same
 durable IDs that make the forward thread possible can carry pull requests that
-change the intents themselves.
+change the intent itself.
 
 ## 1. Completeness, not minimality (shipped)
 
@@ -174,14 +174,14 @@ This is the direct counter to the automation-bias trap: not one green check, but
 the green decomposed into legible claims, including an explicit "here is what
 traces to nothing."
 
-## 5. Pull requests that change intents (surfacing shipped; enforcement proposed)
+## 5. Pull requests that change intent (surfacing shipped; enforcement proposed)
 
 The reason SpecAssay is *unusually* suited to this: mint-at-intent, immutable
-IDs, and registry-as-source-of-truth already made intents **first-class
+IDs, and registry-as-source-of-truth already made statements of intent **first-class
 version-controlled artifacts with stable identity.** An intent is diffable,
 reviewable, and mergeable — keyed by an ID that survives the change. Most shops
-cannot meaningfully PR an intent because their intents live in a ticket
-tracker with no durable identity; here they live in git.
+cannot meaningfully PR an intent because their intent lives in a ticket
+tracker with no durable identity; here it lives in git.
 
 What SpecAssay can add on top:
 

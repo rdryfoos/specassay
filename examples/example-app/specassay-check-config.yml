@@ -38,7 +38,7 @@ test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
 #              red until ticked; add it to required checks to make it a hard stop)
 offthread_ack: "off"
 
-# Thread Report: the affirm ceremony on restated intents (the Intent Changed
+# Thread Report: the affirm ceremony on restated intent (the Intent Changed
 # section). Same three settings — off illuminates, record adds an informational
 # tick, required makes a human confirm each restated intent still holds before
 # merge (enforced the same way, via the specassay/ack status). Only appears
