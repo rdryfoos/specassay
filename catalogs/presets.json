@@ -1,16 +1,16 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-08-11T00:00:00Z",
+  "updated_at": "2026-08-13T00:00:00Z",
   "catalog_url": "https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/presets.json",
   "presets": {
     "specassay": {
       "name": "SpecAssay",
       "id": "specassay",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "description": "Appends durable-ID, Carries, and SpecAssay vocabulary onto Spec Kit spec, tasks, and constitution templates.",
       "author": "Rik Dryfoos",
       "repository": "https://github.com/rdryfoos/specassay",
-      "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-preset-0.2.0.zip",
+      "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-preset-0.2.1.zip",
       "homepage": "https://www.specassay.com",
       "documentation": "https://github.com/rdryfoos/specassay/blob/main/PROMOTION-CONTRACT.md",
       "license": "MIT",

@@ -11,7 +11,7 @@ matching field. Title: `[Extension]: Add specassay-check`.
 
 **Extension Name:** SpecAssay Check
 
-**Version:** 0.3.1
+**Version:** 0.3.2
 
 **Description:**
 Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).
@@ -21,7 +21,7 @@ Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).
 **Repository URL:** https://github.com/rdryfoos/specassay
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-check-0.3.1.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-check-0.3.2.zip
 
 **License:** MIT
 
@@ -85,7 +85,7 @@ https://github.com/rdryfoos/specassay/blob/main/CHANGELOG.md
 
 ```bash
 # Install extension
-specify extension add specassay-check --from https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-check-0.3.1.zip
+specify extension add specassay-check --from https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-check-0.3.2.zip
 
 # Use the command (in your integration, e.g. Claude)
 /speckit.specassay-check.gate
@@ -99,10 +99,10 @@ specify extension add specassay-check --from https://github.com/rdryfoos/specass
   "specassay-check": {
     "name": "SpecAssay Check",
     "id": "specassay-check",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "description": "Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).",
     "author": "Rik Dryfoos",
-    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.1/specassay-check-0.3.1.zip",
+    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-check-0.3.2.zip",
     "repository": "https://github.com/rdryfoos/specassay",
     "homepage": "https://www.specassay.com",
     "documentation": "https://github.com/rdryfoos/specassay/blob/main/extensions/specassay-check/README.md",

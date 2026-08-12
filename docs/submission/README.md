@@ -19,11 +19,11 @@ catalog entry and URLs (3–7 business days; they do not audit code).
 | Item | Where | Verified |
 | --- | --- | --- |
 | `bundle.yml` / `extension.yml` / `preset.yml` manifests | repo root, `extensions/specassay-check/`, `presets/specassay/` | `specify bundle validate` ✓ |
-| Versioned release with the `specify bundle build` artifact | [v0.3.1](https://github.com/rdryfoos/specassay/releases/tag/v0.3.1): `specassay-0.3.1.zip` + component packs | built in CI by the real CLI |
+| Versioned release with the `specify bundle build` artifact | [v0.3.2](https://github.com/rdryfoos/specassay/releases/tag/v0.3.2): `specassay-0.3.2.zip` + component packs | built in CI by the real CLI |
 | Hosted catalogs with live download URLs | [`catalogs/*.json`](https://github.com/rdryfoos/specassay/tree/main/catalogs) | assets download and install ✓ |
 | Clean-project install, end to end, by bundle ID | — | [test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md) |
 | LICENSE (MIT) · README · CHANGELOG | repo root | — |
-| Command namespace rule (`speckit.{extension-id}.{command}`) | `speckit.specassay-check.gate` | installer accepts ✓ (it refused the old name — see CHANGELOG 0.3.1) |
+| Command namespace rule (`speckit.{extension-id}.{command}`) | `speckit.specassay-check.gate` | installer accepts ✓ (it refused the old name — see CHANGELOG 0.3.2) |
 | Paste-ready issue bodies | [bundle](https://github.com/rdryfoos/specassay/blob/main/docs/submission/bundle-submission.md) · [extension](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md) · [preset](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md) | mirror the actual issue-form fields |
 
 ## What a human does (the actual filing) 🖐 — done 2026-08-11, see issue links above

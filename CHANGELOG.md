@@ -3,6 +3,16 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.3.2 — 2026-08-13
+
+- Author metadata fixed to **"Rik Dryfoos"** (was "Rik Dryfoos / Dryfoos
+  Consulting") in `extension.yml`, `preset.yml`, and `bundle.yml`. The
+  v0.3.1 release assets were built before this rename landed on `main`,
+  so they still carried the old string; this release re-packages with
+  the corrected metadata. Component-only change, no behavior difference.
+
+Components: bundle 0.3.2 · extension `specassay-check` 0.3.2 · preset 0.2.1.
+
 ## 0.3.1 — 2026-08-11
 
 - Command renamed `speckit.specassay.check` → **`speckit.specassay-check.gate`**

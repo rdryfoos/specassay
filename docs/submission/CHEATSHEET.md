@@ -27,7 +27,7 @@ Tips:
 Links the forms ask for (all live):
 
 - Repository: <https://github.com/rdryfoos/specassay>
-- Release with artifacts: <https://github.com/rdryfoos/specassay/releases/tag/v0.3.1>
+- Release with artifacts: <https://github.com/rdryfoos/specassay/releases/tag/v0.3.2>
 - Catalogs: <https://github.com/rdryfoos/specassay/tree/main/catalogs>
 - Extension README: <https://github.com/rdryfoos/specassay/blob/main/extensions/specassay-check/README.md>
 - Preset contract: <https://github.com/rdryfoos/specassay/blob/main/PROMOTION-CONTRACT.md>
