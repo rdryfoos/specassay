@@ -108,9 +108,9 @@ specify extension add --dev /path/to/specassay/extensions/specassay-check
 
 | File                                                         | Role                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [`samples/homesflow.trace-manifest.json`](./samples/homesflow.trace-manifest.json) | Real Gate 2 emit against HomesFlow (82 rows, 0 GAP) — **Loupe's preview default**, served at loupe.dryfoos.com |
-| [`samples/sample.trace-manifest.json`](./samples/sample.trace-manifest.json) | Clean synthetic `example-app` demo (`gate.ok`, 0 GAP) — the shareable "shape" artifact and dev fallback |
-| [`samples/sample-gap.trace-manifest.json`](./samples/sample-gap.trace-manifest.json) | The `example-app` demo with one AC gilted into a silent **GAP** (`gate.ok: false`) — shows the refusal / broken-thread state |
+| [`samples/homesflow.trace-manifest.json`](./samples/homesflow.trace-manifest.json) | Real Gate 2 emit against HomesFlow (82 rows, 0 GAP); **Loupe's preview default**, served at loupe.dryfoos.com |
+| [`samples/sample.trace-manifest.json`](./samples/sample.trace-manifest.json) | Clean synthetic `example-app` demo (`gate.ok`, 0 GAP); the shareable "shape" artifact and dev fallback |
+| [`samples/sample-gap.trace-manifest.json`](./samples/sample-gap.trace-manifest.json) | The `example-app` demo with one AC gilted into a silent **GAP** (`gate.ok: false`); shows the refusal / broken-thread state |
 
 Samples can be viewed in [Loupe](https://loupe.dryfoos.com/app) by uploading a local copy via Loupe's `Load Manifest...` button. 
 
@@ -119,7 +119,7 @@ See [`samples/README.md`](./samples/README.md).
 ## What SpecAssay is not
 
 - **Not a fork of Spec Kit**, and not a replacement: a bundle that overlays the stock workflow.
-- **Not Thorsten Schlathölter's [`clew`](https://ariadne-thread.io)** (an inner-loop, code-anchored constructor). SpecAssay is complementary altitude — promotion and refusal on the outer loop — and cites `clew` as prior art.
+- **Not Thorsten Schlathölter's [`clew`](https://ariadne-thread.io)** (an inner-loop, code-anchored constructor). SpecAssay is complementary altitude (promotion and refusal on the outer loop) and cites `clew` as prior art.
 - **Not a visualizer.** [Loupe](https://loupe.dryfoos.com/) (or any viewer) may read `trace-manifest.json`; viewers never mint IDs or re-scan the target.
 - **Not agent kanban / human-approval lanes**, and not HomesFlow-specific paths (those stay in HomesFlow as a worked example).
 

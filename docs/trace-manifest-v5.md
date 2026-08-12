@@ -1,10 +1,10 @@
-# trace-manifest v5 — interop rev (beta)
+# trace-manifest v5: interop rev (beta)
 
-**Status: beta.** `schemaVersion: 5` is live but explicitly revisable — field names and
+**Status: beta.** `schemaVersion: 5` is live but explicitly revisable: field names and
 shapes here may still move as the first external emitter (clew) pushes on them, without a
 version bump. Loupe reads schema **3–5** today, uploads included. Two v5 samples ship in
 [`samples/`](../samples/): [`sample-v5.trace-manifest.json`](../samples/sample-v5.trace-manifest.json)
-(FieldKit — SpecAssay-dialect, tiers + parents + rollups, ~31 rows) and
+(FieldKit: SpecAssay-dialect, tiers + parents + rollups, ~31 rows) and
 [`clew-style-v5.trace-manifest.json`](../samples/clew-style-v5.trace-manifest.json)
 (ledger origins, Swift symbol anchors, `nativeStatus`). SpecAssay's own Gate still emits v4;
 it bumps once the beta settles. When it does, this doc folds into
@@ -17,15 +17,15 @@ requirement→criterion hierarchy is *inferred* from the `US/FR/NFR/AC` prefix a
 token in the ID. That convention is load-bearing, and it only holds for SpecAssay's own
 naming.
 
-v5 opens the format to a **second emitter** — Thorsten Schlathölter's *clew* /
-Ariadne-Thread, built on CAS-DD (Code-Anchored Spec-Driven Development) — so he can extract
+v5 opens the format to a **second emitter**, Thorsten Schlathölter's *clew* /
+Ariadne-Thread, built on CAS-DD (Code-Anchored Spec-Driven Development), so he can extract
 clew's data into a manifest and render it through the same glass. Three facts about clew
 drive the rev:
 
 1. **It models the tier explicitly.** In CAS-DD, "a requirement is covered once all of its
    acceptance criteria are covered" is a real edge, not a naming convention. v5 must carry
    that edge as data.
-2. **Its IDs are ledger-minted.** clew mints immutable IDs from a sequence held in a ledger —
+2. **Its IDs are ledger-minted.** clew mints immutable IDs from a sequence held in a ledger;
    they survive rewrites. v4's `registry: {path, line}` assumes an ID sits on a markdown
    line. v5 must generalize where an ID comes from.
 3. **It is code-anchored.** Anchors may be spans or symbols, and should survive reflow the
@@ -38,7 +38,7 @@ drive the rev:
 - **Emitter-neutral core.** The `US/FR/NFR/AC` prefixes stay as *SpecAssay's* dialect. The
   format's core speaks in `tier` and explicit edges, which any emitter can populate.
 - **Edges are canonical; rollup is a courtesy.** The parent/child edges are the single source
-  of truth. A precomputed `rollup` may accompany them so a viewer need not recompute — but
+  of truth. A precomputed `rollup` may accompany them so a viewer need not recompute, but
   when they disagree, the edges win. (This is option **B**: carry both.)
 - **The `status` core is fixed; native terms map onto it.** Loupe's colors key on a
   four-value core. An emitter with a different coverage model records its own `nativeStatus`
@@ -54,7 +54,7 @@ drive the rev:
 | `targetName`    | Project label                                                |   |
 | `repoPath`      | Absolute path scanned                                        |   |
 | `generatedAt`   | ISO-8601 UTC                                                 |   |
-| `gate`          | `{ ok, failures[] }` — the emitter's refuse set              |   |
+| `gate`          | `{ ok, failures[] }`: the emitter's refuse set              |   |
 | `totals`        | `registryIdCount`, `acCount`, `coveredCount`                 |   |
 | `statusCounts`  | Counts for the four core statuses                            |   |
 | `rows`          | Matrix rows                                                  |   |
@@ -70,9 +70,9 @@ drive the rev:
 | `type`            | Emitter dialect kind (`AC`/`FR`/`NFR`/`US` for SpecAssay). Free-form; the portable altitude is `tier`. |   |
 | `tier`            | **NEW.** Portable altitude, decoupled from prefix: `"intent" \| "requirement" \| "criterion"`. SpecAssay maps `US→intent`, `FR/NFR→requirement`, `AC→criterion`; clew maps its own kinds. Viewers order the descent by `tier`, falling back to `type` prefix when absent. | ＋ |
 | `statement`       | Best-effort prose from the source                            |   |
-| `parents`         | **NEW.** `[id]` — the upward edges (a criterion's requirement, a requirement's intent), declared not inferred. Empty/absent ⇒ fall back to the domain-grouping convention. | ＋ |
+| `parents`         | **NEW.** `[id]`: the upward edges (a criterion's requirement, a requirement's intent), declared not inferred. Empty/absent ⇒ fall back to the domain-grouping convention. | ＋ |
 | `origin`          | **NEW.** Where the ID comes from (see below). Generalizes `registry`. | ＋ |
-| `registry`        | `{ path, line }` — retained. Equivalent to `origin` with `kind: "registry-line"`; readers alias one to the other. |   |
+| `registry`        | `{ path, line }`: retained. Equivalent to `origin` with `kind: "registry-line"`; readers alias one to the other. |   |
 | `status`          | One of the four core statuses                                |   |
 | `nativeStatus`    | **NEW.** Optional emitter-native coverage term, when it differs from the core. Informational; color keys on `status`. | ＋ |
 | `implementations` | Coverage anchors (see anchor shape)                          |   |
@@ -81,7 +81,7 @@ drive the rev:
 | `rollup`          | **NEW, courtesy.** Precomputed coverage over children (see below). | ＋ |
 | `attestedBy`      | Optional operator stamp                                      |   |
 
-### `origin` — generalized ID provenance
+### `origin`: generalized ID provenance
 
 ```jsonc
 "origin": {
@@ -108,7 +108,7 @@ v4 anchors are `{ path, line, excerpt }` (proofs add `name`). v5 adds optional `
 `symbol`, and `sha` so a code-anchored emitter can point at a span or a symbol that survives
 reflow. `line` remains the common case; everything else is optional enrichment.
 
-### `rollup` — precomputed coverage (option B)
+### `rollup`: precomputed coverage (option B)
 
 ```jsonc
 "rollup": {
@@ -125,7 +125,7 @@ contradicts what the edges imply, a viewer trusts the edges and may flag the dis
 
 ## Status core (unchanged) + native mapping
 
-The four core statuses and their colors are fixed — this is Loupe's contract:
+The four core statuses and their colors are fixed; this is Loupe's contract:
 
 | Status         | Color | Meaning                                                      |
 | -------------- | ----- | ----------------------------------------------------------- |
@@ -145,32 +145,32 @@ An emitter whose model doesn't divide the world this way records its own `native
 - Every v5 field is optional; a v4 file needs no migration to read as v5.
 - SpecAssay's emitter keeps writing `type`, `registry`, and domain-grouped IDs. It *gains*
   `tier`, `parents`, and `rollup` (all derivable from what it already knows), so a SpecAssay
-  v5 manifest is self-describing without relying on the prefix convention — but the
+  v5 manifest is self-describing without relying on the prefix convention, but the
   convention still works as the fallback.
 
 ## Emitter-conformance checklist
 
 The minimum a manifest needs for Loupe to render the intent → build → proof descent truthfully.
-**This is the page to hand a new emitter** — the schema doc is the reference; this is the
+**This is the page to hand a new emitter.** The schema doc is the reference; this is the
 contract.
 
 - [ ] `format: "trace-manifest"` and `schemaVersion: 5`.
 - [ ] `emitter: { name, version }`.
-- [ ] `gate: { ok: boolean, failures: [] }` — `ok` drives braid-vs-fray; `failures` may be empty.
+- [ ] `gate: { ok: boolean, failures: [] }`: `ok` drives braid-vs-fray; `failures` may be empty.
 - [ ] `rows[]`, each with:
-  - [ ] `id` — a durable, stable token.
-  - [ ] `tier` — `intent` \| `requirement` \| `criterion` (or a `type` prefix Loupe can map).
-  - [ ] `status` — one of the four core values.
-  - [ ] `statement` — human-readable prose (best effort).
-  - [ ] `parents: [id]` for anything below the top tier — **the edges Loupe draws the thread from.**
+  - [ ] `id`: a durable, stable token.
+  - [ ] `tier`: `intent` \| `requirement` \| `criterion` (or a `type` prefix Loupe can map).
+  - [ ] `status`: one of the four core values.
+  - [ ] `statement`: human-readable prose (best effort).
+  - [ ] `parents: [id]` for anything below the top tier: **the edges Loupe draws the thread from.**
 - [ ] Proofs/implementations as anchors (`{ path, line? }` minimum) where they exist.
-- [ ] `origin` (or `registry`) where an ID is locatable — optional, purely a courtesy link.
-- [ ] `rollup` on requirements — optional; Loupe recomputes from edges if absent.
+- [ ] `origin` (or `registry`) where an ID is locatable: optional, purely a courtesy link.
+- [ ] `rollup` on requirements: optional; Loupe recomputes from edges if absent.
 
 Everything not on this list is enrichment. A manifest that satisfies it renders; a manifest
 that adds `ext`, `symbol`, `sha`, `nativeStatus`, `rollup`, etc. renders richer.
 
-## Worked example — a clew-style row mapped to v5
+## Worked example: a clew-style row mapped to v5
 
 A ledger-minted requirement and one of its criteria, code-anchored, as clew might emit them:
 
@@ -212,6 +212,6 @@ The `nativeStatus`, `symbol`, and ledger `origin` ride along untouched.
 
 ## Non-goals
 
-- Not OMG ReqIF / OSLC / W3C traceability — those remain optional future adapters.
+- Not OMG ReqIF / OSLC / W3C traceability; those remain optional future adapters.
 - v5 does not standardize *how* an emitter decides coverage; it standardizes how the result
   is expressed. clew and SpecAssay may compute "covered" differently and both round-trip.

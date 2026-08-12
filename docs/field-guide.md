@@ -1,6 +1,6 @@
 # Field guide
 
-The visual field guide — a screenshot tour of SpecAssay, the trace-manifest, and Loupe, one screenshot at a time — lives on the site:
+The visual field guide (a screenshot tour of SpecAssay, the trace-manifest, and Loupe, one screenshot at a time) lives on the site:
 
 **→ [specassay.com/field-guide](https://specassay.com/field-guide)**
 

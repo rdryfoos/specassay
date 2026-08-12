@@ -52,7 +52,7 @@ For any ID, ask five questions in order:
 | Blue node, braid solid | Not yet — an empty backlog step or an honest-missing carrier. The Golden Thread is intact. |
 | Fray / red banner     | The Golden Thread is broken: a silent AC gap, or any other refusal (`gate.ok: false`). |
 
-Amber and blue don't mean broken. On a solid braid they mean "unfinished and admitted" — amber for owed, blue for not-yet. Only fray means broken, and fray appears only when the Gate refused.
+Amber and blue don't mean broken. On a solid braid they mean "unfinished and admitted": amber for owed, blue for not-yet. Only fray means broken, and fray appears only when the Gate refused.
 
 ## Worked examples (HomesFlow)
 
