@@ -3,6 +3,26 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.3.3 — 2026-08-13
+
+Two findings from Spec Kit review, and a versioning rule to keep them from
+recurring.
+
+- **Required tools are declared.** `extension.yml` carried `tools: []` while
+  the submission text promised `python3 (>=3.8)`, so the generated catalog
+  entry reported every Python 3 as compatible. The extension now declares
+  `bash` and `python3 >=3.8` in the schema the catalog uses. The constraint
+  is conservative on purpose: the shipped code parses on 3.7, and 3.8 is what
+  is supported and tested.
+- **All three components share the bundle's version, from here on.** Spec
+  Kit's preset workflow expects a release tag matching the preset's own
+  version, and a preset at 0.2.1 riding in a v0.3.2 release cannot satisfy
+  that. Component versions now move together with the bundle, so the release
+  tag always matches every component.
+
+Components: bundle 0.3.3 · extension `specassay-check` 0.3.3 · preset
+`specassay` 0.3.3.
+
 ## 0.3.2 — 2026-08-13
 
 - Author metadata fixed to **"Rik Dryfoos"** (was "Rik Dryfoos / Dryfoos

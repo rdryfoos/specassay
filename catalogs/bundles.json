@@ -1,17 +1,17 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-08-13T00:00:00Z",
+  "updated_at": "2026-08-13T12:00:00Z",
   "catalog_url": "https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/bundles.json",
   "bundles": {
     "specassay": {
       "name": "SpecAssay",
       "id": "specassay",
-      "version": "0.3.2",
+      "version": "0.3.3",
       "role": "developer",
       "description": "Durable-ID promotion for stock Spec Kit: templates, Gate 2 refusal, and trace-manifest emission.",
       "author": "Rik Dryfoos",
       "license": "MIT",
-      "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-0.3.2.zip",
+      "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.3/specassay-0.3.3.zip",
       "repository": "https://github.com/rdryfoos/specassay",
       "requires": {
         "speckit_version": ">=0.14.0"

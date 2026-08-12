@@ -11,7 +11,7 @@ matching field. Title: `[Extension]: Add specassay-check`.
 
 **Extension Name:** SpecAssay Check
 
-**Version:** 0.3.2
+**Version:** 0.3.3
 
 **Description:**
 Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).
@@ -21,7 +21,7 @@ Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).
 **Repository URL:** https://github.com/rdryfoos/specassay
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-check-0.3.2.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.3.3/specassay-check-0.3.3.zip
 
 **License:** MIT
 
@@ -85,7 +85,7 @@ https://github.com/rdryfoos/specassay/blob/main/CHANGELOG.md
 
 ```bash
 # Install extension
-specify extension add specassay-check --from https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-check-0.3.2.zip
+specify extension add specassay-check --from https://github.com/rdryfoos/specassay/releases/download/v0.3.3/specassay-check-0.3.3.zip
 
 # Use the command (in your integration, e.g. Claude)
 /speckit.specassay-check.gate
@@ -99,10 +99,10 @@ specify extension add specassay-check --from https://github.com/rdryfoos/specass
   "specassay-check": {
     "name": "SpecAssay Check",
     "id": "specassay-check",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "description": "Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).",
     "author": "Rik Dryfoos",
-    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-check-0.3.2.zip",
+    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.3/specassay-check-0.3.3.zip",
     "repository": "https://github.com/rdryfoos/specassay",
     "homepage": "https://www.specassay.com",
     "documentation": "https://github.com/rdryfoos/specassay/blob/main/extensions/specassay-check/README.md",
@@ -110,7 +110,11 @@ specify extension add specassay-check --from https://github.com/rdryfoos/specass
     "category": "visibility",
     "effect": "read-write",
     "requires": {
-      "speckit_version": ">=0.14.0"
+      "speckit_version": ">=0.14.0",
+      "tools": [
+        { "name": "bash", "required": true },
+        { "name": "python3", "version": ">=3.8", "required": true }
+      ]
     },
     "provides": {
       "commands": 1,
