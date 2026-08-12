@@ -35,3 +35,46 @@ Links the forms ask for (all live):
 Expected turnaround: a maintainer validates catalog entry and URLs in 3–7
 business days (they do not audit code). A version update later is a new
 issue noting it updates the existing entry.
+
+## Amending a filed issue (2026-08-13: the v0.3.2 metadata fix)
+
+The three issues are filed and validated; each has a maintainer-approved
+catalog PR behind it. They are **edited in place**, not refiled. On
+2026-08-13 KSchlobohm asked for consistent author metadata across the
+release assets, so v0.3.2 republished them and these fields need to
+follow.
+
+Open each issue, click the `...` menu (top right of the first comment),
+choose **Edit**, and change only these two fields:
+
+| Issue | Field | New value |
+| --- | --- | --- |
+| [#4057 extension](https://github.com/github/spec-kit/issues/4057) | Version | `0.3.2` |
+| | Download URL | `https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-check-0.3.2.zip` |
+| [#4058 preset](https://github.com/github/spec-kit/issues/4058) | Version | `0.2.1` |
+| | Download URL | `https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-preset-0.2.1.zip` |
+| [#4059 bundle](https://github.com/github/spec-kit/issues/4059) | Version | `0.3.2` |
+| | Download URL | `https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-0.3.2.zip` |
+
+The bundle issue also lists its components; set those to
+`specassay-check@0.3.2` and `specassay@0.2.1`. Everything else on all
+three forms stays as filed. The paste-from docs above already carry
+these values if you would rather copy whole fields.
+
+Then reply once, on [#4059](https://github.com/github/spec-kit/issues/4059),
+where the request was made:
+
+> Fixed. The author field was already "Rik Dryfoos" on `main`, but the
+> v0.3.1 assets were built before that landed. v0.3.2 republishes all
+> three with matching metadata in `extension.yml`, `preset.yml`, and
+> `bundle.yml`; catalog entries and the submission issues here are
+> updated to match.
+>
+> - specassay-check 0.3.2: `https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-check-0.3.2.zip`
+> - specassay (preset) 0.2.1: `https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-preset-0.2.1.zip`
+> - specassay (bundle) 0.3.2: `https://github.com/rdryfoos/specassay/releases/download/v0.3.2/specassay-0.3.2.zip`
+
+Note the open catalog PRs (#4069, #4070, #4072) were generated from the
+issue bodies as filed, so they carry the old versions until a maintainer
+regenerates or updates them. Editing the issues is the part that is
+yours; the PRs are theirs.
