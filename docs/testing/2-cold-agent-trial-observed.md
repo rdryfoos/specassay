@@ -15,8 +15,7 @@ provides no fixture, domain, or feature.
   appeared in SpecAssay development, documentation, examples, or prior trials.
   Record its exact wording. This runbook does not prescribe its domain or
   feature.
-- Stock [GitHub Spec Kit](https://github.com/github/spec-kit) and a `specify`
-  CLI that supports presets, extensions, and bundles.
+- [GitHub Spec Kit](https://github.com/github/spec-kit) 0.14.0 or newer.
 - A fresh agent session with no prior exposure to the chosen repository,
   SpecAssay, or its trials through memory, rules, history, or transcripts.
 - Necessary credentials, an external evidence directory, and a volunteer who

@@ -14,8 +14,7 @@ feature.
   examples, or prior trials.
   Record its exact wording. This runbook does not prescribe its domain or
   feature.
-- Stock [GitHub Spec Kit](https://github.com/github/spec-kit) and a `specify`
-  CLI that supports presets, extensions, and bundles.
+- [GitHub Spec Kit](https://github.com/github/spec-kit) 0.14.0 or newer.
 - Any credentials required by the agent's normal workflow, plus an evidence
   directory outside the fixture.
 - A fresh agent session with no prior exposure to the chosen codebase,
@@ -23,8 +22,8 @@ feature.
 
 ## Prepare the disposable fixture
 
-1. Make a disposable copy at the recorded source commit. Preserve ordinary
-   project guidance, but remove any local teaching of the practice under test.
+1. Make a disposable copy. Preserve ordinary project guidance, but remove any
+   local teaching of the practice under test.
 2. Add the exact requirement as plain prose to the project's ordinary product
    intake document. Add no durable ID, acceptance criterion, implementation
    hint, file name, or test name.
@@ -77,9 +76,8 @@ blocked, and preserve that state before any repair or rerun.
 
 ## Return this evidence package
 
-- The repository URL, source commit, exact requirement, preflight record,
-  volunteer attestation, stock Spec Kit command, version, and agent-start
-  revision.
+- The exact requirement, preflight record, volunteer attestation, stock Spec
+  Kit version, and agent-start revision.
 - The complete transcript, including tool calls, output, errors, and final
   response.
 - Agent commits, final status, diff from agent start, and untracked files.
