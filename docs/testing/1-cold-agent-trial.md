@@ -7,8 +7,8 @@ feature.
 
 ## Prerequisites
 
-- After receiving this runbook, the volunteer independently chooses a
-  codebase that was never touched by SpecAssay, or creates new.
+- After receiving this runbook, the volunteer independently chooses or
+  creates a codebase that has never been touched by SpecAssay.
 - The volunteer chooses a small plain-language requirement that has not
   appeared in SpecAssay development, documentation, examples, or prior trials.
   Record its exact wording. This runbook does not prescribe its domain or
