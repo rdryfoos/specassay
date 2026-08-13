@@ -3,6 +3,20 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.3.4 — 2026-08-13
+
+- **The preset's own README pointed at a stale asset.** `presets/specassay/README.md`
+  ships inside the preset zip, and its install command still named
+  `v0.3.1/specassay-preset-0.2.0.zip` even after two version bumps, because
+  neither sweep grepped that file. Found by Copilot review on the generated
+  preset PR. Fixed, and since the file ships inside the artifact, the fix
+  needed a real release rather than a docs-only push: republishing v0.3.3's
+  assets under the same tag with different contents would have repeated the
+  exact mismatch this bundle exists to catch.
+
+Components: bundle 0.3.4 · extension `specassay-check` 0.3.4 · preset
+`specassay` 0.3.4.
+
 ## 0.3.3 — 2026-08-13
 
 Two findings from Spec Kit review, and a versioning rule to keep them from

@@ -15,7 +15,7 @@ issues first — the bundle references both (see Additional Context below).
 
 **Bundle Name:** SpecAssay
 
-**Version:** 0.3.3
+**Version:** 0.3.4
 
 **Role or Team:** developer
 
@@ -28,7 +28,7 @@ trace-manifest emission.
 **Repository URL:** https://github.com/rdryfoos/specassay
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.3.3/specassay-0.3.3.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.3.4/specassay-0.3.4.zip
 
 **Documentation URL:**
 https://github.com/rdryfoos/specassay/blob/main/README.md
@@ -42,8 +42,8 @@ https://github.com/rdryfoos/specassay/blob/main/README.md
 **Components Provided:**
 
 ```
-- extensions: specassay-check@0.3.3
-- presets: specassay@0.3.3
+- extensions: specassay-check@0.3.4
+- presets: specassay@0.3.4
 ```
 
 **Required Component Catalogs:**
@@ -104,8 +104,8 @@ specify bundle catalog add --id specassay --policy install-allowed \
 specify bundle install specassay
 
 # Or install the downloaded artifact directly
-curl -L -o specassay-0.3.3.zip https://github.com/rdryfoos/specassay/releases/download/v0.3.3/specassay-0.3.3.zip
-specify bundle install ./specassay-0.3.3.zip
+curl -L -o specassay-0.3.4.zip https://github.com/rdryfoos/specassay/releases/download/v0.3.4/specassay-0.3.4.zip
+specify bundle install ./specassay-0.3.4.zip
 ```
 
 **Proposed Catalog Entry:**
@@ -115,12 +115,12 @@ specify bundle install ./specassay-0.3.3.zip
   "specassay": {
     "name": "SpecAssay",
     "id": "specassay",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "role": "developer",
     "description": "Durable-ID promotion for stock Spec Kit: templates, Gate 2 refusal, and trace-manifest emission.",
     "author": "Rik Dryfoos",
     "license": "MIT",
-    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.3/specassay-0.3.3.zip",
+    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.3.4/specassay-0.3.4.zip",
     "repository": "https://github.com/rdryfoos/specassay",
     "requires": {
       "speckit_version": ">=0.14.0"

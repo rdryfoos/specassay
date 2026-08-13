@@ -11,7 +11,7 @@ Title: `[Preset]: Add specassay`.
 
 **Preset Name:** SpecAssay
 
-**Version:** 0.3.3
+**Version:** 0.3.4
 
 **Description:**
 Appends durable-ID, Carries, and SpecAssay vocabulary onto Spec Kit spec,
@@ -22,7 +22,7 @@ tasks, and constitution templates.
 **Repository URL:** https://github.com/rdryfoos/specassay
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.3.3/specassay-preset-0.3.3.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.3.4/specassay-preset-0.3.4.zip
 
 **Documentation URL:**
 https://github.com/rdryfoos/specassay/blob/main/presets/specassay/README.md

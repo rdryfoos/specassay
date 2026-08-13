@@ -27,7 +27,7 @@ Tips:
 Links the forms ask for (all live):
 
 - Repository: <https://github.com/rdryfoos/specassay>
-- Release with artifacts: <https://github.com/rdryfoos/specassay/releases/tag/v0.3.3>
+- Release with artifacts: <https://github.com/rdryfoos/specassay/releases/tag/v0.3.4>
 - Catalogs: <https://github.com/rdryfoos/specassay/tree/main/catalogs>
 - Extension README: <https://github.com/rdryfoos/specassay/blob/main/extensions/specassay-check/README.md>
 - Preset contract: <https://github.com/rdryfoos/specassay/blob/main/PROMOTION-CONTRACT.md>
@@ -96,3 +96,24 @@ And on **#4058** (the preset mismatch):
 
 The generated PRs (#4069, #4070, #4072) are refreshed by maintainers from
 the edited issues; that side is theirs, not yours.
+
+### Round 3, 2026-08-13: the preset README shipped a stale link (done)
+
+Copilot review on the regenerated preset PR caught what round 2 missed:
+`presets/specassay/README.md` ships inside the preset zip itself, and its
+install command still named `v0.3.1/specassay-preset-0.2.0.zip` through
+two prior bumps because neither sweep grepped that file. Fixed, and
+because the fix lives inside the artifact, it needed a real release
+rather than a docs edit: republishing v0.3.3's assets under the same tag
+with different contents would have repeated the exact mismatch this
+bundle exists to catch. Everything moved to **0.3.4**.
+
+Edit each issue to `0.3.4` (Version and Download URL on all three;
+Components Provided on #4059 becomes `specassay-check@0.3.4`,
+`specassay@0.3.4`). Reply on **#4058**, where this finding landed:
+
+> Fixed in v0.3.4. The preset README shipped inside the preset zip still
+> pointed at the v0.3.1 asset name through the last two bumps; that file
+> wasn't in either sweep's grep pattern. It now points at v0.3.4, and
+> since the fix lives inside the artifact rather than just the issue
+> text, this went out as a real release, not an edit.
