@@ -11,9 +11,8 @@ feature.
   creates a codebase that has never been touched by SpecAssay.
 - Within that codebase, the volunteer chooses a small plain-language
   requirement that has not appeared in SpecAssay development, documentation,
-  examples, or prior trials.
-  Record its exact wording. This runbook does not prescribe its domain or
-  feature.
+  examples, or prior trials. Record its exact wording. This runbook does not
+  prescribe its domain or feature.
 - [GitHub Spec Kit](https://github.com/github/spec-kit) 0.14.0 or newer.
 - Any credentials required by the agent's normal workflow, plus an evidence
   directory outside the fixture.

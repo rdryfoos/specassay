@@ -9,8 +9,8 @@ provides no fixture, domain, or feature.
 ## Prerequisites
 
 - After receiving this runbook, the volunteer independently chooses a public
-  codebase unrelated to and never involved in developing SpecAssay. Record its
-  repository URL and full source commit.
+  codebase unrelated to SpecAssay. Record its repository URL and full
+  source commit.
 - The volunteer chooses a small plain-language requirement that has not
   appeared in SpecAssay development, documentation, examples, or prior trials.
   Record its exact wording. This runbook does not prescribe its domain or
@@ -18,8 +18,7 @@ provides no fixture, domain, or feature.
 - [GitHub Spec Kit](https://github.com/github/spec-kit) 0.14.0 or newer.
 - A fresh agent session with no prior exposure to the chosen repository,
   SpecAssay, or its trials through memory, rules, history, or transcripts.
-- Necessary credentials, an external evidence directory, and a volunteer who
-  can observe without coaching.
+- Necessary credentials and an external evidence directory.
 
 ## Open the observation record
 
