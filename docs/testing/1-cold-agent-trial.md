@@ -9,15 +9,17 @@ feature.
 
 - After receiving this runbook, the volunteer independently chooses or
   creates a codebase that has never been touched by SpecAssay.
-- The volunteer chooses a small plain-language requirement that has not
-  appeared in SpecAssay development, documentation, examples, or prior trials.
+- Within that codebase, the volunteer chooses a small plain-language
+  requirement that has not appeared in SpecAssay development, documentation,
+  examples, or prior trials.
   Record its exact wording. This runbook does not prescribe its domain or
   feature.
 - Stock [GitHub Spec Kit](https://github.com/github/spec-kit) and a `specify`
   CLI that supports presets, extensions, and bundles.
-- A fresh agent session with no prior exposure to the chosen repository,
-  SpecAssay, or its trials through memory, rules, history, or transcripts.
-- Necessary credentials and an evidence directory outside the fixture.
+- Any credentials required by the agent's normal workflow, plus an evidence
+  directory outside the fixture.
+- A fresh agent session with no prior exposure to the chosen codebase,
+  SpecAssay, or any prior trial through memory, rules, history, or transcripts.
 
 ## Prepare the disposable fixture
 
