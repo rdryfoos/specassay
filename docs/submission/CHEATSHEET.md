@@ -1,9 +1,9 @@
-# Filing cheat sheet — three issues, in this order
+# Filing cheat sheet: three issues, in this order
 
 Each row: open the **form**, then copy everything below the `---` rule in the
 **paste-from** doc into it. The forms are GitHub issue templates on the
 Spec Kit repo; the paste-from docs mirror their fields exactly, catalog JSON
-included — no other tabs needed.
+included, no other tabs needed.
 
 | # | Issue | Form (opens the template) | Paste from |
 | --- | --- | --- | --- |
@@ -33,14 +33,58 @@ Links the forms ask for (all live):
 - Preset contract: <https://github.com/rdryfoos/specassay/blob/main/PROMOTION-CONTRACT.md>
 
 Expected turnaround: a maintainer validates catalog entry and URLs in 3–7
-business days (they do not audit code). A version update later is a new
-issue noting it updates the existing entry.
+business days (they do not audit code). For what happens at the next
+version bump, see **Updating to a new version** below.
 
-## Amending a filed issue
+## Updating to a new version
 
-The three issues are filed and validated; each has a generated catalog PR
-behind it. They are **edited in place**, not refiled: open the issue, use
-the `...` menu on the first comment, choose **Edit**.
+Verified against Spec Kit's own docs on 2026-08-14, not inferred from
+bot behavior. The three component types do not all work the same way.
+
+**Extension:** file a **new** [Extension Submission
+issue](https://github.com/github/spec-kit/issues/new?template=extension_submission.yml)
+with the new version and download URL, and say in it that this updates
+#4057 (now closed). Source: `extensions/EXTENSION-PUBLISHING-GUIDE.md`,
+"Updating an Existing Extension"; do not edit the closed issue.
+
+**Bundle:** same pattern. File a **new** [Bundle Submission
+issue](https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml),
+new version and download URL, mention it updates #4059 (now closed).
+Source: `docs/community/bundles.md`, "Updating a Bundle."
+
+**Preset:** no documented issue-based update path.
+`presets/PUBLISHING.md`'s Release Workflow instead describes a **direct
+PR** against `presets/catalog.community.json` in `github/spec-kit`,
+bumping `version` and `download_url` for the `specassay` entry.
+`docs/community/presets.md` has no "Updating a Preset" section at all.
+Try the issue-based route first anyway (a new [Preset Submission
+issue](https://github.com/github/spec-kit/issues/new?template=preset_submission.yml)
+noting it updates #4058): the same bot machinery that generated #4070
+and #4123 from issue edits worked three times this round and is the
+better-tested path. If a maintainer redirects to the PR route, that's
+the documented fallback, and it means forking `spec-kit` and opening a
+PR by hand rather than filing an issue and waiting.
+
+Either way: bump `bundle.yml` / `extension.yml` / `preset.yml` and the
+three `catalogs/*.json` first (`scripts/build-release.sh` refuses to
+build if they disagree with what's declared), cut the release, verify
+the published zips before filing anything (unzip and check, don't
+trust the source tree: round 3 shipped a stale file that three prior
+sweeps had all missed).
+
+## Amending a filed issue (closed history, 2026-08-13 – 08-14)
+
+**All three merged 2026-08-14.** Extension via #4113, preset via #4123,
+bundle via #4125, all at v0.3.4. The three original issues (#4057,
+#4058, #4059) are closed. Everything below this heading describes how
+that submission got through three review rounds while the issues were
+still open; it doesn't apply anymore, since a closed issue isn't where
+the next update happens (see **Updating to a new version**, below the
+history). Kept for the record and as a worked example.
+
+The three issues were filed and validated; each had a generated catalog
+PR behind it. While open, they were **edited in place**, not refiled:
+open the issue, use the `...` menu on the first comment, choose **Edit**.
 
 Two review rounds have needed this. The first (author metadata, v0.3.2) is
 closed. The second is below.
