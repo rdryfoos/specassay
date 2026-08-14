@@ -37,6 +37,7 @@ Each failure: `{ kind, detail, id? }`.
 | `spec-orphan` / `task-orphan`       | Spec or tasks reference an ID not in the registry        |
 | `spec-unclaimed` / `task-unclaimed` | Registry ID absent from specs or tasks (exact-set drift) |
 | `registry-missing`                  | Configured registry file absent                          |
+| `duplicate-id`                      | Two independent definition lines mint the same ID (v0.4.0+) |
 
 **Registry drift:** Gate 2 requires **exact set** match: registry IDs ≡ IDs found under configured `specs` globs ≡ IDs found under configured `tasks` globs. Feature specs inherit; they do not mint. Registry IDs may not wait unclaimed.
 

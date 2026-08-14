@@ -115,6 +115,35 @@ else
   : > "$tmp/registry.txt"
 fi
 
+# Duplicate-id: two independent mints of the same ID, usually two branches
+# that each computed the same "next" number before either saw the other's
+# commit. The `sort -u` above already erases this silently for exact-set
+# purposes (presence is presence, regardless of how many lines produced
+# it) -- this check exists because minting a duplicate is real drift that
+# deserves a refusal, not silent same-first-line-wins in the manifest.
+# Scoped to definition-shaped lines only (shared with mint-id.sh's own
+# style-detection pattern): a range-summary table row using an ID as a
+# range endpoint, or any other line that merely *mentions* an ID, must
+# never be mistaken for a second mint of it.
+source "$EXT_DIR/scripts/lib-def-line.sh"
+DEF_LINE_RE="$(def_line_regex "$ID_RE")"
+: > "$tmp/def_line_hits.txt"
+if [[ -f "$REGISTRY" ]]; then
+  grep -nE "$DEF_LINE_RE" "$REGISTRY" 2>/dev/null | while IFS= read -r line; do
+    lineno="${line%%:*}"
+    rest="${line#*:}"
+    id="$(grep -Eo "$ID_RE" <<<"$rest" | head -1 || true)"
+    [[ -n "$id" ]] && printf '%s|%s\n' "$id" "$lineno"
+  done >> "$tmp/def_line_hits.txt" || true
+fi
+
+cut -d'|' -f1 "$tmp/def_line_hits.txt" 2>/dev/null | sort | uniq -d > "$tmp/dup_ids.txt" || : > "$tmp/dup_ids.txt"
+while IFS= read -r id; do
+  [[ -z "$id" ]] && continue
+  lines="$(grep "^${id}|" "$tmp/def_line_hits.txt" | cut -d'|' -f2 | paste -sd, -)"
+  record_fail "duplicate-id" "$id" "duplicate definition line(s) for $id at $REGISTRY:$lines"
+done < "$tmp/dup_ids.txt"
+
 expand_glob() {
   local pattern="$1"
   local dir base

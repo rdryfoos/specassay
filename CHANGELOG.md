@@ -3,6 +3,48 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.4.0 — 2026-08-14
+
+Concurrent minting stops failing silently, and a new tool makes it cheap to
+avoid failing at all.
+
+- **`mint-id.sh`** (new): mints the next ID for a given prefix and area by
+  scanning the registry for the highest existing number, rather than
+  requiring a human or agent to eyeball the file and guess. Mints land on
+  multiples of ten (`AC-HOME-10`, `AC-HOME-20`, ...); a brand-new area
+  starts at 10. The step size does not reduce how often two branches
+  collide on the same next number (both compute from the same
+  last-observed state regardless of step size), but it reserves the `1`
+  through `9` offset off every decade exclusively for resolving a
+  collision, so fixing one is a purely local `+1` (`mint-id.sh --resolve
+  AC-HOME-20` → `AC-HOME-21`) with no need to recompute the registry's
+  current state. The ones digit doubles as a free collision counter for
+  that slot. Reuses the same config discovery and registry conventions as
+  `check-traceability.sh`.
+- **`duplicate-id` Gate refusal** (new failure kind): two independent
+  definition lines minting the same ID used to merge cleanly and vanish
+  silently, because the exact-set check dedupes the registry with `sort
+  -u` before looking at it, and the trace-manifest only ever kept the
+  first matching line's statement. Gate 2 now detects any ID with more
+  than one definition-shaped line and refuses, naming both line numbers.
+  Detection is scoped to definition-shaped lines only (a shared pattern
+  with `mint-id.sh`'s own style-detection, `lib-def-line.sh`) so a
+  range-summary table using an ID as a range endpoint, or any other line
+  that merely mentions an ID, is never mistaken for a second mint of it;
+  verified against HomesFlow's real registry (0 false positives across 82
+  IDs) and a new fixture, `samples/sample-duplicate-id.trace-manifest.json`.
+- Registry-only for this release. Duplicate detection does not extend to
+  specs or tasks referencing an ID more than once, which is repetition,
+  not minting.
+- `mint-id.sh` and the duplicate-id refusal are a matched pair: the decade
+  scheme's payoff is a cheap resolution at the exact moment the Gate
+  refuses a collision. Shipping the mint helper without the refusal would
+  leave the collision-masking hole open; shipping the refusal without the
+  helper would leave collision resolution as manual arithmetic.
+
+Components: bundle 0.4.0 · extension `specassay-check` 0.4.0 · preset
+`specassay` 0.4.0.
+
 ## 0.3.4 — 2026-08-13
 
 - **The preset's own README pointed at a stale asset.** `presets/specassay/README.md`
