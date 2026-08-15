@@ -329,6 +329,7 @@ done < "$tmp/registry.txt"
 export MANIFEST_OUT REGISTRY TARGET_NAME PROJECT_ROOT
 export MANIFEST_TMP="$tmp"
 export MANIFEST_FAIL="$fail"
+export EXT_VERSION="$(awk '/^  version:/{gsub(/"/,""); print $2; exit}' "$EXT_DIR/extension.yml" 2>/dev/null || echo 0.0.0)"
 python3 - <<'PY'
 import json, os, re, datetime
 from pathlib import Path
@@ -528,6 +529,43 @@ if failures:
 
 out_path.parent.mkdir(parents=True, exist_ok=True)
 out_path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+# trace-manifest v5 (beta, docs/trace-manifest-v5.md): emitted alongside v4,
+# never in place of it -- the doc's own stated bar for the real Gate to
+# switch its primary emit is "once the beta settles" (the first external
+# emitter, clew, having pushed on the field shapes), which hasn't happened.
+# This is v4's own already-known data reshaped, not new computation: tier
+# from the type prefix SpecAssay already parses, origin as registry's own
+# {path,line} under its new spelling. parents/rollup are left absent on
+# purpose -- SpecAssay has no real per-ID parent edge today (only a domain
+# grouping convention), and the v5 doc explicitly designs for that: absent
+# parents falls back to domain-grouping in any v5 reader, so this stays
+# honest about what the Gate actually knows rather than inventing edges.
+tier_by_type = {"US": "intent", "FR": "requirement", "NFR": "requirement", "AC": "criterion"}
+v5_rows = []
+for row in rows:
+    v5_row = dict(row)
+    v5_row["tier"] = tier_by_type.get(row["type"], row["type"])
+    if row.get("registry"):
+        v5_row["origin"] = {"kind": "registry-line", **row["registry"]}
+    v5_rows.append(v5_row)
+
+ext_version = os.environ.get("EXT_VERSION", "0.0.0")
+v5_doc = {
+    "schemaVersion": 5,
+    "format": "trace-manifest",
+    "emitter": {"name": "specassay-check", "version": ext_version},
+    "targetName": target,
+    "repoPath": repo,
+    "generatedAt": doc["generatedAt"],
+    "gate": doc["gate"],
+    "totals": doc["totals"],
+    "statusCounts": doc["statusCounts"],
+    "rows": v5_rows,
+}
+v5_path = out_path.with_name(out_path.name.replace(".json", ".v5beta.json"))
+v5_path.write_text(json.dumps(v5_doc, indent=2) + "\n", encoding="utf-8")
+print(f"Wrote {v5_path.name} ({len(v5_rows)} rows, schemaVersion 5, beta)")
 print(f"Wrote {out_path} ({len(rows)} rows) gate.ok={doc['gate']['ok']}", flush=True)
 PY
 

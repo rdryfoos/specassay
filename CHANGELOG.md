@@ -3,6 +3,36 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.4.5 — 2026-08-15
+
+`check-traceability.sh` now emits `trace-manifest.v5beta.json`
+alongside its existing `trace-manifest.json`, never in place of it.
+`docs/trace-manifest-v5.md`'s own stated bar for the Gate's *primary*
+emit to move from `v4` to `v5` is "once the beta settles", meaning the
+first external emitter (`clew`) has pushed on the field shapes; that
+hasn't happened, so `v4` stays the default output unchanged. The new
+file is reshaped from data the Gate already computes, not new
+computation: `tier` from the `US`/`FR`/`NFR`/`AC` prefix already
+parsed, `origin` as `registry`'s own `{path, line}` under its v5
+spelling, `emitter` as the `{name, version}` object v5 requires.
+
+- `parents`/`rollup` are deliberately left absent. SpecAssay has no
+  real per-ID parent edge today, only the domain-grouping convention
+  the prefix already encodes; the v5 doc explicitly designs for this,
+  an absent `parents` falls back to domain-grouping in any v5 reader.
+  Inventing edges from a guess was rejected in favor of staying honest
+  about what the Gate actually knows. Practical effect: a `v5beta` file
+  opened in Loupe renders as a flat list today, not yet a threaded
+  intent → requirement → criterion descent.
+- Output path is derived from the existing `manifest_path` config
+  (`.json` → `.v5beta.json`); no new required config key.
+- Verified against a scratch fixture (both files write, correct row
+  counts, correct `tier` values) and smoke-tested against SpecCost's
+  real 60-ID registry.
+
+Components: bundle 0.4.5 · extension `specassay-check` 0.4.5 · preset
+`specassay` 0.4.5.
+
 ## 0.4.4 — 2026-08-15
 
 `check-traceability.sh`'s registry extraction had a third site with the
