@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "specassay-check"
   name: "SpecAssay Check"
-  version: "0.4.0"
+  version: "0.4.1"
   description: "Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`)."
   category: "visibility"
   effect: "read-write"
@@ -29,6 +29,9 @@ provides:
     - name: "speckit.specassay-check.gate"
       file: "commands/speckit.specassay-check.gate.md"
       description: "Run SpecAssay Check / Gate 2 (silent gaps fail; write trace-manifest.json)"
+    - name: "speckit.specassay-check.mint"
+      file: "commands/speckit.specassay-check.mint.md"
+      description: "Mint the next durable ID for a prefix and area, or resolve a duplicate-id refusal"
 
   config:
     - name: "specassay-check-config.yml"

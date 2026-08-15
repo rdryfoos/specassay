@@ -3,6 +3,33 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.4.1 — 2026-08-15
+
+`mint-id.sh` shipped in 0.4.0 but was never reachable by a cold user.
+`extension.yml` registered only `speckit.specassay-check.gate` as a
+command; the mint script existed only as a file someone would have to
+already know about and invoke by hand. Found while dogfooding
+SpecCost: everything worked for us specifically because the tool had
+just been hand-built by the same session using it, not because a real
+adopter could discover any of it.
+
+- **New command, `speckit.specassay-check.mint`**, wired into
+  `extension.yml` and installed like any other extension command.
+  Wraps `mint-id.sh` for both primary minting and `--resolve`.
+- **Registry bootstrap, documented for the first time.** Neither the
+  README nor any command previously said what to do when the
+  registry file doesn't exist yet. The new command's steps cover it
+  (create the file empty, mint normally, style falls back to a plain
+  `- ID — statement` line with nothing to imitate); the README gets a
+  matching "No registry yet?" section.
+- Verified against a genuinely cold scratch project: `specify init`,
+  `specify extension add --dev`, then only what the new command file
+  says, no prior knowledge of the script's existence or syntax. Ends
+  with a real first mint.
+
+Components: bundle 0.4.1 · extension `specassay-check` 0.4.1 · preset
+`specassay` 0.4.1.
+
 ## 0.4.0 — 2026-08-14
 
 Concurrent minting stops failing silently, and a new tool makes it cheap to
