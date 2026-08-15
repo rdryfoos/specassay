@@ -3,6 +3,40 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.4.3 — 2026-08-15
+
+`check-traceability.sh`'s spec/tasks-side extraction had the same
+underlying flaw v0.4.2 fixed on the registry side, just at a different
+site: any ID-shaped string anywhere in `spec.md`/`tasks.md`, including
+inside another row's own prose (this time, a real regression: citing
+`AC-USER-03` while explaining the v0.4.2 bug, inside `BIND`'s own spec
+and tasks files), got flagged as `spec-orphan`/`task-orphan`, an
+untraced reference to an ID this project never minted.
+
+- Unlike the registry (one canonical bullet shape), `spec.md`/`tasks.md`
+  have no single line shape a fix could scope to: FR/NFR bullets,
+  trailing-parenthetical Acceptance Scenario references, and risk-table
+  cells are all legitimate, different shapes. Scoping to any one of
+  them would have traded a fixed false positive for new false
+  negatives on real claims written in the others.
+- Fixed differently: `spec-orphan`/`task-orphan` now only fire for an
+  ID whose domain segment (the middle of `TYPE-DOMAIN-NN`) is one this
+  registry has actually minted into. A citation of another project's
+  real ID, in a domain this registry has never used, is no longer
+  mistaken for a local orphan. A same-domain typo (`FR-BIND-99` when
+  only `FR-BIND-10` exists) still fails exactly as before, verified
+  against a fixture built specifically to check that trade-off wasn't
+  silently given away.
+- Verified against a scratch fixture in both directions (pre-fix
+  spuriously fails on a cited foreign ID; fixed does not, while a real
+  same-domain orphan still fails) and smoke-tested against SpecCost's
+  real 58-ID registry, where this exact regression was found.
+- No config or command surface changed; existing registries need no
+  edits.
+
+Components: bundle 0.4.3 · extension `specassay-check` 0.4.3 · preset
+`specassay` 0.4.3.
+
 ## 0.4.2 — 2026-08-15
 
 `check-traceability.sh` built its ground-truth registry ID set with a

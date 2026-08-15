@@ -242,12 +242,29 @@ done < <(yaml_list test_globs) >> "$tmp/proof_hits.txt" || true
 
 cut -d'|' -f3 "$tmp/proof_hits.txt" 2>/dev/null | sort -u > "$tmp/test_acs.txt" || true
 
+# Domains actually present in this registry (the middle TYPE-DOMAIN-NN
+# segment of each real local ID). Used below to tell a genuine local
+# orphan/typo apart from prose citing another project's real ID by name
+# (e.g. "the AC-USER-03-class bug"): spec.md and tasks.md have no single
+# canonical shape the way registry rows do, so unlike registry.txt's own
+# def_line_regex fix, orphan detection here can't be scoped to a line
+# shape. A citation's ID still has to parse as ID_RE-shaped, but its
+# domain segment won't be one this registry has ever minted into; a real
+# local typo almost always keeps the real local domain and gets the
+# number (or the domain itself) wrong in a way that still matches one of
+# these domains, or fails the separate unclaimed check below regardless.
+cut -d'-' -f2 "$tmp/registry.txt" 2>/dev/null | sort -u > "$tmp/local_domains.txt" || : > "$tmp/local_domains.txt"
+is_local_domain() {
+  grep -qx "$(cut -d'-' -f2 <<<"$1")" "$tmp/local_domains.txt"
+}
+
 # 1) Exact-set drift: registry ≡ specs, registry ≡ tasks (HomesFlow Gate 2 parity).
 #    Specs/tasks may not invent IDs; registry IDs may not sit unclaimed in either
 #    artifact — except anointed backlog: a registry ID whose only carrier is an
 #    open Carries TODO is backlog (deliberate, visible), not drift.
 while IFS= read -r id; do
   [[ -z "$id" ]] && continue
+  is_local_domain "$id" || continue
   record_fail "spec-orphan" "$id" "spec references ID not in registry: $id"
 done < <(comm -13 "$tmp/registry.txt" "$tmp/spec.txt")
 
@@ -263,6 +280,7 @@ done < <(comm -23 "$tmp/registry.txt" "$tmp/spec.txt")
 
 while IFS= read -r id; do
   [[ -z "$id" ]] && continue
+  is_local_domain "$id" || continue
   record_fail "task-orphan" "$id" "tasks reference ID not in registry: $id"
 done < <(comm -13 "$tmp/registry.txt" "$tmp/tasks.txt")
 
