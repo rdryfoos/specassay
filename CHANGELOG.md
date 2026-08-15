@@ -3,6 +3,42 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.4.4 — 2026-08-15
+
+`check-traceability.sh`'s registry extraction had a third site with the
+same underlying flaw v0.4.2 and v0.4.3 already fixed twice at two other
+sites: the loop that builds each ID's *displayed* `statement` text and
+`registry.line` pointer for `trace-manifest.json` still did its own
+independent blind `id_ in line` substring scan over the raw registry
+text, never rescoped to `def_line_hits.txt` the way v0.4.2 rescoped the
+registry's own ground-truth ID set. Found while dogfooding SpecCost:
+`FR-SPOOL-20`/`NFR-SPOOL-20` and `FR-SPOOL-30`/`NFR-SPOOL-30` each
+showed byte-identical wrong statement text, both pairs pulled from a
+Non-goals paragraph's parenthetical citation instead of either ID's own
+bullet. Worse than a plain citation-vs-mint mixup: because the match is
+substring containment, not equality, a shorter ID's own literal name is
+contained inside a longer sibling's name (`"FR-SPOOL-20" in "...NFR-
+SPOOL-20..."` is `True`), so this could misattribute one ID's displayed
+statement to a completely different ID's own real bullet, not just to
+stray prose.
+
+- Fixed by reusing `def_line_hits.txt` (`id|lineno`, definition-shaped
+  lines only, already computed for the registry-extraction fix) instead
+  of re-deriving a second, disagreeing match against raw registry text.
+- Status and proofs (`proven`/`tracked-debt`/`backlog`/`GAP`) were never
+  wrong, only the displayed statement text and line pointer for IDs
+  whose real bullet wasn't the first line in the file to mention them;
+  this is a display-correctness fix, not a coverage-logic change.
+- Verified against a scratch fixture in both directions (pre-fix: two
+  sibling IDs share one wrong, non-definitional line; fixed: each
+  resolves to its own real bullet and line number) and smoke-tested
+  against SpecCost's real registry, where this was found.
+- No config or command surface changed; existing registries need no
+  edits.
+
+Components: bundle 0.4.4 · extension `specassay-check` 0.4.4 · preset
+`specassay` 0.4.4.
+
 ## 0.4.3 — 2026-08-15
 
 `check-traceability.sh`'s spec/tasks-side extraction had the same

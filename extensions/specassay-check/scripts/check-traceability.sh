@@ -363,14 +363,39 @@ try:
     registry_rel = os.path.relpath(os.path.realpath(registry_path), os.path.realpath(repo))
 except ValueError:
     registry_rel = str(registry_path)
+
+# Same definition-line scoping registry.txt itself already uses (v0.4.2):
+# a blind "id_ in line" substring scan also matches inside a *longer*
+# sibling ID's own prose citation, since a shorter ID can be a literal
+# substring of a longer one (e.g. "FR-SPOOL-20" inside "NFR-SPOOL-20"),
+# so the displayed statement/line for one ID could silently come from a
+# completely different ID's bullet, or from a prose citation instead of
+# a real definition. def_line_hits.txt (id|lineno, definition-shaped
+# lines only) is already computed above; reuse it instead of re-deriving
+# a second, disagreeing match here.
+def_line_by_id = {}
+def_hits_path = tmp / "def_line_hits.txt"
+if def_hits_path.exists():
+    for ln in def_hits_path.read_text().splitlines():
+        if not ln.strip():
+            continue
+        parts = ln.split("|", 1)
+        if len(parts) != 2:
+            continue
+        hid, hline = parts
+        if hid not in def_line_by_id:
+            try:
+                def_line_by_id[hid] = int(hline)
+            except ValueError:
+                pass
+
 for id_ in ids:
     statements[id_] = id_
-    for n, line in enumerate(reg_text, start=1):
-        if id_ in line:
-            s = re.sub(r"^[\s#\-*\[\]xX]+", "", line).strip()
-            statements[id_] = s or id_
-            registry_refs[id_] = {"path": registry_rel, "line": n}
-            break
+    n = def_line_by_id.get(id_)
+    if n and 1 <= n <= len(reg_text):
+        s = re.sub(r"^[\s#\-*\[\]xX]+", "", reg_text[n - 1]).strip()
+        statements[id_] = s or id_
+        registry_refs[id_] = {"path": registry_rel, "line": n}
 
 impl_by = {i: [] for i in ids}
 covers_file = tmp / "covers_hits.txt"
