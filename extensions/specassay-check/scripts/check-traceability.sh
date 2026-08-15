@@ -109,22 +109,13 @@ if [[ ! -f "$REGISTRY" ]]; then
   # Still try to emit an empty-ish manifest below if possible; exit after emit.
 fi
 
-if [[ -f "$REGISTRY" ]]; then
-  grep -Eoh "$ID_RE" "$REGISTRY" | sort -u > "$tmp/registry.txt"
-else
-  : > "$tmp/registry.txt"
-fi
-
-# Duplicate-id: two independent mints of the same ID, usually two branches
-# that each computed the same "next" number before either saw the other's
-# commit. The `sort -u` above already erases this silently for exact-set
-# purposes (presence is presence, regardless of how many lines produced
-# it) -- this check exists because minting a duplicate is real drift that
-# deserves a refusal, not silent same-first-line-wins in the manifest.
-# Scoped to definition-shaped lines only (shared with mint-id.sh's own
-# style-detection pattern): a range-summary table row using an ID as a
-# range endpoint, or any other line that merely *mentions* an ID, must
-# never be mistaken for a second mint of it.
+# Registry extraction is scoped to definition-shaped lines only (shared
+# with mint-id.sh's own style-detection pattern), not a blind grep over
+# the whole file. A registry row's own prose can legitimately cite
+# another ID (a cross-reference, a range-summary table endpoint, a
+# different project's ID mentioned for context) without that citation
+# being mistaken for a mint of it; the earlier blind-grep version did
+# make exactly that mistake, so this scoping isn't optional.
 source "$EXT_DIR/scripts/lib-def-line.sh"
 DEF_LINE_RE="$(def_line_regex "$ID_RE")"
 : > "$tmp/def_line_hits.txt"
@@ -137,6 +128,20 @@ if [[ -f "$REGISTRY" ]]; then
   done >> "$tmp/def_line_hits.txt" || true
 fi
 
+# registry.txt is the ground-truth ID set everything else (spec-orphan,
+# task-orphan, silent-gap, the manifest's own row list) is compared
+# against; it must come from the same definition-line scoping as
+# duplicate-id detection below, or the two checks could disagree about
+# what's actually minted.
+cut -d'|' -f1 "$tmp/def_line_hits.txt" 2>/dev/null | sort -u > "$tmp/registry.txt" || : > "$tmp/registry.txt"
+
+# Duplicate-id: two independent mints of the same ID, usually two branches
+# that each computed the same "next" number before either saw the other's
+# commit. registry.txt's sort -u above already erases this silently for
+# exact-set purposes (presence is presence, regardless of how many lines
+# produced it) -- this check exists because minting a duplicate is real
+# drift that deserves a refusal, not silent same-first-line-wins in the
+# manifest.
 cut -d'|' -f1 "$tmp/def_line_hits.txt" 2>/dev/null | sort | uniq -d > "$tmp/dup_ids.txt" || : > "$tmp/dup_ids.txt"
 while IFS= read -r id; do
   [[ -z "$id" ]] && continue

@@ -3,6 +3,34 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.4.2 — 2026-08-15
+
+`check-traceability.sh` built its ground-truth registry ID set with a
+blind `grep -Eoh "$ID_RE" "$REGISTRY"` over the whole file, so any ID
+string appearing anywhere in the registry, including inside another
+row's own prose (a cross-reference, a range-summary table endpoint, a
+different project's ID cited for context), was read as a mint. Found
+while dogfooding SpecCost: a `FR-SPLIT-20` statement citing HomesFlow's
+`AC-USER-03` for context got misread as a 55th minted ID, and Gate 2
+failed it as an untraced, untested, silent gap that was never actually
+minted.
+
+- Registry extraction now reuses the same definition-line scoping
+  `duplicate-id` detection already used (`lib-def-line.sh`'s
+  `def_line_regex()`): a bullet that actually mints an ID, not any line
+  that merely contains one. `registry.txt` (the set everything else is
+  compared against) is derived from that scoped extraction, not a
+  separate blind grep.
+- Verified both directions against a scratch fixture: the pre-fix
+  script spuriously mints and fails on a cited-but-not-minted ID; the
+  fixed script does not. Also smoke-tested against SpecCost's real
+  58-ID registry with zero regressions.
+- No config or command surface changed; existing registries need no
+  edits.
+
+Components: bundle 0.4.2 · extension `specassay-check` 0.4.2 · preset
+`specassay` 0.4.2.
+
 ## 0.4.1 — 2026-08-15
 
 `mint-id.sh` shipped in 0.4.0 but was never reachable by a cold user.
