@@ -3,6 +3,35 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.4.6 — 2026-08-16
+
+`check-traceability.sh` had two sites (the tracked-debt task excerpt,
+`pending_hits.txt`; the `@covers` excerpt, `covers_hits.txt`) that
+truncated a matched line with `cut -c1-N`, byte-oriented under the
+script's own `LC_ALL=C`. A multi-byte UTF-8 character landing across
+the cut boundary (an em dash is 3 bytes) got sliced in half, producing
+an invalid partial sequence that later crashed the Python side reading
+it back with `UnicodeDecodeError`. Found dogfooding SpecCost: a real
+`tasks.md` line whose own em-dash separator happened to land at
+exactly byte 199-201 crashed Gate 2 outright.
+
+- Fixed by moving truncation out of bash entirely: both sites now pass
+  the full, untruncated excerpt through to their hit files, and
+  truncate in Python (`excerpt[:200]`, `excerpt[:160]`) instead, where
+  string slicing is codepoint-safe by construction, never byte-oriented.
+- Both hit-file reads (`covers_hits.txt`, `pending_hits.txt`) also
+  gained `encoding="utf-8", errors="replace"`, matching the registry
+  read's own existing defensive posture, as a second line of defense.
+- Verified against a scratch fixture reproducing the exact real crash
+  line in both directions (pre-fix: `UnicodeDecodeError`; fixed: a
+  clean 200-character excerpt, em dash intact, not replaced or
+  mangled) and smoke-tested against SpecCost's real registry.
+- No config or command surface changed; existing registries need no
+  edits.
+
+Components: bundle 0.4.6 · extension `specassay-check` 0.4.6 · preset
+`specassay` 0.4.6.
+
 ## 0.4.5 — 2026-08-15
 
 `check-traceability.sh` now emits `trace-manifest.v5beta.json`

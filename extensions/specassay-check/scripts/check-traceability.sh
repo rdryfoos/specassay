@@ -186,10 +186,15 @@ while IFS= read -r f; do
   [[ -f "$f" ]] || continue
   grep -Eoh "$ID_RE" "$f" | sort -u >> "$tmp/tasks.txt" || true
   # Open checkbox tasks that name registry IDs (usually via Carries:) — the tracked-debt tasks.
+  # Excerpt is NOT truncated here: `cut -c1-N` is byte-oriented under this
+  # script's own `LC_ALL=C`, so it can slice a multi-byte UTF-8 character
+  # (e.g. an em dash) in half, corrupting the excerpt and crashing the
+  # Python side downstream. Truncation happens in Python instead, where
+  # string slicing is codepoint-safe.
   grep -nE '^- \[ \]' "$f" 2>/dev/null | while IFS= read -r line; do
     lineno="${line%%:*}"
     rest="${line#*:}"
-    excerpt="$(printf '%s' "$rest" | tr '\t' ' ' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | cut -c1-200)"
+    excerpt="$(printf '%s' "$rest" | tr '\t' ' ' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
     while IFS= read -r id; do
       [[ -n "$id" ]] || continue
       printf '%s|%s|%s|%s\n' "$f" "$lineno" "$id" "$excerpt"
@@ -209,7 +214,9 @@ while IFS= read -r g; do
     grep -nE "$COVERS_RE" "$f" 2>/dev/null | while IFS= read -r line; do
       lineno="${line%%:*}"
       rest="${line#*:}"
-      excerpt="$(printf '%s' "$rest" | tr '\t' ' ' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | cut -c1-160)"
+      # Not truncated here -- same byte-vs-codepoint reasoning as
+      # pending_hits.txt above; Python truncates this excerpt instead.
+      excerpt="$(printf '%s' "$rest" | tr '\t' ' ' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
       # One hit per ID — @covers may list several (e.g. FR-HOME-04, AC-HOME-15).
       while IFS= read -r id; do
         [[ -n "$id" ]] || continue
@@ -401,14 +408,17 @@ for id_ in ids:
 impl_by = {i: [] for i in ids}
 covers_file = tmp / "covers_hits.txt"
 if covers_file.exists():
-    for ln in covers_file.read_text().splitlines():
+    for ln in covers_file.read_text(encoding="utf-8", errors="replace").splitlines():
         if not ln.strip():
             continue
         parts = ln.split("|", 3)
         if len(parts) < 3:
             continue
         path, line, id_ = parts[0], parts[1], parts[2]
-        excerpt = parts[3] if len(parts) > 3 else ""
+        # Truncated here, not in bash: codepoint-safe, never slices a
+        # multi-byte character in half the way byte-oriented `cut -c1-N`
+        # could under this script's own LC_ALL=C.
+        excerpt = parts[3][:160] if len(parts) > 3 else ""
         if id_ not in impl_by:
             continue
         try:
@@ -440,14 +450,16 @@ debt_by = {i: [] for i in ids}
 pending_hits = tmp / "pending_hits.txt"
 seen_debt = set()
 if pending_hits.exists():
-    for ln in pending_hits.read_text().splitlines():
+    for ln in pending_hits.read_text(encoding="utf-8", errors="replace").splitlines():
         if not ln.strip():
             continue
         parts = ln.split("|", 3)
         if len(parts) < 3:
             continue
         path, line, id_ = parts[0], parts[1], parts[2]
-        excerpt = parts[3] if len(parts) > 3 else ""
+        # Truncated here, not in bash: same codepoint-safety reasoning
+        # as covers_hits.txt above.
+        excerpt = parts[3][:200] if len(parts) > 3 else ""
         if id_ not in debt_by:
             continue
         key = (path, line, id_)
