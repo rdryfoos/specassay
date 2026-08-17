@@ -1,7 +1,8 @@
+# @covers AC-A11Y-01
 """Accessibility surface for list actions.
 
-AC-A11Y-01: all list actions are reachable by keyboard and announced to
-assistive tech. Modeled here as a keyboard map covering every action plus a
+All list actions are reachable by keyboard and announced to assistive
+tech. Modeled here as a keyboard map covering every action plus a
 live-region announcement channel.
 """
 
