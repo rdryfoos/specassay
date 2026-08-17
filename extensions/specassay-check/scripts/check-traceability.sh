@@ -86,6 +86,7 @@ fail=0
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 : > "$tmp/failures.jsonl"
+: > "$tmp/diagnostics.jsonl"
 
 # kind | id-or-empty | detail — collected for trace-manifest.json gate.failures
 record_fail() {
@@ -102,6 +103,26 @@ if id_:
     row["id"] = id_
 print(json.dumps(row, ensure_ascii=False))
 ' "$kind" "$id" "$detail" >> "$tmp/failures.jsonl"
+}
+
+# kind | id-or-empty | detail — collected for trace-manifest.json gate.diagnostics.
+# Report-only: unlike record_fail, never sets $fail and never affects gate.ok.
+# A named, visible finding that hasn't (yet) been ruled blocking or diagnostic
+# (Rule 4a, PROMOTION-CONTRACT.md): the finding is real either way, so it is
+# always emitted; only the pass/fail consequence is undecided.
+record_diagnostic() {
+  local kind="$1"
+  local id="${2:-}"
+  local detail="$3"
+  echo "DIAGNOSTIC: $detail" >&2
+  python3 -c '
+import json,sys
+kind, id_, detail = sys.argv[1], sys.argv[2], sys.argv[3]
+row = {"kind": kind, "detail": detail}
+if id_:
+    row["id"] = id_
+print(json.dumps(row, ensure_ascii=False))
+' "$kind" "$id" "$detail" >> "$tmp/diagnostics.jsonl"
 }
 
 if [[ ! -f "$REGISTRY" ]]; then
@@ -332,6 +353,19 @@ while IFS= read -r id; do
   record_fail "silent-gap" "$id" "silent gap: $id has no test and no open tracked-debt task"
 done < "$tmp/registry.txt"
 
+# 5) Uncovered proof (Rule 4a) — report-only. The mirror of orphan-covers
+# (3, above): that check catches an @covers claim naming an ID that isn't
+# real; this catches the reverse, an ID with a real, passing proof that no
+# file's own @covers line claims at all. Both directions are Rule 4's own
+# text ("source that serves an intent carries an @covers mark"); only the
+# forward direction has ever been gated until now. Any type, not only AC:
+# status_for() grants "proven" via tested OR covered for US/FR/NFR too, so
+# the same silent asymmetry applies there as well.
+while IFS= read -r id; do
+  [[ -z "$id" ]] && continue
+  record_diagnostic "uncovered-proof" "$id" "uncovered proof: $id has a passing test but no file's @covers line names it"
+done < <(comm -23 "$tmp/test_acs.txt" "$tmp/covers.txt")
+
 # --- Emit trace-manifest.json (always; the manifest should show GAPs even when Gate fails) ---
 export MANIFEST_OUT REGISTRY TARGET_NAME PROJECT_ROOT
 export MANIFEST_TMP="$tmp"
@@ -360,6 +394,13 @@ if fail_path.exists():
     for ln in fail_path.read_text().splitlines():
         if ln.strip():
             failures.append(json.loads(ln))
+
+diagnostics = []
+diagnostics_path = tmp / "diagnostics.jsonl"
+if diagnostics_path.exists():
+    for ln in diagnostics_path.read_text().splitlines():
+        if ln.strip():
+            diagnostics.append(json.loads(ln))
 
 statements = {}
 registry_refs = {}
@@ -525,6 +566,7 @@ doc = {
     "gate": {
         "ok": not gate_failed and len(failures) == 0,
         "failures": failures,
+        "diagnostics": diagnostics,
     },
     "totals": {
         "registryIdCount": len(ids),

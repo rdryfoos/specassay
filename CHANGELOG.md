@@ -3,6 +3,42 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.4.7 — 2026-08-17
+
+New Gate 2 diagnostic, `uncovered-proof`: an ID with a real, passing
+proof that no file's own `@covers` mark names. The mirror of the
+already-shipped `orphan-covers` check (an `@covers` mark naming an ID
+that isn't registered); the reverse direction was never gated, so a
+real, tested, `proven` ID could sit with no source-level
+self-documentation indefinitely, invisible to Gate 2 and to anyone who
+didn't cross-reference `@covers` lines against test names by hand.
+
+Found dogfooding SpecCost: `common/bind.py`'s own `@covers` line never
+listed `AC-BIND-10/20/30`, going back to the file's very first commit,
+even though the tests proving them existed in that same commit.
+Surveyed across five real projects with this same, newly-patched check
+run in report-only mode (never affecting `gate.ok`): SpecCost alone
+carries 30 more instances of the identical pattern, spanning eight
+source files; Tally and Loupe (clewloupe) carry zero; SpecAssay's own
+reference `example-app` (what every new adopter copies first) carries
+two. Every instance found is the same one-line fix `bind.py`'s was:
+append the missing ID(s) to a file's already-existing `@covers` line,
+no logic change.
+
+- Ships report-only: `gate.diagnostics[]`, a new array alongside
+  `gate.failures[]`, parallel in shape (`{ kind, detail, id? }`) but
+  never sets `fail=1` and never flips `gate.ok`. A named, visible
+  finding whose blocking-vs-diagnostic ruling is deliberately deferred
+  (PROMOTION-CONTRACT.md Rule 4a, new this release) rather than forced
+  by the same commit that first makes the gap visible project-wide.
+- Applies to every ID type (`AC`, `FR`, `NFR`, `US`), not only `AC`:
+  rule 6's `proven` grants status from a test alone for every type, so
+  the same silent asymmetry exists at every altitude, not just AC.
+- No config or command surface changed; existing registries need no
+  edits. `trace-manifest.json`'s `gate` object gains one new key;
+  existing consumers reading only `gate.ok`/`gate.failures` are
+  unaffected.
+
 ## 0.4.6 — 2026-08-16
 
 `check-traceability.sh` had two sites (the tracked-debt task excerpt,

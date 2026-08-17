@@ -19,7 +19,7 @@ Portable, vendor-neutral **trace-manifest** (matrix artifact). SpecAssay's Gate 
 | `targetName`    | Project label                                                |
 | `repoPath`      | Absolute path scanned                                        |
 | `generatedAt`   | ISO-8601 UTC                                                 |
-| `gate`          | `{ ok: boolean, failures: GateFailure[] }`: the full Gate refuse set, including non-row failures |
+| `gate`          | `{ ok: boolean, failures: GateFailure[], diagnostics: GateFailure[] }`: the full Gate refuse set, including non-row failures, plus named findings that do not (yet) affect `ok` |
 | `totals`        | `registryIdCount`, `acCount`, `coveredCount`                 |
 | `statusCounts`  | Counts for `proven`, `tracked-debt`, `GAP`, `backlog`        |
 | `rows`          | Matrix rows                                                  |
@@ -40,6 +40,16 @@ Each failure: `{ kind, detail, id? }`.
 | `duplicate-id`                      | Two independent definition lines mint the same ID (v0.4.0+) |
 
 **Registry drift:** Gate 2 requires **exact set** match: registry IDs ≡ IDs found under configured `specs` globs ≡ IDs found under configured `tasks` globs. Feature specs inherit; they do not mint. Registry IDs may not wait unclaimed.
+
+### `gate.diagnostics[]`
+
+Same shape as a failure (`{ kind, detail, id? }`), but never sets `gate.ok` to `false`. A named, visible finding whose pass/fail consequence hasn't been decided yet — the finding is real either way, so it is always emitted; only whether it blocks is open (PROMOTION-CONTRACT.md Rule 4a).
+
+| `kind`             | Meaning                                                                  |
+| ------------------ | ------------------------------------------------------------------------ |
+| `uncovered-proof`   | ID with a real, passing proof that no file's `@covers` mark names (v0.4.7+) |
+
+`uncovered-proof` is the mirror of `orphan-covers`: that failure catches an `@covers` mark naming an ID that isn't registered; this catches the reverse, a registered, tested, `proven` ID that no file's own `@covers` mark claims. Applies to any type (`AC`, `FR`, `NFR`, `US`), since rule 6 grants `proven` from a test alone for every type, not only `AC`.
 
 **Invariant for viewers:** Gate PASS (`gate.ok`) ⇔ contiguous descent braid; Gate FAIL ⇔ fray, the Golden Thread broken. Tracked debt and excused incompleteness may still show amber (owed) or blue (not-yet) nodes without fray.
 
