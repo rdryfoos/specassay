@@ -1,4 +1,12 @@
-# SpecAssay
+# SpecAssay (archived)
+
+**This repo is archived, 2026-08-17.** It's the frozen pre-rename
+ancestor of the live project: [`specassay`](https://github.com/rdryfoos/specassay).
+Everything here (the contract, the Gate, the example app) has a
+current, maintained copy there. Nothing further lands in this repo;
+go there instead.
+
+---
 
 Every honest piece of work stands on three legs: the **intent** (why we're doing it), the **build** (the code that does it), and the **proof** (a test that answers for it). Kick out any leg and it topples. SpecAssay is the assay office for that work. It tests that all three legs are present and tied together, refuses to pass work as "done" when a leg is quietly missing, and strikes what it finds into a small file, the *trace-manifest*, so anyone can read the provenance long after everyone's gone home.
 
