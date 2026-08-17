@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "specassay-check"
   name: "SpecAssay Check"
-  version: "0.4.7"
+  version: "0.4.8"
   description: "Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`)."
   category: "visibility"
   effect: "read-write"

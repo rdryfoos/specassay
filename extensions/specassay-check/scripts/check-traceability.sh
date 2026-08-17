@@ -70,6 +70,7 @@ CARRIES_RE="$(yaml_scalar carries_regex)"
 TEST_AC_RE="$(yaml_scalar test_ac_regex)"
 MANIFEST_OUT="$(yaml_scalar manifest_path)"
 TARGET_NAME="$(yaml_scalar target_name)"
+BLOCK_UNCOVERED_PROOF="$(yaml_scalar block_uncovered_proof)"
 
 [[ -n "$REGISTRY" ]] || { echo "FAIL: config missing registry" >&2; exit 2; }
 [[ -n "$ID_RE" ]] || ID_RE='(FR|NFR|AC|US)-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?'
@@ -353,17 +354,33 @@ while IFS= read -r id; do
   record_fail "silent-gap" "$id" "silent gap: $id has no test and no open tracked-debt task"
 done < "$tmp/registry.txt"
 
-# 5) Uncovered proof (Rule 4a) — report-only. The mirror of orphan-covers
-# (3, above): that check catches an @covers claim naming an ID that isn't
-# real; this catches the reverse, an ID with a real, passing proof that no
-# file's own @covers line claims at all. Both directions are Rule 4's own
-# text ("source that serves an intent carries an @covers mark"); only the
-# forward direction has ever been gated until now. Any type, not only AC:
+# 5) Uncovered proof (Rule 4a). The mirror of orphan-covers (3, above):
+# that check catches an @covers claim naming an ID that isn't real; this
+# catches the reverse, an ID with a real, passing proof that no file's
+# own @covers line claims at all. Both directions are Rule 4's own text
+# ("source that serves an intent carries an @covers mark"); only the
+# forward direction was ever gated before v0.4.7. Any type, not only AC:
 # status_for() grants "proven" via tested OR covered for US/FR/NFR too, so
 # the same silent asymmetry applies there as well.
+#
+# Report-only by default (record_diagnostic, never affects gate.ok): the
+# finding needed to exist and be measured across real projects before
+# anyone could responsibly decide whether it blocks (2026-08-17 survey,
+# dryfoos-sites/docs/field-notes/2026-08-17-uncovered-proof.md). A project
+# opts into blocking explicitly, once its own backlog is clear, via
+# block_uncovered_proof: true in its own specassay-check-config.yml --
+# a dated line in that project's own config (or constitution, if the
+# project mirrors this into its own paste-ready article) is the record
+# of *when* and *why* that project's enforcement status changed, so the
+# flip itself stays traceable, not a silent behavior change on upgrade.
+uncovered_kind="uncovered-proof"
+uncovered_recorder="record_diagnostic"
+if [[ "$BLOCK_UNCOVERED_PROOF" == "true" ]]; then
+  uncovered_recorder="record_fail"
+fi
 while IFS= read -r id; do
   [[ -z "$id" ]] && continue
-  record_diagnostic "uncovered-proof" "$id" "uncovered proof: $id has a passing test but no file's @covers line names it"
+  "$uncovered_recorder" "$uncovered_kind" "$id" "uncovered proof: $id has a passing test but no file's @covers line names it"
 done < <(comm -23 "$tmp/test_acs.txt" "$tmp/covers.txt")
 
 # --- Emit trace-manifest.json (always; the manifest should show GAPs even when Gate fails) ---

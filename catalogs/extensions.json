@@ -6,10 +6,10 @@
     "specassay-check": {
       "name": "SpecAssay Check",
       "id": "specassay-check",
-      "version": "0.4.7",
+      "version": "0.4.8",
       "description": "Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).",
       "author": "Rik Dryfoos",
-      "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.4.7/specassay-check-0.4.7.zip",
+      "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.4.8/specassay-check-0.4.8.zip",
       "repository": "https://github.com/rdryfoos/specassay",
       "homepage": "https://www.specassay.com",
       "documentation": "https://github.com/rdryfoos/specassay/blob/main/extensions/specassay-check/README.md",

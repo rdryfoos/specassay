@@ -3,6 +3,30 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.4.8 — 2026-08-17
+
+`uncovered-proof` (v0.4.7) gains the mechanism its own report-only
+posture was always meant to lead to: a per-project opt-in to blocking.
+New config key, `block_uncovered_proof: true`
+(`config-template.yml`, `specassay-check-config.yml`). When set, the
+same finding that would have gone to `gate.diagnostics[]` is recorded
+via `record_fail` instead, exactly like every other Gate check
+(`orphan-covers`, `silent-gap`, etc.): it appears in `gate.failures[]`
+and flips `gate.ok` to `false`. Unset (the default), behavior is
+unchanged from v0.4.7.
+
+Verified both directions against a real scratch fixture: an uncovered
+AC passes with `gate.ok: true` under the default, fails with
+`gate.ok: false` and a real `uncovered-proof` entry in
+`gate.failures[]` once `block_uncovered_proof: true` is set, and
+clears again once the missing `@covers` mark is actually added.
+
+The convention this key exists to support (PROMOTION-CONTRACT.md
+Rule 4a): a project flips to blocking only once its own backlog is
+actually clear, and the flip itself carries a dated comment recording
+when and why, in that project's own config, so enforcement status is
+itself traceable rather than a silent behavior change on upgrade.
+
 ## 0.4.7 — 2026-08-17
 
 New Gate 2 diagnostic, `uncovered-proof`: an ID with a real, passing

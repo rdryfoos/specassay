@@ -32,3 +32,12 @@ carries_regex: "\*\*(Carries|Traces)\*\*:"
 
 # How AC IDs appear inside test names (e.g. test_AC_SYNC_04_...)
 test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
+
+# Rule 4a (PROMOTION-CONTRACT.md): uncovered-proof (an ID with a real,
+# passing test but no file's @covers line names it) is report-only by
+# default -- it never fails the Gate on its own, only appears under
+# gate.diagnostics[]. Flip to blocking only once this project's own
+# backlog is actually clear (a real, verified zero, not assumed), and
+# record the date and reason as a comment on this line -- the flip
+# itself should be traceable, not a silent behavior change.
+# block_uncovered_proof: true
