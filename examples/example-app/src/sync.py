@@ -30,12 +30,10 @@ class Device:
     items: dict = field(default_factory=dict)   # item_id -> {field_name: value}
     queue: list = field(default_factory=list)   # ops not yet pushed to the hub
 
+    # @covers AC-OFFL-01 — edits queue locally and apply optimistically even
+    # offline; nothing is lost while `online` is False.
     def edit(self, item_id, field_name, value, ts=None):
-        """Apply an edit locally and queue it. Works with or without a network.
-
-        AC-OFFL-01: edits queue locally and apply optimistically even offline;
-        nothing is lost while `online` is False.
-        """
+        """Apply an edit locally and queue it. Works with or without a network."""
         op = Op(item_id, field_name, value, time.time() if ts is None else ts)
         merge_op(self.items, op)
         self.queue.append(op)
