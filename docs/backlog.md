@@ -103,12 +103,18 @@ Gate 2's AC status logic treats a closed task with no proof as silent gap by
 design, because normally closing a task *means* the thing got built. It has
 no vocabulary for "closed on purpose, deliberately never built."
 
-**The improvised fix, by hand:** suffix the registry statement with a
-`[TOMBSTONED <date>: ...]` note naming the resolution and the carrying task,
-and leave that task checked-complete with the same note — human-legible, but
-mechanically indistinguishable from a real gap to the gate today. HomesFlow's
-gate is red for exactly this ID as of this writing, on purpose, until this
-lands as a real status.
+**The improvised fix, by hand (revised once, same day):** first attempt
+suffixed the registry statement with a `[TOMBSTONED <date>: ...]` note and
+closed the carrying task — which immediately proved the point by flipping
+`AC-CLEW-01` to `GAP` under both engines. Closing the task was the error, not
+the tombstone note: a closed task with no proof reads as gap by design.
+Corrected shape, still hand-improvised: the tombstone suffix stays, the
+carrying task (`T900`) stays *open*, and its text is rewritten to say plainly
+that it's a retirement carrier, not undone work — it closes only when this
+feature ships. Both engines read `backlog`/tracked-debt for all three IDs as
+of this correction, honestly: the pending work (finishing the retirement once
+`retired` exists) is real, so `backlog` is the true status today, not a
+disguise for `GAP`.
 
 **The shape of the fix, if it becomes one:** a `retired` status alongside
 `proven`/`tracked-debt`/`backlog`/`GAP` — an AC (or US/FR/NFR) whose registry
@@ -116,6 +122,15 @@ statement carries a tombstone annotation is `retired`, not `GAP`, regardless
 of proof state, closed rather than open. Same append-only ethos as everything
 else here: retirement doesn't remove the ID or its history, it names a
 terminal state the gate can recognize instead of misreading as decay.
+
+**The requirement, stated precisely:** `retired` must be a terminal state
+both engines distinguish from `GAP`, triggered by an explicit retirement
+marker on a closed carrying task. Closed-with-no-proof means `GAP` *only in
+the absence of that marker* — the marker is what separates a violated promise
+from a withdrawn one. `GAP` stays reserved for violated promises; withdrawn
+is not violated, and 2026-08-18 proved the gate can't yet tell them apart —
+that inability to distinguish is itself the requirement. `T900` is the named
+first customer: the feature ships when it can close this exact task.
 
 ## Roadmap: proposed build order
 
