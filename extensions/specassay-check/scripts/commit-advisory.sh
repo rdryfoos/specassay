@@ -14,7 +14,13 @@
 # Usage: commit-advisory.sh <path-to-commit-msg-file>
 set -uo pipefail
 
-EXT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+# $0 is the symlink's own path when installed as a git hook
+# (.git/hooks/commit-msg -> ../../.specify/…/commit-advisory.sh);
+# dirname "$0" alone would resolve relative to .git/hooks, not this
+# script's real location. Follow the link first, portably (BSD
+# readlink has no -f).
+REAL_SELF="$(python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$0")"
+EXT_DIR="$(cd "$(dirname "$REAL_SELF")/.." && pwd)"
 PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$PROJECT_ROOT"
 

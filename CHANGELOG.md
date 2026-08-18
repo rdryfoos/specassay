@@ -3,6 +3,22 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.4.11 — 2026-08-18
+
+Fix: `commit-advisory.sh` silently did nothing when actually installed
+the way its own README says to (`.git/hooks/commit-msg` as a symlink
+to the real script). `dirname "$0"` resolves relative to the
+*symlink's* own location (`.git/hooks`), not the real script's
+location; `EXT_DIR` computed wrong, the config lookup silently failed
+`[[ -f "$CONFIG" ]] || exit 0`, and the advisory never ran — found by
+testing the real installed hook in a real repo, not just the
+standalone script, which had been passing the whole time and masked
+it. Fixed by resolving the real path with `python3 -c
+'os.path.realpath(...)'` (portable; BSD `readlink` has no `-f`)
+before computing `EXT_DIR`. Verified against both invocation shapes:
+the real symlink-installed hook in speccost's own repo, and the
+standalone script called directly.
+
 ## 0.4.10 — 2026-08-18
 
 The paved roads for rule 6a's own arrival
