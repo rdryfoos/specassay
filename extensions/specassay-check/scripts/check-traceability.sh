@@ -240,7 +240,7 @@ while IFS= read -r g; do
       # Not truncated here -- same byte-vs-codepoint reasoning as
       # pending_hits.txt above; Python truncates this excerpt instead.
       excerpt="$(printf '%s' "$rest" | tr '\t' ' ' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
-      # One hit per ID — @covers may list several (e.g. FR-HOME-04, AC-HOME-15).
+      # One hit per ID — a coverage mark may list several (e.g. FR-HOME-04, AC-HOME-15).
       while IFS= read -r id; do
         [[ -n "$id" ]] || continue
         printf '%s|%s|%s|%s\n' "$f" "$lineno" "$id" "$excerpt"

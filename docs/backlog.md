@@ -10,6 +10,12 @@ extracted 2026-08-18 per design-room ruling: alignment-before-execution,
 not a task-shaped backlog item) is packaged with real impact evidence in
 `dryfoos-sites/docs/field-notes/2026-08-18-fr-rename-options.md`.
 
+**This repo's own ID registry lives in [`PRD.md`](../PRD.md)** (founded
+2026-08-18, docs room, design-room ruling — the tool dogfooding itself).
+Items below that have graduated into real registry rows carry a note saying
+so; this file stays the prose drawer — narrative, evidence, open questions —
+that a bare registry row can't hold.
+
 ## H1: Does SpecAssay only work in a greenfield environment?
 
 **Status:** anointed backlog (minted, carried by this note, not yet tested).
@@ -38,7 +44,10 @@ retrofit, and whether a team actually tolerates the ceremony mid-stream.
 
 ## Feature request: coverage matrix + portfolio-snapshot emission
 
-**Status:** anointed backlog (minted, carried by this note, not yet built).
+**Status:** anointed backlog. Minted into the registry 2026-08-18 as
+`FR-GATE-10` (`--matrix`) and `FR-GATE-20` (portfolio-snapshot mode) — see
+[`PRD.md`](../PRD.md). Not yet built; this note is the narrative the mint
+was registered from.
 
 **From:** HomesFlow — the family's oldest user, running the longest, on a real
 brownfield-adjacent codebase (see H1 above).
@@ -73,8 +82,10 @@ exist; the sooner these modes ship, the sooner it stops accruing.
 
 ## Pattern candidate: "retired" as a first-class terminal state
 
-**Status:** observed once, not yet a rule. No ID minted for this; recording
-the pattern before it's forgotten, not proposing a build.
+**Status:** observed once, not yet a rule. Minted into the registry
+2026-08-18 as `FR-GATE-30` (anointed backlog) — see [`PRD.md`](../PRD.md).
+Registering the ask, not the design: the shape below is still a candidate,
+not yet a rule, and the row rides as backlog exactly because of that.
 
 **From:** HomesFlow — the family's first intent retirement (US/FR/AC-CLEW-01,
 the Clewseau cold-agent trial slice, 2026-08-18).
@@ -151,21 +162,6 @@ have predicted going in. Not chased down or patched locally — recorded as
 evidence that the two engines' status vocabularies already diverge on
 ordinary backlog intent, before `retired` even exists as a fifth label to
 disagree about.
-
-## US-DOCS-10: cold-install quickstart
-
-**Status:** anointed backlog (minted 2026-08-18, carried by this note, not yet built).
-
-**Area:** DOCS.
-
-**The story:**
-
-- **US-DOCS-10** — As a cold installer, I want to reach a working Gate on my own repo from the public quickstart alone, so adoption needs no author in the loop.
-- **FR-DOCS-10** — quickstart (install, config, first check, first honest red).
-- **FR-DOCS-20** — trace-manifest format reference (the interop contract, versioned with the schema).
-- **FR-DOCS-30** — troubleshooting from real failures (each entry cites the incident class that taught it).
-- **FR-DOCS-40** — every documented behavior cites the registry row(s) it documents.
-- **AC-DOCS-10** — the cold-install test as stated: 30 minutes, zero author contact. First proof: the Jeremiah trial, whichever way it lands.
 
 ## Roadmap: proposed build order
 

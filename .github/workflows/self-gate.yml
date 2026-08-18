@@ -1,0 +1,29 @@
+name: Self Gate
+
+# The docs room's dogfooding pass (2026-08-18, design-room ruling): specassay
+# now gates its own registry (PRD.md) the same way it gates any adopter's.
+# Founding pass — every row opens as anointed backlog, so a green run here
+# means zero GAP and zero drift, not zero unfinished work.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - "PRD.md"
+      - "specs/**"
+      - "extensions/specassay-check/**"
+      - "presets/specassay/**"
+      - "specassay-check-config.yml"
+
+jobs:
+  self-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Gate 2 — this repo's own registry
+        run: |
+          set -euo pipefail
+          SPECASSAY_PROJECT_ROOT="$PWD" \
+          SPECASSAY_CONFIG="$PWD/specassay-check-config.yml" \
+            bash extensions/specassay-check/scripts/check-traceability.sh

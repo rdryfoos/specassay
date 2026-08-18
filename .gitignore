@@ -7,3 +7,4 @@ dist/
 *.zip
 __pycache__/
 trace-manifest.json
+trace-manifest.v5beta.json
