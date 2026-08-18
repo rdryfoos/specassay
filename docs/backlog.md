@@ -84,6 +84,39 @@ covering the same registry drifted apart on a basic correctness question
 within one migration session. That is the cost of the fork continuing to
 exist; the sooner these modes ship, the sooner it stops accruing.
 
+## Pattern candidate: "retired" as a first-class terminal state
+
+**Status:** observed once, not yet a rule. No ID minted for this; recording
+the pattern before it's forgotten, not proposing a build.
+
+**From:** HomesFlow — the family's first intent retirement (US/FR/AC-CLEW-01,
+the Clewseau cold-agent trial slice, 2026-08-18).
+
+**What happened:** the trial concluded without ever getting a real carrier —
+no `@covers`, no passing test — because the thing it was probing (that a
+stock Spec Kit + Clewseau agent could take one AC end-to-end) was answered by
+running the trial itself, not by shipping `HomeDisplayName.normalized(_:)`.
+Closing the single task that had been carrying the three IDs as tracked-debt
+(`T900`) immediately flipped `AC-CLEW-01` to `GAP` under both the vendored
+engine and HomesFlow's own bespoke script — independently, same root cause.
+Gate 2's AC status logic treats a closed task with no proof as silent gap by
+design, because normally closing a task *means* the thing got built. It has
+no vocabulary for "closed on purpose, deliberately never built."
+
+**The improvised fix, by hand:** suffix the registry statement with a
+`[TOMBSTONED <date>: ...]` note naming the resolution and the carrying task,
+and leave that task checked-complete with the same note — human-legible, but
+mechanically indistinguishable from a real gap to the gate today. HomesFlow's
+gate is red for exactly this ID as of this writing, on purpose, until this
+lands as a real status.
+
+**The shape of the fix, if it becomes one:** a `retired` status alongside
+`proven`/`tracked-debt`/`backlog`/`GAP` — an AC (or US/FR/NFR) whose registry
+statement carries a tombstone annotation is `retired`, not `GAP`, regardless
+of proof state, closed rather than open. Same append-only ethos as everything
+else here: retirement doesn't remove the ID or its history, it names a
+terminal state the gate can recognize instead of misreading as decay.
+
 ## Roadmap: proposed build order
 
 Lifted from `scope-and-pull-requests.md` §6. Every item there is tagged
