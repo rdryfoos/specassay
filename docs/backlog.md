@@ -132,6 +132,39 @@ is not violated, and 2026-08-18 proved the gate can't yet tell them apart —
 that inability to distinguish is itself the requirement. `T900` is the named
 first customer: the feature ships when it can close this exact task.
 
+**Third specimen, same day — the spec leg:** after the task-leg correction,
+HomesFlow's bespoke script still failed, not on `GAP` this time but on the
+oldest known-and-deferred issue: `PRD` vs `spec.md` drift, because
+`US/FR/AC-CLEW-01` were real in the PRD and in `specs/backlog/tasks.md` but
+had never been declared in any spec.md at all. Same hardcoded-single-path
+class as `TASKS` (fixed earlier the same week) — `SPEC` had the identical
+assumption, just unexercised until this exact registry state existed. Fixed
+the same way: `SPEC_GLOB`, `find specs -name spec.md | sort`, and a new
+`specs/backlog/spec.md` — the spec home for retirement-carried and
+anointed-but-unbuilt intent — holding the trio's three statements verbatim,
+tombstones included. A retired ID needs a spec anchor too, not just a
+registry entry and a task.
+
+**Four legs, not three:** this specimen sharpens the shape. A `retired`
+terminal state, when it exists, has to be legible across all four:
+**registry annotation** (the tombstone suffix), **spec anchor** (declared
+somewhere — `specs/backlog/spec.md` counts, a living feature's spec doesn't
+have to), **carry task** (open, explicit about being a retirement carrier,
+not undone work), and **gap-vs-withdrawn at proof** (the original finding —
+closed-with-no-proof reads as violated by default; the marker says withdrawn
+instead). Missing any one leg and the gate finds a real, structural reason
+to disagree, independently, the way it did twice in one day.
+
+**A vocabulary disagreement, reported not reconciled:** once all four legs
+were in place and both engines passed, they still didn't agree on the
+*label*. HomesFlow's bespoke script classifies all three IDs `planned`
+(via `--json`); the vendored engine classifies them `tracked-debt`. Neither
+said `backlog`, which a plain reading of "anointed but not yet built" would
+have predicted going in. Not chased down or patched locally — recorded as
+evidence that the two engines' status vocabularies already diverge on
+ordinary backlog intent, before `retired` even exists as a fifth label to
+disagree about.
+
 ## Roadmap: proposed build order
 
 Lifted from `scope-and-pull-requests.md` §6. Every item there is tagged
