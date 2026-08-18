@@ -152,6 +152,21 @@ evidence that the two engines' status vocabularies already diverge on
 ordinary backlog intent, before `retired` even exists as a fifth label to
 disagree about.
 
+## US-DOCS-10: cold-install quickstart
+
+**Status:** anointed backlog (minted 2026-08-18, carried by this note, not yet built).
+
+**Area:** DOCS.
+
+**The story:**
+
+- **US-DOCS-10** — As a cold installer, I want to reach a working Gate on my own repo from the public quickstart alone, so adoption needs no author in the loop.
+- **FR-DOCS-10** — quickstart (install, config, first check, first honest red).
+- **FR-DOCS-20** — trace-manifest format reference (the interop contract, versioned with the schema).
+- **FR-DOCS-30** — troubleshooting from real failures (each entry cites the incident class that taught it).
+- **FR-DOCS-40** — every documented behavior cites the registry row(s) it documents.
+- **AC-DOCS-10** — the cold-install test as stated: 30 minutes, zero author contact. First proof: the Jeremiah trial, whichever way it lands.
+
 ## Roadmap: proposed build order
 
 Lifted from `scope-and-pull-requests.md` §6. Every item there is tagged
