@@ -19,7 +19,7 @@ Portable, vendor-neutral **trace-manifest** (matrix artifact). SpecAssay's Gate 
 | `targetName`    | Project label                                                |
 | `repoPath`      | Absolute path scanned                                        |
 | `generatedAt`   | ISO-8601 UTC                                                 |
-| `gate`          | `{ ok: boolean, failures: GateFailure[], diagnostics: GateFailure[] }`: the full Gate refuse set, including non-row failures, plus named findings that do not (yet) affect `ok` |
+| `gate`          | `{ ok: boolean, failures: GateFailure[], diagnostics: GateFailure[], executionVerified: boolean }`: the full Gate refuse set, including non-row failures, plus named findings that do not (yet) affect `ok`, plus whether `proven` on this run was derived from a passing test-results report or from name-matching alone |
 | `totals`        | `registryIdCount`, `acCount`, `coveredCount`                 |
 | `statusCounts`  | Counts for `proven`, `tracked-debt`, `GAP`, `backlog`        |
 | `rows`          | Matrix rows                                                  |
@@ -50,6 +50,10 @@ Same shape as a failure (`{ kind, detail, id? }`), but never sets `gate.ok` to `
 | `uncovered-proof`   | ID with a real, passing proof that no file's `@covers` mark names (v0.4.7+) |
 
 `uncovered-proof` is the mirror of `orphan-covers`: that failure catches an `@covers` mark naming an ID that isn't registered; this catches the reverse, a registered, tested, `proven` ID that no file's own `@covers` mark claims. Applies to any type (`AC`, `FR`, `NFR`, `US`), since rule 6 grants `proven` from a test alone for every type, not only `AC`.
+
+### `gate.executionVerified`
+
+`true` when `test_results` (config key, a JUnit XML path) was configured and found: `proven` on this run was derived from a *passing* test-results report, not name-matching alone (Rule 6a, v0.4.9+). `false` when `test_results` was absent or the file did not exist: `proven` fell back to the pre-6a name-matching-only meaning, and the Gate said so on stderr rather than silently proceeding. Viewers should render this distinction, not hide it: a `proven` row under `executionVerified: false` is a weaker claim than the same row under `true`.
 
 **Invariant for viewers:** Gate PASS (`gate.ok`) ⇔ contiguous descent braid; Gate FAIL ⇔ fray, the Golden Thread broken. Tracked debt and excused incompleteness may still show amber (owed) or blue (not-yet) nodes without fray.
 

@@ -3,6 +3,50 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.4.9 — 2026-08-17
+
+Rule 6a: **proven derives from a passing proof, not a matching name.**
+The founding-sentence repair. `proof_hits.txt` was always built by
+static `grep` against a test-name pattern; nothing ever confirmed the
+matched test actually passes, isn't a stub, or isn't a skip a grep
+still sees. Status has been a self-report all along, the same failure
+class as an undeclared tally line or a self-marked checkbox, on the
+most important word in the system. Rule 6's own text already said the
+quiet part out loud: "a fact that a carrier exists, not a claim the
+code is correct."
+
+New config key, `test_results`: a JUnit XML path (pytest
+`--junit-xml=...`, node:test's junit reporter, vitest's junit
+reporter — all three test runners in active use across this project
+family already produce this format natively). When set, `proven`
+requires at least one *passing* testcase whose name or classname
+contains the ID (hyphenated or underscored form, covering both this
+family's Python and JS test-naming conventions), not merely a
+name-pattern match. Cross-referencing happens once, in the same place
+`test_acs.txt` is already built, so every downstream consumer (the
+silent-gap check, `uncovered-proof`, `status_for()`'s own `tested`
+set) inherits the corrected meaning for free.
+
+New manifest field, `gate.executionVerified`: `true` when
+`test_results` was configured and found; `false` when it was absent,
+with a loud `WARN:` on stderr, never a silent fallback. A project that
+hasn't wired this up yet keeps working exactly as before — nothing
+breaks on upgrade — but the manifest now says plainly which meaning of
+`proven` is in effect, rather than implying the stronger one by
+default.
+
+Verified both directions against a real, controlled scratch fixture:
+a genuinely failing test named to match a real AC, under the old
+name-matching-only path, showed `proven`, `gate.ok: true`,
+`executionVerified: false` — the exact gilt this rule exists to catch.
+The same fixture with `test_results` configured showed `GAP`,
+`gate.ok: false`, `executionVerified: true`. Also verified against
+SpecCost's own real suite (148 passing tests, real `pytest
+--junit-xml` output): `executionVerified: true`, 78 `proven`, zero
+demotions — the re-triage this rule's own arrival makes possible found
+nothing wrong there, the expected outcome for a repo whose suite was
+already genuinely green throughout.
+
 ## 0.4.8 — 2026-08-17
 
 `uncovered-proof` (v0.4.7) gains the mechanism its own report-only

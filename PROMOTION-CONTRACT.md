@@ -24,10 +24,12 @@ Mint durable IDs at intent; refuse silent gaps; allow tracked debt to stay visib
 
 6. **Honest states.** Prefer named states over a false green:
 
-   - **proven**: a named carrier exists (an AC proof, or `@covers`/proof for US/FR/NFR). A fact that a carrier exists, not a claim the code is correct.
+   - **proven**: a named, *passing* carrier exists (an AC proof, or `@covers`/proof for US/FR/NFR). Superseded 2026-08-17 (rule 6a): this used to read "a fact that a carrier exists, not a claim the code is correct." It no longer does.
    - **tracked-debt**: work started, proof missing, but declared on an open task with `Carries:`. Visible, on the books.
    - **backlog**: US/FR/NFR with no own carrier, or any ID anointed into backlog (registry entry plus open `Carries:` TODO and nothing else). Planning altitude, not a broken thread.
    - **GAP**: a silent AC gap, neither proof nor open debt. The Golden Thread is broken; the Gate refuses.
+
+   **6a. Registries may not self-declare their own statuses (added 2026-08-17).** A name matching a proof pattern in a source file only shows a test *claims* to answer for an ID; it says nothing about whether that test currently passes, whether it is a stub, or whether it is a skip a grep still sees. Status was a self-report all along — the same failure class as an undeclared tally line or a self-marked checkbox, occupying the most important word in the system. The fix: `proven` derives from a *passing* proof, verified against a machine-readable test-results report (`test_results` config key, a JUnit XML file the project's own test run already produces), never from name-matching alone. Where `test_results` is not configured, the Gate falls back to name-matching and says so loudly: `gate.executionVerified: false` in the trace-manifest, never a silent, implied upgrade. Anointment remains human and declared; proven-ness becomes un-typeable — the word is earned mechanically or not at all. `attestedBy` survives as an optional overlay that can confirm a proven, never mint one.
 
 7. **Refusal.** Gate 1 (judgment, e.g. `/speckit.analyze`) and Gate 2 (deterministic check) fail closed on silent AC gaps, untraced scope, and registry↔spec↔tasks drift. Passing does not mean zero unfinished work; it means zero *hidden* unfinished work at AC altitude, and zero abandoned or invented IDs in the planning layer.
 
@@ -71,7 +73,7 @@ Add to `.specify/memory/constitution.md` (or feed `/speckit.constitution`):
 > | **SpecAssay**            | Spec Kit overlay: durable IDs, Gate 2, trace-manifest emission. |
 > | **Loupe**                | Viewer that reads a trace-manifest only — no target re-scan. Reads any emitter's manifest. |
 > | **gilt**                 | Work dressed to gleam like done with nothing underneath: code with no intent behind it, "done" with no proof answering for it. The failure SpecAssay exists to catch. From the assay office: base metal gilded to pass as gold. |
-> | **proven**               | Named carrier exists (AC proof and/or `@covers` / proof for US/FR/NFR). A fact that a carrier exists, not a claim the code is correct. |
+> | **proven**               | Named, *passing* carrier exists (AC proof and/or `@covers` / proof for US/FR/NFR), verified against a test-results report where one is configured (rule 6a, 2026-08-17). Where none is configured, name-matching only, and the manifest says so (`gate.executionVerified: false`). |
 > | **tracked-debt**         | Incomplete, but declared on an open task with `Carries:`. Visible, on the books. |
 > | **GAP**                  | Silent AC gap — neither proof nor open debt; the Golden Thread is broken; Gate refuses. |
 > | **backlog**              | US/FR/NFR with no own carrier, or an anointed ID — planning altitude, not a silent gap. |

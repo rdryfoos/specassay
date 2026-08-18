@@ -71,6 +71,7 @@ TEST_AC_RE="$(yaml_scalar test_ac_regex)"
 MANIFEST_OUT="$(yaml_scalar manifest_path)"
 TARGET_NAME="$(yaml_scalar target_name)"
 BLOCK_UNCOVERED_PROOF="$(yaml_scalar block_uncovered_proof)"
+TEST_RESULTS="$(yaml_scalar test_results)"
 
 [[ -n "$REGISTRY" ]] || { echo "FAIL: config missing registry" >&2; exit 2; }
 [[ -n "$ID_RE" ]] || ID_RE='(FR|NFR|AC|US)-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?'
@@ -271,6 +272,64 @@ done < <(yaml_list test_globs) >> "$tmp/proof_hits.txt" || true
 
 cut -d'|' -f3 "$tmp/proof_hits.txt" 2>/dev/null | sort -u > "$tmp/test_acs.txt" || true
 
+# Rule 6a: "proven" derives from a passing proof, not a matching name.
+# A test_ac_regex match in a source file only shows a test *claims* to
+# answer for an ID; it says nothing about whether that test currently
+# passes, or whether it is a stub, a skip, or dead code a grep still
+# sees. If test_results (a JUnit XML report the project's own test run
+# already produces -- pytest --junit-xml, node:test's junit reporter,
+# vitest's junit reporter, all already emit this format) is configured,
+# rewrite test_acs.txt in place to keep only IDs with at least one
+# *passing* testcase, so every downstream consumer (the silent-gap
+# check below, uncovered-proof, and status_for()'s own "tested" set)
+# inherits the execution-verified meaning for free, from one place.
+: > "$tmp/execution_verified.txt"
+if [[ -n "$TEST_RESULTS" && -f "$TEST_RESULTS" ]]; then
+  echo "true" > "$tmp/execution_verified.txt"
+  python3 - "$TEST_RESULTS" "$tmp/proof_hits.txt" "$tmp/test_acs.txt" <<'PY'
+import re
+import sys
+import xml.etree.ElementTree as ET
+
+results_path, proof_hits_path, test_acs_path = sys.argv[1:4]
+
+tree = ET.parse(results_path)
+passing_names = []
+for testcase in tree.getroot().iter("testcase"):
+    failed = testcase.find("failure") is not None or testcase.find("error") is not None
+    skipped = testcase.find("skipped") is not None
+    if failed or skipped:
+        continue
+    label = f'{testcase.get("classname", "")} {testcase.get("name", "")}'
+    passing_names.append(label)
+
+def id_forms(id_):
+    # AC-BIND-10 (as it appears in JS description-string test names) and
+    # AC_BIND_10 (as it appears in Python test_AC_BIND_10_... function
+    # names) are the two conventions this project family actually uses.
+    return {id_, id_.replace("-", "_")}
+
+verified = set()
+with open(proof_hits_path, encoding="utf-8", errors="replace") as f:
+    for line in f:
+        parts = line.rstrip("\n").split("|", 3)
+        if len(parts) < 3:
+            continue
+        id_ = parts[2]
+        if id_ in verified:
+            continue
+        forms = id_forms(id_)
+        if any(any(form in label for form in forms) for label in passing_names):
+            verified.add(id_)
+
+with open(test_acs_path, "w") as f:
+    for id_ in sorted(verified):
+        f.write(id_ + "\n")
+PY
+elif [[ -n "$TEST_RESULTS" ]]; then
+  echo "WARN: test_results configured ($TEST_RESULTS) but the file does not exist; falling back to name-matching only, executionVerified=false in the manifest" >&2
+fi
+
 # Domains actually present in this registry (the middle TYPE-DOMAIN-NN
 # segment of each real local ID). Used below to tell a genuine local
 # orphan/typo apart from prose citing another project's real ID by name
@@ -418,6 +477,11 @@ if diagnostics_path.exists():
     for ln in diagnostics_path.read_text().splitlines():
         if ln.strip():
             diagnostics.append(json.loads(ln))
+
+execution_verified_path = tmp / "execution_verified.txt"
+execution_verified = (
+    execution_verified_path.exists() and execution_verified_path.read_text().strip() == "true"
+)
 
 statements = {}
 registry_refs = {}
@@ -584,6 +648,7 @@ doc = {
         "ok": not gate_failed and len(failures) == 0,
         "failures": failures,
         "diagnostics": diagnostics,
+        "executionVerified": execution_verified,
     },
     "totals": {
         "registryIdCount": len(ids),
