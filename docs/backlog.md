@@ -49,6 +49,41 @@ Requirement," which fights the intent framing now that "requirement" is retired.
 ID (immutability forbids in-place renumbering). Not worth it as a standalone
 change; fold it into the next time the registry churns for another reason.
 
+## Feature request: coverage matrix + portfolio-snapshot emission
+
+**Status:** anointed backlog (minted, carried by this note, not yet built).
+
+**From:** HomesFlow — the family's oldest user, running the longest, on a real
+brownfield-adjacent codebase (see H1 above).
+
+**The ask:** two engine capabilities the vendored `specassay-check` doesn't have
+yet, both of which HomesFlow's own bespoke `scripts/check-traceability.sh`
+already does for itself: `--matrix` (regenerate a human-readable coverage table
++ SVG summary bar from the current registry/gate state) and a portfolio
+snapshot mode (the same, framed for a cold reader rather than CI). Neither is
+exotic; both are re-renderings of data the gate already computes.
+
+**Why this matters beyond one repo:** HomesFlow forked its own gate tooling
+before `specassay-check`'s lineage existed, and the fork earned real,
+documented, relied-upon modes (`--matrix`, `--canvas`, `--refresh`) that the
+2026-08-18 migration deliberately did not touch — grafting Rule 6a onto the
+bespoke script rather than forcing a premature full-engine swap, precisely so
+none of that got silently dropped. The full swap has a named trigger: **when
+SpecAssay ships matrix/portfolio-snapshot emission, the bespoke script
+retires.** Until then, HomesFlow runs two enforcement paths in parallel by
+design, not by accident.
+
+**Evidence for urgency, not just want:** wiring the vendored engine's Rule 6a
+graft into the bespoke script the same night surfaced a real bug born of
+exactly this divergence — the bespoke script's task-tracking check had a
+hardcoded single-file path (`specs/001-mvp/tasks.md`) where the vendored
+engine already used a proper recursive glob (`specs/**/tasks.md`), so three
+IDs honestly tracked in `specs/backlog/tasks.md` read as a false gap under the
+bespoke script and correctly as `backlog` under the vendored one. Two engines
+covering the same registry drifted apart on a basic correctness question
+within one migration session. That is the cost of the fork continuing to
+exist; the sooner these modes ship, the sooner it stops accruing.
+
 ## Roadmap: proposed build order
 
 Lifted from `scope-and-pull-requests.md` §6. Every item there is tagged
