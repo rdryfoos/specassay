@@ -23,6 +23,7 @@ anointed backlog: reach a working Gate from the public quickstart alone).
 - FR-DOCS-30 — Troubleshooting built from real failure classes, each entry citing the incident that taught it.
 - FR-DOCS-40 — Every documented behavior cites the registry row(s) it documents.
 - AC-DOCS-10 — Given a cold installer with no prior context, when following the public quickstart alone, then a working Gate on their own repo within 30 minutes, zero questions asked of the author.
+- FR-DOCS-50 — Once FR-GATE-40 ships, restore `docs/**` to `specassay-check-config.yml`'s `src_globs`. Companion to FR-GATE-40, minted the same day: the current exclusion is a tracked temporary, not a settlement.
 
 ## GATE
 
@@ -34,6 +35,9 @@ each was minted from.
 - FR-GATE-10 — `--matrix`: regenerate a human-readable coverage table + SVG summary bar from the current registry/gate state.
 - FR-GATE-20 — Portfolio-snapshot mode: the same coverage data, framed for a cold reader rather than CI.
 - FR-GATE-30 — `retired`: a terminal state alongside proven/tracked-debt/backlog/GAP, distinguishing an intent withdrawn on purpose (a tombstoned registry statement on a closed carrying task) from a silent GAP.
+- FR-GATE-40 — `orphan-covers` gains domain scoping consistent with `orphan-spec` and `orphan-task`, so `@covers` detection distinguishes use from mention: marks inside fenced code blocks, documentation files, and the checker's own comments are not live marks. Minted 2026-08-18, citing the DOCS-room founding finding: `docs/**` had to be excluded from the assayer's own self-governance because the Gate could not yet read its own documentation without believing it (`docs/docs-gaps.md`).
+  - AC-GATE-40 — Given a docs file quoting an `@covers` line as a teaching example, when the Gate runs with docs in `src_globs`, then no `orphan-covers` finding derives from the quotation.
+  - AC-GATE-41 — Given `check-traceability.sh`'s own source, when scanned, then its comments and regex definitions never self-match.
 
 ## SELF
 

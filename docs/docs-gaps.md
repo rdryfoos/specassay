@@ -20,7 +20,7 @@ still unresolved), and the commit that closed it.
    `docs/testing/*completed/` directory) and `docs/testing/4-real-work-test.md`.
    Resolved: commit `de6995b` (docs: fix two dead README quickstart links).
 
-## Open
+## Resolved into a mint (not yet built)
 
 1. **`orphan-covers` has no domain-scoping, unlike `orphan-spec`/`orphan-task`.**
    Founding this repo's own registry (`PRD.md`, 2026-08-18) with `docs/**`
@@ -35,8 +35,8 @@ still unresolved), and the commit that closed it.
    `src_globs` to `extensions/**` + `presets/**` only (excludes `docs/**`
    for now) and rewording the one colliding comment
    (`extensions/specassay-check/scripts/check-traceability.sh`) so it
-   doesn't literally match `covers_regex`. Not fixed at the engine level —
-   that's a real gap in the check itself, out of scope for a docs-room
-   founding pass. `docs/**` re-enters `src_globs` once FR-DOCS-10 starts
-   writing doc files that need real `@covers` marks of their own, at which
-   point this either needs the engine fix or a narrower docs glob.
+   doesn't literally match `covers_regex`. Minted as `FR-GATE-40`
+   (`AC-GATE-40`, `AC-GATE-41`) 2026-08-18, design room, citing this entry;
+   companion `FR-DOCS-50` tracks restoring `docs/**` to `src_globs` once it
+   ships — see `PRD.md`. The workaround stays in place, and this entry
+   stays open in spirit, until FR-GATE-40 actually builds.

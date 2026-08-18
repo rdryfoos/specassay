@@ -22,9 +22,10 @@ tasks: "specs/**/tasks.md"
 # projects' trials as teaching examples (AC-HOME-*, AC-FIX-01, etc.), and
 # unlike the spec/task orphan checks, orphan-covers has no domain-scoping
 # to tell a citation apart from a real local claim -- scanning docs/**
-# here fails the Gate on prose, not drift. Logged to the docs-gaps list
-# (2026-08-18) rather than silently special-cased; revisit once FR-DOCS-10
-# writes doc files that need to carry real @covers marks of their own.
+# here fails the Gate on prose, not drift (docs/docs-gaps.md). Tracked as
+# FR-GATE-40 (the engine fix) / FR-DOCS-50 (restore docs/** here once it
+# ships) -- see PRD.md. The exclusion is a tracked temporary, not a
+# settlement.
 src_globs:
   - "extensions/**"
   - "presets/**"
