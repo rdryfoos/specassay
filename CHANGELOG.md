@@ -3,6 +3,37 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.4.10 — 2026-08-18
+
+The paved roads for rule 6a's own arrival
+(`speccost-honesty-economics-2026-08-17_1.md`'s own standing design
+law: "the honest path must be the shortest path; every governance
+obligation names its paved road or it is not law yet"):
+
+- **Marks at work time.** `presets/specassay/templates/tasks-template.md`:
+  test tasks now name the exact proof (file path and function name)
+  before the code exists, not "a test for this AC" left to be decided
+  later; implementation tasks that create or first touch a source file
+  now carry the exact `@covers` line to paste, pre-written in the task
+  itself. New `scripts/commit-advisory.sh`: a `commit-msg` hook,
+  install once per clone, warn-only and never blocking, flags when a
+  commit message names a registry ID but no staged file carries a
+  matching `@covers` mark.
+- **Registration mints.** `mint-id.sh --append` now prints a reminder
+  after every real append: state the coverage basis plainly in the
+  mint commit, "coverage registered, not newly attributed" for
+  already-built work this mint is only now registering, or say it's
+  new work instead. Either is honest; silence about which is not.
+- **Fresh data and status re-triage**: already real before this
+  release (a working `refresh.sh` and a loaded launchd extraction
+  pulse in the wild, rule 6a's own derivation making manual re-triage
+  extinct) — confirmed, not rebuilt.
+
+Verified: `commit-advisory.sh` tested against three real scratch
+cases (missing mark warns and exits 0; a real mark present stays
+silent; no ID mentioned stays silent). `mint-id.sh`'s reminder
+verified to print only on a real `--append`, never on a dry-run mint.
+
 ## 0.4.9 — 2026-08-17
 
 Rule 6a: **proven derives from a passing proof, not a matching name.**

@@ -21,3 +21,20 @@ first call and mint your first ID. Minting always lands on a multiple
 of ten; a duplicate the Gate later refuses resolves with
 `mint-id.sh --resolve <ID>`. See `scripts/mint-id.sh` and
 `commands/speckit.specassay-check.mint.md`.
+
+**Proven, verified.** `proven` requires a *passing* proof, not a
+matching test name (Rule 6a). Set `test_results` to a JUnit XML path
+your own test run already produces (`pytest --junit-xml=...`,
+node:test's or vitest's junit reporter); the Gate cross-references it.
+Unset, the Gate falls back to name-matching and says so loudly
+(`gate.executionVerified: false` in the trace-manifest).
+
+**Marks at work time, not audited afterward.** A commit-time advisory
+(warn only, never blocks) flags when a commit message names a
+registry ID but no staged file carries a matching `@covers` mark.
+Install once per clone:
+
+```bash
+ln -sf ../../.specify/extensions/specassay-check/scripts/commit-advisory.sh \
+  .git/hooks/commit-msg
+```

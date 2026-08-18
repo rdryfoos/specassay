@@ -138,6 +138,9 @@ mint_primary() {
   if [[ -n "$append_text" ]]; then
     render_line "$new_id" "$append_text" >> "$REGISTRY"
     echo "appended to $REGISTRY" >&2
+    echo "REMINDER: state the coverage basis plainly in the mint commit." >&2
+    echo "  Already-built work this mint is only now registering: \"coverage registered, not newly attributed.\"" >&2
+    echo "  New work this mint is starting: say that instead. Either is honest; silence about which is not." >&2
   fi
 }
 
