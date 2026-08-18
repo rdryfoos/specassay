@@ -4,6 +4,12 @@ Product-level open questions and the proposed build order, minted so they don't
 evaporate. Three kinds of entry: **hypotheses** we want to put to the test, **open
 decisions** we've named but not settled, and the **roadmap** of proposed work.
 
+Design decisions that need ratification, not just naming, don't live here —
+they go to the design room. The `FR` type-code replacement (named 2026-08-17,
+extracted 2026-08-18 per design-room ruling: alignment-before-execution,
+not a task-shaped backlog item) is packaged with real impact evidence in
+`dryfoos-sites/docs/field-notes/2026-08-18-fr-rename-options.md`.
+
 ## H1: Does SpecAssay only work in a greenfield environment?
 
 **Status:** anointed backlog (minted, carried by this note, not yet tested).
@@ -29,25 +35,6 @@ greenfield on *both* axes, so the incremental-brownfield story is untested.
 only*: empty/small registry, mark just the new statements of intent, leave the legacy
 un-gated, and see whether the thread grows cleanly at the margin without a
 retrofit, and whether a team actually tolerates the ceremony mid-stream.
-
-## Open decision: a replacement for `FR`
-
-**Status:** named, not settled. The `FR` type code expands to "Functional
-Requirement," which fights the intent framing now that "requirement" is retired.
-`NFR` stays (entrenched acronym), which makes `FR` the lone holdout.
-
-**Candidates:**
-
-- **`FI` = Functional Intent**: on-message, but asymmetric beside a kept `NFR`
-  (intent vs requirement).
-- **`FUNC` = Functional**: neutral; carries neither "requirement" nor "intent",
-  so it sidesteps the asymmetry, at the cost of a longer prefix.
-- **Zero-cost fallback**: keep both `FR` / `NFR` as opaque type codes and stop
-  expanding them in prose.
-
-**Cost of doing it:** migrating `FR` is a full tombstone-and-remint of every `FR`
-ID (immutability forbids in-place renumbering). Not worth it as a standalone
-change; fold it into the next time the registry churns for another reason.
 
 ## Feature request: coverage matrix + portfolio-snapshot emission
 
