@@ -46,17 +46,28 @@ accruing.
    this release. Check: a Gate run on the shipped example-app reports
    zero uncovered-proof diagnostics, output attached to the release
    evidence.
+   **Done** (already, commit `280a079`; reverified 2026-08-18 by the
+   docs room: `examples/example-app`'s Gate run, `gate.diagnostics: []`).
 2. **Report-only is the shipped default; blocking is earned.** The
    design-room ruling (2026-08-18): `uncovered-proof` ships as a
    diagnostic; `block_uncovered_proof` is documented as a per-project
    ratchet — clear your backlog, then flip, never a global flag day,
    never reversed. Check: config template default + a README section
    stating the ratchet in exactly these terms.
+   **Done** 2026-08-19: `config-template.yml`'s `block_uncovered_proof`
+   ships commented out (verified); README's new "Uncovered proof:
+   report-only is the shipped default; blocking is earned" section
+   states the ratchet in these terms.
 3. **Cold-install proof, attached.** A fresh scratch repo, the README
    followed verbatim, ending in a real Gate run and a real emitted
    trace-manifest. The transcript and the manifest ship with the
    release notes. Never hand-author a sample artifact — every shipped
    sample comes out of the real tool.
+   **Done** 2026-08-19, and then some: a real cold-agent trial (not
+   just a scratch repo the docs room drove itself), independently
+   reverified command-by-command — `docs/testing/completed/
+   evidence-cold-agent-trial-observed-2026-08-19.md`, manifest at
+   `samples/cold-trial-imei.trace-manifest.json`.
 4. **The migration guide is part of the release.** Existing adopters
    carry vendored copies measured 0–3 releases behind, and the upgrade
    frictions are known and documented in the survey (presets have no
@@ -65,6 +76,12 @@ accruing.
    path for a 0.3.x or 0.4.x adopter honestly: what works, the
    workaround where it doesn't, no gilding. Check: the guide names
    each measured friction and its current answer.
+   **Done** 2026-08-19: `docs/migration.md`. All three frictions
+   reverified directly against the real CLI (0.15.3.dev0), not carried
+   over from the survey unchecked — the cache-refresh one turned out
+   more stubborn than described (a full `preset remove`+`add` cycle
+   still didn't bust it; only deleting `.cache/` did), and the guide
+   says so.
 5. **Changelog from history, not memory.** The community-facing notes
    are written from `CHANGELOG.md` and the actual commits. Check:
    every release-note claim traces to a changelog entry or commit.

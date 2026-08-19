@@ -39,6 +39,14 @@ Passing does not mean "everything is done." It means nothing *unfinished* is *hi
 
 Silent-gap refusal is **AC-only** (acceptance criteria are the atomic unit of "covered"); US/FR/NFR without a carrier are `backlog`, not `GAP`.
 
+## Uncovered proof: report-only is the shipped default; blocking is earned
+
+`orphan-covers` catches an `@covers` mark naming an ID that isn't real. Its mirror, `uncovered-proof`, catches the reverse: a real, tested, `proven` ID that no file's `@covers` mark ever claims — self-documentation nobody wrote, invisible until you cross-reference by hand.
+
+**`uncovered-proof` ships as a diagnostic.** It never fails the Gate on its own — you'll see it in `gate.diagnostics[]`, `gate.ok` untouched, for any ID this applies to. Real projects carry a real backlog of these the first time this check runs on them; report-only is what lets you see the size of that backlog before anything blocks on it.
+
+**`block_uncovered_proof` is a per-project ratchet, not a switch.** Clear your own backlog to zero, *then* flip it on in your `specassay-check-config.yml` — never as a global flag day across every project you maintain, and never reversed once flipped. The flip itself should carry a dated comment on that line, so *when* and *why* your project's enforcement status changed stays traceable, the same as any other decision this tool asks you to leave a record of.
+
 ## The trace-manifest (`trace-manifest.json`)
 
 Gate 2 always writes a portable, vendor-neutral **[trace-manifest](./samples/homesflow.trace-manifest.json)** (default path `trace-manifest.json`, configurable as `manifest_path`):
@@ -137,6 +145,8 @@ Passing doesn't mean nothing's wrong; it means nothing's *hidden*.
 specify preset add --dev /path/to/specassay/presets/specassay
 specify extension add --dev /path/to/specassay/extensions/specassay-check
 ```
+
+**Already running an older install?** [`docs/migration.md`](./docs/migration.md) — three real upgrade frictions, each tested against the real CLI, with the workaround that actually worked for each.
 
 ## Samples
 
