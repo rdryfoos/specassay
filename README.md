@@ -119,7 +119,10 @@ looks like this: the thread frays exactly at `AC-SYNC-01`, everything else
 unaffected. (Load [`samples/sample-gap.trace-manifest.json`](samples/sample-gap.trace-manifest.json)
 yourself via Loupe's **Load Manifest…** button to see it live.)
 
-![Loupe showing a broken Golden Thread: one row reads GAP in red, the header reads "Golden Thread broken · 1 refusal"](docs/images/loupe-gap-example-app.jpg)
+![Loupe showing a broken Golden Thread: one row reads GAP in red, the header reads "Golden Thread broken · 1 refusal"](docs/images/loupe-gap-example-app-20260818.png)
+*`example-app · manifest 2026-08-10T03:02:29.081Z` (visible in Loupe's
+header) — `samples/sample-gap.trace-manifest.json`, loaded live at
+loupe.dryfoos.com/app on 2026-08-18.*
 
 Once you've minted your own first ID and it's carried by real spec/task/code,
 the same move — remove or rename its proof, rerun the Gate — is how you
@@ -145,7 +148,16 @@ specify extension add --dev /path/to/specassay/extensions/specassay-check
 
 Samples can be viewed in [Loupe](https://loupe.dryfoos.com/app) by uploading a local copy via Loupe's `Load Manifest...` button.
 
-![Loupe rendering the real HomesFlow emit: "Golden Thread intact", 82 rows, 67 proven, 10 tracked-debt, 5 backlog, 0 GAP](docs/images/loupe-proven-homesflow.jpg)
+*Screenshots in this README are real, self-dating captures of the actual
+tool on real data (family standard, 2026-08-19), never mockups — the
+manifest timestamp visible in each one is the proof. When Loupe's UI or
+the underlying sample changes enough to make a capture stale, recapturing
+it is part of that change.*
+
+![Loupe rendering the real HomesFlow emit: "Golden Thread intact", 82 rows, 67 proven, 10 tracked-debt, 5 backlog, 0 GAP](docs/images/loupe-proven-homesflow-20260818.png)
+*`HomesFlow · manifest 2026-08-07T19:43:36.458Z` (visible in Loupe's
+header) — Loupe's own default preview at loupe.dryfoos.com/app, captured
+2026-08-18.*
 
 See [`samples/README.md`](./samples/README.md). 
 

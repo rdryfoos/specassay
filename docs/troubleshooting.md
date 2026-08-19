@@ -8,6 +8,12 @@ founding this repo's own registry. None of this is hypothetical. Each entry
 cites what taught it, the same discipline `@covers` asks of source code
 (FR-DOCS-30, [`PRD.md`](../PRD.md)).
 
+**Maintenance note:** entries with screenshots carry a real, self-dating
+capture of the actual tool on real data, never a mockup (family standard,
+2026-08-19). A stale screenshot is a false claim — when a change materially
+alters a pictured surface, recapturing it is part of that change, not a
+follow-up. Dated filenames (`<slug>-YYYYMMDD.png`) make staleness visible.
+
 ## The Gate refuses right after you close a `backlog` task
 
 **You'll see:** `FAIL: registry ID missing from specs: FR-XXX-NN`, or the ID
@@ -243,6 +249,11 @@ meantime.
 **Taught by:** this repo's own registry, live — `FR-GATE-40` in `PRD.md`,
 loaded into Loupe the same day this entry was written.
 
-![Loupe's drawer for FR-GATE-40: a green PROVEN badge, "attested by —", and Loupe's own incoherence line "status claims proven; manifest lists no proof" directly beneath it, timestamped 2026-08-19T13:54:43.690Z](images/loupe-provenvia-incoherence-1.jpg)
+![Loupe drawer for FR-GATE-40: a green PROVEN badge and Loupe's own incoherence line "status claims proven; manifest lists no proof" directly beneath it](images/provenvia-incoherence-20260819.png)
+*This repo's own real manifest, `manifest 2026-08-19T13:54:43.690Z` (visible
+in Loupe's header), loaded live at loupe.dryfoos.com/app. Captured before
+the `FR-GATE-60` fix ships, while this symptom can still happen.*
 
-![The same drawer scrolled down: the Build card citing the real @covers mark (check-traceability.sh:198), and the Proof card reading plainly "No proof"](images/loupe-provenvia-incoherence-2.jpg)
+![The same drawer scrolled to the Proof card, reading plainly "No proof"](images/provenvia-incoherence-no-proof-20260819.png)
+*Same manifest, same timestamp, scrolled down — the Build card's real
+`@covers` mark above it, the Proof card's "No proof" below.*
