@@ -153,6 +153,41 @@ SpecAssay Check (Gate 2): OK (1 registry IDs)
 }
 ```
 
+## The Gate finds no sources or tests at all
+
+**You'll see:** `gate.ok: true`, but every row you expected to be covered
+reads `backlog` with empty `implementations[]` — real `@covers` marks and
+real tests on disk, none of them found. No `FAIL`, no `DIAGNOSTIC`, nothing
+on stderr to point at. Silence.
+
+**What's happening:** `src_globs`/`test_globs` written as an inline YAML
+array (`src_globs: ["src/**"]`) instead of a block list. The config parser
+(`yaml_list()`) only recognizes the block form — a `key:` line with nothing
+but whitespace after it, followed by `- "item"` lines beneath. An inline
+array doesn't match that shape at all, so the key silently parses to an
+empty list: no source files scanned, no test files scanned, and nothing
+fails loudly because from the Gate's point of view there's simply nothing
+to check.
+
+**Fix:** write it as a block list:
+
+```yaml
+src_globs:
+  - "src/**"
+test_globs:
+  - "tests/**"
+```
+
+not `src_globs: ["src/**"]`.
+
+**Taught by:** capturing the `executionVerified` screenshot below. The
+first attempt at that fixture's config used inline arrays, silently found
+zero sources and zero tests, and failed with `silent-gap: AC-FIX-01 has no
+test` — a completely different symptom than the one being captured.
+Switching to block style produced the documented behavior immediately. The
+recipe that shipped in this doc's first draft carried the same mistake and
+has since been corrected.
+
 ## `gate.executionVerified: false`, even though your tests pass
 
 **You'll see:** rows read `proven`, but the manifest's `gate` object carries
@@ -182,8 +217,14 @@ named to match a real AC showed `proven`/`gate.ok: true` under the old
 name-matching path, and `GAP`/`gate.ok: false` once `test_results` was wired
 in — the exact gilt this rule exists to catch.
 
-Real output, captured 2026-08-19T13:54:18Z against a scratch fixture
-(`test_results` configured, the JUnit file not yet written):
+![Terminal: the real WARN line for a configured-but-missing test_results file, boxed, above the emitted manifest's gate object with executionVerified: false boxed](images/execution-verified-false-20260819.png)
+*Real Gate run (specassay-check v0.4.11, 2026-08-19); output verbatim,
+rendered for capture in a headless environment. Self-dated in the title
+bar (version + UTC timestamp of the run). Blue boxes are pointing-only
+annotation.*
+
+Same run, as text (`test_results` configured, the JUnit file not yet
+written):
 
 ```text
 WARN: test_results configured (junit-results.xml) but the file does not exist; falling back to name-matching only, executionVerified=false in the manifest
@@ -194,13 +235,10 @@ SpecAssay Check (Gate 2): OK (1 registry IDs)
 
 ```json
 {
-  "gate": {
-    "ok": true,
-    "failures": [],
-    "diagnostics": [],
-    "executionVerified": false
-  },
-  "generatedAt": "2026-08-19T13:54:18.677Z"
+  "ok": true,
+  "failures": [],
+  "diagnostics": [],
+  "executionVerified": false
 }
 ```
 
