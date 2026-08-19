@@ -40,6 +40,7 @@ each was minted from.
   - AC-GATE-41 — Given `check-traceability.sh`'s own source, when scanned, then its comments and regex definitions never self-match.
 - FR-GATE-50 — The manifest emitter dedupes `implementations` (and `proofs`) on `(id, normpath, line)` before writing the manifest, so the same mark reached twice (overlapping `src_globs` entries, or a `./x` vs `x` path spelling) is listed once. Minted 2026-08-18, citing a real emit where 62 of 100 rows carried duplicated implementations.
   - AC-GATE-50 — Given the same `@covers` mark reachable via two overlapping `src_globs` entries or a `./x` vs `x` path spelling, when the manifest is emitted, then that mark appears exactly once in `implementations`.
+- FR-GATE-60 — An additive `provenVia` (delegated-proof) field on FR/US rows, naming the AC(s) whose proof stands in for a row that carries no `@covers`/test of its own, so Loupe's PROOF stage can render the chain instead of "No proof." Minted 2026-08-18, design-room proposal, considered not built: **open design question** — the registry has no existing FR→AC parent/child edge (shared ID-domain prefix is a naming convention, not a declared relationship), so `provenVia` needs either (a) an explicit author-declared link (e.g. a `**Provenvia**:`/registry-annotation grammar, honest but one more thing to write) or (b) an inferred one (the emitter guesses from domain/statement adjacency, convenient but a real risk of a false chain — exactly the kind of self-report Rule 6a exists to refuse). No AC yet; needs that ruling first.
 
 ## SELF
 

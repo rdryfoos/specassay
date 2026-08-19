@@ -22,3 +22,4 @@ declaration.
 - [ ] T909 Give `orphan-covers` domain scoping (fenced code blocks, doc files, the checker's own comments are not live marks) — **Carries**: FR-GATE-40, AC-GATE-40, AC-GATE-41 (anointed backlog)
 - [x] T910 Restore `docs/**` to `src_globs` once FR-GATE-40 ships — **Carries**: FR-DOCS-50
 - [ ] T911 Dedupe manifest implementations/proofs on (id, normpath, line) — **Carries**: FR-GATE-50, AC-GATE-50 (anointed backlog)
+- [ ] T912 Rule on how `provenVia` gets populated (author-declared vs. inferred), then ship it — **Carries**: FR-GATE-60 (anointed backlog)
