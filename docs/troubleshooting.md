@@ -119,7 +119,33 @@ commit); a report-only survey across real projects at the time this shipped
 found dozens more spread across multiple projects, including two in this
 repo's own bundled `example-app` (CHANGELOG.md, v0.4.7).
 
-![Terminal and manifest evidence, captured live: a DIAGNOSTIC line for AC-FIX-01, gate.ok=True unaffected, and the diagnostics[] entry in the emitted manifest, timestamped 2026-08-19T13:54:30.657Z](images/entry-uncovered-proof-diagnostic.jpg)
+Real output, captured 2026-08-19T13:54:30Z against a scratch fixture (an AC
+proven by a real passing test, no `@covers` anywhere naming it):
+
+```text
+DIAGNOSTIC: uncovered proof: AC-FIX-01 has a passing test but no file's @covers line names it
+Wrote trace-manifest.v5beta.json (1 rows, schemaVersion 5, beta)
+Wrote trace-manifest.json (1 rows) gate.ok=True
+SpecAssay Check (Gate 2): OK (1 registry IDs)
+```
+
+```json
+{
+  "gate": {
+    "ok": true,
+    "failures": [],
+    "diagnostics": [
+      {
+        "kind": "uncovered-proof",
+        "detail": "uncovered proof: AC-FIX-01 has a passing test but no file's @covers line names it",
+        "id": "AC-FIX-01"
+      }
+    ],
+    "executionVerified": false
+  },
+  "generatedAt": "2026-08-19T13:54:30.657Z"
+}
+```
 
 ## `gate.executionVerified: false`, even though your tests pass
 
@@ -150,7 +176,27 @@ named to match a real AC showed `proven`/`gate.ok: true` under the old
 name-matching path, and `GAP`/`gate.ok: false` once `test_results` was wired
 in — the exact gilt this rule exists to catch.
 
-![Terminal and manifest evidence, captured live: the real WARN line for a configured-but-missing test_results file, alongside executionVerified: false in the emitted manifest, timestamped 2026-08-19T13:54:18.677Z](images/entry-execution-verified-false.jpg)
+Real output, captured 2026-08-19T13:54:18Z against a scratch fixture
+(`test_results` configured, the JUnit file not yet written):
+
+```text
+WARN: test_results configured (junit-results.xml) but the file does not exist; falling back to name-matching only, executionVerified=false in the manifest
+Wrote trace-manifest.v5beta.json (1 rows, schemaVersion 5, beta)
+Wrote trace-manifest.json (1 rows) gate.ok=True
+SpecAssay Check (Gate 2): OK (1 registry IDs)
+```
+
+```json
+{
+  "gate": {
+    "ok": true,
+    "failures": [],
+    "diagnostics": [],
+    "executionVerified": false
+  },
+  "generatedAt": "2026-08-19T13:54:18.677Z"
+}
+```
 
 ## The commit-msg advisory hook never fires
 
