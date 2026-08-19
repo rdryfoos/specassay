@@ -34,12 +34,15 @@ src_globs:
   - "PROMOTION-CONTRACT.md"
   - "specassay-check-config.yml"
 
-# No automated test suite proves this repo's own behavior yet (its own
-# changes are verified by hand against real scratch fixtures, per
-# CHANGELOG.md). Left pointed at the conventional location so it's not
-# silently omitted once one exists.
+# extensions/specassay-check/tests/ (2026-08-18): a real automated suite
+# for check-traceability.sh itself, exercising the core Gate rules plus
+# regression coverage for FR-GATE-40 and FR-GATE-50. Test names that carry
+# an AC's own ID (test_AC_GATE_40_..., test_AC_GATE_41_..., etc.) are that
+# AC's real proof, not a self-report -- Rule 6a applies to this registry's
+# own rows exactly as it does to every other project's.
 test_globs:
   - "tests/**"
+  - "extensions/specassay-check/tests/**"
 
 # ID grammar (HomesFlow-compatible default)
 id_regex: "(FR|NFR|AC|US)-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?"

@@ -195,7 +195,7 @@ expand_glob() {
   fi
 }
 
-# @covers FR-GATE-40 — a mark inside a markdown fenced code block (three
+# @covers FR-GATE-40, AC-GATE-40, AC-GATE-41 — a mark inside a markdown fenced code block (three
 # backticks or three tildes, indented fences included) or an inline
 # single-backtick code span is a quotation, not a live mark -- distinguishing
 # use from mention the way is_local_domain() already does for spec/task
@@ -582,7 +582,7 @@ if covers_file.exists():
             line_n = int(line)
         except ValueError:
             line_n = 0
-        # @covers FR-GATE-50 -- dedup on (normpath, line): overlapping
+        # @covers FR-GATE-50, AC-GATE-50 -- dedup on (normpath, line): overlapping
         # src_globs entries (e.g. "ios/**" and a narrower
         # "ios/HomesFlow/**" both listed) or a "./x" vs "x" spelling of
         # the same glob can hand the same mark to expand_glob() twice

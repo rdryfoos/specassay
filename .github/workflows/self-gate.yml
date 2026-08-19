@@ -21,6 +21,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Extension test suite — check-traceability.sh
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet pytest
+          python3 -m pytest extensions/specassay-check/tests/ -q
       - name: Gate 2 — this repo's own registry
         run: |
           set -euo pipefail
