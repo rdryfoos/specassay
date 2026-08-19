@@ -17,18 +17,22 @@ specs: "specs/**/spec.md"
 tasks: "specs/**/tasks.md"
 
 # What "source" means for this repo's own registry: the extension/preset
-# code the tool ships. docs/** is deliberately excluded for now, not
-# forgotten: docs/testing/*.md quotes real @covers lines from other
-# projects' trials as teaching examples (AC-HOME-*, AC-FIX-01, etc.), and
-# unlike the spec/task orphan checks, orphan-covers has no domain-scoping
-# to tell a citation apart from a real local claim -- scanning docs/**
-# here fails the Gate on prose, not drift (docs/docs-gaps.md). Tracked as
-# FR-GATE-40 (the engine fix) / FR-DOCS-50 (restore docs/** here once it
-# ships) -- see PRD.md. The exclusion is a tracked temporary, not a
-# settlement.
+# code the tool ships, its own config, and (as of FR-GATE-40) the
+# documentation the DOCS room is building. docs/**, README.md, and
+# PROMOTION-CONTRACT.md were excluded during founding (2026-08-18):
+# docs/testing/*.md quotes real @covers lines from other projects' trials
+# as teaching examples, and orphan-covers had no domain-scoping to tell a
+# citation apart from a real local claim (docs/docs-gaps.md). FR-GATE-40
+# fixed the engine (domain-scoping + code-span/fence stripping); this line
+# is that fix's own build, restoring docs/** here as promised.
+# @covers FR-DOCS-50
 src_globs:
   - "extensions/**"
   - "presets/**"
+  - "docs/**"
+  - "README.md"
+  - "PROMOTION-CONTRACT.md"
+  - "specassay-check-config.yml"
 
 # No automated test suite proves this repo's own behavior yet (its own
 # changes are verified by hand against real scratch fixtures, per

@@ -38,6 +38,8 @@ each was minted from.
 - FR-GATE-40 — `orphan-covers` gains domain scoping consistent with `orphan-spec` and `orphan-task`, so `@covers` detection distinguishes use from mention: marks inside fenced code blocks, documentation files, and the checker's own comments are not live marks. Minted 2026-08-18, citing the DOCS-room founding finding: `docs/**` had to be excluded from the assayer's own self-governance because the Gate could not yet read its own documentation without believing it (`docs/docs-gaps.md`).
   - AC-GATE-40 — Given a docs file quoting an `@covers` line as a teaching example, when the Gate runs with docs in `src_globs`, then no `orphan-covers` finding derives from the quotation.
   - AC-GATE-41 — Given `check-traceability.sh`'s own source, when scanned, then its comments and regex definitions never self-match.
+- FR-GATE-50 — The manifest emitter dedupes `implementations` (and `proofs`) on `(id, normpath, line)` before writing the manifest, so the same mark reached twice (overlapping `src_globs` entries, or a `./x` vs `x` path spelling) is listed once. Minted 2026-08-18, citing a real emit where 62 of 100 rows carried duplicated implementations.
+  - AC-GATE-50 — Given the same `@covers` mark reachable via two overlapping `src_globs` entries or a `./x` vs `x` path spelling, when the manifest is emitted, then that mark appears exactly once in `implementations`.
 
 ## SELF
 

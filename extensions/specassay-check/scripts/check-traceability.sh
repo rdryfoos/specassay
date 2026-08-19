@@ -195,6 +195,32 @@ expand_glob() {
   fi
 }
 
+# @covers FR-GATE-40 — a mark inside a markdown fenced code block (three
+# backticks or three tildes, indented fences included) or an inline
+# single-backtick code span is a quotation, not a live mark -- distinguishing
+# use from mention the way is_local_domain() already does for spec/task
+# orphan checks, but for the case that scoping can't reach: a project's own
+# real, local ID quoted as a teaching example (docs/**'s own future use once
+# FR-DOCS-50 restores it to src_globs). Blanks matched spans instead of
+# deleting lines, so line numbers reported downstream still match the
+# original file.
+strip_code_spans() {
+  awk '
+    BEGIN { in_fence = 0 }
+    {
+      line = $0
+      if (line ~ /^[[:space:]]*(```|~~~)/) { in_fence = !in_fence; print ""; next }
+      if (in_fence) { print ""; next }
+      out = ""; rest = line
+      while (match(rest, /`[^`]*`/)) {
+        out = out substr(rest, 1, RSTART - 1)
+        rest = substr(rest, RSTART + RLENGTH)
+      }
+      print out rest
+    }
+  ' "$1" 2>/dev/null
+}
+
 : > "$tmp/spec.txt"
 while IFS= read -r f; do
   [[ -f "$f" ]] || continue
@@ -234,7 +260,7 @@ while IFS= read -r g; do
   [[ -z "$g" ]] && continue
   while IFS= read -r f; do
     [[ -f "$f" ]] || continue
-    grep -nE "$COVERS_RE" "$f" 2>/dev/null | while IFS= read -r line; do
+    strip_code_spans "$f" | grep -nE "$COVERS_RE" 2>/dev/null | while IFS= read -r line; do
       lineno="${line%%:*}"
       rest="${line#*:}"
       # Not truncated here -- same byte-vs-codepoint reasoning as
@@ -257,7 +283,7 @@ while IFS= read -r g; do
   [[ -z "$g" ]] && continue
   while IFS= read -r f; do
     [[ -f "$f" ]] || continue
-    grep -nE "$TEST_AC_RE" "$f" 2>/dev/null | while IFS= read -r line; do
+    strip_code_spans "$f" | grep -nE "$TEST_AC_RE" 2>/dev/null | while IFS= read -r line; do
       lineno="${line%%:*}"
       rest="${line#*:}"
       raw="$(grep -Eo "$TEST_AC_RE" <<<"$rest" | head -1 || true)"
@@ -389,15 +415,23 @@ while IFS= read -r f; do
   done < "$f"
 done < <(expand_glob "$TASKS_GLOB")
 
-# 3) Untraced scope
+# 3) Untraced scope. Domain-scoped like spec-orphan/task-orphan (FR-GATE-40):
+# a citation of another project's real ID (a domain this registry never
+# minted into) isn't local drift, the same reasoning is_local_domain()
+# already applies above; only registry absence *and* a locally-shaped
+# domain together mean a real orphan.
 while IFS= read -r id; do
   [[ -z "$id" ]] && continue
-  grep -qx "$id" "$tmp/registry.txt" || record_fail "orphan-covers" "$id" "untraced scope (@covers): $id not in registry"
+  grep -qx "$id" "$tmp/registry.txt" && continue
+  is_local_domain "$id" || continue
+  record_fail "orphan-covers" "$id" "untraced scope (@covers): $id not in registry"
 done < "$tmp/covers.txt"
 
 while IFS= read -r id; do
   [[ -z "$id" ]] && continue
-  grep -qx "$id" "$tmp/registry.txt" || record_fail "orphan-test" "$id" "untraced scope (test name): $id not in registry"
+  grep -qx "$id" "$tmp/registry.txt" && continue
+  is_local_domain "$id" || continue
+  record_fail "orphan-test" "$id" "untraced scope (test name): $id not in registry"
 done < "$tmp/test_acs.txt"
 
 # 4) Silent gaps — ACs only (coverage altitude: AC is the atomic proof unit)
@@ -528,6 +562,7 @@ for id_ in ids:
         registry_refs[id_] = {"path": registry_rel, "line": n}
 
 impl_by = {i: [] for i in ids}
+seen_impl = set()
 covers_file = tmp / "covers_hits.txt"
 if covers_file.exists():
     for ln in covers_file.read_text(encoding="utf-8", errors="replace").splitlines():
@@ -547,9 +582,20 @@ if covers_file.exists():
             line_n = int(line)
         except ValueError:
             line_n = 0
+        # @covers FR-GATE-50 -- dedup on (normpath, line): overlapping
+        # src_globs entries (e.g. "ios/**" and a narrower
+        # "ios/HomesFlow/**" both listed) or a "./x" vs "x" spelling of
+        # the same glob can hand the same mark to expand_glob() twice
+        # under different literal path strings. 62 of 100 rows duplicated
+        # in a real emit before this fix (2026-08-18).
+        key = (id_, os.path.normpath(path), line_n)
+        if key in seen_impl:
+            continue
+        seen_impl.add(key)
         impl_by[id_].append({"path": path, "line": line_n, "excerpt": excerpt})
 
 proof_by = {i: [] for i in ids}
+seen_proof = set()
 proofs_file = tmp / "proof_hits.txt"
 if proofs_file.exists():
     for ln in proofs_file.read_text().splitlines():
@@ -566,6 +612,12 @@ if proofs_file.exists():
             line_n = int(line)
         except ValueError:
             line_n = 0
+        # Same dedup, same reason -- test_globs can overlap exactly the
+        # same way src_globs does (FR-GATE-50).
+        key = (id_, os.path.normpath(path), line_n)
+        if key in seen_proof:
+            continue
+        seen_proof.add(key)
         proof_by[id_].append({"name": name, "path": path, "line": line_n})
 
 debt_by = {i: [] for i in ids}
