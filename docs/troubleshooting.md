@@ -119,28 +119,38 @@ commit); a report-only survey across real projects at the time this shipped
 found dozens more spread across multiple projects, including two in this
 repo's own bundled `example-app` (CHANGELOG.md, v0.4.7).
 
+![Terminal and manifest evidence, captured live: a DIAGNOSTIC line for AC-FIX-01, gate.ok=True unaffected, and the diagnostics[] entry in the emitted manifest, timestamped 2026-08-19T13:54:30.657Z](images/entry-uncovered-proof-diagnostic.jpg)
+
 ## `gate.executionVerified: false`, even though your tests pass
 
 **You'll see:** rows read `proven`, but the manifest's `gate` object carries
-`"executionVerified": false`, and stderr printed a `WARN:` about it.
+`"executionVerified": false`. If you have `test_results` configured and the
+JUnit file just isn't there yet (forgot to run your suite with
+`--junit-xml=...` first, or the path is wrong), stderr also prints a loud
+`WARN:` about it — if `test_results` isn't configured at all, there's no
+warning, just the quieter `false`.
 
 **What's happening:** `proven` has always been able to come from a test
 *name* matching an AC's grammar, which only proves a carrier exists — not
 that the test currently passes, isn't a stub, or isn't a skip a grep still
-sees (Rule 6a). Without `test_results` configured, that's still all
-`proven` means here, and the Gate says so loudly rather than silently
-implying a stronger claim.
+sees (Rule 6a). Without a *passing* test-results report behind it, that's
+still all `proven` means here, and the Gate says so rather than silently
+implying a stronger claim — loudly if you told it to expect one and it's
+missing, quietly if you never configured one at all.
 
 **Fix:** point `test_results` at your test runner's JUnit XML output
 (`pytest --junit-xml=...`, `node:test`'s or `vitest`'s junit reporters all
-work). `proven` then requires a passing testcase, not just a matching name,
-and `executionVerified` flips to `true`.
+work), and make sure that file actually exists by the time the Gate runs.
+`proven` then requires a passing testcase, not just a matching name, and
+`executionVerified` flips to `true`.
 
 **Taught by:** the founding-sentence repair (CHANGELOG.md, v0.4.9), verified
 at the time against a real, controlled fixture — a genuinely failing test
 named to match a real AC showed `proven`/`gate.ok: true` under the old
 name-matching path, and `GAP`/`gate.ok: false` once `test_results` was wired
 in — the exact gilt this rule exists to catch.
+
+![Terminal and manifest evidence, captured live: the real WARN line for a configured-but-missing test_results file, alongside executionVerified: false in the emitted manifest, timestamped 2026-08-19T13:54:18.677Z](images/entry-execution-verified-false.jpg)
 
 ## The commit-msg advisory hook never fires
 
@@ -161,3 +171,32 @@ directory.
 
 **Taught by:** testing the hook as *actually installed* in a real repo, not
 just running the standalone script (CHANGELOG.md, v0.4.11).
+
+## Loupe shows a green `PROVEN` badge, but the Proof panel says "No proof"
+
+**You'll see:** an FR or US row reads `PROVEN` in the matrix, but expand its
+drawer and the Proof stage says `No proof`, and Loupe itself flags it —
+*"status claims proven; manifest lists no proof"* — directly under the
+badge.
+
+**What's happening:** this isn't a bug, it's rule 6 rendered honestly.
+`proven` for an FR/US only ever required `@covers` *or* a named test, never
+both — so an FR carried entirely by source (`@covers`, no test of its own)
+is legitimately `proven` with an empty `proofs[]`. Loupe already names the
+mismatch rather than hiding it; what it can't yet do is explain *why* the
+row is proven anyway when its own proof genuinely lives one level down, in
+child ACs. That gap is exactly what `FR-GATE-60` (an additive `provenVia`
+field, naming the AC(s) whose proof stands in) is proposed to close — see
+`PRD.md`. Still `backlog`: the open design question (author-declared vs.
+emitter-inferred) hasn't been ruled on yet.
+
+**Fix:** nothing to fix today — the badge is accurate, not broken. Read the
+row's `implementations[]` (its `@covers` marks) as the real evidence in the
+meantime.
+
+**Taught by:** this repo's own registry, live — `FR-GATE-40` in `PRD.md`,
+loaded into Loupe the same day this entry was written.
+
+![Loupe's drawer for FR-GATE-40: a green PROVEN badge, "attested by —", and Loupe's own incoherence line "status claims proven; manifest lists no proof" directly beneath it, timestamped 2026-08-19T13:54:43.690Z](images/loupe-provenvia-incoherence-1.jpg)
+
+![The same drawer scrolled down: the Build card citing the real @covers mark (check-traceability.sh:198), and the Proof card reading plainly "No proof"](images/loupe-provenvia-incoherence-2.jpg)
