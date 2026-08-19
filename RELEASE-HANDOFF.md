@@ -71,6 +71,14 @@ accruing.
 6. **Version and tag discipline** per the recorded law (components
    move together; tag matches). Check: the repo's own release
    verification steps, run, output kept.
+7. **Shipped docs meet the taught-by bar** (family standard,
+   2026-08-19 — see `docs/field-notes/2026-08-19-taught-by-standard.md`
+   in `dryfoos-sites`): every troubleshooting/how-to entry cites the
+   real incident that taught it; visual symptoms carry real,
+   self-dating screenshots of the actual tool on real data (never
+   mockups); pointer files are plumbing, never the answer to a
+   question. Check: each shipped doc entry has its "Taught by:" line,
+   and each visually-manifesting entry has its capture.
 
 ## The wall
 
