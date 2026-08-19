@@ -13,6 +13,10 @@ capture of the actual tool on real data, never a mockup (family standard,
 2026-08-19). A stale screenshot is a false claim — when a change materially
 alters a pictured surface, recapturing it is part of that change, not a
 follow-up. Dated filenames (`<slug>-YYYYMMDD.png`) make staleness visible.
+Living-symptom rule: only symptoms the *current* version still produces by
+design get pictures — an entry whose fix is "upgrade" is text-only, always,
+and a capture of a symptom scheduled for retirement doesn't publish here
+even if one exists.
 
 ## The Gate refuses right after you close a `backlog` task
 
@@ -125,8 +129,14 @@ commit); a report-only survey across real projects at the time this shipped
 found dozens more spread across multiple projects, including two in this
 repo's own bundled `example-app` (CHANGELOG.md, v0.4.7).
 
-Real output, captured 2026-08-19T13:54:30Z against a scratch fixture (an AC
-proven by a real passing test, no `@covers` anywhere naming it):
+![Terminal: DIAGNOSTIC line boxed, gate.ok=True untouched, and the uncovered-proof entry boxed inside gate.diagnostics[]](images/uncovered-proof-diagnostic-20260819.png)
+*Real Gate run (specassay-check v0.4.11, 2026-08-19); output verbatim,
+rendered for capture in a headless environment. Self-dated in the title
+bar (version + UTC timestamp of the run). Blue boxes are pointing-only
+annotation.*
+
+Same run, as text (an AC proven by a real passing test, no `@covers`
+anywhere naming it):
 
 ```text
 DIAGNOSTIC: uncovered proof: AC-FIX-01 has a passing test but no file's @covers line names it
@@ -287,11 +297,10 @@ meantime.
 **Taught by:** this repo's own registry, live — `FR-GATE-40` in `PRD.md`,
 loaded into Loupe the same day this entry was written.
 
-![Loupe drawer for FR-GATE-40: a green PROVEN badge and Loupe's own incoherence line "status claims proven; manifest lists no proof" directly beneath it](images/provenvia-incoherence-20260819.png)
-*This repo's own real manifest, `manifest 2026-08-19T13:54:43.690Z` (visible
-in Loupe's header), loaded live at loupe.dryfoos.com/app. Captured before
-the `FR-GATE-60` fix ships, while this symptom can still happen.*
-
-![The same drawer scrolled to the Proof card, reading plainly "No proof"](images/provenvia-incoherence-no-proof-20260819.png)
-*Same manifest, same timestamp, scrolled down — the Build card's real
-`@covers` mark above it, the Proof card's "No proof" below.*
+No capture here (living-symptom rule, 2026-08-19): a real capture exists
+but isn't published — the symptom is scheduled for retirement once
+`FR-GATE-60` ships, and the specific frame also showed an already-fixed
+bug (duplicate `BUILD` entries), which would be actively misleading to
+present as current. If this entry survives the fix, it becomes "FR-level
+rows show their delegated proofs," with a fresh capture of the healthy
+state.
