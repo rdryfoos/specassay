@@ -64,6 +64,9 @@ Bundle id: `specassay`.
 
 ## Install (catalog path)
 
+<!-- @covers FR-DOCS-10 -->
+
+
 From a Spec Kit project (`specify init` already done):
 
 ```bash
@@ -97,6 +100,32 @@ bash .specify/extensions/specassay-check/scripts/check-traceability.sh
 # writes trace-manifest.json; or via the agent command: /speckit.specassay-check.gate
 ```
 
+**See a real refusal, before you have anything of your own to break.** A
+fresh install has nothing minted yet, so there's nothing local to break on
+purpose — trust the bundled example instead. This is a real Gate 2 emit,
+not a hand-written sample: `examples/example-app` in this repo, with one
+proof (`AC-SYNC-01`'s test) renamed so it stops matching:
+
+```text
+FAIL: silent gap: AC-SYNC-01 has no test and no open tracked-debt task
+Wrote trace-manifest.v5beta.json (10 rows, schemaVersion 5, beta)
+Wrote trace-manifest.json (10 rows) gate.ok=False
+SpecAssay Check (Gate 2): FAILED
+```
+
+`trace-manifest.json` still gets written — the refusal is recorded, not
+hidden. Loaded into [Loupe](https://loupe.dryfoos.com/app/), the same break
+looks like this: the thread frays exactly at `AC-SYNC-01`, everything else
+unaffected. (Load [`samples/sample-gap.trace-manifest.json`](samples/sample-gap.trace-manifest.json)
+yourself via Loupe's **Load Manifest…** button to see it live.)
+
+![Loupe showing a broken Golden Thread: one row reads GAP in red, the header reads "Golden Thread broken · 1 refusal"](docs/images/loupe-gap-example-app.jpg)
+
+Once you've minted your own first ID and it's carried by real spec/task/code,
+the same move — remove or rename its proof, rerun the Gate — is how you
+verify the refusal actually works on *your* thread, not just the sample.
+Passing doesn't mean nothing's wrong; it means nothing's *hidden*.
+
 **Dev path:**
 
 ```bash
@@ -112,7 +141,9 @@ specify extension add --dev /path/to/specassay/extensions/specassay-check
 | [`samples/sample.trace-manifest.json`](./samples/sample.trace-manifest.json) | Clean synthetic `example-app` demo (`gate.ok`, 0 GAP); the shareable "shape" artifact and dev fallback |
 | [`samples/sample-gap.trace-manifest.json`](./samples/sample-gap.trace-manifest.json) | The `example-app` demo with one AC gilted into a silent **GAP** (`gate.ok: false`); shows the refusal / broken-thread state |
 
-Samples can be viewed in [Loupe](https://loupe.dryfoos.com/app) by uploading a local copy via Loupe's `Load Manifest...` button. 
+Samples can be viewed in [Loupe](https://loupe.dryfoos.com/app) by uploading a local copy via Loupe's `Load Manifest...` button.
+
+![Loupe rendering the real HomesFlow emit: "Golden Thread intact", 82 rows, 67 proven, 10 tracked-debt, 5 backlog, 0 GAP](docs/images/loupe-proven-homesflow.jpg)
 
 See [`samples/README.md`](./samples/README.md). 
 

@@ -11,8 +11,8 @@ Founding pass, 2026-08-18 (docs room, design-room ruling): every row in
 declaration.
 
 - [ ] T900 Write the cold-install quickstart — **Carries**: US-DOCS-10, AC-DOCS-10 (anointed backlog)
-- [ ] T901 Write FR-DOCS-10: quickstart (install, config, first check, first honest red) — **Carries**: FR-DOCS-10 (anointed backlog)
-- [ ] T902 Write FR-DOCS-20: trace-manifest format reference, versioned with the schema — **Carries**: FR-DOCS-20 (anointed backlog)
+- [x] T901 Write FR-DOCS-10: quickstart (install, config, first check, first honest red) — **Carries**: FR-DOCS-10
+- [x] T902 Write FR-DOCS-20: trace-manifest format reference, versioned with the schema — **Carries**: FR-DOCS-20
 - [ ] T903 Write FR-DOCS-30: troubleshooting from real failure classes — **Carries**: FR-DOCS-30 (anointed backlog)
 - [ ] T904 Cite the registry row(s) from every documented behavior — **Carries**: FR-DOCS-40 (anointed backlog)
 - [ ] T905 Ship `--matrix`: coverage table + SVG summary emission — **Carries**: FR-GATE-10 (anointed backlog)

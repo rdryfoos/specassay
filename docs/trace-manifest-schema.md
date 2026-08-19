@@ -84,6 +84,21 @@ Backlog rows are "covered" in the promotion-contract sense when their child ACs 
 
 Older manifest files may omit `carryingTasks` / `registry` or still carry unused `blocked` / `blockedCount` fields. Gate emits `carryingTasks` (possibly empty) and `registry` (possibly `null`); Loupe treats missing fields as `[]` / absent. (Schema v3 carried this field under its former name; readers alias it on load, see **Version history**.)
 
+## The second file: `trace-manifest.v5beta.json`
+
+<!-- @covers FR-DOCS-20 -->
+
+Every Gate 2 run writes **two** files, not one: `trace-manifest.json` (this
+schema, v4, the primary emit) and `trace-manifest.v5beta.json` alongside it
+(since v0.4.5). If you're running the Gate for the first time and see a line
+like `Wrote trace-manifest.v5beta.json (N rows, schemaVersion 5, beta)` you
+haven't done anything wrong — that's expected, every run. v4 stays primary
+and unchanged; the beta file is an early, additive look at schema v5, which
+opens the format to a second emitter (`clew`). Full spec:
+[`trace-manifest-v5.md`](trace-manifest-v5.md). Nothing in this doc requires
+reading that one — the beta file is safe to ignore until you have a reason
+not to.
+
 ## Consumers
 
 **Loupe** (viewer) reads `trace-manifest.json` only. It must not re-scan the target. Every rendering must carry its meaning at rest: printed or screenshotted, the record still reads true. Links, hovers, expands, and live source fetches are courtesies to the reader, never load-bearing parts of the record.
