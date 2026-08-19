@@ -10,7 +10,7 @@ Founding pass, 2026-08-18 (docs room, design-room ruling): every row in
 `PRD.md` lands here at once, on purpose — no row is minted `proven` by
 declaration.
 
-- [ ] T900 Write the cold-install quickstart — **Carries**: US-DOCS-10, AC-DOCS-10 (anointed backlog)
+- [ ] T900 Prove AC-DOCS-10 mechanically — **Carries**: AC-DOCS-10, US-DOCS-10 (US-DOCS-10 already reads `proven` via a real `@covers` mark and `specs/docs-authored/spec.md`; named here too only so exact-set has a task-side mention — it is not what's carrying it). Real cold-agent trial run and documented 2026-08-19 (`docs/testing/completed/evidence-cold-agent-trial-observed-2026-08-19.md`, real Gate output, independently reverified) — that's why this reads `tracked-debt`, not `backlog`. Stays open on purpose: an AC only reaches `proven` via a *named test* (Rule 6), and field-trial evidence has no test to name — the registry currently has no vocabulary for "proven by a real, documented trial" the way it does for `retired` being proposed for withdrawn intent (`FR-GATE-30`). Closes when either a repeatable automated cold-install check exists, or the registry gains real attestation vocabulary for this shape of proof — not before, and not by closing this task without one.
 - [x] T901 Write FR-DOCS-10: quickstart (install, config, first check, first honest red) — **Carries**: FR-DOCS-10
 - [x] T902 Write FR-DOCS-20: trace-manifest format reference, versioned with the schema — **Carries**: FR-DOCS-20
 - [x] T903 Write FR-DOCS-30: troubleshooting from real failure classes — **Carries**: FR-DOCS-30

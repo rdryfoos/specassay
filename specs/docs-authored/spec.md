@@ -5,6 +5,13 @@ and carries a real `@covers` mark, the same way `specs/self-gate-config/spec.md`
 claims this repo's own engine work. Anointed backlog is for content not yet
 written; this spec is where the ID lands once it has.
 
+- US-DOCS-10 — As a cold installer, I want to reach a working Gate on my
+  own repo from the public quickstart alone. Proven 2026-08-19 by a real,
+  independently-reverified cold-agent trial: `docs/testing/completed/
+  evidence-cold-agent-trial-observed-2026-08-19.md`. Its child `AC-DOCS-10`
+  stays `tracked-debt`, not `proven` — see `specs/backlog/tasks.md` (T900)
+  for why field-trial evidence can't mechanically satisfy Rule 6's
+  named-test requirement for an AC, even a real one.
 - FR-DOCS-10 — Quickstart (install, config, first check, first honest red).
   Shipped 2026-08-18 in `README.md`'s "Install (catalog path)" section,
   including the "See a real refusal" walkthrough against the bundled

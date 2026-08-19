@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 4,
+  "format": "trace-manifest",
+  "emitter": "specassay-check",
+  "targetName": "validators (cold-agent trial, 2026-08-19)",
+  "repoPath": "cold-trial-fixture",
+  "generatedAt": "2026-08-19T19:12:43.725Z",
+  "gate": {
+    "ok": true,
+    "failures": [],
+    "diagnostics": [],
+    "executionVerified": false
+  },
+  "totals": {
+    "registryIdCount": 5,
+    "acCount": 4,
+    "coveredCount": 4
+  },
+  "statusCounts": {
+    "proven": 5,
+    "tracked-debt": 0,
+    "GAP": 0,
+    "backlog": 0
+  },
+  "rows": [
+    {
+      "id": "AC-IMEI-10",
+      "type": "AC",
+      "statement": "AC-IMEI-10 \u2014 Given a syntactically valid 15-digit numeric string with a correct Luhn check digit, the validator returns True.",
+      "registry": {
+        "path": "PRD.md",
+        "line": 8
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "src/validators/imei.py",
+          "line": 3,
+          "excerpt": "# @covers FR-IMEI-10, AC-IMEI-10, AC-IMEI-20, AC-IMEI-30, AC-IMEI-40"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_IMEI_10_valid_imei_with_correct_luhn_check_digit_returns_true",
+          "path": "tests/test_imei.py",
+          "line": 12
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null
+    },
+    {
+      "id": "AC-IMEI-20",
+      "type": "AC",
+      "statement": "AC-IMEI-20 \u2014 Given a string that is not exactly 15 characters long, the validator returns a ValidationError.",
+      "registry": {
+        "path": "PRD.md",
+        "line": 9
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "src/validators/imei.py",
+          "line": 3,
+          "excerpt": "# @covers FR-IMEI-10, AC-IMEI-10, AC-IMEI-20, AC-IMEI-30, AC-IMEI-40"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_IMEI_20_wrong_length_returns_validation_error",
+          "path": "tests/test_imei.py",
+          "line": 18
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null
+    },
+    {
+      "id": "AC-IMEI-30",
+      "type": "AC",
+      "statement": "AC-IMEI-30 \u2014 Given a 15-character string containing any non-digit character, the validator returns a ValidationError.",
+      "registry": {
+        "path": "PRD.md",
+        "line": 10
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "src/validators/imei.py",
+          "line": 3,
+          "excerpt": "# @covers FR-IMEI-10, AC-IMEI-10, AC-IMEI-20, AC-IMEI-30, AC-IMEI-40"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_IMEI_30_non_digit_characters_return_validation_error",
+          "path": "tests/test_imei.py",
+          "line": 24
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null
+    },
+    {
+      "id": "AC-IMEI-40",
+      "type": "AC",
+      "statement": "AC-IMEI-40 \u2014 Given a syntactically valid 15-digit numeric string with an incorrect Luhn check digit, the validator returns a ValidationError.",
+      "registry": {
+        "path": "PRD.md",
+        "line": 11
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "src/validators/imei.py",
+          "line": 3,
+          "excerpt": "# @covers FR-IMEI-10, AC-IMEI-10, AC-IMEI-20, AC-IMEI-30, AC-IMEI-40"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_IMEI_40_wrong_luhn_check_digit_returns_validation_error",
+          "path": "tests/test_imei.py",
+          "line": 29
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null
+    },
+    {
+      "id": "FR-IMEI-10",
+      "type": "FR",
+      "statement": "FR-IMEI-10 \u2014 System MUST provide a validator that determines whether a given string is a valid 15-digit IMEI (International Mobile Equipment Identity), including its Luhn checksum digit.",
+      "registry": {
+        "path": "PRD.md",
+        "line": 7
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "src/validators/imei.py",
+          "line": 3,
+          "excerpt": "# @covers FR-IMEI-10, AC-IMEI-10, AC-IMEI-20, AC-IMEI-30, AC-IMEI-40"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null
+    }
+  ]
+}
