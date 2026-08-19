@@ -61,6 +61,51 @@ yaml_list() {
   ' "$CONFIG"
 }
 
+# @covers FR-GATE-70, AC-GATE-70a, AC-GATE-70b, AC-GATE-70c -- a list-type
+# key present but malformed (inline array) or bare (no items) used to
+# parse to an empty list with zero signal: exactly the silent-gap shape
+# this tool exists to refuse in adopters' own work, never checked for in
+# its own config. Fires before any scanning -- a manifest built on a
+# misread config would carry confident wrong claims, worse than no
+# manifest at all -- so this refuses and exits without writing one.
+validate_list_key() {
+  local key="$1"
+  local present well_formed lineno rawline
+  present="$(grep -nE "^${key}:" "$CONFIG" 2>/dev/null | head -1 || true)"
+  [[ -n "$present" ]] || return 0   # absent entirely -- means "none"
+
+  well_formed="$(grep -nE "^${key}:[[:space:]]*\$" "$CONFIG" 2>/dev/null | head -1 || true)"
+  if [[ -z "$well_formed" ]]; then
+    lineno="${present%%:*}"
+    rawline="$(sed -n "${lineno}p" "$CONFIG")"
+    {
+      echo "FAIL: config key '$key' is present but didn't parse to any entries."
+      echo "  Offending line ($CONFIG:$lineno):"
+      echo "    $rawline"
+      echo "  Only block-style lists are read here, never inline arrays:"
+      echo "    $key:"
+      echo "      - \"example/**\""
+      echo "  See docs/troubleshooting.md -> \"The Gate finds no sources or tests at all\""
+      echo "  (https://github.com/rdryfoos/specassay/blob/main/docs/troubleshooting.md)"
+    } >&2
+    exit 2
+  fi
+
+  if [[ -z "$(yaml_list "$key")" ]]; then
+    lineno="${well_formed%%:*}"
+    {
+      echo "FAIL: config key '$key' is present but has no items under it."
+      echo "  ($CONFIG:$lineno)"
+      echo "  To mean \"none\", omit the key entirely. To list globs:"
+      echo "    $key:"
+      echo "      - \"example/**\""
+      echo "  See docs/troubleshooting.md -> \"The Gate finds no sources or tests at all\""
+      echo "  (https://github.com/rdryfoos/specassay/blob/main/docs/troubleshooting.md)"
+    } >&2
+    exit 2
+  fi
+}
+
 REGISTRY="$(yaml_scalar registry)"
 SPECS_GLOB="$(yaml_scalar specs)"
 TASKS_GLOB="$(yaml_scalar tasks)"
@@ -83,6 +128,11 @@ TEST_RESULTS="$(yaml_scalar test_results)"
 [[ -n "$TASKS_GLOB" ]] || TASKS_GLOB='specs/**/tasks.md'
 [[ -n "$MANIFEST_OUT" ]] || MANIFEST_OUT='trace-manifest.json'
 [[ -n "$TARGET_NAME" ]] || TARGET_NAME="$(basename "$PROJECT_ROOT")"
+
+# Every yaml_list() consumer, present and future: not a special case for
+# the one that bit us.
+validate_list_key "src_globs"
+validate_list_key "test_globs"
 
 fail=0
 tmp=$(mktemp -d)

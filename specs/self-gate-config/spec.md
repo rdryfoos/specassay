@@ -20,3 +20,11 @@ where that same ID lands once it has.
   2026-08-18, proven by `@covers` in `check-traceability.sh` and by
   `extensions/specassay-check/tests/test_gate_50_dedupe.py`.
   - AC-GATE-50 — proven by `test_AC_GATE_50_overlapping_src_globs_do_not_double_count`.
+- FR-GATE-70 — malformed/bare list-type config keys refuse loudly before
+  any scanning, no manifest written. Shipped 2026-08-19, proven by
+  `@covers` in `check-traceability.sh` and by
+  `extensions/specassay-check/tests/test_gate_70_config_validation.py`,
+  including the two real incident configs verbatim.
+  - AC-GATE-70a — proven by `test_AC_GATE_70a_inline_array_refuses_before_scanning`.
+  - AC-GATE-70b — proven by `test_AC_GATE_70b_bare_key_refuses_before_scanning`.
+  - AC-GATE-70c — proven by `test_AC_GATE_70c_absent_key_still_means_none`.

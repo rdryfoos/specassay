@@ -23,3 +23,4 @@ declaration.
 - [x] T910 Restore `docs/**` to `src_globs` once FR-GATE-40 ships — **Carries**: FR-DOCS-50
 - [x] T911 Dedupe manifest implementations/proofs on (id, normpath, line) — **Carries**: FR-GATE-50, AC-GATE-50
 - [ ] T912 Rule on how `provenVia` gets populated (author-declared vs. inferred), then ship it — **Carries**: FR-GATE-60 (anointed backlog)
+- [x] T913 Refuse loudly on a malformed or bare list-type config key, before any scanning — **Carries**: FR-GATE-70, AC-GATE-70a, AC-GATE-70b, AC-GATE-70c

@@ -163,21 +163,22 @@ SpecAssay Check (Gate 2): OK (1 registry IDs)
 }
 ```
 
-## The Gate finds no sources or tests at all
+## The Gate refuses immediately: a config key "didn't parse to any entries"
 
-**You'll see:** `gate.ok: true`, but every row you expected to be covered
-reads `backlog` with empty `implementations[]` — real `@covers` marks and
-real tests on disk, none of them found. No `FAIL`, no `DIAGNOSTIC`, nothing
-on stderr to point at. Silence.
+**You'll see:** `FAIL: config key 'src_globs' is present but didn't parse
+to any entries.` (or `test_globs`), quoting your offending line, before any
+scanning happens — no `trace-manifest.json` is written, exit code 2.
 
 **What's happening:** `src_globs`/`test_globs` written as an inline YAML
 array (`src_globs: ["src/**"]`) instead of a block list. The config parser
 (`yaml_list()`) only recognizes the block form — a `key:` line with nothing
-but whitespace after it, followed by `- "item"` lines beneath. An inline
-array doesn't match that shape at all, so the key silently parses to an
-empty list: no source files scanned, no test files scanned, and nothing
-fails loudly because from the Gate's point of view there's simply nothing
-to check.
+but whitespace after it, followed by `- "item"` lines beneath. `FR-GATE-70`
+(2026-08-19) made this refuse loudly instead of silently parsing to an
+empty list: a manifest built on a misread config would carry confident
+wrong claims (everything reading `backlog` with no explanation), which is
+worse than no manifest at all. The same refusal fires if the key is
+present with *no* items under it at all (`src_globs:` and nothing below
+it) — that's the same trap wearing intent's clothing.
 
 **Fix:** write it as a block list:
 
@@ -188,15 +189,21 @@ test_globs:
   - "tests/**"
 ```
 
-not `src_globs: ["src/**"]`.
+not `src_globs: ["src/**"]`. To mean "scan nothing," omit the key
+entirely — that's still read as an empty list, no error.
+
+**On an older version?** Before `FR-GATE-70`, this failed silently instead:
+`gate.ok: true`, but every row you expected to be covered read `backlog`
+with empty `implementations[]`, no `FAIL`, nothing on stderr. Upgrade.
 
 **Taught by:** capturing the `executionVerified` screenshot below. The
 first attempt at that fixture's config used inline arrays, silently found
 zero sources and zero tests, and failed with `silent-gap: AC-FIX-01 has no
-test` — a completely different symptom than the one being captured.
-Switching to block style produced the documented behavior immediately. The
-recipe that shipped in this doc's first draft carried the same mistake and
-has since been corrected.
+test` — a completely different symptom than the one being captured. The
+recipe that shipped in this doc's first draft carried the same mistake, and
+a second, independent capture session hit it again the same day — the
+self-referential case of the silent-gap shape this tool exists to refuse
+in adopters' own work, found twice in one day in its own config.
 
 ## `gate.executionVerified: false`, even though your tests pass
 

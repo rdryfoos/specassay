@@ -45,6 +45,12 @@ class Project:
         body = "\n".join(lines)
         return self.write("PRD.md", f"# Fixture PRD\n\n{body}\n")
 
+    def raw_config(self, text: str) -> Path:
+        """Write config.yml verbatim, bypassing the block-style builder --
+        for fixtures that need to be malformed on purpose."""
+        self._config = self.write("config.yml", text)
+        return self._config
+
     def config(self, **overrides) -> Path:
         defaults = {
             "registry": "PRD.md",
