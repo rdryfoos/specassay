@@ -2,6 +2,8 @@
 
 Portable, vendor-neutral **trace-manifest** (matrix artifact). SpecAssay's Gate 2 always emits this file (default path `trace-manifest.json`); any emitter honoring this schema can write one.
 
+*This reference is `FR-DOCS-20` in this repo's own registry — see [`PRD.md`](../PRD.md).*
+
 ## Framing
 
 - **Practice lineage:** software RTM discipline (safety-critical / Spec Kit outer loop). Not a claim of certification.

@@ -51,7 +51,7 @@ Gate 2 always writes a portable, vendor-neutral **[trace-manifest](./samples/hom
 
 The `format` value is deliberately vendor-neutral: `trace-manifest` belongs to no single tool, so any emitter can write one and any viewer can read it. Not ReqIF/OSLC; see [`docs/trace-manifest-schema.md`](./docs/trace-manifest-schema.md).
 
-**Reading a trace-manifest in SDLC terms** (intent → build → proof → Gate → Loupe): [`docs/reading-a-manifest.md`](./docs/reading-a-manifest.md). Visual tour with screenshots: [**specassay.com/field-guide**](https://specassay.com/field-guide). **Does it work cold?** A zero-context agent on stock Spec Kit + this bundle delivered a PRD item end to end, Gate-clean: [`docs/testing/completed/evidence-cold-agent-trial.md`](./docs/testing/completed/evidence-cold-agent-trial.md). **Want to test it on real work?** The runbook, setup through tear-out: [`docs/testing/4-real-work-test.md`](./docs/testing/4-real-work-test.md).
+**Reading a trace-manifest in SDLC terms** (intent → build → proof → Gate → Loupe): [`docs/reading-a-manifest.md`](./docs/reading-a-manifest.md). Visual tour with screenshots: [**specassay.com/field-guide**](https://specassay.com/field-guide). **Does it work cold?** A zero-context agent on stock Spec Kit + this bundle delivered a PRD item end to end, Gate-clean: [`docs/testing/completed/evidence-cold-agent-trial.md`](./docs/testing/completed/evidence-cold-agent-trial.md). **Want to test it on real work?** The runbook, setup through tear-out: [`docs/testing/4-real-work-test.md`](./docs/testing/4-real-work-test.md). **Something looks wrong?** [`docs/troubleshooting.md`](./docs/troubleshooting.md) — every entry taught by a real incident, not a guess.
 
 ## What you get
 
@@ -125,6 +125,8 @@ Once you've minted your own first ID and it's carried by real spec/task/code,
 the same move — remove or rename its proof, rerun the Gate — is how you
 verify the refusal actually works on *your* thread, not just the sample.
 Passing doesn't mean nothing's wrong; it means nothing's *hidden*.
+
+*This quickstart is `FR-DOCS-10` in this repo's own registry — see [`PRD.md`](./PRD.md).*
 
 **Dev path:**
 

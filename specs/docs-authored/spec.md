@@ -13,3 +13,19 @@ written; this spec is where the ID lands once it has.
   `docs/trace-manifest-schema.md` already covered the v4 shape in full; the
   one real gap (never mentioning `trace-manifest.v5beta.json`, which the
   Gate has emitted on every run since v0.4.5) is closed 2026-08-18.
+- FR-DOCS-30 — Troubleshooting built from real failure classes, each entry
+  citing the incident that taught it. Shipped 2026-08-18 as
+  `docs/troubleshooting.md`: seven entries, each citing a real incident
+  (`docs/docs-gaps.md`, a CHANGELOG.md version, or a real trial finding) —
+  no hypothetical entries.
+- FR-DOCS-40 — Every documented behavior cites the registry row(s) it
+  documents. Shipped 2026-08-18 as a visible citation line added to each
+  DOCS-authored section (README's quickstart, `trace-manifest-schema.md`,
+  `docs/troubleshooting.md`'s own intro) pointing back to its `FR-DOCS-NN`
+  row in `PRD.md` — distinct from the invisible `@covers` marks, which are
+  for the Gate, not the reader. Scoped honestly: this repo's own registry
+  only covers the docs room's own founding-era work, not the whole tool's
+  behavior (that's governed by `PROMOTION-CONTRACT.md`'s numbered rules,
+  which predate this registry and aren't IDs in it) — so this FR's
+  citation discipline applies to what this registry actually tracks, not
+  a claim that every sentence in every doc now cites something.

@@ -13,8 +13,8 @@ declaration.
 - [ ] T900 Write the cold-install quickstart — **Carries**: US-DOCS-10, AC-DOCS-10 (anointed backlog)
 - [x] T901 Write FR-DOCS-10: quickstart (install, config, first check, first honest red) — **Carries**: FR-DOCS-10
 - [x] T902 Write FR-DOCS-20: trace-manifest format reference, versioned with the schema — **Carries**: FR-DOCS-20
-- [ ] T903 Write FR-DOCS-30: troubleshooting from real failure classes — **Carries**: FR-DOCS-30 (anointed backlog)
-- [ ] T904 Cite the registry row(s) from every documented behavior — **Carries**: FR-DOCS-40 (anointed backlog)
+- [x] T903 Write FR-DOCS-30: troubleshooting from real failure classes — **Carries**: FR-DOCS-30
+- [x] T904 Cite the registry row(s) from every documented behavior — **Carries**: FR-DOCS-40
 - [ ] T905 Ship `--matrix`: coverage table + SVG summary emission — **Carries**: FR-GATE-10 (anointed backlog)
 - [ ] T906 Ship portfolio-snapshot mode — **Carries**: FR-GATE-20 (anointed backlog)
 - [ ] T907 Ship the `retired` terminal state — **Carries**: FR-GATE-30 (anointed backlog)
