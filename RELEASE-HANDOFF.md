@@ -130,10 +130,26 @@ actually passes (the design room's own cold install, in its own
 environment, against the published assets, verified against the
 release digests).
 
-**Queued, after the wall passes:** `specassay.com`'s hero currently
-points its install CTA at the bare repo's `#install-catalog-path`
-anchor (unpinned, resolves through `main`). Once the wall passes, pin
-it to the `v0.4.12` release specifically as the last mile.
+**Wall passed, 2026-08-20.** Design room's independent verification: a
+Linux container (Python 3.12.3), network path and tooling fully
+disjoint from the Mac trial. All three release assets downloaded
+directly and hashed — byte-identical to the Mac run's digests and to
+GitHub's own API, three-way agreement. Fresh cold install via the
+documented `https --from` path installed and enabled cleanly. The Gate,
+run cold on the untouched project: honest loud `FAIL: registry not
+found: PRD.md`, nonzero exit, `trace-manifest.json` still written (0
+rows, `gate.ok=false`, `executionVerified=false`) — matching the Mac
+evidence exactly, on a second OS. Freeze lifts. Four non-blocking
+findings logged to `docs/docs-gaps.md` (open): real CLI version skew
+between the two trials' `specify` versions, `--from`'s https-only
+restriction, the "20 minutes" claim not accounting for interactive
+prompts/first-fetch latency, and confirmation that the v4/v5beta dual
+emit is intentional (documented since the 0.4.5 changelog entry).
+
+**Done, 2026-08-20:** `specassay.com`'s hero install CTA now points at
+`github.com/rdryfoos/specassay/blob/v0.4.12/README.md#install-catalog-path`
+(`dryfoos-sites` commit `5a0d718`) — pinned to the exact tag the wall
+just verified, not the unpinned `main`-tracking anchor it used before.
 
 ## Boundaries
 

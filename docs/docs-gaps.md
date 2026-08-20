@@ -51,3 +51,29 @@ still unresolved), and the commit that closed it.
    scratch fixture reproducing the exact `./ios/...` vs `ios/...` shape
    (collapsed to one entry) and a second fixture confirming two genuinely
    different marks for the same ID are not over-collapsed.
+
+## Open
+
+4. **CLI version skew, real and already biting.** The design room's
+   independent `v0.4.12` cold-install trial (2026-08-20, Linux container,
+   fully disjoint from the Mac trial) installed `specify` fresh from
+   source the same day and got `0.16.6.dev0` — `init`'s flags had already
+   changed since the Mac trial's `0.15.3.dev0` (`--no-git` and `--ai` both
+   gone). Neither this repo's quickstart nor `docs/migration.md` pins a
+   `specify` version or calls out which flags are version-specific;
+   a cold installer following the docs today meets a CLI neither trial's
+   evidence was written against. Not yet resolved: needs a decision on
+   whether to pin a version, or state the docs are flag-minimal by design
+   and let Spec Kit's own docs own CLI-flag currency.
+5. **`specify extension add --from` rejects local paths and `file://`.**
+   Found in the same trial: only `https://` URLs work. Not documented
+   anywhere in this repo — worth one line in `docs/troubleshooting.md` so
+   someone who tries a local zip during development doesn't read the
+   rejection as a broken build.
+6. **The "20 minutes" install claim doesn't account for interactive
+   prompts or first-fetch latency.** Same trial: `specify init` and
+   `specify extension add` both prompt interactively, and the first
+   `https` catalog fetch ran long. Neither is a defect, but the README's
+   "Install in 20 minutes" framing (and the `specassay.com` CTA of the
+   same name) implicitly assumes a fast, unattended run. Worth a line
+   somewhere naming the friction, or softening the claim.
