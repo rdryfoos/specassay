@@ -3,6 +3,60 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.4.12 — 2026-08-20
+
+`orphan-covers`/`orphan-test` and the manifest emitter both had real,
+found-in-production bugs; both are fixed, both now carry regression
+tests — the engine's first automated test suite, not just hand-verified
+scratch fixtures.
+
+- **`orphan-covers` domain scoping (Rule 4).** A citation of another
+  project's real `@covers` line — quoted as a teaching example in a doc,
+  or another project's ID mentioned in prose — used to fail the Gate as
+  an orphan, with no way to tell a citation from a real local claim. Now
+  scoped two ways: an ID whose domain was never minted into the local
+  registry is treated as a citation, the same `is_local_domain()`
+  reasoning `orphan-spec`/`orphan-task` already used; and a mark inside a
+  markdown fenced code block or inline backtick span is ignored
+  regardless of domain, so a project can safely quote its own real IDs
+  as examples. Found founding this repo's own self-governed registry:
+  `docs/**` in `src_globs` failed immediately on doc files quoting other
+  projects' `@covers` lines.
+- **Manifest emitter dedup.** `implementations[]` and `proofs[]` had no
+  dedup, unlike the `carryingTasks` debt-collection loop right next to
+  them, which already deduped. Overlapping `src_globs`/`test_globs`
+  entries, or a `./x` vs `x` glob spelling, hand the same mark to the
+  glob expander twice under two different literal path strings — a real
+  emit carried this in 62 of 100 rows. Deduped both on
+  `(id, normpath(path), line)`.
+- **Config keys that silently meant nothing now refuse instead.** A
+  list-type config key (`src_globs`, `test_globs`) written as an inline
+  YAML array (`src_globs: ["src/**"]`) instead of a block list parsed to
+  an empty list with zero signal — no `FAIL`, no `DIAGNOSTIC`, every row
+  silently read `backlog`. Same silent trap for a key present with no
+  items under it at all. Both now refuse loudly before any scanning
+  happens — the offending line, the accepted shape, and a pointer to
+  `docs/troubleshooting.md`, and no `trace-manifest.json` is written: a
+  manifest built on a config known to be misread would carry confident
+  wrong claims, worse than none. Found twice in one day preparing a
+  cold-agent trial's own reproduction fixtures — the exact silent-gap
+  shape this tool exists to refuse in everyone else's config, never
+  checked for in its own.
+- **New: an automated test suite for the engine itself**
+  (`extensions/specassay-check/tests/`, 27 tests). Every rule above has
+  regression coverage, including the two verbatim configs that actually
+  failed while preparing the cold-agent trial fixtures — the regression
+  fixtures are the real incidents, not a paraphrase of them. Verified
+  the suite has real teeth, not just green tests: reverted to the
+  pre-fix script and confirmed the relevant tests correctly fail against
+  it before restoring the fix.
+
+Also shipped this cycle, evidence attached rather than asserted: a real,
+independently-reverified cold-agent trial (a fresh, uncoached agent
+completing one plain-language requirement on a real public repo
+unrelated to this project, installing from these same public catalogs)
+— `docs/testing/completed/evidence-cold-agent-trial-observed-2026-08-19.md`.
+
 ## 0.4.11 — 2026-08-18
 
 Fix: `commit-advisory.sh` silently did nothing when actually installed

@@ -3,7 +3,7 @@ schema_version: "1.0"
 preset:
   id: "specassay"
   name: "SpecAssay"
-  version: "0.4.11"
+  version: "0.4.12"
   description: "Appends durable-ID, Carries, and SpecAssay vocabulary onto Spec Kit spec, tasks, and constitution templates."
   author: "Rik Dryfoos"
   license: "MIT"

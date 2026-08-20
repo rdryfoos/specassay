@@ -5,7 +5,7 @@ Appends SpecAssay's durable-ID rules and vocabulary onto Spec Kit core templates
 Install from the released pack:
 
 ```bash
-specify preset add --from https://github.com/rdryfoos/specassay/releases/download/v0.3.4/specassay-preset-0.3.4.zip
+specify preset add --from https://github.com/rdryfoos/specassay/releases/download/v0.4.12/specassay-preset-0.4.12.zip
 ```
 
 Or from a checkout, for development:
