@@ -24,3 +24,4 @@ declaration.
 - [x] T911 Dedupe manifest implementations/proofs on (id, normpath, line) — **Carries**: FR-GATE-50, AC-GATE-50
 - [ ] T912 Rule on how `provenVia` gets populated (author-declared vs. inferred), then ship it — **Carries**: FR-GATE-60 (anointed backlog)
 - [x] T913 Refuse loudly on a malformed or bare list-type config key, before any scanning — **Carries**: FR-GATE-70, AC-GATE-70a, AC-GATE-70b, AC-GATE-70c
+- [ ] T914 Filter `proofs[]`-population the way `status_for()`'s `tested` set already is: no comment-only text match counts, and when `test_results` is configured the passing-testcase filter applies to `proof_by` too, not just `test_acs.txt` — **Carries**: FR-GATE-80, AC-GATE-80 (anointed backlog)
