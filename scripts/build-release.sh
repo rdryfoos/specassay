@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 # Build distributable zips for SpecAssay preset, check extension, and bundle.
 #
-# Each component carries its own version and is named from its own manifest,
-# the same way .github/workflows/release.yml does it. They drift on purpose:
-# the preset can sit at 0.2.1 while the bundle is at 0.3.2. A single shared
-# version for all three is what produced specassay-preset-0.3.2.zip, a file
-# no catalog points at.
+# Each component is named from its own manifest's version key, the same way
+# .github/workflows/release.yml does it -- but as of the community-submission
+# round 2 fix (2026-08-13, docs/submission/CHEATSHEET.md), all three
+# manifests are kept at the SAME version on purpose, permanently: a real
+# submission review caught the preset sitting at 0.2.1 while its download URL
+# pointed into the v0.3.2 release, exactly the mismatch letting them drift
+# independently invites. This script still reads each manifest's version
+# separately (so it can't itself hide a manual slip if one ever happens),
+# but the manifests themselves are not meant to disagree anymore.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DIST="$ROOT/dist"

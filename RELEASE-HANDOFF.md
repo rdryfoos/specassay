@@ -88,6 +88,18 @@ accruing.
 6. **Version and tag discipline** per the recorded law (components
    move together; tag matches). Check: the repo's own release
    verification steps, run, output kept.
+   **Not started.** Before running `scripts/build-release.sh`, read
+   `docs/submission/CHEATSHEET.md`'s "Updating to a new version"
+   section — it carries real scars from the last submission (2026-08-13
+   – 08-14), not generic advice, and it was just updated 2026-08-19 to
+   name a gap it previously only recorded as history: grep
+   `presets/specassay/README.md` and `extensions/specassay-check/
+   README.md` for stale version strings too, not just the manifests
+   and catalogs — that's specifically what got missed for two version
+   bumps running last time. `scripts/build-release.sh`'s own header
+   comment was found stale in the same pass (it argued for independent
+   per-component versions, a policy round 2 explicitly reversed) and
+   has been corrected.
 7. **Shipped docs meet the taught-by bar** (family standard,
    2026-08-19 — see `docs/field-notes/2026-08-19-taught-by-standard.md`
    in `dryfoos-sites`): every troubleshooting/how-to entry cites the

@@ -67,10 +67,16 @@ PR by hand rather than filing an issue and waiting.
 
 Either way: bump `bundle.yml` / `extension.yml` / `preset.yml` and the
 three `catalogs/*.json` first (`scripts/build-release.sh` refuses to
-build if they disagree with what's declared), cut the release, verify
-the published zips before filing anything (unzip and check, don't
-trust the source tree: round 3 shipped a stale file that three prior
-sweeps had all missed).
+build if they disagree with what's declared). **Also grep
+`presets/specassay/README.md` and `extensions/specassay-check/README.md`**
+for old version strings and asset names — round 3 (below) shipped a
+stale install command in the preset's own README for two version bumps
+running specifically because the sweep only ever touched the manifests
+and catalogs, never the READMEs that ship *inside* the zips themselves.
+Then cut the release, and verify the published zips before filing
+anything — unzip and check, don't trust the source tree: that's how
+round 3's stale file was finally caught, after three prior sweeps had
+all missed it by reading the source tree instead of the artifact.
 
 ## Amending a filed issue (closed history, 2026-08-13 – 08-14)
 
