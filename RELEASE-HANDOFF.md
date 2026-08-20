@@ -120,6 +120,21 @@ one. The tag goes public after that verification, not before. The
 owner (Rik) confirms the exact community submission venue at that
 checkpoint; the prior submission's channel is the default assumption.
 
+**Deviation, recorded 2026-08-20 (design-room ruling, not relitigated):**
+`v0.4.12` was tagged and published before the design room's independent
+verification ran — the wall's ordering was not followed. Exposure is
+judged ~zero: the tag was never announced and nothing public links to
+it. Remedy is a freeze, not a re-cut: nothing files to `spec-kit` and
+nothing on the live site links to the `v0.4.12` release until the wall
+actually passes (the design room's own cold install, in its own
+environment, against the published assets, verified against the
+release digests).
+
+**Queued, after the wall passes:** `specassay.com`'s hero currently
+points its install CTA at the bare repo's `#install-catalog-path`
+anchor (unpinned, resolves through `main`). Once the wall passes, pin
+it to the `v0.4.12` release specifically as the last mile.
+
 ## Boundaries
 
 - **Yours**: this repo — code only as release polish requires (the

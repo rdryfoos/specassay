@@ -5,13 +5,21 @@ Paste-ready answers for Spec Kit's **Preset Submission** form
 Fields below appear in the form's exact order.
 Title: `[Preset]: Add specassay`.
 
+**Update note:** this is a version-bump filing, not a first submission.
+The original (`v0.3.4`) merged as #4123, closed via #4058. Per
+`docs/submission/CHEATSHEET.md`, presets have no documented issue-based
+update path — try a **new** issue first (say it updates #4058); if a
+maintainer redirects, the documented fallback is a direct PR against
+`presets/catalog.community.json` in `github/spec-kit`, bumping `version`
+and `download_url` for the `specassay` entry.
+
 ---
 
 **Preset ID:** `specassay`
 
 **Preset Name:** SpecAssay
 
-**Version:** 0.3.4
+**Version:** 0.4.12
 
 **Description:**
 Appends durable-ID, Carries, and SpecAssay vocabulary onto Spec Kit spec,
@@ -22,12 +30,18 @@ tasks, and constitution templates.
 **Repository URL:** https://github.com/rdryfoos/specassay
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.3.4/specassay-preset-0.3.4.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.4.12/specassay-preset-0.4.12.zip
+
+**Digest (sha256):** `58bb4ed34ad725b51ba3dece242022250b1741588ef6ed9e6df841d1c77f8b2a`
+*(from the release asset itself — `gh api repos/rdryfoos/specassay/releases/tags/v0.4.12`
+— and independently re-verified by downloading the zip and hashing it locally;
+see `docs/submission/test-evidence.md`.)*
 
 **Documentation URL:**
 https://github.com/rdryfoos/specassay/blob/main/presets/specassay/README.md
 *(preset-scoped README; contains the `specify preset add --from <download-url>`
-command the form requires)*
+command the form requires — checked directly and it correctly names the
+`v0.4.12` asset, not an older one)*
 
 **License:** MIT
 
@@ -66,8 +80,9 @@ None
 
 **Testing Checklist:** tick all four — install and template-resolution
 evidence is in
-[test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md);
-the real-project run is HomesFlow
+[test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md),
+which now also verifies the downloaded preset zip's sha256 against the
+release's own published digest; the real-project run is HomesFlow
 (<https://github.com/rdryfoos/HomesFlow>).
 
 **Submission Requirements:** tick all five.
