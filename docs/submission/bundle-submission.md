@@ -10,11 +10,10 @@ The original (`v0.3.4`) merged as #4125, closed via #4059. Per
 `docs/submission/CHEATSHEET.md`, file a **new** issue (say it updates
 #4059).
 
-File the [extension](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md)
-and [preset](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md)
-issues first — the bundle references both. Note their new issue numbers
-here (and in Additional Context, below) once filed; the closed 0.3.4
-predecessors were #4057 (extension) and #4058 (preset).
+Filed: extension [#4252](https://github.com/github/spec-kit/issues/4252),
+preset [#4253](https://github.com/github/spec-kit/issues/4253) — both
+2026-08-21, both checked against this repo's own paste-from docs after
+filing. Referenced by number in Additional Context, below.
 
 ---
 
@@ -157,7 +156,7 @@ paste it verbatim under the top-level `bundles` object)*
 **Additional Context:**
 
 ```
-Updates #4059 (closed, merged as #4125 at v0.3.4). Component submissions for the two bundled components, filed as updates to their own closed 0.3.4 issues: extension (updates #4057) and preset (updates #4058) — fill in this round's new issue numbers here once both are filed, before filing this one.
+Updates #4059 (closed, merged as #4125 at v0.3.4). Component submissions for the two bundled components, each itself an update to its own closed 0.3.4 issue: extension #4252 (updates #4057), preset #4253 (updates #4058).
 
 The emitted trace-manifest is deliberately vendor-neutral (`format` + `schemaVersion` are the contract); a v5 interop revision is in beta with a second emitter (docs/trace-manifest-schema.md). The walkthrough site (https://www.specassay.com) shows the Thread Report and intent-PR behavior on live PRs in this repository.
 ```
