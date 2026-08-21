@@ -78,6 +78,21 @@ anything — unzip and check, don't trust the source tree: that's how
 round 3's stale file was finally caught, after three prior sweeps had
 all missed it by reading the source tree instead of the artifact.
 
+## v0.4.12 filed, 2026-08-21
+
+Following this section's own "Updating to a new version" pattern: three
+**new** issues, each naming its closed 0.3.4 predecessor, in dependency
+order. Extension [#4252](https://github.com/github/spec-kit/issues/4252)
+(updates #4057), preset
+[#4253](https://github.com/github/spec-kit/issues/4253) (updates #4058),
+bundle [#4255](https://github.com/github/spec-kit/issues/4255) (updates
+#4059, references #4252 and #4253 by number). All three verified against
+`docs/submission/{extension,preset,bundle}-submission.md` after filing —
+version, download URL, and cross-references all checked, not assumed.
+Preceded by the design room's own independent cold-install verification
+(`RELEASE-HANDOFF.md`, "Wall passed, 2026-08-20") before any of the three
+were filed.
+
 ## Amending a filed issue (closed history, 2026-08-13 – 08-14)
 
 **All three merged 2026-08-14.** Extension via #4113, preset via #4123,
