@@ -82,10 +82,17 @@ exist; the sooner these modes ship, the sooner it stops accruing.
 
 ## Pattern candidate: "retired" as a first-class terminal state
 
-**Status:** observed once, not yet a rule. Minted into the registry
-2026-08-18 as `FR-GATE-30` (anointed backlog) — see [`PRD.md`](../PRD.md).
-Registering the ask, not the design: the shape below is still a candidate,
-not yet a rule, and the row rides as backlog exactly because of that.
+**Status:** shipped 2026-08-20 as `FR-GATE-30` — see [`PRD.md`](../PRD.md)
+and `specs/self-gate-config/spec.md`. The shape below is exactly what
+shipped: a genuine fifth status (`retired`), derived only from an
+explicit, dated, reasoned `**Retires**:` record, never a settable field.
+One addition the section below doesn't anticipate: the version boundary.
+`trace-manifest.json` (v4) freezes at exactly four status values and
+gains a top-level `retired` list instead of a fifth row status;
+`trace-manifest.v5beta.json` carries `retired` as a normal fifth value
+from the start. See `docs/trace-manifest-schema.md`'s `retired` section
+for the full shape. Kept below as the incident record this design was
+built from, not rewritten to match the shipped form retroactively.
 
 **From:** HomesFlow — the family's first intent retirement (US/FR/AC-CLEW-01,
 the Clewseau cold-agent trial slice, 2026-08-18).

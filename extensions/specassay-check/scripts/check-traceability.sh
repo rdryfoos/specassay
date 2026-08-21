@@ -106,12 +106,48 @@ validate_list_key() {
   fi
 }
 
+# @covers FR-GATE-30, AC-GATE-30c -- there is no settable status field; "retired"
+# derives entirely from this record, so a malformed one is unreadable in
+# the same sense a malformed src_globs/test_globs key is (FR-GATE-70):
+# refuses loudly before any scanning rather than emitting a manifest built
+# on a guess. Shape: **Retires**: <id-list> (<YYYY-MM-DD>): <reason>.
+validate_retires_format() {
+  local f
+  while IFS= read -r f; do
+    [[ -f "$f" ]] || continue
+    while IFS= read -r line; do
+      [[ -n "$line" ]] || continue
+      local lineno="${line%%:*}"
+      local rest="${line#*:}"
+      local after
+      after="$(sed -E "s/^.*${RETIRES_RE}[[:space:]]*//" <<<"$rest")"
+      if [[ -z "$(grep -Eo "$ID_RE" <<<"${after%%(*}" || true)" ]]; then
+        {
+          echo "FAIL: malformed **Retires** record ($f:$lineno) -- names no registry ID before the dated reason."
+          echo "  Got: $after"
+          echo "  Expected shape: **Retires**: AC-EXAMPLE-01 (2026-08-18): reason."
+        } >&2
+        exit 2
+      fi
+      if ! grep -qE '\([0-9]{4}-[0-9]{2}-[0-9]{2}\):[[:space:]]*.+' <<<"$after"; then
+        {
+          echo "FAIL: malformed **Retires** record ($f:$lineno) -- no \"(YYYY-MM-DD): reason\" after the ID list."
+          echo "  Got: $after"
+          echo "  Expected shape: **Retires**: AC-EXAMPLE-01 (2026-08-18): reason."
+        } >&2
+        exit 2
+      fi
+    done < <(grep -nE "$RETIRES_RE" "$f" 2>/dev/null || true)
+  done < <(expand_glob "$TASKS_GLOB")
+}
+
 REGISTRY="$(yaml_scalar registry)"
 SPECS_GLOB="$(yaml_scalar specs)"
 TASKS_GLOB="$(yaml_scalar tasks)"
 ID_RE="$(yaml_scalar id_regex)"
 COVERS_RE="$(yaml_scalar covers_regex)"
 CARRIES_RE="$(yaml_scalar carries_regex)"
+RETIRES_RE="$(yaml_scalar retires_regex)"
 TEST_AC_RE="$(yaml_scalar test_ac_regex)"
 MANIFEST_OUT="$(yaml_scalar manifest_path)"
 TARGET_NAME="$(yaml_scalar target_name)"
@@ -123,6 +159,10 @@ TEST_RESULTS="$(yaml_scalar test_results)"
 [[ -n "$COVERS_RE" ]] || COVERS_RE='@covers[[:space:]]+.*'
 # The task-side mark. Accept both **Carries**: (new) and **Traces**: (pre-rename) during transition.
 [[ -n "$CARRIES_RE" ]] || CARRIES_RE='\*\*(Carries|Traces)\*\*:'
+# FR-GATE-30 -- parallel to Carries: an explicit, dated, reasoned retirement
+# record on an open task, naming the withdrawn ID(s). There is no settable
+# status field; "retired" derives from this record alone.
+[[ -n "$RETIRES_RE" ]] || RETIRES_RE='\*\*Retires\*\*:'
 [[ -n "$TEST_AC_RE" ]] || TEST_AC_RE='AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?'
 [[ -n "$SPECS_GLOB" ]] || SPECS_GLOB='specs/**/spec.md'
 [[ -n "$TASKS_GLOB" ]] || TASKS_GLOB='specs/**/tasks.md'
@@ -245,6 +285,10 @@ expand_glob() {
   fi
 }
 
+# Needs expand_glob, just defined above; also before any TASKS_GLOB scanning
+# below so a malformed record refuses before anything is built from it.
+validate_retires_format
+
 # @covers FR-GATE-40, AC-GATE-40, AC-GATE-41 — a mark inside a markdown fenced code block (three
 # backticks or three tildes, indented fences included) or an inline
 # single-backtick code span is a quotation, not a live mark -- distinguishing
@@ -302,6 +346,24 @@ while IFS= read -r f; do
 done < <(expand_glob "$TASKS_GLOB")
 sort -u "$tmp/tasks.txt" -o "$tmp/tasks.txt"
 cut -d'|' -f3 "$tmp/pending_hits.txt" 2>/dev/null | sort -u > "$tmp/pending.txt" || : > "$tmp/pending.txt"
+
+# retires: path|line|id|rest (rest = "<id-list> (<date>): <reason>", already
+# validated well-formed above). FR-GATE-30 -- one hit per ID, same pattern
+# as covers/proof hits below (a Retires line may name several IDs).
+: > "$tmp/retires_hits.txt"
+while IFS= read -r f; do
+  [[ -f "$f" ]] || continue
+  grep -nE "$RETIRES_RE" "$f" 2>/dev/null | while IFS= read -r line; do
+    lineno="${line%%:*}"
+    rest="${line#*:}"
+    after="$(sed -E "s/^.*${RETIRES_RE}[[:space:]]*//" <<<"$rest")"
+    while IFS= read -r id; do
+      [[ -n "$id" ]] || continue
+      printf '%s|%s|%s|%s\n' "$f" "$lineno" "$id" "$after"
+    done < <(grep -Eo "$ID_RE" <<<"${after%%(*}" || true)
+  done
+done < <(expand_glob "$TASKS_GLOB") >> "$tmp/retires_hits.txt" || true
+cut -d'|' -f3 "$tmp/retires_hits.txt" 2>/dev/null | sort -u > "$tmp/retired.txt" || : > "$tmp/retired.txt"
 
 
 # covers: path|line|id|excerpt
@@ -454,11 +516,13 @@ while IFS= read -r id; do
 done < <(comm -23 "$tmp/registry.txt" "$tmp/tasks.txt")
 
 # 2) Every task with a checkbox should carry its ID(s) via a Carries mark
+# -- or, FR-GATE-30, a Retires record, which is its own claim over the IDs
+# it names and needs no separate Carries line alongside it.
 while IFS= read -r f; do
   [[ -f "$f" ]] || continue
   while IFS= read -r line; do
     if [[ "$line" =~ ^-\ \[[x\ ]\]\ T ]]; then
-      if ! grep -Eq "$CARRIES_RE" <<<"$line"; then
+      if ! grep -Eq "$CARRIES_RE" <<<"$line" && ! grep -Eq "$RETIRES_RE" <<<"$line"; then
         record_fail "missing-carries" "" "task missing Carries field: ${line:0:80}"
       fi
     fi
@@ -492,6 +556,11 @@ while IFS= read -r id; do
     continue
   fi
   if grep -qx "$id" "$tmp/pending.txt"; then
+    continue
+  fi
+  # FR-GATE-30: a retired AC is withdrawn, not a silent gap -- its own
+  # terminal state, checked ahead of the ordinary proof/debt logic.
+  if grep -qx "$id" "$tmp/retired.txt" 2>/dev/null; then
     continue
   fi
   record_fail "silent-gap" "$id" "silent gap: $id has no test and no open tracked-debt task"
@@ -547,6 +616,36 @@ pending = {ln.strip() for ln in (tmp / "pending.txt").read_text().splitlines() i
 tested = {ln.strip() for ln in (tmp / "test_acs.txt").read_text().splitlines() if ln.strip()}
 covered = {ln.strip() for ln in (tmp / "covers.txt").read_text().splitlines() if ln.strip()}
 spec_ids = {ln.strip() for ln in (tmp / "spec.txt").read_text().splitlines() if ln.strip()}
+
+# @covers FR-GATE-30, AC-GATE-30a -- retired derives from this record alone,
+# never a settable status field. Shape validated in bash before any
+# scanning ran (validate_retires_format); "<id-list>(<date>): <reason>" is
+# trusted here.
+retired_by = {}
+retires_file = tmp / "retires_hits.txt"
+if retires_file.exists():
+    retire_re = re.compile(r"\((\d{4}-\d{2}-\d{2})\):\s*(.+)$")
+    for ln in retires_file.read_text(encoding="utf-8", errors="replace").splitlines():
+        if not ln.strip():
+            continue
+        parts = ln.split("|", 3)
+        if len(parts) < 4:
+            continue
+        path, line, id_, rest = parts
+        if id_ in retired_by:
+            continue
+        m = retire_re.search(rest)
+        if not m:
+            continue
+        try:
+            line_n = int(line)
+        except ValueError:
+            line_n = 0
+        retired_by[id_] = {
+            "date": m.group(1),
+            "reason": m.group(2).strip(),
+            "task": {"path": path, "line": line_n},
+        }
 
 failures = []
 fail_path = tmp / "failures.jsonl"
@@ -698,6 +797,13 @@ if pending_hits.exists():
 
 def status_for(id_: str) -> str:
     typ = id_.split("-", 1)[0]
+    # FR-GATE-30: retired is a terminal state derived from an explicit
+    # retirement record, checked ahead of proven/tracked-debt/backlog/GAP
+    # for every type -- withdrawn is not the same claim as violated (GAP)
+    # or excused (tracked-debt), regardless of what proof state a
+    # retired ID happens to still show.
+    if id_ in retired_by:
+        return "retired"
     # Open TODO splits by whether work started: spec/impl presence means debt
     # (excused incompleteness); registry entry + TODO and nothing else means
     # anointed backlog (minted on purpose, not yet picked up).
@@ -716,7 +822,7 @@ def status_for(id_: str) -> str:
     return "backlog"
 
 rows = []
-status_counts = {"proven": 0, "tracked-debt": 0, "GAP": 0, "backlog": 0}
+status_counts = {"proven": 0, "tracked-debt": 0, "GAP": 0, "backlog": 0, "retired": 0}
 ac_count = 0
 covered_count = 0
 for id_ in ids:
@@ -739,6 +845,20 @@ for id_ in ids:
         "attestedBy": None,
     })
 
+# @covers AC-GATE-30b -- v4 freezes at exactly four status values (proven/
+# tracked-debt/backlog/GAP) -- a published schema with strict validators, not a place to
+# grow a fifth enum member. A retired row leaves v4's rows[] table entirely
+# rather than carrying a value v4 never declared; nothing disappears
+# silently, because the same information moves to a new top-level `retired`
+# list (id, date, reason) instead. v5beta is where `retired` is a first-class
+# row status from the start (below) -- see docs/trace-manifest-schema.md.
+v4_rows = [r for r in rows if r["status"] != "retired"]
+v4_status_counts = {k: status_counts[k] for k in ("proven", "tracked-debt", "GAP", "backlog")}
+retired_list = [
+    {"id": id_, "date": retired_by[id_]["date"], "reason": retired_by[id_]["reason"]}
+    for id_ in sorted(retired_by)
+]
+
 doc = {
     "schemaVersion": 4,
     "format": "trace-manifest",
@@ -756,9 +876,11 @@ doc = {
         "registryIdCount": len(ids),
         "acCount": ac_count,
         "coveredCount": covered_count,
+        "retiredCount": len(retired_list),
     },
-    "statusCounts": status_counts,
-    "rows": rows,
+    "statusCounts": v4_status_counts,
+    "rows": v4_rows,
+    "retired": retired_list,
 }
 
 # Prefer structured failures if bash recorded any; else respect MANIFEST_FAIL.
@@ -798,13 +920,23 @@ v5_doc = {
     "generatedAt": doc["generatedAt"],
     "gate": doc["gate"],
     "totals": doc["totals"],
-    "statusCounts": doc["statusCounts"],
+    # Full 5-value counts (retired included) -- v4's doc carries the
+    # 4-value-only view (v4_status_counts) instead; the two documents
+    # disagree on this by design, per the version-boundary ruling.
+    "statusCounts": status_counts,
     "rows": v5_rows,
 }
 v5_path = out_path.with_name(out_path.name.replace(".json", ".v5beta.json"))
 v5_path.write_text(json.dumps(v5_doc, indent=2) + "\n", encoding="utf-8")
 print(f"Wrote {v5_path.name} ({len(v5_rows)} rows, schemaVersion 5, beta)")
-print(f"Wrote {out_path} ({len(rows)} rows) gate.ok={doc['gate']['ok']}", flush=True)
+print(f"Wrote {out_path} ({len(v4_rows)} rows) gate.ok={doc['gate']['ok']}", flush=True)
+# FR-GATE-30: T900's actual unblock check is a human (or CI) reading this
+# console output, not just the JSON -- the record lives in the manifest's
+# top-level `retired` list either way, but the signal that matters for a
+# real "can this task close" judgment call needs to be visible here too.
+if retired_list:
+    names = ", ".join(r["id"] for r in retired_list)
+    print(f"Retired: {len(retired_list)} ({names})", flush=True)
 PY
 
 if [[ "$fail" -ne 0 ]]; then

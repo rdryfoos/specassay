@@ -36,8 +36,11 @@ Passing does not mean "everything is done." It means nothing *unfinished* is *hi
 | **tracked-debt** | Started, proof missing, but admitted on an open task with `Carries:`. Visible, on the books. |
 | **backlog**      | A US/FR/NFR with no carrier yet, or an ID anointed into backlog (registry entry + open `Carries:` TODO). Planning altitude, not a silent gap. |
 | **GAP**          | A silent AC gap: neither proof nor open debt. The Golden Thread is broken; the Gate refuses. |
+| **retired**      | Withdrawn on purpose, not violated: an ID named in an explicit, dated `**Retires**:` record on an open task. Never a settable field — the record is the only way in. |
 
 Silent-gap refusal is **AC-only** (acceptance criteria are the atomic unit of "covered"); US/FR/NFR without a carrier are `backlog`, not `GAP`.
+
+`retired` is `trace-manifest.v5beta.json`-only: `trace-manifest.json` (v4) freezes at exactly the first four values, and a retired row instead leaves `rows[]` for a top-level `retired: [{id, date, reason}]` list, so nothing disappears silently from either document — see [`docs/trace-manifest-schema.md`](docs/trace-manifest-schema.md).
 
 ## Uncovered proof: report-only is the shipped default; blocking is earned
 

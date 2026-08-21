@@ -30,6 +30,15 @@ covers_regex: "@covers[[:space:]]+.*"
 # The task-side mark. Accepts both **Carries**: (new) and **Traces**: (pre-rename) during transition.
 carries_regex: "\*\*(Carries|Traces)\*\*:"
 
+# Rule 6a / FR-GATE-30: the only way an ID reaches "retired" -- there is no
+# settable status field. Shape: **Retires**: <id-list> (<YYYY-MM-DD>): <reason>
+# on an open task, e.g.:
+#   **Retires**: AC-CLEW-01, FR-CLEW-01 (2026-08-18): cold-agent probe
+#   concluded; tooling archived at tag clew-era-final.
+# Malformed records (no ID before the date, or no "(YYYY-MM-DD): reason")
+# refuse loudly before any scanning, same as a malformed src_globs/test_globs.
+retires_regex: "\*\*Retires\*\*:"
+
 # How AC IDs appear inside test names (e.g. test_AC_SYNC_04_...)
 test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
 

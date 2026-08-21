@@ -28,3 +28,13 @@ where that same ID lands once it has.
   - AC-GATE-70a — proven by `test_AC_GATE_70a_inline_array_refuses_before_scanning`.
   - AC-GATE-70b — proven by `test_AC_GATE_70b_bare_key_refuses_before_scanning`.
   - AC-GATE-70c — proven by `test_AC_GATE_70c_absent_key_still_means_none`.
+- FR-GATE-30 — `retired`: a genuine fifth status derived only from an
+  explicit `**Retires**:` record, never a settable field; v4 freezes at
+  four values and moves retired rows to a top-level `retired` list,
+  v5beta carries `retired` as a normal fifth row status. Shipped
+  2026-08-20, proven by `@covers` in `check-traceability.sh` and by
+  `extensions/specassay-check/tests/test_gate_30_retired.py`.
+  - AC-GATE-30a — proven by `test_AC_GATE_30a_retired_row_is_first_class_in_v5beta`.
+  - AC-GATE-30b — proven by `test_AC_GATE_30b_retired_id_leaves_v4_rows_and_gains_top_level_entry`.
+  - AC-GATE-30c — proven by `test_AC_GATE_30c_malformed_retires_no_date_refuses_before_scanning`
+    and `test_AC_GATE_30c_malformed_retires_no_id_refuses_before_scanning`.
