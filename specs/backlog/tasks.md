@@ -14,12 +14,13 @@ declaration.
 
 Verified against real state before writing, not carried over from memory:
 
-- **HEAD**: `3625978` — `T915` (`FR-GATE-90`, parentage: derived parent
-  edges + recursive all-rows rollup) shipped, closing the entire
-  previously-ratified queue: `T907`→`T905`→`T906`→`T914`→`T915`. Real
-  dogfooding bug found and fixed in the same pass: enabling
-  `parent_derivation: heading-nesting` against this repo's own `PRD.md`
-  exposed several DIG-section ACs mis-nested under the wrong FR
+- **HEAD**: `6ad4cab` — `T918` (dig level three, `candidateBuild` dug from
+  the proof test's own project-package imports) shipped. Prior HEAD was
+  `3625978` — `T915` (`FR-GATE-90`, parentage: derived parent edges +
+  recursive all-rows rollup), closing the queue `T907`→`T905`→`T906`→
+  `T914`→`T915`. Real dogfooding bug found and fixed in that same pass:
+  enabling `parent_derivation: heading-nesting` against this repo's own
+  `PRD.md` exposed several DIG-section ACs mis-nested under the wrong FR
   (invisible while indentation was purely cosmetic); fixed directly.
   68+ tests passing, including 7 new `test_gate_90_parentage.py` cases
   with verified-real-teeth (reverted the rollup to direct-children-only,
