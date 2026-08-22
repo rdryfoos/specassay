@@ -73,6 +73,8 @@ Same shape as a failure (`{ kind, detail, id? }`), but never sets `gate.ok` to `
 | `proofs`          | `{ name, path, line }` from test-encoded AC IDs              |
 | `carryingTasks`   | `{ path, line, excerpt }` open checkbox tasks that name this ID (via `Carries:`): the carriers that excuse **both** `tracked-debt` and anointed `backlog`. The row's `status` says which state they excuse; viewers must key color on `status`, not on the presence of carrying tasks. |
 | `attestedBy`      | Optional operator stamp; `null` until attribution exists     |
+| `parent`          | Durable ID of this row's nearest enclosing row, or `null` — derived, never authored; see **`parent` and `rollup`**, below |
+| `rollup`          | `{ rows, proven, tracked-debt, backlog, GAP, retired }` — present only on rows with at least one descendant; see **`parent` and `rollup`**, below |
 
 ### Status vocabulary (coverage altitude)
 
@@ -104,6 +106,35 @@ Older manifest files may omit `carryingTasks` / `registry` or still carry unused
 
 **Consumers: any exhaustive four-value switch on `status` — an engine's own internal logic, a viewer's legend, a `statusCounts` reader — must add the fifth value if it reads `trace-manifest.v5beta.json`, or declare itself v4-only if it doesn't.** Nothing reading v4 alone needs to change.
 
+### `parent` and `rollup`
+
+<!-- @covers FR-GATE-90 -->
+
+Named first-class here (both files carry them — additive, optional
+fields, no `formatVersion` bump required for either): `parent` derives
+from the registry document's own heading/section nesting at emit time
+— never authored, never inferred by a viewer, never guessed from
+ID-prefix naming convention. Per-project opt-in: `parent_derivation:
+heading-nesting` in config; a flat registry (or the key left unset)
+emits no `parent` edges at all, `null` on every row — absence, not a
+guess (em-dash law). Document structure yields a tree by construction:
+each ID is assigned at most one parent, so single-parent holds for v1;
+multi-parent/DAG is deferred until a real cross-cutting case forces it.
+
+Every row with at least one descendant carries a `rollup`: status
+counts over **its entire subtree, at any depth** — not leaves-only. A
+non-leaf's own status counts alongside its descendants', so a mid-tier
+`GAP` or `backlog` can't silently vanish from an ancestor's rollup the
+way a leaves-only count would let it happen. `rollup.rows` is the
+subtree's total row count, so a renderer can name its basis ("N rows")
+instead of implying a single meaning for a mixed-depth count.
+
+**Cited invariant, not incidental:** the recursive rollup is cycle-safe
+only because single-parent holds — a tree has no cycles by
+construction. Anyone relaxing single-parent to a DAG later must revisit
+rollup safety (a node reachable from two parents can't be summed once)
+before shipping it, not discover the bug in production.
+
 ## The second file: `trace-manifest.v5beta.json`
 
 <!-- @covers FR-DOCS-20 -->
@@ -128,5 +159,6 @@ not to.
 
 ## Version history
 
+- **FR-GATE-90** (2026-08-22): adds `parent` (derived, optional, `null` by default) and `rollup` (present on rows with descendants) to both files' row shape. Additive, no `formatVersion` bump. See **`parent` and `rollup`**, above.
 - **FR-GATE-30** (2026-08-20): adds `retired`, a genuine fifth status, derived only from an explicit `**Retires**:` record. Deliberately asymmetric between the two files: v4 (this schema) freezes its four `statusCounts`/`status` values and gains a new top-level `retired` array instead of a fifth row status; v5beta carries `retired` as a normal fifth `status` value from the start. See **`retired`**, above.
 - **v4**: renames the row field `debtTasks` → `carryingTasks`. **Semantics unchanged.** The field holds the open `Carries:` tasks that excuse a row, and those tasks excuse **two** honest states: `tracked-debt` (work started, proof missing) and anointed `backlog` (minted ahead of the work, one open TODO). The old name implied everything in it was debt; the accurate name is `carryingTasks`, and the row's `status` says which state the carriers excuse. **Viewer authors: key color on `status`, never on the presence of carrying tasks**: amber for `tracked-debt`, blue for `backlog`. Readers accept schema `3` and `4` and alias `debtTasks` → `carryingTasks` on load; no data moved, so a v3 file and its v4 twin are identical apart from this key and the version integer. The rename was cheap here because the format has a single emitter and a single viewer, both first-party, with no external adopters yet.

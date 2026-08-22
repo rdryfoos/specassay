@@ -55,3 +55,11 @@ carries_regex: "\*\*(Carries|Traces)\*\*:"
 
 # How AC IDs appear inside test names (e.g. test_AC_DOCS_10_...)
 test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
+
+# FR-GATE-90, dogfooded for real: this registry's own AC bullets are
+# already indented under their FR in PRD.md, so heading-nesting derives
+# real parent edges rather than emitting into a vacuum. Turning this on
+# is what caught PRD.md's own DIG-section mis-nesting (several ACs sat
+# indented under the wrong FR, invisible while indentation was purely
+# cosmetic) -- fixed in the same pass.
+parent_derivation: heading-nesting

@@ -65,3 +65,17 @@ where that same ID lands once it has.
   `@covers` in `check-traceability.sh` and by
   `extensions/specassay-check/tests/test_gate_80_proof_filtering.py`.
   - AC-GATE-80 — proven by `test_AC_GATE_80_comment_only_match_excluded_when_test_results_configured`.
+- FR-GATE-90 — Parentage: `parent` edges derived from the registry
+  document's own heading/section nesting (per-project opt-in,
+  `parent_derivation: heading-nesting`), plus a recursive all-rows
+  composition rollup. Shipped 2026-08-22, proven by `@covers` in
+  `check-traceability.sh` and by
+  `extensions/specassay-check/tests/test_gate_90_parentage.py`. Dogfooded
+  for real (`specassay-check-config.yml` turns this on): doing so caught
+  and fixed a genuine mis-nesting in this repo's own `PRD.md` (several DIG
+  ACs sat indented under the wrong FR, invisible while indentation was
+  purely cosmetic).
+  - AC-GATE-90a — proven by `test_AC_GATE_90a_nested_rows_get_parent_edges`
+    and `test_AC_GATE_90a_absence_means_no_edges`.
+  - AC-GATE-90b — proven by `test_AC_GATE_90b_rollup_includes_all_depths_not_just_direct_children`.
+  - AC-GATE-90c — proven by `test_AC_GATE_90c_rollup_carries_total_alongside_per_status`.

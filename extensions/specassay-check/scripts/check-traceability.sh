@@ -177,6 +177,7 @@ TEST_RESULTS="$(yaml_scalar test_results)"
 MATRIX_MD="$(yaml_scalar matrix_md)"
 MATRIX_SVG="$(yaml_scalar matrix_svg)"
 PORTFOLIO_MD="$(yaml_scalar portfolio_md)"
+PARENT_DERIVATION="$(yaml_scalar parent_derivation)"
 
 [[ -n "$REGISTRY" ]] || { echo "FAIL: config missing registry" >&2; exit 2; }
 [[ -n "$ID_RE" ]] || ID_RE='(FR|NFR|AC|US)-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?'
@@ -623,7 +624,7 @@ while IFS= read -r id; do
 done < <(comm -23 "$tmp/test_acs.txt" "$tmp/covers.txt")
 
 # --- Emit trace-manifest.json (always; the manifest should show GAPs even when Gate fails) ---
-export MANIFEST_OUT REGISTRY TARGET_NAME PROJECT_ROOT MATRIX_MODE MATRIX_MD MATRIX_SVG PORTFOLIO_MODE PORTFOLIO_MD
+export MANIFEST_OUT REGISTRY TARGET_NAME PROJECT_ROOT MATRIX_MODE MATRIX_MD MATRIX_SVG PORTFOLIO_MODE PORTFOLIO_MD PARENT_DERIVATION
 export MANIFEST_TMP="$tmp"
 export MANIFEST_FAIL="$fail"
 export EXT_VERSION="$(awk '/^  version:/{gsub(/"/,""); print $2; exit}' "$EXT_DIR/extension.yml" 2>/dev/null || echo 0.0.0)"
@@ -863,19 +864,84 @@ def status_for(id_: str) -> str:
         return "tracked-debt" if started else "backlog"
     return "backlog"
 
+status_by_id = {id_: status_for(id_) for id_ in ids}
+
+# @covers FR-GATE-90, AC-GATE-90a -- parent edges DERIVE from the registry
+# document's own heading/section nesting at emit time; never authored,
+# never inferred by a viewer, never guessed from ID-prefix naming. Reuses
+# def_line_by_id (the same definition-line scoping registry.txt itself
+# uses) rather than re-scanning independently, so this can't silently
+# disagree with what a "real definition" means elsewhere in this script.
+# Per-project opt-in: parent_derivation: heading-nesting | none. Absence
+# (or any other value) means none -- no edges, not a guess.
+def parent_depth_key(line_no):
+    line = reg_text[line_no - 1]
+    m = re.match(r"^(#{1,6})\s", line)
+    if m:
+        return (0, len(m.group(1)))
+    indent = len(line) - len(line.lstrip(" "))
+    return (1, indent)
+
+parent_by_id = {id_: None for id_ in ids}
+if os.environ.get("PARENT_DERIVATION") == "heading-nesting":
+    # Nearest-shallower-ancestor stack over definition lines in document
+    # order -- document structure yields a tree by construction (single
+    # parent per id_, since each id_ is assigned exactly once): the same
+    # property that makes the rollup below cycle-safe (Q2 interlock:
+    # relaxing this to a DAG later must revisit rollup safety first).
+    ordered_defs = sorted(
+        ((id_, ln) for id_, ln in def_line_by_id.items() if id_ in parent_by_id),
+        key=lambda pair: pair[1],
+    )
+    stack = []  # [(depth_key, id_), ...]
+    for id_, line_no in ordered_defs:
+        dk = parent_depth_key(line_no)
+        while stack and stack[-1][0] >= dk:
+            stack.pop()
+        parent_by_id[id_] = stack[-1][1] if stack else None
+        stack.append((dk, id_))
+
+# @covers FR-GATE-90, AC-GATE-90b, AC-GATE-90c -- recursive rollup over ALL
+# rows in a subtree, at any depth: a non-leaf's own status counts alongside
+# its descendants', so a mid-tier GAP/backlog can't vanish from an
+# ancestor's rollup the way a leaves-only count would let it. Carries a
+# total row count alongside per-status counts so a renderer can name its
+# basis ("N rows"). Only rows with at least one child get a rollup at all.
+children_by_parent = {id_: [] for id_ in ids}
+for child_id, p in parent_by_id.items():
+    if p is not None and p in children_by_parent:
+        children_by_parent[p].append(child_id)
+
+ROLLUP_STATUSES = ("proven", "tracked-debt", "backlog", "GAP", "retired")
+
+def subtree_counts(id_):
+    counts = {k: 0 for k in ROLLUP_STATUSES}
+    counts[status_by_id[id_]] += 1
+    for child_id in children_by_parent.get(id_, []):
+        child_counts = subtree_counts(child_id)
+        for k in ROLLUP_STATUSES:
+            counts[k] += child_counts[k]
+    return counts
+
+rollup_by_id = {}
+for id_ in ids:
+    if children_by_parent.get(id_):
+        counts = subtree_counts(id_)
+        rollup_by_id[id_] = {"rows": sum(counts.values()), **counts}
+
 rows = []
 status_counts = {"proven": 0, "tracked-debt": 0, "GAP": 0, "backlog": 0, "retired": 0}
 ac_count = 0
 covered_count = 0
 for id_ in ids:
     typ = id_.split("-", 1)[0]
-    st = status_for(id_)
+    st = status_by_id[id_]
     status_counts[st] += 1
     if typ == "AC":
         ac_count += 1
         if st == "proven":
             covered_count += 1
-    rows.append({
+    row = {
         "id": id_,
         "type": typ,
         "statement": statements.get(id_, id_),
@@ -885,7 +951,11 @@ for id_ in ids:
         "proofs": proof_by.get(id_, []),
         "carryingTasks": debt_by.get(id_, []),
         "attestedBy": None,
-    })
+        "parent": parent_by_id.get(id_),
+    }
+    if id_ in rollup_by_id:
+        row["rollup"] = rollup_by_id[id_]
+    rows.append(row)
 
 # @covers AC-GATE-30b -- v4 freezes at exactly four status values (proven/
 # tracked-debt/backlog/GAP) -- a published schema with strict validators, not a place to

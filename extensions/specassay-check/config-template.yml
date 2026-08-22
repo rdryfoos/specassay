@@ -52,6 +52,17 @@ test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
 # matrix_svg: "coverage.svg"
 # portfolio_md: "portfolio-snapshot.md"
 
+# FR-GATE-90: parent edges DERIVE from the registry document's own
+# heading/section nesting at emit time -- never authored, never inferred
+# by a viewer, never guessed from ID-prefix naming. "heading-nesting"
+# reads indentation (markdown headings and/or indented list depth) to
+# find each ID's nearest shallower ancestor ID; a flat registry (or this
+# key left unset) emits no parent edges at all -- absence, not a guess.
+# Rows with descendants also carry a composition rollup (status counts
+# over the whole subtree, any depth). Additive/optional: works whether or
+# not your registry nests IDs this way.
+# parent_derivation: heading-nesting
+
 # Rule 4a (PROMOTION-CONTRACT.md): uncovered-proof (an ID with a real,
 # passing test but no file's @covers line names it) is report-only by
 # default -- it never fails the Gate on its own, only appears under
