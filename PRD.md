@@ -55,6 +55,19 @@ each was minted from.
   - AC-GATE-90b — Given a row with descendants at more than one level deep, when the manifest is emitted, then that row's composition rollup counts include every descendant row at every depth, not only its direct children, and include the row's direct children's own statuses too (not only their descendants').
   - AC-GATE-90c — Given any row's composition rollup, when the manifest is emitted, then the rollup carries a total row count alongside its per-status counts.
 
+## DIG
+
+Archaeology mode, rung (a) of the three-rung ladder (no-LLM floor only;
+local-model and user-supplied-API-key rungs are explicitly out of scope).
+Built 2026-08-20 per `docs/archaeology-mode-build-handoff-v1-2026-08-20.md`
+(receipted by version line before this mint).
+
+- US-DIG-10 — As a stranger dropped into an unfamiliar, undocumented repo, I want a first-pass structural read of its likely intent/behavior/proof shape, so I have a starting map instead of nothing.
+- FR-DIG-10 — `specassay dig [path]` command: static, no-LLM heuristics over test names/bodies, routes/API surface, module/directory structure, README/docs prose, and commit history propose a first-pass candidate registry — written only to `dig-report.json`, flat data the Gate never loads, never chains, never governs anything with. There is no `--anoint` flag on this command; turning a proposed row into a real, dated, minted registry row is separate, later, human work.
+- FR-DIG-20 — Dig-report schema: each row carries a type guess (US/FR/AC/NFR), statement text, `epistemicClass: "inferred"` (constant, always present, never omitted), provenance (source kind, file, line, and for test-derived rows the test's own name), a confidence signal, and a suggested area (derived from directory structure, not emitted as its own row type). Document-level: generator version, source repo path, generated-at timestamp, and source commit when available.
+  - AC-DIG-10 — Given any target repo, when `dig` runs (dry-run or real), then no write touches any file outside the configured output path (default `dig-report.json` at the target's root) — no exceptions, no `--anoint` flag exists.
+  - AC-DIG-20 — Given `--dry-run`, when `dig` runs, then it prints row counts by type and source and writes nothing at all, not even a partial file.
+
 ## SELF
 
 One bounded meta-row, minted 2026-08-18: retroactive coverage for this

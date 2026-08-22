@@ -32,6 +32,9 @@ provides:
     - name: "speckit.specassay-check.mint"
       file: "commands/speckit.specassay-check.mint.md"
       description: "Mint the next durable ID for a prefix and area, or resolve a duplicate-id refusal"
+    - name: "speckit.specassay-check.dig"
+      file: "commands/speckit.specassay-check.dig.md"
+      description: "Archaeology mode (no-LLM floor): propose a first-pass candidate registry from an unfamiliar repo, written only to dig-report.json"
 
   config:
     - name: "specassay-check-config.yml"
