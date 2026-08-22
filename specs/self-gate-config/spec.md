@@ -48,3 +48,12 @@ where that same ID lands once it has.
   - AC-GATE-10b — proven by `test_AC_GATE_10b_family_colors_canonical_order_and_self_dated`
     and `test_AC_GATE_10b_zero_count_status_has_no_bar_sliver`.
   - AC-GATE-10c — proven by `test_AC_GATE_10c_retired_ids_absent_from_matrix_like_v4_rows`.
+- FR-GATE-20 — `--portfolio`: `portfolio-snapshot.md` re-presenting the
+  same run's already-computed data as `--matrix` (guardrails written into
+  this entry before build: names the cold-reader audience explicitly,
+  same document-not-viewer boundary as `FR-GATE-10`, "portfolio" scoped
+  to this one repo). Shipped 2026-08-22, proven by `@covers` in
+  `check-traceability.sh` and `commands/speckit.specassay-check.portfolio.md`,
+  and by `extensions/specassay-check/tests/test_gate_20_portfolio.py`.
+  - AC-GATE-20a — proven by `test_AC_GATE_20a_portfolio_writes_from_same_run_no_ci_banner`.
+  - AC-GATE-20b — proven by `test_AC_GATE_20b_snapshot_names_only_this_repo`.

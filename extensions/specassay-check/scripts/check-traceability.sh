@@ -10,17 +10,22 @@ set -euo pipefail
 
 export LC_ALL=C
 
-# @covers FR-GATE-10, AC-GATE-10a -- --matrix is a portfolio-snapshot
-# renderer, not a second scan: it rides the SAME run that already computed
-# rows/status, then additionally re-presents that data as coverage.md +
-# coverage.svg. No other flags exist yet.
+# @covers FR-GATE-10, FR-GATE-20, AC-GATE-10a, AC-GATE-20a -- --matrix and
+# --portfolio are both re-presentations of the SAME run that already
+# computed rows/status, never a second scan. --matrix: coverage.md +
+# coverage.svg for CI/a PR diff. --portfolio: portfolio-snapshot.md for a
+# cold reader with zero context; it embeds coverage.svg (shared asset, one
+# render) rather than generating a second image, so the SVG is written
+# whenever either flag is set.
 MATRIX_MODE=0
+PORTFOLIO_MODE=0
 for arg in "$@"; do
   case "$arg" in
     --matrix) MATRIX_MODE=1 ;;
+    --portfolio) PORTFOLIO_MODE=1 ;;
     *)
       echo "FAIL: unknown argument: $arg" >&2
-      echo "  Recognized: --matrix" >&2
+      echo "  Recognized: --matrix, --portfolio" >&2
       exit 2
       ;;
   esac
@@ -171,6 +176,7 @@ BLOCK_UNCOVERED_PROOF="$(yaml_scalar block_uncovered_proof)"
 TEST_RESULTS="$(yaml_scalar test_results)"
 MATRIX_MD="$(yaml_scalar matrix_md)"
 MATRIX_SVG="$(yaml_scalar matrix_svg)"
+PORTFOLIO_MD="$(yaml_scalar portfolio_md)"
 
 [[ -n "$REGISTRY" ]] || { echo "FAIL: config missing registry" >&2; exit 2; }
 [[ -n "$ID_RE" ]] || ID_RE='(FR|NFR|AC|US)-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?'
@@ -187,6 +193,7 @@ MATRIX_SVG="$(yaml_scalar matrix_svg)"
 [[ -n "$MANIFEST_OUT" ]] || MANIFEST_OUT='trace-manifest.json'
 [[ -n "$MATRIX_MD" ]] || MATRIX_MD='coverage.md'
 [[ -n "$MATRIX_SVG" ]] || MATRIX_SVG='coverage.svg'
+[[ -n "$PORTFOLIO_MD" ]] || PORTFOLIO_MD='portfolio-snapshot.md'
 [[ -n "$TARGET_NAME" ]] || TARGET_NAME="$(basename "$PROJECT_ROOT")"
 
 # Every yaml_list() consumer, present and future: not a special case for
@@ -616,7 +623,7 @@ while IFS= read -r id; do
 done < <(comm -23 "$tmp/test_acs.txt" "$tmp/covers.txt")
 
 # --- Emit trace-manifest.json (always; the manifest should show GAPs even when Gate fails) ---
-export MANIFEST_OUT REGISTRY TARGET_NAME PROJECT_ROOT MATRIX_MODE MATRIX_MD MATRIX_SVG
+export MANIFEST_OUT REGISTRY TARGET_NAME PROJECT_ROOT MATRIX_MODE MATRIX_MD MATRIX_SVG PORTFOLIO_MODE PORTFOLIO_MD
 export MANIFEST_TMP="$tmp"
 export MANIFEST_FAIL="$fail"
 export EXT_VERSION="$(awk '/^  version:/{gsub(/"/,""); print $2; exit}' "$EXT_DIR/extension.yml" 2>/dev/null || echo 0.0.0)"
@@ -918,7 +925,14 @@ out_path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
 # generatedAt. Retired IDs are absent here the same way they're absent
 # from v4_rows -- no separate handling needed, so no fifth segment exists
 # to draw.
-if os.environ.get("MATRIX_MODE") == "1":
+MATRIX_MODE_ON = os.environ.get("MATRIX_MODE") == "1"
+PORTFOLIO_MODE_ON = os.environ.get("PORTFOLIO_MODE") == "1"
+# @covers FR-GATE-10, FR-GATE-20, AC-GATE-10a, AC-GATE-20a -- both modes
+# re-present THIS run's already-computed v4_rows/v4_status_counts; neither
+# re-scans the target or re-derives status. The SVG is a shared asset
+# (written whenever either flag is set) rather than generated twice --
+# --portfolio embeds it rather than rendering a second image.
+if MATRIX_MODE_ON or PORTFOLIO_MODE_ON:
     STATUS_COLOR = {
         "backlog": "#9ed4ff",
         "tracked-debt": "#c9903a",
@@ -935,42 +949,49 @@ if os.environ.get("MATRIX_MODE") == "1":
 
     matrix_md_path = Path(os.environ["MATRIX_MD"])
     matrix_svg_path = Path(os.environ["MATRIX_SVG"])
+    portfolio_md_path = Path(os.environ["PORTFOLIO_MD"])
 
-    md = []
-    md.append(f"# Coverage Matrix: {target}")
-    md.append("")
-    md.append("**GENERATED FILE — do not edit.** Regenerate with "
-               "`bash .../check-traceability.sh --matrix` (or the "
-               "`speckit.specassay-check.matrix` command).")
-    md.append("Portfolio snapshot for a cold reader; CI enforces the golden "
-               "thread via the Gate script itself, not this file's freshness.")
-    md.append(f"Source of truth: `{registry_rel}` registry × specs × tasks × "
-               "`@covers` × tests.")
-    md.append("")
-    md.append("## Summary")
-    md.append("")
-    md.append("| Status | Count |")
-    md.append("|---|---|")
-    for st in STATUS_ORDER:
-        md.append(f"| {st} | {v4_status_counts[st]} |")
-    md.append(f"| **Total** | **{len(v4_rows)}** |")
-    md.append("")
+    written = []
 
-    for typ, label in TYPE_ORDER:
-        typed_rows = [r for r in v4_rows if r["type"] == typ]
-        if not typed_rows:
-            continue
-        md.append(f"## {label}")
+    if MATRIX_MODE_ON:
+        md = []
+        md.append(f"# Coverage Matrix: {target}")
         md.append("")
-        md.append("| ID | Status | Statement |")
-        md.append("|---|---|---|")
-        for r in sorted(typed_rows, key=lambda row: row["id"]):
-            statement = r["statement"].replace("|", "\\|").replace("\n", " ")
-            md.append(f"| {r['id']} | {r['status']} | {statement} |")
+        md.append("**GENERATED FILE — do not edit.** Regenerate with "
+                   "`bash .../check-traceability.sh --matrix` (or the "
+                   "`speckit.specassay-check.matrix` command).")
+        md.append("CI/PR-oriented; CI enforces the golden thread via the Gate "
+                   "script itself, not this file's freshness. For a narrative "
+                   "document written for a reader with zero prior context, see "
+                   "portfolio-snapshot.md (speckit.specassay-check.portfolio) instead.")
+        md.append(f"Source of truth: `{registry_rel}` registry × specs × tasks × "
+                   "`@covers` × tests.")
+        md.append("")
+        md.append("## Summary")
+        md.append("")
+        md.append("| Status | Count |")
+        md.append("|---|---|")
+        for st in STATUS_ORDER:
+            md.append(f"| {st} | {v4_status_counts[st]} |")
+        md.append(f"| **Total** | **{len(v4_rows)}** |")
         md.append("")
 
-    matrix_md_path.parent.mkdir(parents=True, exist_ok=True)
-    matrix_md_path.write_text("\n".join(md) + "\n", encoding="utf-8")
+        for typ, label in TYPE_ORDER:
+            typed_rows = [r for r in v4_rows if r["type"] == typ]
+            if not typed_rows:
+                continue
+            md.append(f"## {label}")
+            md.append("")
+            md.append("| ID | Status | Statement |")
+            md.append("|---|---|---|")
+            for r in sorted(typed_rows, key=lambda row: row["id"]):
+                statement = r["statement"].replace("|", "\\|").replace("\n", " ")
+                md.append(f"| {r['id']} | {r['status']} | {statement} |")
+            md.append("")
+
+        matrix_md_path.parent.mkdir(parents=True, exist_ok=True)
+        matrix_md_path.write_text("\n".join(md) + "\n", encoding="utf-8")
+        written.append(str(matrix_md_path))
 
     ac_rows = [r for r in v4_rows if r["type"] == "AC"]
     ac_total = len(ac_rows) or 1
@@ -1023,12 +1044,84 @@ if os.environ.get("MATRIX_MODE") == "1":
   <rect x="{bar_x}" y="62" width="{bar_w}" height="26" rx="7" fill="#eaeef2"/>
   {segments_svg}
   {legend_svg}
-  <text x="8" y="{footer_y}" class="sub">Generated by check-traceability.sh --matrix -- CI enforces the golden thread via the Gate script, not this file's freshness.</text>
+  <text x="8" y="{footer_y}" class="sub">Generated by check-traceability.sh -- CI enforces the golden thread via the Gate script, not this file's freshness.</text>
 </svg>
 '''
     matrix_svg_path.parent.mkdir(parents=True, exist_ok=True)
     matrix_svg_path.write_text(svg, encoding="utf-8")
-    print(f"Wrote {matrix_md_path} and {matrix_svg_path} ({len(v4_rows)} IDs; {ac_proven}/{ac_total} ACs proven)")
+    written.append(str(matrix_svg_path))
+
+    if PORTFOLIO_MODE_ON:
+        # @covers FR-GATE-20, AC-GATE-20a, AC-GATE-20b -- narrative framing
+        # for a cold reader (a stakeholder or new joiner with zero prior
+        # context), never the CI-oriented banner --matrix carries. Names
+        # only this one repo's registry -- "portfolio" is this repo's own
+        # whole thread, not a cross-repo aggregate (fenced explicitly in
+        # PRD.md's FR-GATE-20 entry).
+        gap_count = v4_status_counts["GAP"]
+        pf = []
+        pf.append(f"# {target}: what's promised, built, and proven")
+        pf.append("")
+        pf.append(
+            f"This is a snapshot of {target}'s work as of "
+            f"{doc['generatedAt']}, written for a reader with no prior "
+            "context -- no tooling or jargon required to follow it."
+        )
+        pf.append("")
+        pf.append(
+            f"Of {ac_total} thing{'s' if ac_total != 1 else ''} promised "
+            f"and checked, **{ac_proven}** {'are' if ac_proven != 1 else 'is'} "
+            f"proven with a real, named test ({pct}%); "
+            f"**{v4_status_counts['tracked-debt']}** {'are' if v4_status_counts['tracked-debt'] != 1 else 'is'} "
+            "being worked on with the gap honestly admitted; "
+            f"**{v4_status_counts['backlog']}** {'are' if v4_status_counts['backlog'] != 1 else 'is'} "
+            "queued but not started yet."
+        )
+        if gap_count > 0:
+            pf.append(
+                f"**{gap_count}** {'are' if gap_count != 1 else 'is'} "
+                "silently missing a proof -- the most important number on "
+                "this page, and the one to fix first."
+            )
+        else:
+            pf.append("Nothing is silently missing a proof right now.")
+        pf.append("")
+        pf.append(f"![Coverage bar]({matrix_svg_path.name})")
+        pf.append("")
+        pf.append("## Details")
+        pf.append("")
+        pf.append(
+            "For anyone who wants specifics: every promised item, grouped "
+            "by kind, with its current state."
+        )
+        pf.append("")
+        for typ, label in TYPE_ORDER:
+            typed_rows = [r for r in v4_rows if r["type"] == typ]
+            if not typed_rows:
+                continue
+            pf.append(f"### {label}")
+            pf.append("")
+            for r in sorted(typed_rows, key=lambda row: row["id"]):
+                # Cold-reader guardrail: this repo's own registry lines can
+                # run to paragraph length, which defeats the point of a
+                # narrative snapshot -- strip a redundant leading "ID — "
+                # (the bullet already names the ID) and cut to one
+                # sentence's worth so the list stays scannable.
+                text = r["statement"]
+                prefix = f"{r['id']} — "
+                if text.startswith(prefix):
+                    text = text[len(prefix):]
+                if len(text) > 160:
+                    cut = text[:160].rsplit(" ", 1)[0]
+                    text = cut + "…"
+                pf.append(f"- **{r['id']}** ({r['status']}): {text}")
+            pf.append("")
+
+        portfolio_md_path.parent.mkdir(parents=True, exist_ok=True)
+        portfolio_md_path.write_text("\n".join(pf) + "\n", encoding="utf-8")
+        written.append(str(portfolio_md_path))
+
+    print(f"Wrote {', '.join(written)} ({len(v4_rows)} IDs; {ac_proven}/{ac_total} ACs proven)")
 
 # trace-manifest v5 (beta, docs/trace-manifest-v5.md): emitted alongside v4,
 # never in place of it -- the doc's own stated bar for the real Gate to

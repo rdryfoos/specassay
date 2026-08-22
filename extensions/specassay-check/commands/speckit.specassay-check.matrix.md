@@ -1,5 +1,5 @@
 ---
-description: Regenerate coverage.md + coverage.svg from the current registry/gate state (portfolio snapshot, not a second viewer)
+description: Regenerate coverage.md + coverage.svg (CI/PR-oriented) from the current registry/gate state — not a second viewer
 ---
 
 # SpecAssay Coverage Matrix
@@ -15,8 +15,11 @@ a second scan or a second source of truth: if `coverage.svg` and Loupe's
 live rendering of the same manifest ever disagree, the manifest is what's
 wrong, not either renderer. CI enforces the golden thread via the Gate
 script itself, on every push, regardless of whether these two files were
-regenerated that push — they exist for a cold reader with no Loupe
-running (a PR diff, a portfolio skim, a README badge), not for CI.
+regenerated that push — `coverage.md`/`coverage.svg` exist for a CI log,
+a PR diff, or a README badge: a terse, table-first rendering. For a
+narrative document written for a reader with zero prior context, see
+`speckit.specassay-check.portfolio` instead — same underlying data,
+deliberately different audience and tone.
 
 ## Steps
 

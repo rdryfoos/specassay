@@ -37,7 +37,10 @@ provides:
       description: "Archaeology mode (no-LLM floor): propose a first-pass candidate registry from an unfamiliar repo, written only to dig-report.json"
     - name: "speckit.specassay-check.matrix"
       file: "commands/speckit.specassay-check.matrix.md"
-      description: "Regenerate coverage.md + coverage.svg (portfolio snapshot) from the current registry/gate state"
+      description: "Regenerate coverage.md + coverage.svg (CI/PR-oriented) from the current registry/gate state"
+    - name: "speckit.specassay-check.portfolio"
+      file: "commands/speckit.specassay-check.portfolio.md"
+      description: "Regenerate portfolio-snapshot.md (narrative, cold-reader-oriented) from the current registry/gate state"
 
   config:
     - name: "specassay-check-config.yml"
