@@ -157,6 +157,23 @@ def test_comment_lines_are_not_mined(tmp_path):
     assert not any("/should-not-appear" in s for s in paths)
 
 
+def test_flask_route_statement_has_no_double_space(tmp_path):
+    # Regression: Flask's @app.route(...) captures only a path, no HTTP
+    # method group -- the naive f"accepts {method} {path}".strip() left a
+    # double space when method was empty ("accepts  /policies/<id>").
+    (tmp_path / "src").mkdir()
+    (tmp_path / "src" / "app.py").write_text(
+        "@app.route('/policies/<id>')\n"
+        "def get_policy(id):\n"
+        "    return {}\n"
+    )
+    run_dig([str(tmp_path)])
+    report = json.loads((tmp_path / "dig-report.json").read_text())
+    row = next(r for r in report["rows"] if r["type"] == "FR")
+    assert "  " not in row["statement"]
+    assert row["statement"] == "the system accepts /policies/<id>"
+
+
 def test_sources_filter_limits_output(tmp_path):
     make_fixture(tmp_path)
     run_dig([str(tmp_path), "--sources", "tests", "--out", str(tmp_path / "tests-only.json")])

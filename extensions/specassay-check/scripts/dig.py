@@ -192,7 +192,7 @@ def dig_routes(root: Path) -> list[dict]:
                     groups = m.groups()
                     method = groups[0].upper() if len(groups) > 1 else ""
                     path = groups[-1]
-                    statement = f"the system accepts {method} {path}".strip()
+                    statement = f"the system accepts {method} {path}".strip() if method else f"the system accepts {path}"
                     rows.append({
                         "type": "FR",
                         "statement": statement,
