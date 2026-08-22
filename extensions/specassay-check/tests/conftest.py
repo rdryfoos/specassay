@@ -78,14 +78,14 @@ class Project:
         self._config = self.write("config.yml", "\n".join(lines) + "\n")
         return self._config
 
-    def run(self):
+    def run(self, args=None):
         """Run the real script against this fixture; return (proc, manifest)."""
         assert self._config is not None, "call project.config() first"
         env = os.environ.copy()
         env["SPECASSAY_PROJECT_ROOT"] = str(self.root)
         env["SPECASSAY_CONFIG"] = str(self._config)
         proc = subprocess.run(
-            ["bash", str(SCRIPT)],
+            ["bash", str(SCRIPT), *(args or [])],
             cwd=self.root,
             env=env,
             capture_output=True,

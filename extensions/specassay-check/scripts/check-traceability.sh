@@ -10,6 +10,22 @@ set -euo pipefail
 
 export LC_ALL=C
 
+# @covers FR-GATE-10, AC-GATE-10a -- --matrix is a portfolio-snapshot
+# renderer, not a second scan: it rides the SAME run that already computed
+# rows/status, then additionally re-presents that data as coverage.md +
+# coverage.svg. No other flags exist yet.
+MATRIX_MODE=0
+for arg in "$@"; do
+  case "$arg" in
+    --matrix) MATRIX_MODE=1 ;;
+    *)
+      echo "FAIL: unknown argument: $arg" >&2
+      echo "  Recognized: --matrix" >&2
+      exit 2
+      ;;
+  esac
+done
+
 EXT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PROJECT_ROOT="${SPECASSAY_PROJECT_ROOT:-}"
 if [[ -z "$PROJECT_ROOT" ]]; then
@@ -153,6 +169,8 @@ MANIFEST_OUT="$(yaml_scalar manifest_path)"
 TARGET_NAME="$(yaml_scalar target_name)"
 BLOCK_UNCOVERED_PROOF="$(yaml_scalar block_uncovered_proof)"
 TEST_RESULTS="$(yaml_scalar test_results)"
+MATRIX_MD="$(yaml_scalar matrix_md)"
+MATRIX_SVG="$(yaml_scalar matrix_svg)"
 
 [[ -n "$REGISTRY" ]] || { echo "FAIL: config missing registry" >&2; exit 2; }
 [[ -n "$ID_RE" ]] || ID_RE='(FR|NFR|AC|US)-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?'
@@ -167,6 +185,8 @@ TEST_RESULTS="$(yaml_scalar test_results)"
 [[ -n "$SPECS_GLOB" ]] || SPECS_GLOB='specs/**/spec.md'
 [[ -n "$TASKS_GLOB" ]] || TASKS_GLOB='specs/**/tasks.md'
 [[ -n "$MANIFEST_OUT" ]] || MANIFEST_OUT='trace-manifest.json'
+[[ -n "$MATRIX_MD" ]] || MATRIX_MD='coverage.md'
+[[ -n "$MATRIX_SVG" ]] || MATRIX_SVG='coverage.svg'
 [[ -n "$TARGET_NAME" ]] || TARGET_NAME="$(basename "$PROJECT_ROOT")"
 
 # Every yaml_list() consumer, present and future: not a special case for
@@ -596,7 +616,7 @@ while IFS= read -r id; do
 done < <(comm -23 "$tmp/test_acs.txt" "$tmp/covers.txt")
 
 # --- Emit trace-manifest.json (always; the manifest should show GAPs even when Gate fails) ---
-export MANIFEST_OUT REGISTRY TARGET_NAME PROJECT_ROOT
+export MANIFEST_OUT REGISTRY TARGET_NAME PROJECT_ROOT MATRIX_MODE MATRIX_MD MATRIX_SVG
 export MANIFEST_TMP="$tmp"
 export MANIFEST_FAIL="$fail"
 export EXT_VERSION="$(awk '/^  version:/{gsub(/"/,""); print $2; exit}' "$EXT_DIR/extension.yml" 2>/dev/null || echo 0.0.0)"
@@ -889,6 +909,126 @@ if failures:
 
 out_path.parent.mkdir(parents=True, exist_ok=True)
 out_path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+# @covers FR-GATE-10, AC-GATE-10a, AC-GATE-10b, AC-GATE-10c -- --matrix
+# re-presents THIS run's already-computed v4_rows/v4_status_counts; it
+# never re-scans the target or re-derives status of its own. Family color
+# tokens and canonical ordering (INTERFACE-CANON.md Sec.2: backlog ->
+# tracked-debt -> proven -> GAP), self-dated with this manifest's own
+# generatedAt. Retired IDs are absent here the same way they're absent
+# from v4_rows -- no separate handling needed, so no fifth segment exists
+# to draw.
+if os.environ.get("MATRIX_MODE") == "1":
+    STATUS_COLOR = {
+        "backlog": "#9ed4ff",
+        "tracked-debt": "#c9903a",
+        "proven": "#219653",
+        "GAP": "#eb5757",
+    }
+    STATUS_ORDER = ["backlog", "tracked-debt", "proven", "GAP"]
+    TYPE_ORDER = [
+        ("AC", "Acceptance criteria"),
+        ("FR", "Functional requirements"),
+        ("NFR", "Non-functional requirements"),
+        ("US", "User stories"),
+    ]
+
+    matrix_md_path = Path(os.environ["MATRIX_MD"])
+    matrix_svg_path = Path(os.environ["MATRIX_SVG"])
+
+    md = []
+    md.append(f"# Coverage Matrix: {target}")
+    md.append("")
+    md.append("**GENERATED FILE — do not edit.** Regenerate with "
+               "`bash .../check-traceability.sh --matrix` (or the "
+               "`speckit.specassay-check.matrix` command).")
+    md.append("Portfolio snapshot for a cold reader; CI enforces the golden "
+               "thread via the Gate script itself, not this file's freshness.")
+    md.append(f"Source of truth: `{registry_rel}` registry × specs × tasks × "
+               "`@covers` × tests.")
+    md.append("")
+    md.append("## Summary")
+    md.append("")
+    md.append("| Status | Count |")
+    md.append("|---|---|")
+    for st in STATUS_ORDER:
+        md.append(f"| {st} | {v4_status_counts[st]} |")
+    md.append(f"| **Total** | **{len(v4_rows)}** |")
+    md.append("")
+
+    for typ, label in TYPE_ORDER:
+        typed_rows = [r for r in v4_rows if r["type"] == typ]
+        if not typed_rows:
+            continue
+        md.append(f"## {label}")
+        md.append("")
+        md.append("| ID | Status | Statement |")
+        md.append("|---|---|---|")
+        for r in sorted(typed_rows, key=lambda row: row["id"]):
+            statement = r["statement"].replace("|", "\\|").replace("\n", " ")
+            md.append(f"| {r['id']} | {r['status']} | {statement} |")
+        md.append("")
+
+    matrix_md_path.parent.mkdir(parents=True, exist_ok=True)
+    matrix_md_path.write_text("\n".join(md) + "\n", encoding="utf-8")
+
+    ac_rows = [r for r in v4_rows if r["type"] == "AC"]
+    ac_total = len(ac_rows) or 1
+    ac_proven = len([r for r in ac_rows if r["status"] == "proven"])
+    pct = ac_proven * 100 // ac_total
+
+    bar_w, bar_x = 744, 8
+    total_rows = len(v4_rows) or 1
+    # Integer-division rounding leaves leftover pixels; give them to whichever
+    # status has the most rows, never unconditionally to the last one in
+    # STATUS_ORDER (GAP) -- a GAP:0 registry must never show so much as a
+    # 1px red sliver from rounding alone. Caught smoke-testing this against
+    # this repo's own registry before shipping.
+    widths = {st: (v4_status_counts[st] * bar_w // total_rows) for st in STATUS_ORDER}
+    leftover = bar_w - sum(widths.values())
+    if leftover > 0:
+        biggest = max(STATUS_ORDER, key=lambda st: v4_status_counts[st])
+        widths[biggest] += leftover
+
+    segments = []
+    x = bar_x
+    for st in STATUS_ORDER:
+        w = widths[st]
+        if w > 0:
+            segments.append(f'<rect x="{x}" y="62" width="{w}" height="26" fill="{STATUS_COLOR[st]}"/>')
+        x += w
+    segments_svg = "\n    ".join(segments)
+
+    legend_rows = []
+    for i, st in enumerate(STATUS_ORDER):
+        row_y = 116 + i * 22
+        legend_rows.append(
+            f'<circle cx="16" cy="{row_y}" r="6" fill="{STATUS_COLOR[st]}"/>'
+            f'<text x="28" y="{row_y + 5}" class="leg">{st} ({v4_status_counts[st]})</text>'
+        )
+    legend_svg = "\n    ".join(legend_rows)
+
+    footer_y = 116 + len(STATUS_ORDER) * 22 + 14
+    height = footer_y + 20
+
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="760" height="{height}" viewBox="0 0 760 {height}" role="img" aria-label="Golden Thread coverage: {ac_proven} of {ac_total} acceptance criteria proven">
+  <style>
+    text {{ font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; }}
+    .title {{ font-size: 20px; font-weight: 600; fill: #1f2328; }}
+    .sub   {{ font-size: 13px; fill: #57606a; }}
+    .leg   {{ font-size: 13px; fill: #1f2328; }}
+  </style>
+  <text x="8" y="26" class="title">Golden Thread Coverage — {ac_proven}/{ac_total} acceptance criteria proven ({pct}%)</text>
+  <text x="8" y="48" class="sub">{len(v4_rows)} registry IDs · generated {doc["generatedAt"]}</text>
+  <rect x="{bar_x}" y="62" width="{bar_w}" height="26" rx="7" fill="#eaeef2"/>
+  {segments_svg}
+  {legend_svg}
+  <text x="8" y="{footer_y}" class="sub">Generated by check-traceability.sh --matrix -- CI enforces the golden thread via the Gate script, not this file's freshness.</text>
+</svg>
+'''
+    matrix_svg_path.parent.mkdir(parents=True, exist_ok=True)
+    matrix_svg_path.write_text(svg, encoding="utf-8")
+    print(f"Wrote {matrix_md_path} and {matrix_svg_path} ({len(v4_rows)} IDs; {ac_proven}/{ac_total} ACs proven)")
 
 # trace-manifest v5 (beta, docs/trace-manifest-v5.md): emitted alongside v4,
 # never in place of it -- the doc's own stated bar for the real Gate to

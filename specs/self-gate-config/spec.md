@@ -38,3 +38,13 @@ where that same ID lands once it has.
   - AC-GATE-30b — proven by `test_AC_GATE_30b_retired_id_leaves_v4_rows_and_gains_top_level_entry`.
   - AC-GATE-30c — proven by `test_AC_GATE_30c_malformed_retires_no_date_refuses_before_scanning`
     and `test_AC_GATE_30c_malformed_retires_no_id_refuses_before_scanning`.
+- FR-GATE-10 — `--matrix`: `coverage.md` + `coverage.svg` re-presenting
+  the same run's already-computed data (boundary line written into this
+  entry before build: portfolio-snapshot renderer, never a second scan,
+  never a second viewer). Shipped 2026-08-22, proven by `@covers` in
+  `check-traceability.sh` and `commands/speckit.specassay-check.matrix.md`,
+  and by `extensions/specassay-check/tests/test_gate_10_matrix.py`.
+  - AC-GATE-10a — proven by `test_AC_GATE_10a_matrix_writes_from_same_run_no_second_scan`.
+  - AC-GATE-10b — proven by `test_AC_GATE_10b_family_colors_canonical_order_and_self_dated`
+    and `test_AC_GATE_10b_zero_count_status_has_no_bar_sliver`.
+  - AC-GATE-10c — proven by `test_AC_GATE_10c_retired_ids_absent_from_matrix_like_v4_rows`.
