@@ -46,7 +46,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-GENERATOR_VERSION = "0.1.0"
+GENERATOR_VERSION = "0.2.0"  # level two: candidateProof, table mining, splitter fix, known-smoke labeling
 EPISTEMIC_CLASS = "inferred"  # constant, always present, never omitted -- @covers FR-DIG-20
 
 ALL_SOURCES = ("tests", "routes", "structure", "readme", "commits")
@@ -80,9 +80,22 @@ def humanize(name: str) -> str:
     running it on an already-snake_case name mangles embedded acronyms and
     digit runs (test_AC_A11Y_01_... -> "a11" + "y", a real bug caught
     dogfooding this against this repo's own tests before shipping).
+
+    Two splitting rules, applied in order, within that camelCase-only
+    branch:
+    1. An acronym/single-capital boundary before a real word -- an
+       uppercase letter immediately followed by another uppercase+lowercase
+       pair splits before the second uppercase (HTTPServer -> HTTP Server;
+       issuesAPolicy -> issues A Policy). Level-two fix (dig-level-two
+       handoff Sec.2b): without it, a lone capitalized article butting a
+       capitalized word never split (bindingFromTheViewIssuesAPolicy ->
+       "...issues apolicy", WithoutAFiledRate -> "...without afiled rate"),
+       caught in the insurance-java honest-usefulness assessment.
+    2. The ordinary lowercase/digit-to-uppercase boundary (already shipped).
     """
     name = re.sub(r"^(test_|test)", "", name, flags=re.IGNORECASE)
     if "_" not in name and "-" not in name:
+        name = re.sub(r"(?<=[A-Z])(?=[A-Z][a-z])", "_", name)
         name = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "_", name)
     words = [w for w in re.split(r"[_\-]+", name) if w]
     return " ".join(w.lower() for w in words)
@@ -105,6 +118,23 @@ def is_comment_line(line: str, suffix: str) -> bool:
 
 
 # ---------- 1. Test names/bodies -> candidate AC statements ----------
+
+# Known-smoke noise (dig-level-two handoff Sec.2c): a small, NAMED list of
+# recognized framework-smoke-test shapes, not a fuzzy semantic classifier.
+# Never dropped -- every found test still becomes a row -- but pre-labeled
+# low-confidence with a stated reason, so an anointment reviewer's
+# two-second toss is already explained rather than something they have to
+# work out themselves each time. contextLoads is Spring Boot's own default
+# generated test; the insurance-java run is what surfaced it as real noise.
+# @covers FR-DIG-50, AC-DIG-50
+KNOWN_SMOKE_TESTS = {"contextloads", "smoketest", "smoke_test", "smoke"}
+
+
+def is_known_smoke_test(raw_name: str) -> bool:
+    bare = re.sub(r"^(test_|test)", "", raw_name, flags=re.IGNORECASE).lower()
+    bare = bare.replace("_", "")
+    return bare in KNOWN_SMOKE_TESTS
+
 
 TEST_PATTERNS = [
     # Python: def test_xxx(
@@ -147,7 +177,7 @@ def dig_tests(root: Path) -> list[dict]:
                     java_pending_test = False
                     raw_name = m.group(1)
                     statement = humanize(raw_name) or raw_name
-                    rows.append({
+                    row = {
                         "type": "AC",
                         "statement": statement,
                         "epistemicClass": EPISTEMIC_CLASS,
@@ -158,7 +188,11 @@ def dig_tests(root: Path) -> list[dict]:
                             "line": i,
                             "testName": raw_name,
                         },
-                    })
+                    }
+                    if is_known_smoke_test(raw_name):
+                        row["confidence"] = "low"
+                        row["confidenceReason"] = "framework smoke test"
+                    rows.append(row)
     return rows
 
 
@@ -276,7 +310,150 @@ def dig_readme(root: Path) -> list[dict]:
                     "file": str(f.relative_to(root)),
                     "line": i,
                 },
+                "candidateProof": None,
             })
+    return rows
+
+
+# ---------- 4b. README/docs markdown TABLE mining (level two, Sec.2a) ----------
+#
+# The found gap: heading-only mining missed the richest signal a project can
+# offer -- a hand-maintained Spec -> Scenario -> Test coverage table sitting
+# in plain markdown. A column whose header names it as "spec"/"scenario"/
+# "test" (case-insensitive substring match, not an exact vocabulary) yields
+# US/AC candidates and, when a test column is present, a "matched"
+# candidateProof -- an inferred pairing from table structure, distinct from
+# "same-artifact" (the test heuristic's own provenance doubling as proof).
+
+TABLE_ROW_RE = re.compile(r"^\s*\|(.+)\|\s*$")
+TABLE_SEP_RE = re.compile(r"^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$")
+CODE_SPAN_RE = re.compile(r"^`([^`]+)`$")
+
+
+def split_table_row(line: str) -> list[str]:
+    inner = line.strip()
+    if inner.startswith("|"):
+        inner = inner[1:]
+    if inner.endswith("|"):
+        inner = inner[:-1]
+    return [c.strip() for c in re.split(r"(?<!\\)\|", inner)]
+
+
+def strip_code_span(s: str) -> str:
+    m = CODE_SPAN_RE.match(s.strip())
+    return m.group(1) if m else s.strip()
+
+
+def split_scenarios(cell: str) -> list[str]:
+    return [p.strip() for p in re.split(r"\s*[·;]\s*", cell) if p.strip()]
+
+
+def find_test_declaration(root: Path, token: str) -> tuple[str | None, int | None]:
+    """Resolve a bare test-class/function token (from a table's Test column)
+    to a real file:line if one exists under root, so a table-matched
+    candidateProof is actually actionable, not just a name.
+
+    Searches file CONTENTS for a declaration, not just filename stems --
+    a Java-style one-class-per-file convention (the table's Test column
+    naming a file that also happens to share its stem) is common, but a
+    Python/JS/Go test token is often a function inside a file shared by
+    many tests, where filename-stem matching finds nothing at all (a real
+    bug caught building the table-mining acceptance test against a
+    Python-shaped fixture)."""
+    token = strip_code_span(token)
+    decl_re = re.compile(rf"\b(?:class|def|func)\s+{re.escape(token)}\b")
+    stem_match: tuple[str, int] | None = None
+    for suf in (".java", ".py", ".js", ".ts", ".go"):
+        for f in iter_files(root, (suf,)):
+            try:
+                lines = f.read_text(encoding="utf-8", errors="replace").splitlines()
+            except OSError:
+                continue
+            for i, line in enumerate(lines, start=1):
+                if decl_re.search(line):
+                    return str(f.relative_to(root)), i
+            if f.stem == token and stem_match is None:
+                stem_match = (str(f.relative_to(root)), 1)
+    if stem_match:
+        return stem_match
+    return None, None
+
+
+def dig_readme_tables(root: Path) -> list[dict]:
+    # @covers FR-DIG-30, AC-DIG-60, AC-DIG-40
+    rows: list[dict] = []
+    candidates = []
+    for name in ("README.md", "README.rst", "README.txt"):
+        p = root / name
+        if p.is_file():
+            candidates.append(p)
+    docs_dir = root / "docs"
+    if docs_dir.is_dir():
+        candidates.extend(sorted(docs_dir.glob("*.md"))[:10])
+
+    for f in candidates:
+        if f.suffix != ".md":
+            continue  # table syntax is a markdown convention
+        try:
+            lines = f.read_text(encoding="utf-8", errors="replace").splitlines()
+        except OSError:
+            continue
+        n = len(lines)
+        i = 0
+        while i < n - 1:
+            if not TABLE_ROW_RE.match(lines[i]) or not TABLE_SEP_RE.match(lines[i + 1]):
+                i += 1
+                continue
+            header_cells = split_table_row(lines[i])
+            header_lower = [h.lower() for h in header_cells]
+            spec_idx = next((k for k, h in enumerate(header_lower) if "spec" in h), None)
+            scenario_idx = next((k for k, h in enumerate(header_lower) if "scenario" in h), None)
+            test_idx = next((k for k, h in enumerate(header_lower) if "test" in h), None)
+            if spec_idx is None and scenario_idx is None:
+                i += 1
+                continue  # not a spec-coverage-shaped table
+            j = i + 2
+            while j < n and TABLE_ROW_RE.match(lines[j]):
+                cells = split_table_row(lines[j])
+                needed = max((idx for idx in (spec_idx, scenario_idx, test_idx) if idx is not None), default=-1)
+                if len(cells) <= needed:
+                    j += 1
+                    continue
+                test_token = None
+                test_file = test_line = None
+                if test_idx is not None and cells[test_idx]:
+                    test_token = strip_code_span(cells[test_idx])
+                    test_file, test_line = find_test_declaration(root, test_token)
+
+                if spec_idx is not None and cells[spec_idx]:
+                    rows.append({
+                        "type": "US",
+                        "statement": cells[spec_idx],
+                        "epistemicClass": EPISTEMIC_CLASS,
+                        "confidence": "high",
+                        "provenance": {"source": "readme-table", "file": str(f.relative_to(root)), "line": j + 1},
+                        "candidateProof": None,
+                    })
+                if scenario_idx is not None and cells[scenario_idx]:
+                    for scenario in split_scenarios(cells[scenario_idx]):
+                        row = {
+                            "type": "AC",
+                            "statement": scenario,
+                            "epistemicClass": EPISTEMIC_CLASS,
+                            "confidence": "high",
+                            "provenance": {"source": "readme-table", "file": str(f.relative_to(root)), "line": j + 1},
+                            "candidateProof": None,
+                        }
+                        if test_token:
+                            row["candidateProof"] = {
+                                "test": test_token,
+                                "file": test_file,
+                                "line": test_line,
+                                "basis": "matched",
+                            }
+                        rows.append(row)
+                j += 1
+            i = j
     return rows
 
 
@@ -310,6 +487,24 @@ def is_git_repo(root: Path) -> bool:
 
 # ---------- assembly ----------
 
+def attach_candidate_proof(rows: list[dict]) -> None:
+    """@covers FR-DIG-40 -- candidateProof is first-class on every row, not
+    a viewer's inference from provenance.source == "test". Table mining
+    already sets its own ("matched", possibly with a resolved file:line);
+    this only fills the remaining case: a test-heuristic row's own
+    provenance test IS its candidate proof ("same-artifact"). Every other
+    row keeps candidateProof: null -- honest absence, not a guess."""
+    for row in rows:
+        row.setdefault("candidateProof", None)
+        if row["candidateProof"] is None and row["provenance"]["source"] == "test":
+            row["candidateProof"] = {
+                "test": row["provenance"]["testName"],
+                "file": row["provenance"]["file"],
+                "line": row["provenance"]["line"],
+                "basis": "same-artifact",
+            }
+
+
 def build_report(root: Path, sources: list[str]) -> dict:
     rows: list[dict] = []
     if "tests" in sources:
@@ -319,6 +514,9 @@ def build_report(root: Path, sources: list[str]) -> dict:
     areas = dig_structure(root) if "structure" in sources else {}
     if "readme" in sources:
         rows += dig_readme(root)
+        rows += dig_readme_tables(root)
+
+    attach_candidate_proof(rows)
 
     for row in rows:
         row["suggestedArea"] = area_for(row["provenance"]["file"], areas) if areas else None

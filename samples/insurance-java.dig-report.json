@@ -1,20 +1,27 @@
 {
   "format": "dig-report",
-  "generatorVersion": "0.1.0",
+  "generatorVersion": "0.2.0",
   "sourceRepoPath": "insurance-java",
   "sourceCommit": "1990690c93e2f6e1be6406c9b33ef1d6f105777f",
-  "generatedAt": "2026-08-22T03:04:19.103Z",
+  "generatedAt": "2026-08-22T13:23:16.016Z",
   "rows": [
     {
       "type": "AC",
       "statement": "context loads",
       "epistemicClass": "inferred",
-      "confidence": "high",
+      "confidence": "low",
       "provenance": {
         "source": "test",
         "file": "src/test/java/com/example/insurance/InsuranceApplicationTests.java",
         "line": 10,
         "testName": "contextLoads"
+      },
+      "confidenceReason": "framework smoke test",
+      "candidateProof": {
+        "test": "contextLoads",
+        "file": "src/test/java/com/example/insurance/InsuranceApplicationTests.java",
+        "line": 10,
+        "basis": "same-artifact"
       },
       "suggestedArea": "TEST",
       "recentActivity": [
@@ -36,6 +43,12 @@
         "line": 30,
         "testName": "monthlyInstallmentPlan"
       },
+      "candidateProof": {
+        "test": "monthlyInstallmentPlan",
+        "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+        "line": 30,
+        "basis": "same-artifact"
+      },
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -55,6 +68,12 @@
         "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
         "line": 53,
         "testName": "planTable"
+      },
+      "candidateProof": {
+        "test": "planTable",
+        "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+        "line": 53,
+        "basis": "same-artifact"
       },
       "suggestedArea": "TEST",
       "recentActivity": [
@@ -76,6 +95,12 @@
         "line": 64,
         "testName": "failedAutopayStartsGracePeriod"
       },
+      "candidateProof": {
+        "test": "failedAutopayStartsGracePeriod",
+        "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+        "line": 64,
+        "basis": "same-artifact"
+      },
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -95,6 +120,12 @@
         "file": "src/test/java/com/example/insurance/billing/RefundUnearnedPremiumFeatureTest.java",
         "line": 24,
         "testName": "proRataRefundOnCancellation"
+      },
+      "candidateProof": {
+        "test": "proRataRefundOnCancellation",
+        "file": "src/test/java/com/example/insurance/billing/RefundUnearnedPremiumFeatureTest.java",
+        "line": 24,
+        "basis": "same-artifact"
       },
       "suggestedArea": "TEST",
       "recentActivity": [
@@ -116,6 +147,12 @@
         "line": 34,
         "testName": "reportAccidentOnline"
       },
+      "candidateProof": {
+        "test": "reportAccidentOnline",
+        "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+        "line": 34,
+        "basis": "same-artifact"
+      },
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -135,6 +172,12 @@
         "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
         "line": 63,
         "testName": "reportAccidentThroughHotline"
+      },
+      "candidateProof": {
+        "test": "reportAccidentThroughHotline",
+        "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+        "line": 63,
+        "basis": "same-artifact"
       },
       "suggestedArea": "TEST",
       "recentActivity": [
@@ -156,6 +199,12 @@
         "line": 28,
         "testName": "burstPipeIsCovered"
       },
+      "candidateProof": {
+        "test": "burstPipeIsCovered",
+        "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+        "line": 28,
+        "basis": "same-artifact"
+      },
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -175,6 +224,12 @@
         "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
         "line": 32,
         "testName": "approveRepairEstimate"
+      },
+      "candidateProof": {
+        "test": "approveRepairEstimate",
+        "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+        "line": 32,
+        "basis": "same-artifact"
       },
       "suggestedArea": "TEST",
       "recentActivity": [
@@ -196,6 +251,12 @@
         "line": 56,
         "testName": "bindFromActiveQuote"
       },
+      "candidateProof": {
+        "test": "bindFromActiveQuote",
+        "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+        "line": 56,
+        "basis": "same-artifact"
+      },
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -215,6 +276,12 @@
         "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
         "line": 94,
         "testName": "effectiveDateMayNotBeBackdated"
+      },
+      "candidateProof": {
+        "test": "effectiveDateMayNotBeBackdated",
+        "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+        "line": 94,
+        "basis": "same-artifact"
       },
       "suggestedArea": "TEST",
       "recentActivity": [
@@ -236,6 +303,12 @@
         "line": 42,
         "testName": "insuredRequestsCancellation"
       },
+      "candidateProof": {
+        "test": "insuredRequestsCancellation",
+        "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+        "line": 42,
+        "basis": "same-artifact"
+      },
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -255,6 +328,12 @@
         "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
         "line": 63,
         "testName": "cancellationForNonPayment"
+      },
+      "candidateProof": {
+        "test": "cancellationForNonPayment",
+        "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+        "line": 63,
+        "basis": "same-artifact"
       },
       "suggestedArea": "TEST",
       "recentActivity": [
@@ -276,6 +355,12 @@
         "line": 30,
         "testName": "addVehicleMidTerm"
       },
+      "candidateProof": {
+        "test": "addVehicleMidTerm",
+        "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+        "line": 30,
+        "basis": "same-artifact"
+      },
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -295,6 +380,12 @@
         "file": "src/test/java/com/example/insurance/policy/quote/QuoteAutoPolicyFeatureTest.java",
         "line": 29,
         "testName": "basicAutoQuote"
+      },
+      "candidateProof": {
+        "test": "basicAutoQuote",
+        "file": "src/test/java/com/example/insurance/policy/quote/QuoteAutoPolicyFeatureTest.java",
+        "line": 29,
+        "basis": "same-artifact"
       },
       "suggestedArea": "TEST",
       "recentActivity": [
@@ -316,6 +407,12 @@
         "line": 56,
         "testName": "declineHighRiskDriver"
       },
+      "candidateProof": {
+        "test": "declineHighRiskDriver",
+        "file": "src/test/java/com/example/insurance/policy/quote/QuoteAutoPolicyFeatureTest.java",
+        "line": 56,
+        "basis": "same-artifact"
+      },
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -335,6 +432,12 @@
         "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
         "line": 33,
         "testName": "automaticRenewalOffer"
+      },
+      "candidateProof": {
+        "test": "automaticRenewalOffer",
+        "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+        "line": 33,
+        "basis": "same-artifact"
       },
       "suggestedArea": "TEST",
       "recentActivity": [
@@ -356,6 +459,12 @@
         "line": 52,
         "testName": "basicQuoteShowsAllThreePlansWithPremiums"
       },
+      "candidateProof": {
+        "test": "basicQuoteShowsAllThreePlansWithPremiums",
+        "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+        "line": 52,
+        "basis": "same-artifact"
+      },
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -376,6 +485,12 @@
         "line": 66,
         "testName": "highRiskDriverSeesDeclineWithReason"
       },
+      "candidateProof": {
+        "test": "highRiskDriverSeesDeclineWithReason",
+        "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+        "line": 66,
+        "basis": "same-artifact"
+      },
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -387,7 +502,7 @@
     },
     {
       "type": "AC",
-      "statement": "binding from the view issues apolicy",
+      "statement": "binding from the view issues a policy",
       "epistemicClass": "inferred",
       "confidence": "high",
       "provenance": {
@@ -395,6 +510,12 @@
         "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
         "line": 76,
         "testName": "bindingFromTheViewIssuesAPolicy"
+      },
+      "candidateProof": {
+        "test": "bindingFromTheViewIssuesAPolicy",
+        "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+        "line": 76,
+        "basis": "same-artifact"
       },
       "suggestedArea": "TEST",
       "recentActivity": [
@@ -416,6 +537,12 @@
         "line": 26,
         "testName": "quotesTheFiledAnnualPremium"
       },
+      "candidateProof": {
+        "test": "quotesTheFiledAnnualPremium",
+        "file": "src/test/java/com/example/insurance/ui/HomeQuoteViewTest.java",
+        "line": 26,
+        "basis": "same-artifact"
+      },
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -436,25 +563,11 @@
         "line": 37,
         "testName": "higherDeductibleLowersThePremium"
       },
-      "suggestedArea": "TEST",
-      "recentActivity": [
-        {
-          "commit": "238091f",
-          "date": "2026-07-28",
-          "subject": "Implement published insurance specs"
-        }
-      ]
-    },
-    {
-      "type": "AC",
-      "statement": "combination without afiled rate is rejected",
-      "epistemicClass": "inferred",
-      "confidence": "high",
-      "provenance": {
-        "source": "test",
+      "candidateProof": {
+        "test": "higherDeductibleLowersThePremium",
         "file": "src/test/java/com/example/insurance/ui/HomeQuoteViewTest.java",
-        "line": 48,
-        "testName": "combinationWithoutAFiledRateIsRejected"
+        "line": 37,
+        "basis": "same-artifact"
       },
       "suggestedArea": "TEST",
       "recentActivity": [
@@ -467,7 +580,33 @@
     },
     {
       "type": "AC",
-      "statement": "reporting an accident opens aclaim and shows the number",
+      "statement": "combination without a filed rate is rejected",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "test",
+        "file": "src/test/java/com/example/insurance/ui/HomeQuoteViewTest.java",
+        "line": 48,
+        "testName": "combinationWithoutAFiledRateIsRejected"
+      },
+      "candidateProof": {
+        "test": "combinationWithoutAFiledRateIsRejected",
+        "file": "src/test/java/com/example/insurance/ui/HomeQuoteViewTest.java",
+        "line": 48,
+        "basis": "same-artifact"
+      },
+      "suggestedArea": "TEST",
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "reporting an accident opens a claim and shows the number",
       "epistemicClass": "inferred",
       "confidence": "high",
       "provenance": {
@@ -475,6 +614,12 @@
         "file": "src/test/java/com/example/insurance/ui/ReportAccidentViewTest.java",
         "line": 19,
         "testName": "reportingAnAccidentOpensAClaimAndShowsTheNumber"
+      },
+      "candidateProof": {
+        "test": "reportingAnAccidentOpensAClaimAndShowsTheNumber",
+        "file": "src/test/java/com/example/insurance/ui/ReportAccidentViewTest.java",
+        "line": 19,
+        "basis": "same-artifact"
       },
       "suggestedArea": "TEST",
       "recentActivity": [
@@ -496,6 +641,12 @@
         "line": 39,
         "testName": "unknownPolicyIsRejected"
       },
+      "candidateProof": {
+        "test": "unknownPolicyIsRejected",
+        "file": "src/test/java/com/example/insurance/ui/ReportAccidentViewTest.java",
+        "line": 39,
+        "basis": "same-artifact"
+      },
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -515,6 +666,7 @@
         "file": "README.md",
         "line": 1
       },
+      "candidateProof": null,
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -538,6 +690,817 @@
         "source": "readme",
         "file": "README.md",
         "line": 19
+      },
+      "candidateProof": null,
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "US",
+      "statement": "policy/auto-policy/quote-policy",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 23
+      },
+      "candidateProof": null,
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Basic auto quote v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 23
+      },
+      "candidateProof": {
+        "test": "QuoteAutoPolicyFeatureTest",
+        "file": "src/test/java/com/example/insurance/policy/quote/QuoteAutoPolicyFeatureTest.java",
+        "line": 11,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Decline high-risk driver v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 23
+      },
+      "candidateProof": {
+        "test": "QuoteAutoPolicyFeatureTest",
+        "file": "src/test/java/com/example/insurance/policy/quote/QuoteAutoPolicyFeatureTest.java",
+        "line": 11,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "US",
+      "statement": "policy/home-policy/quote-homeowners-policy",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 24
+      },
+      "candidateProof": null,
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Basic homeowners quote v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 24
+      },
+      "candidateProof": {
+        "test": "QuoteHomeownersPolicyFeatureTest",
+        "file": "src/test/java/com/example/insurance/policy/quote/QuoteHomeownersPolicyFeatureTest.java",
+        "line": 13,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "US",
+      "statement": "policy/auto-policy/bind-policy",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 25
+      },
+      "candidateProof": null,
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Bind from an active quote v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 25
+      },
+      "candidateProof": {
+        "test": "BindPolicyFeatureTest",
+        "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+        "line": 27,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Effective date may not be backdated v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 25
+      },
+      "candidateProof": {
+        "test": "BindPolicyFeatureTest",
+        "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+        "line": 27,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "US",
+      "statement": "policy/auto-policy/cancel-policy",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 26
+      },
+      "candidateProof": null,
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Cancellation for non-payment v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 26
+      },
+      "candidateProof": {
+        "test": "CancelPolicyFeatureTest",
+        "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+        "line": 20,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Insured requests cancellation v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 26
+      },
+      "candidateProof": {
+        "test": "CancelPolicyFeatureTest",
+        "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+        "line": 20,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "US",
+      "statement": "policy/auto-policy/renew-policy",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 27
+      },
+      "candidateProof": null,
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Automatic renewal offer v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 27
+      },
+      "candidateProof": {
+        "test": "RenewPolicyFeatureTest",
+        "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+        "line": 17,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "US",
+      "statement": "policy/auto-policy/endorse-policy",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 28
+      },
+      "candidateProof": null,
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Add a vehicle mid-term v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 28
+      },
+      "candidateProof": {
+        "test": "EndorsePolicyFeatureTest",
+        "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+        "line": 17,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "US",
+      "statement": "billing/collect-premium",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 29
+      },
+      "candidateProof": null,
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Failed autopay starts the grace period v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 29
+      },
+      "candidateProof": {
+        "test": "CollectPremiumFeatureTest",
+        "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+        "line": 14,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Monthly installment plan v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 29
+      },
+      "candidateProof": {
+        "test": "CollectPremiumFeatureTest",
+        "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+        "line": 14,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "US",
+      "statement": "billing/refund-unearned-premium",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 30
+      },
+      "candidateProof": null,
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Pro-rata refund on cancellation v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 30
+      },
+      "candidateProof": {
+        "test": "RefundUnearnedPremiumFeatureTest",
+        "file": "src/test/java/com/example/insurance/billing/RefundUnearnedPremiumFeatureTest.java",
+        "line": 14,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "US",
+      "statement": "claims/auto-accidents/record-car-accident",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 31
+      },
+      "candidateProof": null,
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Report accident online v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 31
+      },
+      "candidateProof": {
+        "test": "RecordCarAccidentFeatureTest",
+        "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+        "line": 17,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Report accident through the claims hotline v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 31
+      },
+      "candidateProof": {
+        "test": "RecordCarAccidentFeatureTest",
+        "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+        "line": 17,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "US",
+      "statement": "claims/auto-accidents/assign-adjuster",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 32
+      },
+      "candidateProof": null,
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Assign by estimated damage v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 32
+      },
+      "candidateProof": {
+        "test": "AssignAdjusterFeatureTest",
+        "file": "src/test/java/com/example/insurance/claims/AssignAdjusterFeatureTest.java",
+        "line": 20,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "US",
+      "statement": "claims/auto-accidents/settle-collision-claim",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 33
+      },
+      "candidateProof": null,
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Approve repair estimate v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 33
+      },
+      "candidateProof": {
+        "test": "SettleCollisionClaimFeatureTest",
+        "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+        "line": 19,
+        "basis": "matched"
+      },
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "US",
+      "statement": "claims/home-claims/record-water-damage-claim",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 34
+      },
+      "candidateProof": null,
+      "suggestedArea": null,
+      "recentActivity": [
+        {
+          "commit": "238091f",
+          "date": "2026-07-28",
+          "subject": "Implement published insurance specs"
+        },
+        {
+          "commit": "5612fda",
+          "date": "2026-07-27",
+          "subject": "Initial commit"
+        }
+      ]
+    },
+    {
+      "type": "AC",
+      "statement": "Burst pipe is covered v1",
+      "epistemicClass": "inferred",
+      "confidence": "high",
+      "provenance": {
+        "source": "readme-table",
+        "file": "README.md",
+        "line": 34
+      },
+      "candidateProof": {
+        "test": "RecordWaterDamageClaimFeatureTest",
+        "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+        "line": 18,
+        "basis": "matched"
       },
       "suggestedArea": null,
       "recentActivity": [

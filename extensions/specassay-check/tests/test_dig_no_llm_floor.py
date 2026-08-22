@@ -139,6 +139,24 @@ def test_test_name_humanization_preserves_acronym_digit_runs(tmp_path):
     assert "zk9" not in row["statement"].replace("zk9q", "")
 
 
+def test_humanization_splits_capitalized_article_before_capitalized_word(tmp_path):
+    # Level-two fix (dig-level-two handoff Sec.2b): a lone capitalized
+    # article/acronym letter butting a capitalized word never split
+    # (bindingFromTheViewIssuesAPolicy -> "...issues apolicy"). Caught in
+    # the insurance-java honest-usefulness assessment; these two specimens
+    # are the exact real names that surfaced it.
+    (tmp_path / "tests").mkdir()
+    (tmp_path / "tests" / "test_view.py").write_text(
+        "def test_bindingFromTheViewIssuesAPolicy():\n    pass\n"
+        "def test_combinationWithoutAFiledRateIsRejected():\n    pass\n"
+    )
+    run_dig([str(tmp_path)], cwd=tmp_path)
+    report = json.loads((tmp_path / "dig-report.json").read_text())
+    by_name = {r["provenance"]["testName"]: r["statement"] for r in report["rows"]}
+    assert by_name["test_bindingFromTheViewIssuesAPolicy"] == "binding from the view issues a policy"
+    assert by_name["test_combinationWithoutAFiledRateIsRejected"] == "combination without a filed rate is rejected"
+
+
 def test_comment_lines_are_not_mined(tmp_path):
     # Regression: a comment describing an example pattern (e.g. "# Flask:
     # @app.route('/x')") must not itself be mined as a real route/test --
@@ -172,6 +190,94 @@ def test_flask_route_statement_has_no_double_space(tmp_path):
     row = next(r for r in report["rows"] if r["type"] == "FR")
     assert "  " not in row["statement"]
     assert row["statement"] == "the system accepts /policies/<id>"
+
+
+def test_AC_DIG_40_same_artifact_for_test_rows(tmp_path):
+    # AC-DIG-40: a test-heuristic row's own provenance test is its
+    # candidateProof, basis "same-artifact" -- no viewer inference from
+    # provenance.source == "test" needed.
+    (tmp_path / "tests").mkdir()
+    (tmp_path / "tests" / "test_math.py").write_text(
+        "def test_addition_returns_sum():\n    assert 1 + 1 == 2\n"
+    )
+    run_dig([str(tmp_path)], cwd=tmp_path)
+    report = json.loads((tmp_path / "dig-report.json").read_text())
+    row = next(r for r in report["rows"] if r["provenance"].get("testName") == "test_addition_returns_sum")
+    assert row["candidateProof"] == {
+        "test": "test_addition_returns_sum",
+        "file": "tests/test_math.py",
+        "line": 1,
+        "basis": "same-artifact",
+    }
+
+
+def test_AC_DIG_40_null_when_no_test_known(tmp_path):
+    (tmp_path / "src").mkdir()
+    (tmp_path / "src" / "app.py").write_text("@app.route('/x')\ndef h():\n    pass\n")
+    run_dig([str(tmp_path)], cwd=tmp_path)
+    report = json.loads((tmp_path / "dig-report.json").read_text())
+    row = next(r for r in report["rows"] if r["type"] == "FR")
+    assert row["candidateProof"] is None
+
+
+def test_AC_DIG_50_known_smoke_test_labeled_low_confidence_with_reason(tmp_path):
+    # AC-DIG-50: contextLoads-class framework smoke tests are kept (never
+    # silently dropped) but pre-labeled low-confidence with a stated reason.
+    (tmp_path / "tests").mkdir()
+    (tmp_path / "tests" / "test_app.py").write_text(
+        "def test_contextLoads():\n    pass\n"
+        "def test_real_business_rule_applies():\n    pass\n"
+    )
+    run_dig([str(tmp_path)], cwd=tmp_path)
+    report = json.loads((tmp_path / "dig-report.json").read_text())
+    by_name = {r["provenance"]["testName"]: r for r in report["rows"]}
+    smoke = by_name["test_contextLoads"]
+    assert smoke["confidence"] == "low"
+    assert smoke["confidenceReason"] == "framework smoke test"
+    real = by_name["test_real_business_rule_applies"]
+    assert real["confidence"] == "high"
+    assert "confidenceReason" not in real
+
+
+def test_AC_DIG_60_table_mining_recovers_spec_scenario_test_table(tmp_path):
+    # AC-DIG-60: the acceptance test the handoff names explicitly --
+    # mining a real spec/scenario/test coverage table should recover it
+    # completely: every spec row, every scenario (split on the middle-dot
+    # separator), and a resolved candidateProof pointing at the real test
+    # file for scenario rows backed by a real test in this fixture.
+    (tmp_path / "tests").mkdir()
+    (tmp_path / "tests" / "test_quote.py").write_text(
+        "def test_quote_stub():\n    pass\n"
+    )
+    (tmp_path / "README.md").write_text(
+        "# Fixture\n\n"
+        "## Published spec coverage\n\n"
+        "| Spec | Scenarios | Test |\n"
+        "| --- | --- | --- |\n"
+        "| policy/quote | Basic quote v1 · Decline risky applicant v1 | `test_quote_stub` |\n"
+        "| policy/cancel | Cancel for non-payment v1 | `test_quote_stub` |\n"
+    )
+    run_dig([str(tmp_path)], cwd=tmp_path)
+    report = json.loads((tmp_path / "dig-report.json").read_text())
+    table_rows = [r for r in report["rows"] if r["provenance"]["source"] == "readme-table"]
+
+    us_statements = {r["statement"] for r in table_rows if r["type"] == "US"}
+    assert us_statements == {"policy/quote", "policy/cancel"}
+
+    ac_statements = {r["statement"] for r in table_rows if r["type"] == "AC"}
+    assert ac_statements == {
+        "Basic quote v1",
+        "Decline risky applicant v1",
+        "Cancel for non-payment v1",
+    }
+
+    for r in table_rows:
+        if r["type"] != "AC":
+            continue
+        assert r["candidateProof"]["test"] == "test_quote_stub"
+        assert r["candidateProof"]["basis"] == "matched"
+        assert r["candidateProof"]["file"] == "tests/test_quote.py"
+        assert r["candidateProof"]["line"] == 1
 
 
 def test_AC_DIG_30_default_out_is_cwd_relative_not_target_relative(tmp_path):

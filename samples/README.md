@@ -16,7 +16,7 @@ Not a trace-manifest — `specassay dig`'s own output (archaeology mode, no-LLM 
 
 | File | What |
 |------|------|
-| `insurance-java.dig-report.json` | Real `dig` run (2026-08-21) against `github.com/SpecDriven/insurance-java`, cloned read-only per the archaeology-mode build handoff's §0 permission-on-record — 27 candidate rows (25 AC from test names, 2 US from README headings, 0 FR since the app is Vaadin-style UI + services, not a REST API). `sourceRepoPath` scrubbed from the local clone's absolute path to `insurance-java`; nothing else touched. This is the run that caught `dig`'s default-output-location defect (`AC-DIG-30`) — first written to a session scratchpad, not durable ground; regenerated here after the fix. |
+| `insurance-java.dig-report.json` | Real `dig` run against `github.com/SpecDriven/insurance-java`, cloned read-only per the archaeology-mode build handoff's §0 permission-on-record. `sourceRepoPath` scrubbed from the local clone's absolute path to `insurance-java`; nothing else touched. **Level two** (2026-08-22, `generatorVersion: 0.2.0`): 56 candidate rows (42 AC, 14 US, 0 FR — still Vaadin-style UI + services, not a REST API, an honest zero not a bug), up from level one's 27. The delta is almost entirely `readme-table` (0 → 29 rows): table mining recovered the published Spec → Scenario → Test coverage table completely — all 12 spec rows, all 17 scenarios, every scenario's `candidateProof` resolved to a real test `file:line`. First committed (2026-08-21, level one, 27 rows) is the run that caught `dig`'s default-output-location defect (`AC-DIG-30`) — first written to a session scratchpad, not durable ground; both level-one and level-two regenerations landed here after that fix. |
 
 ## Regenerating them
 
