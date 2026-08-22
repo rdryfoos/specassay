@@ -1,9 +1,9 @@
 {
   "format": "dig-report",
-  "generatorVersion": "0.2.0",
+  "generatorVersion": "0.3.0",
   "sourceRepoPath": "insurance-java",
   "sourceCommit": "1990690c93e2f6e1be6406c9b33ef1d6f105777f",
-  "generatedAt": "2026-08-22T13:23:16.016Z",
+  "generatedAt": "2026-08-22T18:03:28.200Z",
   "rows": [
     {
       "type": "AC",
@@ -23,6 +23,7 @@
         "line": 10,
         "basis": "same-artifact"
       },
+      "candidateBuild": [],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -49,6 +50,35 @@
         "line": 30,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -75,6 +105,35 @@
         "line": 53,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -101,6 +160,35 @@
         "line": 64,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -127,6 +215,35 @@
         "line": 24,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/RefundUnearnedPremiumFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/PolicyFixtures.java",
+          "importedType": "PolicyFixtures",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/RefundUnearnedPremiumFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/RefundUnearnedPremiumFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -153,6 +270,53 @@
         "line": 34,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/AccidentReport.java",
+          "importedType": "AccidentReport",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/FnolService.java",
+          "importedType": "FnolService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -179,6 +343,53 @@
         "line": 63,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/AccidentReport.java",
+          "importedType": "AccidentReport",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/FnolService.java",
+          "importedType": "FnolService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -205,6 +416,62 @@
         "line": 28,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/FnolService.java",
+          "importedType": "FnolService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/WaterCause.java",
+          "importedType": "WaterCause",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/WaterDamageReport.java",
+          "importedType": "WaterDamageReport",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -231,6 +498,71 @@
         "line": 32,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/AccidentReport.java",
+          "importedType": "AccidentReport",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/FnolService.java",
+          "importedType": "FnolService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/settle/SettlementService.java",
+          "importedType": "SettlementService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/common/Monies.java",
+          "importedType": "Monies",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 11
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -257,6 +589,143 @@
         "line": 56,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/billing/BillingService.java",
+          "importedType": "BillingService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/common/Monies.java",
+          "importedType": "Monies",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/DocumentRecordRepository.java",
+          "importedType": "DocumentRecordRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/DocumentType.java",
+          "importedType": "DocumentType",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 11
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyStatus.java",
+          "importedType": "PolicyStatus",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 12
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/AutoQuoteRequest.java",
+          "importedType": "AutoQuoteRequest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 13
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Driver.java",
+          "importedType": "Driver",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 14
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Quote.java",
+          "importedType": "Quote",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 15
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteRepository.java",
+          "importedType": "QuoteRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 16
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteService.java",
+          "importedType": "QuoteService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 17
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteStatus.java",
+          "importedType": "QuoteStatus",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 18
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Vehicle.java",
+          "importedType": "Vehicle",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 19
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 20
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -283,6 +752,143 @@
         "line": 94,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/billing/BillingService.java",
+          "importedType": "BillingService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/common/Monies.java",
+          "importedType": "Monies",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/DocumentRecordRepository.java",
+          "importedType": "DocumentRecordRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/DocumentType.java",
+          "importedType": "DocumentType",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 11
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyStatus.java",
+          "importedType": "PolicyStatus",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 12
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/AutoQuoteRequest.java",
+          "importedType": "AutoQuoteRequest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 13
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Driver.java",
+          "importedType": "Driver",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 14
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Quote.java",
+          "importedType": "Quote",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 15
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteRepository.java",
+          "importedType": "QuoteRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 16
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteService.java",
+          "importedType": "QuoteService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 17
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteStatus.java",
+          "importedType": "QuoteStatus",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 18
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Vehicle.java",
+          "importedType": "Vehicle",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 19
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 20
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -309,6 +915,89 @@
         "line": 42,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/billing/AutopayService.java",
+          "importedType": "AutopayService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/BillingService.java",
+          "importedType": "BillingService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/InstallmentPlanType.java",
+          "importedType": "InstallmentPlanType",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/Refund.java",
+          "importedType": "Refund",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/RefundRepository.java",
+          "importedType": "RefundRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyRepository.java",
+          "importedType": "PolicyRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 11
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyStatus.java",
+          "importedType": "PolicyStatus",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 12
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 13
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -335,6 +1024,89 @@
         "line": 63,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/billing/AutopayService.java",
+          "importedType": "AutopayService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/BillingService.java",
+          "importedType": "BillingService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/InstallmentPlanType.java",
+          "importedType": "InstallmentPlanType",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/Refund.java",
+          "importedType": "Refund",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/RefundRepository.java",
+          "importedType": "RefundRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyRepository.java",
+          "importedType": "PolicyRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 11
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyStatus.java",
+          "importedType": "PolicyStatus",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 12
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 13
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -361,6 +1133,62 @@
         "line": 30,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/policy/DocumentRecordRepository.java",
+          "importedType": "DocumentRecordRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/DocumentType.java",
+          "importedType": "DocumentType",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyRepository.java",
+          "importedType": "PolicyRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Vehicle.java",
+          "importedType": "Vehicle",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -387,6 +1215,17 @@
         "line": 29,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/quote/QuoteAutoPolicyFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -413,6 +1252,17 @@
         "line": 56,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/quote/QuoteAutoPolicyFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -439,6 +1289,62 @@
         "line": 33,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/billing/AutopayService.java",
+          "importedType": "AutopayService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/BillingService.java",
+          "importedType": "BillingService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/InstallmentPlanType.java",
+          "importedType": "InstallmentPlanType",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -465,6 +1371,53 @@
         "line": 52,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/billing/BillingService.java",
+          "importedType": "BillingService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/bind/BindPolicyService.java",
+          "importedType": "BindPolicyService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/PlanOption.java",
+          "importedType": "PlanOption",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteService.java",
+          "importedType": "QuoteService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -491,6 +1444,53 @@
         "line": 66,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/billing/BillingService.java",
+          "importedType": "BillingService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/bind/BindPolicyService.java",
+          "importedType": "BindPolicyService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/PlanOption.java",
+          "importedType": "PlanOption",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteService.java",
+          "importedType": "QuoteService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -517,6 +1517,53 @@
         "line": 76,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/billing/BillingService.java",
+          "importedType": "BillingService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/bind/BindPolicyService.java",
+          "importedType": "BindPolicyService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/PlanOption.java",
+          "importedType": "PlanOption",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteService.java",
+          "importedType": "QuoteService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -543,6 +1590,26 @@
         "line": 26,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteService.java",
+          "importedType": "QuoteService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/HomeQuoteViewTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/HomeQuoteViewTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -569,6 +1636,26 @@
         "line": 37,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteService.java",
+          "importedType": "QuoteService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/HomeQuoteViewTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/HomeQuoteViewTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -595,6 +1682,26 @@
         "line": 48,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteService.java",
+          "importedType": "QuoteService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/HomeQuoteViewTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/HomeQuoteViewTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -621,6 +1728,35 @@
         "line": 19,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/FnolService.java",
+          "importedType": "FnolService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/ReportAccidentViewTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/ReportAccidentViewTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/ReportAccidentViewTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -647,6 +1783,35 @@
         "line": 39,
         "basis": "same-artifact"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/FnolService.java",
+          "importedType": "FnolService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/ReportAccidentViewTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/ReportAccidentViewTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/ui/ReportAccidentViewTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": "TEST",
       "recentActivity": [
         {
@@ -667,6 +1832,7 @@
         "line": 1
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -692,6 +1858,7 @@
         "line": 19
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -717,6 +1884,7 @@
         "line": 23
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -747,6 +1915,17 @@
         "line": 11,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/quote/QuoteAutoPolicyFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -777,6 +1956,17 @@
         "line": 11,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/quote/QuoteAutoPolicyFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -802,6 +1992,7 @@
         "line": 24
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -832,6 +2023,26 @@
         "line": 13,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/common/Monies.java",
+          "importedType": "Monies",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/quote/QuoteHomeownersPolicyFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/quote/QuoteHomeownersPolicyFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -857,6 +2068,7 @@
         "line": 25
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -887,6 +2099,143 @@
         "line": 27,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/billing/BillingService.java",
+          "importedType": "BillingService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/common/Monies.java",
+          "importedType": "Monies",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/DocumentRecordRepository.java",
+          "importedType": "DocumentRecordRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/DocumentType.java",
+          "importedType": "DocumentType",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 11
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyStatus.java",
+          "importedType": "PolicyStatus",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 12
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/AutoQuoteRequest.java",
+          "importedType": "AutoQuoteRequest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 13
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Driver.java",
+          "importedType": "Driver",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 14
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Quote.java",
+          "importedType": "Quote",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 15
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteRepository.java",
+          "importedType": "QuoteRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 16
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteService.java",
+          "importedType": "QuoteService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 17
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteStatus.java",
+          "importedType": "QuoteStatus",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 18
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Vehicle.java",
+          "importedType": "Vehicle",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 19
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 20
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -917,6 +2266,143 @@
         "line": 27,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/billing/BillingService.java",
+          "importedType": "BillingService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/common/Monies.java",
+          "importedType": "Monies",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/DocumentRecordRepository.java",
+          "importedType": "DocumentRecordRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/DocumentType.java",
+          "importedType": "DocumentType",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 11
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyStatus.java",
+          "importedType": "PolicyStatus",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 12
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/AutoQuoteRequest.java",
+          "importedType": "AutoQuoteRequest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 13
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Driver.java",
+          "importedType": "Driver",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 14
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Quote.java",
+          "importedType": "Quote",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 15
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteRepository.java",
+          "importedType": "QuoteRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 16
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteService.java",
+          "importedType": "QuoteService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 17
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/QuoteStatus.java",
+          "importedType": "QuoteStatus",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 18
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Vehicle.java",
+          "importedType": "Vehicle",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 19
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
+            "line": 20
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -942,6 +2428,7 @@
         "line": 26
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -972,6 +2459,89 @@
         "line": 20,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/billing/AutopayService.java",
+          "importedType": "AutopayService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/BillingService.java",
+          "importedType": "BillingService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/InstallmentPlanType.java",
+          "importedType": "InstallmentPlanType",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/Refund.java",
+          "importedType": "Refund",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/RefundRepository.java",
+          "importedType": "RefundRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyRepository.java",
+          "importedType": "PolicyRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 11
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyStatus.java",
+          "importedType": "PolicyStatus",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 12
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 13
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1002,6 +2572,89 @@
         "line": 20,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/billing/AutopayService.java",
+          "importedType": "AutopayService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/BillingService.java",
+          "importedType": "BillingService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/InstallmentPlanType.java",
+          "importedType": "InstallmentPlanType",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/Refund.java",
+          "importedType": "Refund",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/RefundRepository.java",
+          "importedType": "RefundRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyRepository.java",
+          "importedType": "PolicyRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 11
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyStatus.java",
+          "importedType": "PolicyStatus",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 12
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
+            "line": 13
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1027,6 +2680,7 @@
         "line": 27
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1057,6 +2711,62 @@
         "line": 17,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/billing/AutopayService.java",
+          "importedType": "AutopayService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/BillingService.java",
+          "importedType": "BillingService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/billing/InstallmentPlanType.java",
+          "importedType": "InstallmentPlanType",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1082,6 +2792,7 @@
         "line": 28
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1112,6 +2823,62 @@
         "line": 17,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/policy/DocumentRecordRepository.java",
+          "importedType": "DocumentRecordRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/DocumentType.java",
+          "importedType": "DocumentType",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/PolicyRepository.java",
+          "importedType": "PolicyRepository",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/quote/Vehicle.java",
+          "importedType": "Vehicle",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1137,6 +2904,7 @@
         "line": 29
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1167,6 +2935,35 @@
         "line": 14,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1197,6 +2994,35 @@
         "line": 14,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1222,6 +3048,7 @@
         "line": 30
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1252,6 +3079,35 @@
         "line": 14,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/RefundUnearnedPremiumFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/PolicyFixtures.java",
+          "importedType": "PolicyFixtures",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/RefundUnearnedPremiumFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/billing/RefundUnearnedPremiumFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1277,6 +3133,7 @@
         "line": 31
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1307,6 +3164,53 @@
         "line": 17,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/AccidentReport.java",
+          "importedType": "AccidentReport",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/FnolService.java",
+          "importedType": "FnolService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1337,6 +3241,53 @@
         "line": 17,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/AccidentReport.java",
+          "importedType": "AccidentReport",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/FnolService.java",
+          "importedType": "FnolService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1362,6 +3313,7 @@
         "line": 32
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1392,6 +3344,62 @@
         "line": 20,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/claims/assign/AdjusterAssignmentService.java",
+          "importedType": "AdjusterAssignmentService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/AssignAdjusterFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/AccidentReport.java",
+          "importedType": "AccidentReport",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/AssignAdjusterFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/FnolService.java",
+          "importedType": "FnolService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/AssignAdjusterFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/common/Monies.java",
+          "importedType": "Monies",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/AssignAdjusterFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/AssignAdjusterFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/AssignAdjusterFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1417,6 +3425,7 @@
         "line": 33
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1447,6 +3456,71 @@
         "line": 19,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/AccidentReport.java",
+          "importedType": "AccidentReport",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/FnolService.java",
+          "importedType": "FnolService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/settle/SettlementService.java",
+          "importedType": "SettlementService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/common/Monies.java",
+          "importedType": "Monies",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
+            "line": 11
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1472,6 +3546,7 @@
         "line": 34
       },
       "candidateProof": null,
+      "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
         {
@@ -1502,6 +3577,62 @@
         "line": 18,
         "basis": "matched"
       },
+      "candidateBuild": [
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/FnolService.java",
+          "importedType": "FnolService",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+            "line": 5
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/WaterCause.java",
+          "importedType": "WaterCause",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+            "line": 6
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/claims/fnol/WaterDamageReport.java",
+          "importedType": "WaterDamageReport",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+            "line": 7
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/notification/Channel.java",
+          "importedType": "Channel",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+            "line": 8
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/main/java/com/example/insurance/policy/Policy.java",
+          "importedType": "Policy",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+            "line": 9
+          },
+          "basis": "test-imports"
+        },
+        {
+          "file": "src/test/java/com/example/insurance/support/SpecTest.java",
+          "importedType": "SpecTest",
+          "provenance": {
+            "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
+            "line": 10
+          },
+          "basis": "test-imports"
+        }
+      ],
       "suggestedArea": null,
       "recentActivity": [
         {

@@ -25,6 +25,11 @@ Sources, in priority order (highest-signal first, per handoff Sec.3):
   5. Commit history         -> stratigraphy/grouping signal attached per row
      (recentActivity), never used to mint a row on its own
 
+Every row with a candidateProof also gets candidateBuild (level three, per
+docs/dig-level-three-handoff-v3-2026-08-22.md): the proof test's own
+project-package imports, cited as build candidates -- reading a declaration
+the compiler already enforces, not inference.
+
 Zero dependencies (stdlib only). Reads nothing but the target repo's own
 files; writes nothing but dig-report.json (or wherever --out points).
 
@@ -46,7 +51,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-GENERATOR_VERSION = "0.2.0"  # level two: candidateProof, table mining, splitter fix, known-smoke labeling
+GENERATOR_VERSION = "0.3.0"  # level three: candidateBuild dug from the proof test's own imports
 EPISTEMIC_CLASS = "inferred"  # constant, always present, never omitted -- @covers FR-DIG-20
 
 ALL_SOURCES = ("tests", "routes", "structure", "readme", "commits")
@@ -348,22 +353,30 @@ def split_scenarios(cell: str) -> list[str]:
     return [p.strip() for p in re.split(r"\s*[·;]\s*", cell) if p.strip()]
 
 
-def find_test_declaration(root: Path, token: str) -> tuple[str | None, int | None]:
-    """Resolve a bare test-class/function token (from a table's Test column)
-    to a real file:line if one exists under root, so a table-matched
-    candidateProof is actually actionable, not just a name.
+def find_declaration(
+    root: Path,
+    token: str,
+    keywords: tuple[str, ...],
+    suffixes: tuple[str, ...] = (".java", ".py", ".js", ".ts", ".go"),
+) -> tuple[str | None, int | None]:
+    """Resolve a bare declaration token to a real file:line if one exists
+    under root -- shared by the table-mining Test-column resolver and the
+    level-three candidateBuild import resolver below, which differ only in
+    which keyword vocabulary counts as a "declaration" and which file
+    suffixes are worth searching (a Java import always names a Java type;
+    a table's Test column can name a test in any supported language).
 
     Searches file CONTENTS for a declaration, not just filename stems --
-    a Java-style one-class-per-file convention (the table's Test column
-    naming a file that also happens to share its stem) is common, but a
-    Python/JS/Go test token is often a function inside a file shared by
-    many tests, where filename-stem matching finds nothing at all (a real
-    bug caught building the table-mining acceptance test against a
-    Python-shaped fixture)."""
+    a Java-style one-class-per-file convention (the token naming a file
+    that also happens to share its stem) is common, but a Python/JS/Go
+    token is often a function inside a file shared by many others, where
+    filename-stem matching finds nothing at all (a real bug caught
+    building the table-mining acceptance test against a Python-shaped
+    fixture)."""
     token = strip_code_span(token)
-    decl_re = re.compile(rf"\b(?:class|def|func)\s+{re.escape(token)}\b")
+    decl_re = re.compile(rf"\b(?:{'|'.join(keywords)})\s+{re.escape(token)}\b")
     stem_match: tuple[str, int] | None = None
-    for suf in (".java", ".py", ".js", ".ts", ".go"):
+    for suf in suffixes:
         for f in iter_files(root, (suf,)):
             try:
                 lines = f.read_text(encoding="utf-8", errors="replace").splitlines()
@@ -377,6 +390,17 @@ def find_test_declaration(root: Path, token: str) -> tuple[str | None, int | Non
     if stem_match:
         return stem_match
     return None, None
+
+
+def find_test_declaration(root: Path, token: str) -> tuple[str | None, int | None]:
+    return find_declaration(root, token, ("class", "def", "func"))
+
+
+def find_type_declaration(root: Path, token: str) -> tuple[str | None, int | None]:
+    """Java-specific: a build candidate's imported type is a class,
+    interface, enum, or record -- broader than a test-name's own
+    class/def/func vocabulary -- and can only live in a .java file."""
+    return find_declaration(root, token, ("class", "interface", "enum", "record"), suffixes=(".java",))
 
 
 def dig_readme_tables(root: Path) -> list[dict]:
@@ -457,6 +481,183 @@ def dig_readme_tables(root: Path) -> list[dict]:
     return rows
 
 
+# ---------- 4c. candidateBuild -- dug from the proof test's own imports (level three) ----------
+#
+# Per docs/dig-level-three-handoff-v3-2026-08-22.md Sec.1: for every row that
+# already carries a candidateProof (test-derived "same-artifact" or
+# table-matched), parse THAT TEST FILE's import declarations and propose the
+# imported project types as build candidates. This is reading a declaration
+# the compiler already enforces, not inference: the test names what it
+# exercises. Framework/stdlib imports are excluded by a package-prefix
+# filter against the repo's own base package, not a hardcoded denylist --
+# derived below from the source tree itself.
+#
+# Import presence proves the test TOUCHES the type, not that the type
+# IMPLEMENTS the criterion (Sec.3) -- a test may import helpers, fixtures,
+# builders. No per-entry confidence or relevance ranking is attempted; every
+# surviving import is listed, cited, for the human reviewer's own eye.
+
+JAVA_IMPORT_RE = re.compile(r"^\s*import\s+([\w.]+)\s*;\s*$")
+
+
+def derive_base_package(root: Path) -> str | None:
+    """The repo's own base Java package, as the longest common dotted
+    prefix of every package declaration found under root -- e.g.
+    com.example.insurance from com.example.insurance, .billing, .policy,
+    etc. Derived from the source tree itself (handoff Sec.1's own
+    requirement), not hardcoded, so the import filter below is specific to
+    THIS repo's own package, not a guess at what "the project" means.
+    Returns None when no .java files exist (nothing to filter) or when the
+    packages found share no common root at all (an honest "can't derive
+    this" rather than a filter so broad it lets framework imports through)."""
+    package_re = re.compile(r"^\s*package\s+([\w.]+)\s*;")
+    found: list[list[str]] = []
+    for f in iter_files(root, (".java",)):
+        try:
+            with f.open("r", encoding="utf-8", errors="replace") as fh:
+                for _ in range(5):
+                    line = fh.readline()
+                    if not line:
+                        break
+                    m = package_re.match(line)
+                    if m:
+                        found.append(m.group(1).split("."))
+                        break
+        except OSError:
+            continue
+    if not found:
+        return None
+    common = found[0]
+    for parts in found[1:]:
+        common = [a for a, b in zip(common, parts) if a == b]
+        if not common:
+            return None
+    return ".".join(common)
+
+
+def resolve_python_module_file(root: Path, module_dotted: str) -> str | None:
+    """A dotted Python module path resolves directly to a file path -- no
+    content search needed the way Java's one-class-per-file convention
+    requires (handoff Sec.1's note that content-search resolution is "in
+    Java" specifically). A module that doesn't resolve under root is a
+    stdlib/third-party import; this existence check IS the project-package
+    filter for Python, standing in for Java's base-package prefix match."""
+    rel = Path(*module_dotted.split("."))
+    for candidate in (root / rel.with_suffix(".py"), root / rel / "__init__.py"):
+        if candidate.is_file():
+            return str(candidate.relative_to(root))
+    return None
+
+
+PY_FROM_RE = re.compile(r"^\s*from\s+([\w.]+)\s+import\s+(.*)$")
+PY_IMPORT_RE = re.compile(r"^\s*import\s+([\w.]+)(?:\s+as\s+\w+)?\s*$")
+
+
+def dig_build_candidates_java(
+    root: Path, test_file_rel: str, lines: list[str], base_package: str
+) -> list[dict]:
+    entries = []
+    for i, line in enumerate(lines, start=1):
+        if is_comment_line(line, ".java"):
+            continue
+        m = JAVA_IMPORT_RE.match(line)
+        if not m:
+            continue
+        fqn = m.group(1)
+        if fqn != base_package and not fqn.startswith(base_package + "."):
+            continue  # framework/stdlib, or simply not this repo's own package
+        imported_type = fqn.rsplit(".", 1)[-1]
+        decl_file, _decl_line = find_type_declaration(root, imported_type)
+        if decl_file is None:
+            continue  # can't cite what can't be resolved to a real file
+        entries.append({
+            "file": decl_file,
+            "importedType": imported_type,
+            "provenance": {"file": test_file_rel, "line": i},
+            "basis": "test-imports",
+        })
+    return entries
+
+
+def dig_build_candidates_python(root: Path, test_file_rel: str, lines: list[str]) -> list[dict]:
+    entries = []
+    for i, raw in enumerate(lines, start=1):
+        if is_comment_line(raw, ".py"):
+            continue
+        code = raw.split("#", 1)[0]  # strip a trailing inline comment
+        m_from = PY_FROM_RE.match(code)
+        m_import = PY_IMPORT_RE.match(code.rstrip())
+        if m_from:
+            module, rest = m_from.group(1), m_from.group(2).strip()
+            if module.startswith("."):
+                continue  # relative imports: out of scope, documented gap
+            if "(" in rest and ")" not in rest:
+                continue  # multi-line parenthesized import list: documented gap
+            rest = rest.strip("()")
+            names = [n.strip().split(" as ")[0].strip() for n in rest.split(",") if n.strip()]
+            for name in names:
+                if not re.fullmatch(r"\w+", name):
+                    continue
+                # The imported name may itself be a submodule (from pkg
+                # import submodule) or a member of `module` (from pkg
+                # import Name) -- try the more specific resolution first.
+                target = resolve_python_module_file(root, f"{module}.{name}") or resolve_python_module_file(root, module)
+                if target:
+                    entries.append({
+                        "file": target,
+                        "importedType": name,
+                        "provenance": {"file": test_file_rel, "line": i},
+                        "basis": "test-imports",
+                    })
+        elif m_import:
+            module = m_import.group(1)
+            if module.startswith("."):
+                continue
+            target = resolve_python_module_file(root, module)
+            if target:
+                entries.append({
+                    "file": target,
+                    "importedType": module.rsplit(".", 1)[-1],
+                    "provenance": {"file": test_file_rel, "line": i},
+                    "basis": "test-imports",
+                })
+    return entries
+
+
+def attach_candidate_build(root: Path, rows: list[dict]) -> None:
+    """@covers FR-DIG-60, AC-DIG-70 -- every row gets a candidateBuild list;
+    empty when no candidateProof (or its test file) is known. A test file
+    shared by several rows (several @Test methods in one class, say) is
+    read and parsed only once."""
+    base_package = derive_base_package(root)
+    line_cache: dict[str, list[str] | None] = {}
+
+    def lines_for(rel_path: str) -> list[str] | None:
+        if rel_path not in line_cache:
+            try:
+                line_cache[rel_path] = (root / rel_path).read_text(
+                    encoding="utf-8", errors="replace"
+                ).splitlines()
+            except OSError:
+                line_cache[rel_path] = None
+        return line_cache[rel_path]
+
+    for row in rows:
+        row["candidateBuild"] = []
+        proof = row.get("candidateProof")
+        test_file_rel = proof.get("file") if proof else None
+        if not test_file_rel:
+            continue
+        lines = lines_for(test_file_rel)
+        if lines is None:
+            continue
+        suffix = Path(test_file_rel).suffix
+        if suffix == ".java" and base_package:
+            row["candidateBuild"] = dig_build_candidates_java(root, test_file_rel, lines, base_package)
+        elif suffix == ".py":
+            row["candidateBuild"] = dig_build_candidates_python(root, test_file_rel, lines)
+
+
 # ---------- 5. Commit history -> stratigraphy signal, attached per row ----------
 
 def recent_activity(root: Path, rel_path: str, limit: int = 3) -> list[dict]:
@@ -517,6 +718,7 @@ def build_report(root: Path, sources: list[str]) -> dict:
         rows += dig_readme_tables(root)
 
     attach_candidate_proof(rows)
+    attach_candidate_build(root, rows)
 
     for row in rows:
         row["suggestedArea"] = area_for(row["provenance"]["file"], areas) if areas else None

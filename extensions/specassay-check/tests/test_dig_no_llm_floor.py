@@ -309,3 +309,80 @@ def test_sources_filter_limits_output(tmp_path):
     sources = {r["provenance"]["source"] for r in report["rows"]}
     assert sources <= {"test"}
     assert "readme" not in sources
+
+
+def test_AC_DIG_70_candidate_build_from_java_test_imports(tmp_path):
+    # AC-DIG-70 (dig-level-three handoff Sec.1): every row carrying a
+    # candidateProof gets candidateBuild entries dug from that test file's
+    # own project-package imports. java.time.LocalDate (stdlib) and
+    # org.junit.jupiter.api.Test (framework) must NOT survive the
+    # package-prefix filter; com.example.app.billing.Invoice (this repo's
+    # own base package) must, resolved to its real declaration file.
+    (tmp_path / "src" / "main" / "java" / "com" / "example" / "app" / "billing").mkdir(parents=True)
+    (tmp_path / "src" / "test" / "java" / "com" / "example" / "app" / "billing").mkdir(parents=True)
+    (tmp_path / "src" / "main" / "java" / "com" / "example" / "app" / "billing" / "Invoice.java").write_text(
+        "package com.example.app.billing;\n\npublic class Invoice {\n}\n"
+    )
+    (tmp_path / "src" / "test" / "java" / "com" / "example" / "app" / "billing" / "BillingServiceTest.java").write_text(
+        "package com.example.app.billing;\n\n"
+        "import com.example.app.billing.Invoice;\n"
+        "import java.time.LocalDate;\n"
+        "import org.junit.jupiter.api.Test;\n\n"
+        "class BillingServiceTest {\n"
+        "    @Test\n"
+        "    void collectsAnInvoice() {\n"
+        "    }\n"
+        "}\n"
+    )
+    run_dig([str(tmp_path)], cwd=tmp_path)
+    report = json.loads((tmp_path / "dig-report.json").read_text())
+    row = next(r for r in report["rows"] if r["provenance"].get("testName") == "collectsAnInvoice")
+    assert row["candidateBuild"] == [
+        {
+            "file": "src/main/java/com/example/app/billing/Invoice.java",
+            "importedType": "Invoice",
+            "provenance": {
+                "file": "src/test/java/com/example/app/billing/BillingServiceTest.java",
+                "line": 3,
+            },
+            "basis": "test-imports",
+        }
+    ]
+
+
+def test_candidate_build_empty_list_when_no_candidate_proof(tmp_path):
+    (tmp_path / "src").mkdir()
+    (tmp_path / "src" / "app.py").write_text("@app.route('/x')\ndef h():\n    pass\n")
+    run_dig([str(tmp_path)], cwd=tmp_path)
+    report = json.loads((tmp_path / "dig-report.json").read_text())
+    row = next(r for r in report["rows"] if r["type"] == "FR")
+    assert row["candidateProof"] is None
+    assert row["candidateBuild"] == []
+
+
+def test_candidate_build_from_python_test_imports(tmp_path):
+    # The dig-level-three handoff Sec.4's sanctioned second specimen shape:
+    # a Python `from module import Name` resolves directly to a file path
+    # (no content search needed, unlike Java's one-class-per-file case),
+    # and a stdlib import (dataclasses) never resolves under root.
+    (tmp_path / "billing").mkdir()
+    (tmp_path / "billing" / "__init__.py").write_text("")
+    (tmp_path / "billing" / "invoice.py").write_text("class Invoice:\n    pass\n")
+    (tmp_path / "tests").mkdir()
+    (tmp_path / "tests" / "test_billing.py").write_text(
+        "import dataclasses\n"
+        "from billing.invoice import Invoice\n\n"
+        "def test_collects_an_invoice():\n"
+        "    pass\n"
+    )
+    run_dig([str(tmp_path)], cwd=tmp_path)
+    report = json.loads((tmp_path / "dig-report.json").read_text())
+    row = next(r for r in report["rows"] if r["provenance"].get("testName") == "test_collects_an_invoice")
+    assert row["candidateBuild"] == [
+        {
+            "file": "billing/invoice.py",
+            "importedType": "Invoice",
+            "provenance": {"file": "tests/test_billing.py", "line": 2},
+            "basis": "test-imports",
+        }
+    ]
