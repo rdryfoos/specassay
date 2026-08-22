@@ -14,18 +14,42 @@ declaration.
 
 Verified against real state before writing, not carried over from memory:
 
-- **HEAD**: `f96559b` — 12 commits ahead of the published `v0.4.12` tag
-  (`FR-GATE-30`/`FR-GATE-90` mint/`FR-DIG-*`/`T905`/`T906`/`T914` all
-  landed since that tag; no new release has been cut for any of it yet).
+- **HEAD**: `3625978` — `T915` (`FR-GATE-90`, parentage: derived parent
+  edges + recursive all-rows rollup) shipped, closing the entire
+  previously-ratified queue: `T907`→`T905`→`T906`→`T914`→`T915`. Real
+  dogfooding bug found and fixed in the same pass: enabling
+  `parent_derivation: heading-nesting` against this repo's own `PRD.md`
+  exposed several DIG-section ACs mis-nested under the wrong FR
+  (invisible while indentation was purely cosmetic); fixed directly.
+  68+ tests passing, including 7 new `test_gate_90_parentage.py` cases
+  with verified-real-teeth (reverted the rollup to direct-children-only,
+  confirmed the multi-depth test fails, restored the fix).
 - **v0.4.12 community submission**, filed 2026-08-21, checked 2026-08-22:
   extension issue #4252 → PR #4254 **MERGED**. Preset #4253 → PR #4256
   **open**, bundle #4255 → PR #4257 **open**, both awaiting maintainer
   merge — nothing further to do on our side, just watch.
-- **`specassay.com`**: the hero rewrite in the standalone `specassay.com`
-  repo (`/Users/spudnik/specassay.com`) is orphaned — that repo was never
-  the real deploy source. The actual production fix (Install CTA pinned
-  to the `v0.4.12` release) shipped in `dryfoos-sites` (`5a0d718`) and is
-  live. Nothing pending here.
+- **`specassay.com` messaging surgery** (`docs/specassay-messaging-surgery-v1-2026-08-22.md`,
+  executed and closed this session): hero rewritten (Rik's H1/subline cut,
+  braid animation retired entirely with `thread.js`, replaced by a real
+  Thread Report screenshot from PR #5 linking to `/thread-report`), page
+  reordered to the ratified running order (no-overhead beat, dig-on-ramp,
+  machinery, pedigree), `EDITING-CANON.md` append-only commit records the
+  hero vocabulary law. Both landed in `dryfoos-sites`:
+  `04588a3` (canon append), `7959f67` (the surgery deploy, already pushed
+  and live).
+  **Open complication, not yet resolved**: `7959f67` was accidentally
+  bundled with unrelated in-flight Tally work (`FR-GHOST-60`/`FR-GHOST-70`,
+  swept in by that repo's own sync automation between staging and commit,
+  which then pushed it before the mistake was caught). Per Rik's ruling,
+  left as-is — no history rewrite, no force-push on a shared, already-
+  deployed repo. Annotated in `dryfoos-sites/NOTES.md`, committed locally
+  as `e82d491`, **but that commit is not yet pushed** — a `git push` was
+  blocked by this session's own safety classifier (a shared-remote push
+  correctly requires a human hand on it). Whoever resumes `dryfoos-sites`
+  work should push `e82d491` (or confirm the sync automation already has).
+  **The `dryfoos-sites` grant from this surgery has now expired** — narrow,
+  one-task, ended when the surgery's receipt landed; no further
+  `dryfoos-sites` access without a fresh, explicit grant.
 - **Known, accepted, non-blocking diagnostic**: every Gate run on this
   repo reports `uncovered proof: AC-ZK9Q-01 has a passing test...`. This
   is `extensions/specassay-check/tests/test_dig_no_llm_floor.py`'s own
@@ -41,25 +65,13 @@ Verified against real state before writing, not carried over from memory:
   this room, not committed — the handoff's own §4 names viewer work as
   design-room scope. Leave it alone.
 - **Per-task status**: `T900` open on purpose (structural gap, no
-  vocabulary yet for "proven by trial"); `T905`/`T906`/`T907`/`T914`/`T916`/
-  `T917` closed this session; `T908` open backlog, low urgency; `T912`
-  open, blocked on its own design question (author-declared vs. inferred
-  `provenVia`); **`T915` in progress, starting now** (see below).
-
-**Build reminders for `T915` (parentage), restated so nothing re-litigates:**
-parent edges **derive** from the registry document's own heading/section
-nesting at emit time (per-project `parent_derivation` config) — never
-authored, never inferred by a viewer. Document structure yields a tree by
-construction: single-parent v1. Rollup basis is **recursive over ALL
-rows**, ratified — a non-leaf's own status counts join its parent's
-rollup alongside its descendants', so a mid-tier `GAP`/`backlog` can't
-vanish from an ancestor's card; labels name the basis ("N rows"). Cite the
-Q2 interlock directly in the rows: the recursion is cycle-safe only
-because single-parent holds — anyone relaxing single-parent later must
-notice they're touching rollup safety. Schema note: parent edges are
-**additive optional fields** — no `formatVersion` bump — but name them
-first-class in `trace-manifest-schema.md`'s v5beta section. The Loupe-side
-COMPOSITION card stays out of scope, held for the viewer room.
+  vocabulary yet for "proven by trial"); `T905`/`T906`/`T907`/`T914`/`T915`/
+  `T916`/`T917` all closed; `T908` open backlog, low urgency; `T912` open,
+  blocked on its own design question (author-declared vs. inferred
+  `provenVia`).
+- **Next expected**: a "level-three" dig handoff, Monday-timeboxed, not
+  yet delivered as of this write — receipt it by version line when it
+  lands, same as the prior two dig handoffs. Nothing else queued.
 
 - [ ] T900 Prove AC-DOCS-10 mechanically — **Carries**: AC-DOCS-10, US-DOCS-10 (US-DOCS-10 already reads `proven` via a real `@covers` mark and `specs/docs-authored/spec.md`; named here too only so exact-set has a task-side mention — it is not what's carrying it). Real cold-agent trial run and documented 2026-08-19 (`docs/testing/completed/evidence-cold-agent-trial-observed-2026-08-19.md`, real Gate output, independently reverified) — that's why this reads `tracked-debt`, not `backlog`. Stays open on purpose: an AC only reaches `proven` via a *named test* (Rule 6), and field-trial evidence has no test to name — the registry currently has no vocabulary for "proven by a real, documented trial" the way it does for `retired` being proposed for withdrawn intent (`FR-GATE-30`). Closes when either a repeatable automated cold-install check exists, or the registry gains real attestation vocabulary for this shape of proof — not before, and not by closing this task without one.
 - [x] T901 Write FR-DOCS-10: quickstart (install, config, first check, first honest red) — **Carries**: FR-DOCS-10
