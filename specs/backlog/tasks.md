@@ -14,10 +14,10 @@ declaration.
 
 Verified against real state before writing, not carried over from memory:
 
-- **HEAD**: pending this session's own commit for `T919` (dig structure
-  emission, `rowId` + table-adjacency `candidateParent`). Prior HEAD was
-  `6ad4cab` — `T918` (dig level three, `candidateBuild` dug from the proof
-  test's own project-package imports). Before that, `3625978` — `T915`
+- **HEAD**: `0fa8dd6` — `T919` (dig structure emission, `rowId` +
+  table-adjacency `candidateParent`) shipped. Prior HEAD was `6ad4cab` —
+  `T918` (dig level three, `candidateBuild` dug from the proof test's own
+  project-package imports). Before that, `3625978` — `T915`
   (`FR-GATE-90`, parentage: derived parent edges + recursive all-rows
   rollup), closing the queue `T907`→`T905`→`T906`→`T914`→`T915`. Real
   dogfooding bug found and fixed in that same pass: enabling
