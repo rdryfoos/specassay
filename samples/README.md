@@ -10,6 +10,14 @@ All five are **real Gate 2 emits** — no hand-curated JSON.
 | `sample-duplicate-id.trace-manifest.json` | The same `example-app` emit with a second, independently-minted `AC-SYNC-01` definition line appended (a different statement, same ID — the two-branch-collision shape) — `gate.ok: false`, one `duplicate-id` failure naming both line numbers. Demos the v0.4.0 refusal that closes the `sort -u` silent-collision hole. |
 | `cold-trial-imei.trace-manifest.json` | Real emit from the 2026-08-19 cold-agent trial ([`docs/testing/completed/evidence-cold-agent-trial-observed-2026-08-19.md`](../docs/testing/completed/evidence-cold-agent-trial-observed-2026-08-19.md)) — an uncoached agent's own IMEI-validator feature on a real, unrelated public repo (`python-validators/validators`), 5 rows, `gate.ok: true`, 0 GAP. `repoPath`/`targetName` scrubbed the same way `sample.trace-manifest.json` is; nothing else touched. |
 
+## Sample `dig-report.json` files
+
+Not a trace-manifest — `specassay dig`'s own output (archaeology mode, no-LLM floor). Real, not hand-curated.
+
+| File | What |
+|------|------|
+| `insurance-java.dig-report.json` | Real `dig` run (2026-08-21) against `github.com/SpecDriven/insurance-java`, cloned read-only per the archaeology-mode build handoff's §0 permission-on-record — 27 candidate rows (25 AC from test names, 2 US from README headings, 0 FR since the app is Vaadin-style UI + services, not a REST API). `sourceRepoPath` scrubbed from the local clone's absolute path to `insurance-java`; nothing else touched. This is the run that caught `dig`'s default-output-location defect (`AC-DIG-30`) — first written to a session scratchpad, not durable ground; regenerated here after the fix. |
+
 ## Regenerating them
 
 **`sample`** — re-run Gate 2 against the bundled example project and copy it in (then scrub the absolute `repoPath` to `example-app`):
