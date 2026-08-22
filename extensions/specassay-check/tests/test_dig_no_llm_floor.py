@@ -360,6 +360,62 @@ def test_candidate_build_empty_list_when_no_candidate_proof(tmp_path):
     assert row["candidateBuild"] == []
 
 
+def test_AC_DIG_80_row_ids_stable_and_ordering_derived(tmp_path):
+    # AC-DIG-80 (structure-emission handoff Sec.1a): every row gets a
+    # stable rowId, zero-padded to at least 3 digits, in emission order.
+    make_fixture(tmp_path)
+    run_dig([str(tmp_path)], cwd=tmp_path)
+    report = json.loads((tmp_path / "dig-report.json").read_text())
+    ids = [r["rowId"] for r in report["rows"]]
+    assert ids == [f"r{i:03d}" for i in range(1, len(ids) + 1)]
+    assert len(set(ids)) == len(ids)
+
+
+def test_AC_DIG_80_table_adjacency_candidate_parent(tmp_path):
+    # AC-DIG-80: a scenario (AC) row from a table-mined spec/scenario pair
+    # gets its own physical table row's spec (US) row as candidateParent,
+    # basis "table-adjacency". The spec/US row itself, and every row
+    # table-adjacency can't place (test-derived ACs, readme headings),
+    # stay honest orphans -- empty candidateParent, not a guess.
+    (tmp_path / "tests").mkdir()
+    (tmp_path / "tests" / "test_quote.py").write_text(
+        "def test_quote_stub():\n    pass\n"
+    )
+    (tmp_path / "README.md").write_text(
+        "# Fixture\n\n"
+        "## Published spec coverage\n\n"
+        "| Spec | Scenarios | Test |\n"
+        "| --- | --- | --- |\n"
+        "| policy/quote | Basic quote v1 · Decline risky applicant v1 | `test_quote_stub` |\n"
+        "| policy/cancel | Cancel for non-payment v1 | `test_quote_stub` |\n"
+    )
+    run_dig([str(tmp_path)], cwd=tmp_path)
+    report = json.loads((tmp_path / "dig-report.json").read_text())
+    by_statement = {r["statement"]: r for r in report["rows"]}
+
+    quote_spec = by_statement["policy/quote"]
+    cancel_spec = by_statement["policy/cancel"]
+    assert quote_spec["candidateParent"] == []
+    assert cancel_spec["candidateParent"] == []
+
+    assert by_statement["Basic quote v1"]["candidateParent"] == [
+        {"parentRowId": quote_spec["rowId"], "basis": "table-adjacency"}
+    ]
+    assert by_statement["Decline risky applicant v1"]["candidateParent"] == [
+        {"parentRowId": quote_spec["rowId"], "basis": "table-adjacency"}
+    ]
+    assert by_statement["Cancel for non-payment v1"]["candidateParent"] == [
+        {"parentRowId": cancel_spec["rowId"], "basis": "table-adjacency"}
+    ]
+
+    # A test-derived AC and a plain readme heading (US) never get adopted
+    # by the table-adjacency heuristic -- honest orphans.
+    test_row = next(r for r in report["rows"] if r["provenance"].get("testName") == "test_quote_stub")
+    assert test_row["candidateParent"] == []
+    heading_row = by_statement["Fixture"]
+    assert heading_row["candidateParent"] == []
+
+
 def test_candidate_build_from_python_test_imports(tmp_path):
     # The dig-level-three handoff Sec.4's sanctioned second specimen shape:
     # a Python `from module import Name` resolves directly to a file path

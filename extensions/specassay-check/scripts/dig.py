@@ -30,6 +30,13 @@ docs/dig-level-three-handoff-v3-2026-08-22.md): the proof test's own
 project-package imports, cited as build candidates -- reading a declaration
 the compiler already enforces, not inference.
 
+Every row also gets a stable rowId and a candidateParent list (structure
+emission, per docs/dig-structure-emission-handoff-v3-1-2026-08-22.md):
+proposed structure, not yet the story-map tree -- table-adjacency is the
+only basis emitted so far, from the same Spec/Scenario table dig_readme_tables
+already mines. Rows table mining can't place stay honest orphans (empty
+list), not stretched to fit.
+
 Zero dependencies (stdlib only). Reads nothing but the target repo's own
 files; writes nothing but dig-report.json (or wherever --out points).
 
@@ -51,7 +58,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-GENERATOR_VERSION = "0.3.0"  # level three: candidateBuild dug from the proof test's own imports
+GENERATOR_VERSION = "0.4.0"  # structure emission: stable rowIds + table-adjacency candidateParent edges
 EPISTEMIC_CLASS = "inferred"  # constant, always present, never omitted -- @covers FR-DIG-20
 
 ALL_SOURCES = ("tests", "routes", "structure", "readme", "commits")
@@ -449,15 +456,17 @@ def dig_readme_tables(root: Path) -> list[dict]:
                     test_token = strip_code_span(cells[test_idx])
                     test_file, test_line = find_test_declaration(root, test_token)
 
+                spec_row = None
                 if spec_idx is not None and cells[spec_idx]:
-                    rows.append({
+                    spec_row = {
                         "type": "US",
                         "statement": cells[spec_idx],
                         "epistemicClass": EPISTEMIC_CLASS,
                         "confidence": "high",
                         "provenance": {"source": "readme-table", "file": str(f.relative_to(root)), "line": j + 1},
                         "candidateProof": None,
-                    })
+                    }
+                    rows.append(spec_row)
                 if scenario_idx is not None and cells[scenario_idx]:
                     for scenario in split_scenarios(cells[scenario_idx]):
                         row = {
@@ -475,6 +484,14 @@ def dig_readme_tables(root: Path) -> list[dict]:
                                 "line": test_line,
                                 "basis": "matched",
                             }
+                        # candidateParent, structure-emission handoff Sec.1b: the
+                        # same physical table row's own spec cell is this
+                        # scenario's table-adjacency parent -- a reference, not
+                        # yet a rowId (rowIds don't exist until assign_row_ids
+                        # runs over the fully assembled report); resolved by
+                        # attach_candidate_parent.
+                        if spec_row is not None:
+                            row["_parentCandidates"] = [spec_row]
                         rows.append(row)
                 j += 1
             i = j
@@ -688,6 +705,33 @@ def is_git_repo(root: Path) -> bool:
 
 # ---------- assembly ----------
 
+def assign_row_ids(rows: list[dict]) -> None:
+    """@covers FR-DIG-70 -- every row gets a stable rowId (r001, r002, ...),
+    ordering-derived and stable within a single report (structure-emission
+    handoff Sec.1a): candidateParent edges need addresses to point at."""
+    for i, row in enumerate(rows, start=1):
+        row["rowId"] = f"r{i:03d}"
+
+
+def attach_candidate_parent(rows: list[dict]) -> None:
+    """@covers FR-DIG-70, AC-DIG-80 -- candidateParent is first-class on
+    every row, a LIST (inferred structure isn't bound by the registry's
+    single-parent law; the human picks at anointment). Tonight emits
+    exactly one basis: "table-adjacency" -- dig_readme_tables already
+    marked each scenario row with a reference to its own physical table
+    row's spec row via _parentCandidates; this resolves those references
+    to real rowIds now that every row has one. Every other row -- the
+    test-derived ACs, the readme-heading USs, and the table's own spec/US
+    rows -- keeps an honest empty list: stretching this heuristic to adopt
+    them is the (deferred) class-containment heuristic's job, not this
+    one's (structure-emission handoff Sec.1c, Sec.2)."""
+    for row in rows:
+        parents = row.pop("_parentCandidates", [])
+        row["candidateParent"] = [
+            {"parentRowId": p["rowId"], "basis": "table-adjacency"} for p in parents
+        ]
+
+
 def attach_candidate_proof(rows: list[dict]) -> None:
     """@covers FR-DIG-40 -- candidateProof is first-class on every row, not
     a viewer's inference from provenance.source == "test". Table mining
@@ -717,6 +761,8 @@ def build_report(root: Path, sources: list[str]) -> dict:
         rows += dig_readme(root)
         rows += dig_readme_tables(root)
 
+    assign_row_ids(rows)
+    attach_candidate_parent(rows)
     attach_candidate_proof(rows)
     attach_candidate_build(root, rows)
 

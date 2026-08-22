@@ -1,9 +1,9 @@
 {
   "format": "dig-report",
-  "generatorVersion": "0.3.0",
+  "generatorVersion": "0.4.0",
   "sourceRepoPath": "insurance-java",
   "sourceCommit": "1990690c93e2f6e1be6406c9b33ef1d6f105777f",
-  "generatedAt": "2026-08-22T18:03:28.200Z",
+  "generatedAt": "2026-08-22T21:51:49.042Z",
   "rows": [
     {
       "type": "AC",
@@ -17,6 +17,8 @@
         "testName": "contextLoads"
       },
       "confidenceReason": "framework smoke test",
+      "rowId": "r001",
+      "candidateParent": [],
       "candidateProof": {
         "test": "contextLoads",
         "file": "src/test/java/com/example/insurance/InsuranceApplicationTests.java",
@@ -44,6 +46,8 @@
         "line": 30,
         "testName": "monthlyInstallmentPlan"
       },
+      "rowId": "r002",
+      "candidateParent": [],
       "candidateProof": {
         "test": "monthlyInstallmentPlan",
         "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
@@ -99,6 +103,8 @@
         "line": 53,
         "testName": "planTable"
       },
+      "rowId": "r003",
+      "candidateParent": [],
       "candidateProof": {
         "test": "planTable",
         "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
@@ -154,6 +160,8 @@
         "line": 64,
         "testName": "failedAutopayStartsGracePeriod"
       },
+      "rowId": "r004",
+      "candidateParent": [],
       "candidateProof": {
         "test": "failedAutopayStartsGracePeriod",
         "file": "src/test/java/com/example/insurance/billing/CollectPremiumFeatureTest.java",
@@ -209,6 +217,8 @@
         "line": 24,
         "testName": "proRataRefundOnCancellation"
       },
+      "rowId": "r005",
+      "candidateParent": [],
       "candidateProof": {
         "test": "proRataRefundOnCancellation",
         "file": "src/test/java/com/example/insurance/billing/RefundUnearnedPremiumFeatureTest.java",
@@ -264,6 +274,8 @@
         "line": 34,
         "testName": "reportAccidentOnline"
       },
+      "rowId": "r006",
+      "candidateParent": [],
       "candidateProof": {
         "test": "reportAccidentOnline",
         "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
@@ -337,6 +349,8 @@
         "line": 63,
         "testName": "reportAccidentThroughHotline"
       },
+      "rowId": "r007",
+      "candidateParent": [],
       "candidateProof": {
         "test": "reportAccidentThroughHotline",
         "file": "src/test/java/com/example/insurance/claims/RecordCarAccidentFeatureTest.java",
@@ -410,6 +424,8 @@
         "line": 28,
         "testName": "burstPipeIsCovered"
       },
+      "rowId": "r008",
+      "candidateParent": [],
       "candidateProof": {
         "test": "burstPipeIsCovered",
         "file": "src/test/java/com/example/insurance/claims/RecordWaterDamageClaimFeatureTest.java",
@@ -492,6 +508,8 @@
         "line": 32,
         "testName": "approveRepairEstimate"
       },
+      "rowId": "r009",
+      "candidateParent": [],
       "candidateProof": {
         "test": "approveRepairEstimate",
         "file": "src/test/java/com/example/insurance/claims/SettleCollisionClaimFeatureTest.java",
@@ -583,6 +601,8 @@
         "line": 56,
         "testName": "bindFromActiveQuote"
       },
+      "rowId": "r010",
+      "candidateParent": [],
       "candidateProof": {
         "test": "bindFromActiveQuote",
         "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
@@ -746,6 +766,8 @@
         "line": 94,
         "testName": "effectiveDateMayNotBeBackdated"
       },
+      "rowId": "r011",
+      "candidateParent": [],
       "candidateProof": {
         "test": "effectiveDateMayNotBeBackdated",
         "file": "src/test/java/com/example/insurance/policy/bind/BindPolicyFeatureTest.java",
@@ -909,6 +931,8 @@
         "line": 42,
         "testName": "insuredRequestsCancellation"
       },
+      "rowId": "r012",
+      "candidateParent": [],
       "candidateProof": {
         "test": "insuredRequestsCancellation",
         "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
@@ -1018,6 +1042,8 @@
         "line": 63,
         "testName": "cancellationForNonPayment"
       },
+      "rowId": "r013",
+      "candidateParent": [],
       "candidateProof": {
         "test": "cancellationForNonPayment",
         "file": "src/test/java/com/example/insurance/policy/cancel/CancelPolicyFeatureTest.java",
@@ -1127,6 +1153,8 @@
         "line": 30,
         "testName": "addVehicleMidTerm"
       },
+      "rowId": "r014",
+      "candidateParent": [],
       "candidateProof": {
         "test": "addVehicleMidTerm",
         "file": "src/test/java/com/example/insurance/policy/endorse/EndorsePolicyFeatureTest.java",
@@ -1209,6 +1237,8 @@
         "line": 29,
         "testName": "basicAutoQuote"
       },
+      "rowId": "r015",
+      "candidateParent": [],
       "candidateProof": {
         "test": "basicAutoQuote",
         "file": "src/test/java/com/example/insurance/policy/quote/QuoteAutoPolicyFeatureTest.java",
@@ -1246,6 +1276,8 @@
         "line": 56,
         "testName": "declineHighRiskDriver"
       },
+      "rowId": "r016",
+      "candidateParent": [],
       "candidateProof": {
         "test": "declineHighRiskDriver",
         "file": "src/test/java/com/example/insurance/policy/quote/QuoteAutoPolicyFeatureTest.java",
@@ -1283,6 +1315,8 @@
         "line": 33,
         "testName": "automaticRenewalOffer"
       },
+      "rowId": "r017",
+      "candidateParent": [],
       "candidateProof": {
         "test": "automaticRenewalOffer",
         "file": "src/test/java/com/example/insurance/policy/renew/RenewPolicyFeatureTest.java",
@@ -1365,6 +1399,8 @@
         "line": 52,
         "testName": "basicQuoteShowsAllThreePlansWithPremiums"
       },
+      "rowId": "r018",
+      "candidateParent": [],
       "candidateProof": {
         "test": "basicQuoteShowsAllThreePlansWithPremiums",
         "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
@@ -1438,6 +1474,8 @@
         "line": 66,
         "testName": "highRiskDriverSeesDeclineWithReason"
       },
+      "rowId": "r019",
+      "candidateParent": [],
       "candidateProof": {
         "test": "highRiskDriverSeesDeclineWithReason",
         "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
@@ -1511,6 +1549,8 @@
         "line": 76,
         "testName": "bindingFromTheViewIssuesAPolicy"
       },
+      "rowId": "r020",
+      "candidateParent": [],
       "candidateProof": {
         "test": "bindingFromTheViewIssuesAPolicy",
         "file": "src/test/java/com/example/insurance/ui/AutoQuoteViewTest.java",
@@ -1584,6 +1624,8 @@
         "line": 26,
         "testName": "quotesTheFiledAnnualPremium"
       },
+      "rowId": "r021",
+      "candidateParent": [],
       "candidateProof": {
         "test": "quotesTheFiledAnnualPremium",
         "file": "src/test/java/com/example/insurance/ui/HomeQuoteViewTest.java",
@@ -1630,6 +1672,8 @@
         "line": 37,
         "testName": "higherDeductibleLowersThePremium"
       },
+      "rowId": "r022",
+      "candidateParent": [],
       "candidateProof": {
         "test": "higherDeductibleLowersThePremium",
         "file": "src/test/java/com/example/insurance/ui/HomeQuoteViewTest.java",
@@ -1676,6 +1720,8 @@
         "line": 48,
         "testName": "combinationWithoutAFiledRateIsRejected"
       },
+      "rowId": "r023",
+      "candidateParent": [],
       "candidateProof": {
         "test": "combinationWithoutAFiledRateIsRejected",
         "file": "src/test/java/com/example/insurance/ui/HomeQuoteViewTest.java",
@@ -1722,6 +1768,8 @@
         "line": 19,
         "testName": "reportingAnAccidentOpensAClaimAndShowsTheNumber"
       },
+      "rowId": "r024",
+      "candidateParent": [],
       "candidateProof": {
         "test": "reportingAnAccidentOpensAClaimAndShowsTheNumber",
         "file": "src/test/java/com/example/insurance/ui/ReportAccidentViewTest.java",
@@ -1777,6 +1825,8 @@
         "line": 39,
         "testName": "unknownPolicyIsRejected"
       },
+      "rowId": "r025",
+      "candidateParent": [],
       "candidateProof": {
         "test": "unknownPolicyIsRejected",
         "file": "src/test/java/com/example/insurance/ui/ReportAccidentViewTest.java",
@@ -1832,6 +1882,8 @@
         "line": 1
       },
       "candidateProof": null,
+      "rowId": "r026",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -1858,6 +1910,8 @@
         "line": 19
       },
       "candidateProof": null,
+      "rowId": "r027",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -1884,6 +1938,8 @@
         "line": 23
       },
       "candidateProof": null,
+      "rowId": "r028",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -1915,6 +1971,13 @@
         "line": 11,
         "basis": "matched"
       },
+      "rowId": "r029",
+      "candidateParent": [
+        {
+          "parentRowId": "r028",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/test/java/com/example/insurance/support/SpecTest.java",
@@ -1956,6 +2019,13 @@
         "line": 11,
         "basis": "matched"
       },
+      "rowId": "r030",
+      "candidateParent": [
+        {
+          "parentRowId": "r028",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/test/java/com/example/insurance/support/SpecTest.java",
@@ -1992,6 +2062,8 @@
         "line": 24
       },
       "candidateProof": null,
+      "rowId": "r031",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -2023,6 +2095,13 @@
         "line": 13,
         "basis": "matched"
       },
+      "rowId": "r032",
+      "candidateParent": [
+        {
+          "parentRowId": "r031",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/common/Monies.java",
@@ -2068,6 +2147,8 @@
         "line": 25
       },
       "candidateProof": null,
+      "rowId": "r033",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -2099,6 +2180,13 @@
         "line": 27,
         "basis": "matched"
       },
+      "rowId": "r034",
+      "candidateParent": [
+        {
+          "parentRowId": "r033",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/billing/BillingService.java",
@@ -2266,6 +2354,13 @@
         "line": 27,
         "basis": "matched"
       },
+      "rowId": "r035",
+      "candidateParent": [
+        {
+          "parentRowId": "r033",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/billing/BillingService.java",
@@ -2428,6 +2523,8 @@
         "line": 26
       },
       "candidateProof": null,
+      "rowId": "r036",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -2459,6 +2556,13 @@
         "line": 20,
         "basis": "matched"
       },
+      "rowId": "r037",
+      "candidateParent": [
+        {
+          "parentRowId": "r036",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/billing/AutopayService.java",
@@ -2572,6 +2676,13 @@
         "line": 20,
         "basis": "matched"
       },
+      "rowId": "r038",
+      "candidateParent": [
+        {
+          "parentRowId": "r036",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/billing/AutopayService.java",
@@ -2680,6 +2791,8 @@
         "line": 27
       },
       "candidateProof": null,
+      "rowId": "r039",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -2711,6 +2824,13 @@
         "line": 17,
         "basis": "matched"
       },
+      "rowId": "r040",
+      "candidateParent": [
+        {
+          "parentRowId": "r039",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/billing/AutopayService.java",
@@ -2792,6 +2912,8 @@
         "line": 28
       },
       "candidateProof": null,
+      "rowId": "r041",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -2823,6 +2945,13 @@
         "line": 17,
         "basis": "matched"
       },
+      "rowId": "r042",
+      "candidateParent": [
+        {
+          "parentRowId": "r041",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/policy/DocumentRecordRepository.java",
@@ -2904,6 +3033,8 @@
         "line": 29
       },
       "candidateProof": null,
+      "rowId": "r043",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -2935,6 +3066,13 @@
         "line": 14,
         "basis": "matched"
       },
+      "rowId": "r044",
+      "candidateParent": [
+        {
+          "parentRowId": "r043",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/notification/Channel.java",
@@ -2994,6 +3132,13 @@
         "line": 14,
         "basis": "matched"
       },
+      "rowId": "r045",
+      "candidateParent": [
+        {
+          "parentRowId": "r043",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/notification/Channel.java",
@@ -3048,6 +3193,8 @@
         "line": 30
       },
       "candidateProof": null,
+      "rowId": "r046",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -3079,6 +3226,13 @@
         "line": 14,
         "basis": "matched"
       },
+      "rowId": "r047",
+      "candidateParent": [
+        {
+          "parentRowId": "r046",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/policy/Policy.java",
@@ -3133,6 +3287,8 @@
         "line": 31
       },
       "candidateProof": null,
+      "rowId": "r048",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -3164,6 +3320,13 @@
         "line": 17,
         "basis": "matched"
       },
+      "rowId": "r049",
+      "candidateParent": [
+        {
+          "parentRowId": "r048",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/claims/fnol/AccidentReport.java",
@@ -3241,6 +3404,13 @@
         "line": 17,
         "basis": "matched"
       },
+      "rowId": "r050",
+      "candidateParent": [
+        {
+          "parentRowId": "r048",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/claims/fnol/AccidentReport.java",
@@ -3313,6 +3483,8 @@
         "line": 32
       },
       "candidateProof": null,
+      "rowId": "r051",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -3344,6 +3516,13 @@
         "line": 20,
         "basis": "matched"
       },
+      "rowId": "r052",
+      "candidateParent": [
+        {
+          "parentRowId": "r051",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/claims/assign/AdjusterAssignmentService.java",
@@ -3425,6 +3604,8 @@
         "line": 33
       },
       "candidateProof": null,
+      "rowId": "r053",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -3456,6 +3637,13 @@
         "line": 19,
         "basis": "matched"
       },
+      "rowId": "r054",
+      "candidateParent": [
+        {
+          "parentRowId": "r053",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/claims/fnol/AccidentReport.java",
@@ -3546,6 +3734,8 @@
         "line": 34
       },
       "candidateProof": null,
+      "rowId": "r055",
+      "candidateParent": [],
       "candidateBuild": [],
       "suggestedArea": null,
       "recentActivity": [
@@ -3577,6 +3767,13 @@
         "line": 18,
         "basis": "matched"
       },
+      "rowId": "r056",
+      "candidateParent": [
+        {
+          "parentRowId": "r055",
+          "basis": "table-adjacency"
+        }
+      ],
       "candidateBuild": [
         {
           "file": "src/main/java/com/example/insurance/claims/fnol/FnolService.java",
