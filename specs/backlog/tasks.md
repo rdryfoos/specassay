@@ -10,6 +10,57 @@ Founding pass, 2026-08-18 (docs room, design-room ruling): every row in
 `PRD.md` lands here at once, on purpose — no row is minted `proven` by
 declaration.
 
+## Session resume, 2026-08-22 (read this + PRD.md; nothing else should be needed)
+
+Verified against real state before writing, not carried over from memory:
+
+- **HEAD**: `f96559b` — 12 commits ahead of the published `v0.4.12` tag
+  (`FR-GATE-30`/`FR-GATE-90` mint/`FR-DIG-*`/`T905`/`T906`/`T914` all
+  landed since that tag; no new release has been cut for any of it yet).
+- **v0.4.12 community submission**, filed 2026-08-21, checked 2026-08-22:
+  extension issue #4252 → PR #4254 **MERGED**. Preset #4253 → PR #4256
+  **open**, bundle #4255 → PR #4257 **open**, both awaiting maintainer
+  merge — nothing further to do on our side, just watch.
+- **`specassay.com`**: the hero rewrite in the standalone `specassay.com`
+  repo (`/Users/spudnik/specassay.com`) is orphaned — that repo was never
+  the real deploy source. The actual production fix (Install CTA pinned
+  to the `v0.4.12` release) shipped in `dryfoos-sites` (`5a0d718`) and is
+  live. Nothing pending here.
+- **Known, accepted, non-blocking diagnostic**: every Gate run on this
+  repo reports `uncovered proof: AC-ZK9Q-01 has a passing test...`. This
+  is `extensions/specassay-check/tests/test_dig_no_llm_floor.py`'s own
+  fixture text (a deliberately fictional ID, chosen specifically to avoid
+  colliding with a real one) being read as a citation by this repo's own
+  Gate — the exact `FR-GATE-80`-class defect, on a field (`uncovered-proof`)
+  that doesn't yet have `orphan-covers`/`orphan-test`'s domain-scoping.
+  Not a bug to fix reflexively; not yet re-minted as its own row either.
+- **`docs/backlog.md`**: "Pattern candidate: a view-route heuristic family
+  for `dig`" — investigated (§2d of the dig-level-two handoff), deferred
+  on purpose. Trigger: a second real, non-REST, server-rendered target.
+- **`samples/dig-ghost-viewer-reference.html`**: untracked, not created by
+  this room, not committed — the handoff's own §4 names viewer work as
+  design-room scope. Leave it alone.
+- **Per-task status**: `T900` open on purpose (structural gap, no
+  vocabulary yet for "proven by trial"); `T905`/`T906`/`T907`/`T914`/`T916`/
+  `T917` closed this session; `T908` open backlog, low urgency; `T912`
+  open, blocked on its own design question (author-declared vs. inferred
+  `provenVia`); **`T915` in progress, starting now** (see below).
+
+**Build reminders for `T915` (parentage), restated so nothing re-litigates:**
+parent edges **derive** from the registry document's own heading/section
+nesting at emit time (per-project `parent_derivation` config) — never
+authored, never inferred by a viewer. Document structure yields a tree by
+construction: single-parent v1. Rollup basis is **recursive over ALL
+rows**, ratified — a non-leaf's own status counts join its parent's
+rollup alongside its descendants', so a mid-tier `GAP`/`backlog` can't
+vanish from an ancestor's card; labels name the basis ("N rows"). Cite the
+Q2 interlock directly in the rows: the recursion is cycle-safe only
+because single-parent holds — anyone relaxing single-parent later must
+notice they're touching rollup safety. Schema note: parent edges are
+**additive optional fields** — no `formatVersion` bump — but name them
+first-class in `trace-manifest-schema.md`'s v5beta section. The Loupe-side
+COMPOSITION card stays out of scope, held for the viewer room.
+
 - [ ] T900 Prove AC-DOCS-10 mechanically — **Carries**: AC-DOCS-10, US-DOCS-10 (US-DOCS-10 already reads `proven` via a real `@covers` mark and `specs/docs-authored/spec.md`; named here too only so exact-set has a task-side mention — it is not what's carrying it). Real cold-agent trial run and documented 2026-08-19 (`docs/testing/completed/evidence-cold-agent-trial-observed-2026-08-19.md`, real Gate output, independently reverified) — that's why this reads `tracked-debt`, not `backlog`. Stays open on purpose: an AC only reaches `proven` via a *named test* (Rule 6), and field-trial evidence has no test to name — the registry currently has no vocabulary for "proven by a real, documented trial" the way it does for `retired` being proposed for withdrawn intent (`FR-GATE-30`). Closes when either a repeatable automated cold-install check exists, or the registry gains real attestation vocabulary for this shape of proof — not before, and not by closing this task without one.
 - [x] T901 Write FR-DOCS-10: quickstart (install, config, first check, first honest red) — **Carries**: FR-DOCS-10
 - [x] T902 Write FR-DOCS-20: trace-manifest format reference, versioned with the schema — **Carries**: FR-DOCS-20
