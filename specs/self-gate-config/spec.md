@@ -57,3 +57,11 @@ where that same ID lands once it has.
   and by `extensions/specassay-check/tests/test_gate_20_portfolio.py`.
   - AC-GATE-20a — proven by `test_AC_GATE_20a_portfolio_writes_from_same_run_no_ci_banner`.
   - AC-GATE-20b — proven by `test_AC_GATE_20b_snapshot_names_only_this_repo`.
+- FR-GATE-80 — `proofs[]`-population inherits the same execution-verified
+  filtering `status_for()`'s own `tested` set already has: when
+  `test_results` is configured, a name matching `test_ac_regex` only
+  inside a comment (never a real, currently-passing test) no longer
+  appears in that ID's `proofs[]`. Shipped 2026-08-22, proven by
+  `@covers` in `check-traceability.sh` and by
+  `extensions/specassay-check/tests/test_gate_80_proof_filtering.py`.
+  - AC-GATE-80 — proven by `test_AC_GATE_80_comment_only_match_excluded_when_test_results_configured`.

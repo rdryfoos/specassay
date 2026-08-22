@@ -794,6 +794,21 @@ if proofs_file.exists():
         if key in seen_proof:
             continue
         seen_proof.add(key)
+        # @covers FR-GATE-80, AC-GATE-80 -- proof_by used to trust
+        # proof_hits.txt's own raw text match unconditionally, the same
+        # way test_acs.txt did before Rule 6a's junit-passing filter
+        # existed: a name matching test_ac_regex anywhere in a test
+        # file's text -- including a comment -- was good enough to appear
+        # in the manifest's proofs[], even when test_results was
+        # configured and would have said otherwise. Now inherits the
+        # same execution-verified meaning `tested` already carries: when
+        # test_results is configured, only IDs Rule 6a actually verified
+        # keep any proofs[] entries at all; unconfigured, this is a no-op
+        # (tested is just proof_hits.txt's own ids, so every entry already
+        # qualifies -- unchanged behavior for projects with no
+        # test_results).
+        if execution_verified and id_ not in tested:
+            continue
         proof_by[id_].append({"name": name, "path": path, "line": line_n})
 
 debt_by = {i: [] for i in ids}
