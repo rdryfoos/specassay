@@ -36,13 +36,18 @@ $ARGUMENTS
    Once installed via the extension's scaffold, the shipped copy lives at
    `.specify/extensions/specassay-check/scripts/dig.py`.
 
-2. Without `--dry-run`, this writes `dig-report.json` at the target repo's
-   root (or wherever `--out` points) and prints row counts by type and
-   source. With `--dry-run`, it prints the same counts and writes nothing
-   at all.
+2. Without `--dry-run`, this writes `dig-report.json` in **your current
+   working directory** — not the target path you pointed `dig` at, and
+   not wherever `--out` says otherwise. This is deliberate: the target may
+   be a read-only clone of someone else's repo you have no business
+   writing into, so the default has to be somewhere durable and under
+   your own control regardless of what you're scanning. Prints row counts
+   by type and source either way. With `--dry-run`, it prints the same
+   counts and writes nothing at all.
 
-3. Read `dig-report.json` yourself. Every row carries `epistemicClass:
-   "inferred"` and cites exactly where it came from (`provenance`) — treat
-   it as a first draft to review, never as something already true. Nothing
-   in this file is registered, covered, or gated until a person looks at
-   it and, separately, mints what's real.
+3. Read `dig-report.json` yourself — the printed path is always absolute,
+   so cite it exactly, not "wherever it landed." Every row carries
+   `epistemicClass: "inferred"` and cites exactly where it came from
+   (`provenance`) — treat it as a first draft to review, never as
+   something already true. Nothing in this file is registered, covered,
+   or gated until a person looks at it and, separately, mints what's real.

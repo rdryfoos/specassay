@@ -57,7 +57,7 @@ def make_fixture(root: Path) -> None:
 def test_AC_DIG_10_dry_run_writes_nothing(tmp_path):
     make_fixture(tmp_path)
     before = snapshot(tmp_path)
-    proc = run_dig([str(tmp_path), "--dry-run"])
+    proc = run_dig([str(tmp_path), "--dry-run"], cwd=tmp_path)
     assert proc.returncode == 0, proc.stderr
     assert "dry run" in proc.stdout
     after = snapshot(tmp_path)
@@ -68,7 +68,7 @@ def test_AC_DIG_10_dry_run_writes_nothing(tmp_path):
 def test_AC_DIG_10_real_run_writes_only_dig_report(tmp_path):
     make_fixture(tmp_path)
     before = snapshot(tmp_path)
-    proc = run_dig([str(tmp_path)])
+    proc = run_dig([str(tmp_path)], cwd=tmp_path)
     assert proc.returncode == 0, proc.stderr
 
     report_path = tmp_path / "dig-report.json"
@@ -83,14 +83,14 @@ def test_AC_DIG_10_real_run_writes_only_dig_report(tmp_path):
 
 def test_AC_DIG_10_no_anoint_flag_exists(tmp_path):
     make_fixture(tmp_path)
-    proc = run_dig([str(tmp_path), "--anoint"])
+    proc = run_dig([str(tmp_path), "--anoint"], cwd=tmp_path)
     assert proc.returncode != 0
     assert "unrecognized" in proc.stderr.lower() or "usage" in proc.stderr.lower()
 
 
 def test_epistemic_class_always_inferred(tmp_path):
     make_fixture(tmp_path)
-    run_dig([str(tmp_path)])
+    run_dig([str(tmp_path)], cwd=tmp_path)
     report = json.loads((tmp_path / "dig-report.json").read_text())
     assert report["rows"], "fixture should produce at least one row"
     assert all(r["epistemicClass"] == "inferred" for r in report["rows"])
@@ -98,14 +98,14 @@ def test_epistemic_class_always_inferred(tmp_path):
 
 def test_AC_DIG_20_dry_run_prints_counts_by_type_and_source(tmp_path):
     make_fixture(tmp_path)
-    proc = run_dig([str(tmp_path), "--dry-run"])
+    proc = run_dig([str(tmp_path), "--dry-run"], cwd=tmp_path)
     assert "by type" in proc.stdout
     assert "by source" in proc.stdout
 
 
 def test_dig_report_schema_shape(tmp_path):
     make_fixture(tmp_path)
-    run_dig([str(tmp_path)])
+    run_dig([str(tmp_path)], cwd=tmp_path)
     report = json.loads((tmp_path / "dig-report.json").read_text())
     for key in ("format", "generatorVersion", "sourceRepoPath", "generatedAt", "rows"):
         assert key in report
@@ -130,9 +130,9 @@ def test_test_name_humanization_preserves_acronym_digit_runs(tmp_path):
     (tmp_path / "tests" / "test_widget.py").write_text(
         "def test_AC_ZK9Q_01_keyboard_reachable_and_announced():\n    pass\n"
     )
-    proc = run_dig([str(tmp_path), "--dry-run"])
+    proc = run_dig([str(tmp_path), "--dry-run"], cwd=tmp_path)
     assert proc.returncode == 0, proc.stderr
-    run_dig([str(tmp_path)])
+    run_dig([str(tmp_path)], cwd=tmp_path)
     report = json.loads((tmp_path / "dig-report.json").read_text())
     row = next(r for r in report["rows"] if r["provenance"].get("testName") == "test_AC_ZK9Q_01_keyboard_reachable_and_announced")
     assert "zk9q" in row["statement"]
@@ -150,7 +150,7 @@ def test_comment_lines_are_not_mined(tmp_path):
         "def handler():\n"
         "    pass\n"
     )
-    run_dig([str(tmp_path)])
+    run_dig([str(tmp_path)], cwd=tmp_path)
     report = json.loads((tmp_path / "dig-report.json").read_text())
     paths = [r["statement"] for r in report["rows"] if r["type"] == "FR"]
     assert any("/real-path" in s for s in paths)
@@ -167,11 +167,33 @@ def test_flask_route_statement_has_no_double_space(tmp_path):
         "def get_policy(id):\n"
         "    return {}\n"
     )
-    run_dig([str(tmp_path)])
+    run_dig([str(tmp_path)], cwd=tmp_path)
     report = json.loads((tmp_path / "dig-report.json").read_text())
     row = next(r for r in report["rows"] if r["type"] == "FR")
     assert "  " not in row["statement"]
     assert row["statement"] == "the system accepts /policies/<id>"
+
+
+def test_AC_DIG_30_default_out_is_cwd_relative_not_target_relative(tmp_path):
+    # Regression: the default output location must never depend on the
+    # scanned target -- a stranger's repo (cloned read-only) or a session
+    # scratchpad are both places a report must not default into. Here the
+    # target and the operator's own directory are deliberately different,
+    # to prove the default follows cwd, not --path.
+    target = tmp_path / "target-to-scan"
+    operator_dir = tmp_path / "operators-own-durable-dir"
+    target.mkdir()
+    operator_dir.mkdir()
+    make_fixture(target)
+
+    proc = run_dig([str(target)], cwd=operator_dir)
+    assert proc.returncode == 0, proc.stderr
+    assert (operator_dir / "dig-report.json").exists()
+    assert not (target / "dig-report.json").exists()
+
+    printed_path = Path(proc.stdout.split("dig: wrote ", 1)[1].split(" (", 1)[0])
+    assert printed_path.is_absolute()
+    assert printed_path == operator_dir / "dig-report.json"
 
 
 def test_sources_filter_limits_output(tmp_path):

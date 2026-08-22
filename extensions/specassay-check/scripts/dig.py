@@ -351,7 +351,7 @@ def build_report(root: Path, sources: list[str]) -> dict:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="specassay dig -- archaeology mode, no-LLM floor")
     parser.add_argument("path", nargs="?", default=".", help="Target repo path (default: cwd)")
-    parser.add_argument("--out", default=None, help="Output path (default: <path>/dig-report.json)")
+    parser.add_argument("--out", default=None, help="Output path (default: dig-report.json in the CURRENT WORKING DIRECTORY, not the target path -- durable and under the operator's own control even when the target isn't, e.g. a read-only clone of someone else's repo)")
     parser.add_argument("--sources", default="all", help="Comma-separated source list (default: all)")
     parser.add_argument("--dry-run", action="store_true", help="Print counts, write nothing")
     args = parser.parse_args(argv)
@@ -368,7 +368,14 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     report = build_report(root, sources)
-    out_path = Path(args.out).resolve() if args.out else root / "dig-report.json"
+    # @covers FR-DIG-10, AC-DIG-30 -- default output is CWD-relative, never
+    # target-relative: a stranger's repo (§0 of the build handoff -- cloned
+    # read-only, never written to) and a session-scratch working directory
+    # are both places a report must not default into, since either one can
+    # vanish or get cleaned up out from under a claim that cites it. The
+    # operator's own cwd is the one location guaranteed durable and under
+    # their control regardless of what --path points at.
+    out_path = Path(args.out).resolve() if args.out else Path.cwd() / "dig-report.json"
 
     by_type: dict[str, int] = {}
     by_source: dict[str, int] = {}
