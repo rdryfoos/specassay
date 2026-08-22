@@ -19,3 +19,28 @@ rungs (b) local-model and (c) user-supplied-API-key remain out of scope.
   - AC-DIG-40 — proven by `test_AC_DIG_40_same_artifact_for_test_rows` and `test_AC_DIG_40_null_when_no_test_known`.
 - FR-DIG-50 — Known-smoke noise labeling. Shipped 2026-08-22, proven by `@covers` in `extensions/specassay-check/scripts/dig.py` (`KNOWN_SMOKE_TESTS`).
   - AC-DIG-50 — proven by `test_AC_DIG_50_known_smoke_test_labeled_low_confidence_with_reason`.
+
+## Laws (minted from the §2d investigation, 2026-08-22)
+
+Two design principles, ratified alongside the decision to defer the
+view-route heuristic itself (see `docs/backlog.md`'s "Pattern candidate:
+a view-route heuristic family for `dig`" for the deferred feature).
+
+1. **Statement templates are per-evidence-kind.** A dug statement
+   describes what the evidence actually shows — a REST route candidate
+   reads "the system accepts GET /path"; a future view-route candidate
+   must read "the system presents a view at /path," never the REST
+   wording force-fit onto a different evidence kind. Every heuristic that
+   ever gets added owns its own template; none inherits another's by
+   default.
+2. **No heuristic ships from a single specimen.** One real target shows
+   the shape of one family member, not the family — building against it
+   alone risks a heuristic fitted to that one specimen's idiom rather
+   than the general case it's meant to cover. The floor's own deliberate
+   avoidance of framework-type knowledge (no heuristic checks what a
+   class *extends*, only what it's *shaped like* in text) is itself a
+   design principle under this same law, not an oversight: it keeps every
+   heuristic honestly declarable as text-pattern matching, with whatever
+   verification gap that leaves (a false positive from an unrelated
+   annotation of the same name, say) named directly via the row's own
+   `confidence` tier rather than silently assumed away.

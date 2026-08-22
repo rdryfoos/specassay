@@ -170,6 +170,49 @@ evidence that the two engines' status vocabularies already diverge on
 ordinary backlog intent, before `retired` even exists as a fifth label to
 disagree about.
 
+## Pattern candidate: a view-route heuristic family for `dig`
+
+**Status:** investigated, not built. Deferred deliberately, not forgotten —
+see `docs/dig-level-two-handoff-v2-2026-08-22.md` §2d for the investigation
+this entry records the outcome of.
+
+**The gap:** `dig`'s route heuristic (Spring/Flask/Express-shaped REST
+annotations) finds nothing in a server-rendered UI-view app, and that's
+honest — there's nothing REST-shaped to find — but it's also a real scope
+gap: those apps have their own route-declaration idiom, just not a REST
+one. `github.com/SpecDriven/insurance-java` is the specimen that surfaced
+it: its Vaadin views declare routes as a class-level annotation directly
+above the class declaration (`@Route("quote/auto")` / `class
+AutoQuoteView extends VerticalLayout`, `AutoQuoteView.java:39`), a
+structurally different shape from a REST controller's per-method mapping.
+
+**Why one specimen isn't enough (Rule: no heuristic from a single
+specimen, below):** a heuristic keyed on `@Route(...)` immediately
+preceding a `class` declaration would catch Vaadin. But it wouldn't
+generalize — every other server-rendered UI idiom has its own, unrelated
+shape: JSF's `faces-config.xml` navigation rules, Apache Wicket's
+`mountPage()` calls, Rails' `routes.rb` DSL, Django's `urls.py` patterns,
+Next.js's file-based routing (the route IS the file path, no annotation
+at all). One specimen tells you the shape of ONE family member, not the
+family. Building against Vaadin alone risks exactly the false-generality
+this rule exists to name.
+
+**The false-positive risk, named:** unlike a REST annotation, "Route" is
+an ordinary English word with real, unrelated meanings across domains
+(logistics, geography, networking) — a project's own custom annotation
+of the same name (a build-tool marker, a state-machine transition) would
+produce a garbage FR with no local way to tell it apart from a real
+Vaadin view, short of also checking the class actually extends a Vaadin
+base type — framework-type knowledge the floor deliberately avoids (see
+the design principle in `specs/dig/spec.md`).
+
+**Trigger:** a second real, server-rendered, non-REST target — ideally
+from a different framework in the family above, so the heuristic is
+built to generalize from the start rather than fitted to Vaadin alone.
+Statement template for whatever ships: "the system presents a view at
+`<path>`," never the REST wording ("accepts GET ...") force-fit from a
+different evidence kind.
+
 ## Roadmap: proposed build order
 
 Lifted from `scope-and-pull-requests.md` §6. Every item there is tagged
