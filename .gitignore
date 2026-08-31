@@ -8,3 +8,9 @@ dist/
 __pycache__/
 trace-manifest.json
 trace-manifest.v5beta.json
+
+# Design-room experiment working set: tier3/LLM-pass research artifacts, the
+# thread-coverage experiment protocols, and third-party registry reviews.
+# Deliberately local-only -- this repo is public, and that material carries
+# other parties' findings and in-flight commercial notes. Not product.
+Experiments/
