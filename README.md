@@ -1,8 +1,8 @@
 # SpecAssay
 
-Every honest piece of work stands on three legs: the **intent** (why we're doing it), the **build** (the code that does it), and the **proof** (a test that answers for it). Kick out any leg and it topples. SpecAssay is the assay office for that work. It tests that all three legs are present and tied together, refuses to pass work as "done" when a leg is quietly missing, and strikes what it finds into a small file, the *trace-manifest*, so anyone can read the provenance long after everyone's gone home.
+Every honest piece of work stands on three legs: the **intent** (why we're doing it), the **build** (the code that does it), and the **proof** (a test that answers for it). Kick out any leg and it topples. SpecAssay is the assay office for that work. It tests that all three legs are present and tied together, refuses to pass work as "done" when a leg is quietly missing, and strikes what it finds into a small file, the [*trace-manifest*](https://www.dryfoos.com/glossary#trace-manifest), so anyone can read the provenance long after everyone's gone home.
 
-Assay offices have tested gold and struck it with a hallmark for seven hundred years, so provenance can be read at a glance. The office has a word for the failure SpecAssay exists to catch: **gilt**, base metal dressed to gleam like the real thing. AI makes gilt cheap. Assaying is the answer.
+Assay offices have tested gold and struck it with a hallmark for seven hundred years, so provenance can be read at a glance. The office has a word for the failure SpecAssay exists to catch: [**gilt**](https://www.dryfoos.com/glossary#gilt), base metal dressed to gleam like the real thing. AI makes gilt cheap. Assaying is the answer.
 
 **For a developer:** it's a [GitHub Spec Kit](https://github.com/github/spec-kit) bundle. It adds durable IDs to your templates, runs a deterministic Gate on every push, and emits a `trace-manifest.json` ([sample](./samples/homesflow.trace-manifest.json)) in your repo, readable raw or in [Loupe](https://loupe.dryfoos.com/). No fork, no daemon, no second system to keep in sync: the thread lives in the repo.
 
@@ -14,7 +14,7 @@ Assay offices have tested gold and struck it with a hallmark for seven hundred y
 - **Build**: the code that serves an intent leaves a one-line `@covers ID` mark where it lives. Greppable, author-written.
 - **Proof**: the test that answers for an acceptance criterion encodes the AC's ID in its name (`test_AC_HOME_15_…`).
 
-The **Golden Thread** is the line that ties the three together, intent to build to proof. When every leg is present and linked, the thread holds. When an acceptance criterion has neither a proof nor an openly-admitted debt, the thread frays. That's a silent gap, and the Gate refuses it.
+The [**Golden Thread**](https://www.dryfoos.com/glossary#golden-thread) is the line that ties the three together, intent to build to proof. When every leg is present and linked, the thread holds. When an acceptance criterion has neither a proof nor an openly-admitted debt, the thread frays. That's a silent gap, and the Gate refuses it.
 
 ## How it works (a day in the thread)
 
