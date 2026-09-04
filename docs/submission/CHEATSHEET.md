@@ -78,6 +78,32 @@ anything — unzip and check, don't trust the source tree: that's how
 round 3's stale file was finally caught, after three prior sweeps had
 all missed it by reading the source tree instead of the artifact.
 
+## v0.4.13 cut, 2026-09-04; filing not yet done
+
+Tag `v0.4.13` at `105c4845f8ae88f1af361d56c0de458089b50fad`, release
+<https://github.com/rdryfoos/specassay/releases/tag/v0.4.13>, built by the
+Release workflow (<https://github.com/rdryfoos/specassay/actions/runs/33883485224>).
+The sweep above was followed in full: all three manifests, the three
+catalogs (plus the `commands` count, 2 to 5, stale since dig, matrix, and
+portfolio shipped), and the preset README that ships inside its zip. The
+published zips were unzipped and checked, digests verified three ways,
+and the upgrade from a real v0.4.12 catalog install was run and recorded
+(`docs/submission/test-evidence.md`). The three paste-from docs are
+regenerated at 0.4.13 with the real digests.
+
+**Still to do, by a human:** file the three new issues, in this order,
+each naming its 0.4.12 predecessor: extension (updates #4252, merged as
+#4254), preset (updates #4253, merged as #4256; the issue route worked for
+the preset last time, so use it again), bundle (updates #4255, merged as
+#4257; reference the two new component issues by number). Until those
+merge, Spec Kit's own community catalog still lists 0.4.12; this repo's
+hosted catalogs already serve 0.4.13.
+
+One thing to know for the next cut: `raw.githubusercontent.com` caches
+the catalogs for five minutes (`docs/migration.md`, friction 4), so an
+install in the minutes right after the push can still resolve the old
+version. Wait it out before declaring the push broken.
+
 ## v0.4.12 filed, 2026-08-21
 
 Following this section's own "Updating to a new version" pattern: three

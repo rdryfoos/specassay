@@ -104,7 +104,7 @@ specify bundle catalog add \
 specify bundle install specassay
 ```
 
-Installing the extension scaffolds `.specify/extensions/specassay-check/specassay-check-config.yml` from the bundled template. You never have to check that by hand: every Gate run prints its own state on its first lines, either
+`specify extension add` scaffolds `.specify/extensions/specassay-check/specassay-check-config.yml` from the bundled template; `specify bundle install` (the path above) does not (verified 2026-09-04, Spec Kit 0.15.3.dev0). Either way you never have to check by hand: every Gate run prints its own state on its first lines, either
 
 ```text
   config: .specify/extensions/specassay-check/specassay-check-config.yml (from specassay-check-config.yml)

@@ -6,9 +6,11 @@ Fields below appear in the form's exact order.
 Title: `[Preset]: Add specassay`.
 
 **Update note:** this is a version-bump filing, not a first submission.
-The original (`v0.3.4`) merged as #4123, closed via #4058. Per
+The original (`v0.3.4`) merged as #4123, closed via #4058; the `v0.4.12`
+update filed as #4253 merged as #4256, through the issue route, so that
+route is proven for presets now. Per
 `docs/submission/CHEATSHEET.md`, presets have no documented issue-based
-update path — try a **new** issue first (say it updates #4058); if a
+update path — file a **new** issue (say it updates #4253); if a
 maintainer redirects, the documented fallback is a direct PR against
 `presets/catalog.community.json` in `github/spec-kit`, bumping `version`
 and `download_url` for the `specassay` entry.
@@ -19,7 +21,7 @@ and `download_url` for the `specassay` entry.
 
 **Preset Name:** SpecAssay
 
-**Version:** 0.4.12
+**Version:** 0.4.13
 
 **Description:**
 Appends durable-ID, Carries, and SpecAssay vocabulary onto Spec Kit spec,
@@ -30,10 +32,10 @@ tasks, and constitution templates.
 **Repository URL:** https://github.com/rdryfoos/specassay
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.4.12/specassay-preset-0.4.12.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.4.13/specassay-preset-0.4.13.zip
 
-**Digest (sha256):** `58bb4ed34ad725b51ba3dece242022250b1741588ef6ed9e6df841d1c77f8b2a`
-*(from the release asset itself — `gh api repos/rdryfoos/specassay/releases/tags/v0.4.12`
+**Digest (sha256):** `ed4298d72b80f083400c0ac7bcbf9a3eb5d5950eb50abd542e8fc4b5b77d8a58`
+*(from the release asset itself — `gh api repos/rdryfoos/specassay/releases/tags/v0.4.13`
 — and independently re-verified by downloading the zip and hashing it locally;
 see `docs/submission/test-evidence.md`.)*
 
@@ -41,7 +43,7 @@ see `docs/submission/test-evidence.md`.)*
 https://github.com/rdryfoos/specassay/blob/main/presets/specassay/README.md
 *(preset-scoped README; contains the `specify preset add --from <download-url>`
 command the form requires — checked directly and it correctly names the
-`v0.4.12` asset, not an older one)*
+`v0.4.13` asset, not an older one; checked inside the published zip, not the source tree)*
 
 **License:** MIT
 

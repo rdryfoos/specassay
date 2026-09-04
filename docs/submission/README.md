@@ -1,5 +1,11 @@
 # Submission package — status and checklist
 
+**v0.4.13 released 2026-09-04, not yet filed.** Release, digests, and the
+regenerated paste-from docs are ready; the three update issues are the
+human step (see the cheat sheet's "v0.4.13 cut" section). v0.4.12 is the
+version Spec Kit's community catalog currently carries (#4254, #4256,
+#4257 all merged).
+
 **Filed 2026-08-11** — all three issues are in Spec Kit's queue:
 [#4057](https://github.com/github/spec-kit/issues/4057) (extension) ·
 [#4058](https://github.com/github/spec-kit/issues/4058) (preset) ·

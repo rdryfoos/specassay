@@ -151,6 +151,14 @@ emit is intentional (documented since the 0.4.5 changelog entry).
 (`dryfoos-sites` commit `5a0d718`) — pinned to the exact tag the wall
 just verified, not the unpinned `main`-tracking anchor it used before.
 
+**v0.4.13, 2026-09-04: same deviation, on commission.** The tag was cut
+before any independent verification because a real outside tester was
+waiting on the cold-install fixes it carries. This room's own
+verification is attached (`docs/submission/test-evidence.md`: digests
+three ways, in-zip checks, fresh catalog install, and a real v0.4.12 to
+v0.4.13 upgrade). The design room's separate-environment pass is still
+owed and nothing is filed to `spec-kit` until it runs.
+
 ## Boundaries
 
 - **Yours**: this repo — code only as release polish requires (the

@@ -56,6 +56,45 @@ specify bundle install specassay
 There's no `--refresh`/`--no-cache` flag on any of these commands as of
 0.15.3.dev0 — the cache directory itself is the only lever.
 
+## The upgrade command that works (re-verified 2026-09-04, v0.4.12 to v0.4.13)
+
+For a project that installed the bundle by ID through the catalogs, from
+the project root:
+
+```bash
+rm -rf .specify/extensions/.cache .specify/presets/.cache
+specify bundle update specassay
+```
+
+Receipt: `docs/submission/test-evidence.md`, "Upgrade path". Without the
+first line, `specify extension update specassay-check` reports `Up to
+date (v0.4.12)` and `specify bundle update specassay` stops with `Error:
+Extension 'specassay-check' is pinned to version 0.4.13 in the bundle
+manifest, but the resolved version is 0.4.12`. With it, both components
+move to 0.4.13 in one command, and an edited
+`specassay-check-config.yml` survives untouched. `specify extension
+update specassay-check` after the same cache clear also works but prompts
+`[y/N]`, so it needs a terminal.
+
+For a git-clone install, pull the tag and re-add with `--force`:
+
+```bash
+git -C /path/to/specassay fetch --tags && git -C /path/to/specassay checkout v0.4.13
+specify extension add --dev /path/to/specassay/extensions/specassay-check --force
+```
+
+## 4. The raw catalog URL lags a push by up to five minutes
+
+`raw.githubusercontent.com` serves `catalogs/*.json` with
+`cache-control: max-age=300`. If anyone fetched the catalog in the five
+minutes before a version bump was pushed, the old JSON keeps being served
+until that window expires. Measured 2026-09-04: a fresh `specify bundle
+install specassay` resolved 0.4.12 two minutes after the 0.4.13 catalogs
+were on `main` (`x-cache: HIT`, `source-age: 285`), then 0.4.13 four
+minutes later with nothing else changed. If an install or update lands on
+the previous version right after a release, wait five minutes and rerun;
+nothing is broken.
+
 ## After upgrading
 
 Diff your own `specassay-check-config.yml` against the current
