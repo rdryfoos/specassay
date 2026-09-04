@@ -3,6 +3,47 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## Unreleased
+
+Cold-install findings from the first Windows tester on record (2026-09-03:
+senior engineer, Git Bash, no Spec Kit experience, brownfield repo with
+specs under `docs/**`), fixed in the order he hit them. `FR-GATE-100`,
+`T920`.
+
+- **Green on an empty registry now says what to do next.** `OK (0 registry
+  IDs)` was correct and taught nothing. The Gate still exits 0, but states
+  the registry is empty, that nothing is promised yet, that green will
+  hold until something is, and prints two runnable on-ramps to a first ID:
+  greenfield (mint before the Spec Kit spec) and brownfield (mint one ID
+  against a requirement in a doc you already have, no backfill). A missing
+  registry file gets the same two choices under its refusal.
+- **Python is detected, not hardcoded.** `SPECASSAY_PYTHON`, then
+  `python3`, then `python`, each probed for 3.8 or newer; none usable is a
+  one-line FAIL with an install hint and exit 2, before any scanning. The
+  same detection went into `commit-advisory.sh`. Tests cover the fallback
+  and the failure path with interpreter shims on `PATH`.
+- **The Gate reports its own config state on its first lines**, every run:
+  the path it resolved and how, or `MISSING` plus the one `cp` command
+  that scaffolds it. The root README's "if Gate config wasn't scaffolded"
+  sentence now points at that report instead of asking the user to guess.
+- **The extension README is written for the person who just installed
+  it**: what it is, what each config key controls, what a run produces,
+  what green and red mean, the first-run on-ramp. Developer notes moved to
+  `extensions/specassay-check/DEVELOPING.md`.
+- **Prerequisites and platforms stated up front** in the root README: a
+  pointer to Spec Kit for anyone new to it, the three-install chain (uv,
+  Spec Kit, SpecAssay) named as designed, and macOS/Linux first-class with
+  Windows requiring Git Bash or WSL.
+- **`mint-id.sh` counts lettered ACs.** `AC-GATE-90a/b/c` did not count
+  toward the highest existing number, so a mint offered `AC-GATE-90`
+  again. Found running the documented command as a receipt for this
+  change.
+- **Registry hygiene:** `FR-DIG-60`, `FR-DIG-70`, `AC-DIG-70`, and
+  `AC-DIG-80` were cited by `specs/dig/spec.md`, `T918`/`T919`, and
+  `dig.py` since 2026-08-22 but never minted into `PRD.md`, which kept
+  this repo's own Self Gate red from 2026-08-23. Registered now, marked as
+  coverage registered rather than newly attributed.
+
 ## 0.4.12 — 2026-08-20
 
 `orphan-covers`/`orphan-test` and the manifest emitter both had real,

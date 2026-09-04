@@ -79,3 +79,21 @@ where that same ID lands once it has.
     and `test_AC_GATE_90a_absence_means_no_edges`.
   - AC-GATE-90b — proven by `test_AC_GATE_90b_rollup_includes_all_depths_not_just_direct_children`.
   - AC-GATE-90c — proven by `test_AC_GATE_90c_rollup_carries_total_alongside_per_status`.
+- FR-GATE-100 — Cold-install on-ramp: an empty registry stays green but
+  says what to do next (both greenfield and brownfield first mints, as
+  runnable commands); the interpreter is detected (`SPECASSAY_PYTHON`,
+  `python3`, `python`, each probed for 3.8+) with a one-line install hint
+  when none works; the config state is reported at startup every run.
+  Shipped 2026-09-03, proven by `@covers` in `check-traceability.sh` and by
+  `extensions/specassay-check/tests/test_gate_100_cold_install.py`.
+  Verified end to end in a clean `specify init` project the same day:
+  empty registry, first mint via the printed command, the expected honest
+  refusal, then green.
+  - AC-GATE-100a — proven by `test_AC_GATE_100a_empty_registry_stays_green_and_names_the_on_ramp`,
+    `test_AC_GATE_100a_populated_registry_keeps_the_plain_ok_line`, and
+    `test_AC_GATE_100a_missing_registry_file_points_at_the_on_ramp`.
+  - AC-GATE-100b — proven by `test_AC_GATE_100b_falls_back_to_python_when_python3_is_unusable`,
+    `test_AC_GATE_100b_no_usable_python_fails_with_one_line_install_hint`, and
+    `test_AC_GATE_100b_explicit_override_wins`.
+  - AC-GATE-100c — proven by `test_AC_GATE_100c_config_found_is_reported_with_its_path` and
+    `test_AC_GATE_100c_config_missing_names_the_file_and_the_copy_command`.

@@ -73,6 +73,14 @@ The `format` value is deliberately vendor-neutral: `trace-manifest` belongs to n
 
 Bundle id: `specassay`.
 
+## Before you install
+
+**New to Spec Kit?** Start with the official [Spec Kit README](https://github.com/github/spec-kit#readme), get one `specify init` project working, then come back here. SpecAssay assumes that vocabulary (spec, plan, tasks, implement) and adds to it.
+
+**Three installs, each doing one job.** SpecAssay rides on Spec Kit, and Spec Kit installs through [uv](https://docs.astral.sh/uv/). So a cold machine does three installs, roughly ten minutes end to end: uv fetches Python tools, Spec Kit runs the spec-driven workflow, SpecAssay adds the Gate. That chain is by design, not an accident of packaging; none of the three does the others' work.
+
+**Supported platforms.** macOS and Linux are first-class and are where every command in these docs is verified. Windows requires a bash environment: Git Bash or WSL. The Gate is a bash script, and it calls Python 3.8 or newer as `python3` or `python`, whichever your machine has (first Windows run on record: 2026-09-03, Git Bash, worked once the interpreter fallback landed). PowerShell alone is not supported.
+
 ## Install (catalog path)
 
 <!-- @covers FR-DOCS-10 -->
@@ -96,13 +104,21 @@ specify bundle catalog add \
 specify bundle install specassay
 ```
 
-If Gate config wasn't scaffolded automatically, copy it once and point it at your repo:
+Installing the extension scaffolds `.specify/extensions/specassay-check/specassay-check-config.yml` from the bundled template. You never have to check that by hand: every Gate run prints its own state on its first lines, either
 
-```bash
-cp .specify/extensions/specassay-check/config-template.yml \
-   .specify/extensions/specassay-check/specassay-check-config.yml
-# then edit registry / globs in specassay-check-config.yml
+```text
+  config: .specify/extensions/specassay-check/specassay-check-config.yml (from specassay-check-config.yml)
 ```
+
+or, when the file is not there,
+
+```text
+  config: MISSING at .specify/extensions/specassay-check/specassay-check-config.yml (looked via specassay-check-config.yml)
+          running on config-template.yml defaults for now (registry PRD.md, specs/**, src/**, tests/**)
+          scaffold it once: cp .specify/extensions/specassay-check/config-template.yml .specify/extensions/specassay-check/specassay-check-config.yml
+```
+
+If it says MISSING, run that one `cp` command, then edit `registry`, `src_globs`, and `test_globs` in the new file for your repo.
 
 Run Gate 2 locally (fast feedback):
 
@@ -110,6 +126,8 @@ Run Gate 2 locally (fast feedback):
 bash .specify/extensions/specassay-check/scripts/check-traceability.sh
 # writes trace-manifest.json; or via the agent command: /speckit.specassay-check.gate
 ```
+
+**A fresh project is green with nothing to show for it.** With nothing minted, the registry has zero IDs, so the Gate has nothing to check and exits 0. It says so instead of pretending that green means something, and prints the two on-ramps to a first ID: greenfield (mint before writing the Spec Kit spec) and brownfield (mint one ID against a requirement in a doc you already have, no backfill). The next run after that first mint is an honest refusal, and clearing it is your first real thread. The full text is in the [extension README](./extensions/specassay-check/README.md#first-run-on-a-fresh-project).
 
 **See a real refusal, before you have anything of your own to break.** A
 fresh install has nothing minted yet, so there's nothing local to break on

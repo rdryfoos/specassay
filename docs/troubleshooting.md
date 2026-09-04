@@ -311,3 +311,51 @@ bug (duplicate `BUILD` entries), which would be actively misleading to
 present as current. If this entry survives the fix, it becomes "FR-level
 rows show their delegated proofs," with a fresh capture of the healthy
 state.
+
+## The Gate is green, but says the registry is empty
+
+**You'll see:** `SpecAssay Check (Gate 2): OK, registry empty (0 IDs in
+PRD.md)`, followed by a block of next steps, on a project where nothing
+has been minted yet. Older versions printed `OK (0 registry IDs)` and
+stopped there.
+
+**What's happening:** with zero IDs there is nothing to check, so the Gate
+has nothing to refuse. Exit 0 is correct. It is also meaningless, and the
+Gate now says so rather than let a first-time installer read it as
+success. The block under it is the on-ramp: mint one ID (greenfield,
+before the Spec Kit spec; or brownfield, against a requirement in a doc
+you already have), rerun, get an honest refusal, clear it. Both commands
+in that block are runnable as printed.
+
+**Fix:** nothing is broken. Mint a first ID. If the registry file itself
+does not exist you get `registry not found` instead, with the same two
+choices: create it, or point `registry:` in the config at your existing
+requirements doc.
+
+**Taught by:** the first Windows cold install on record (2026-09-03, a
+senior engineer with no Spec Kit experience, brownfield repo with specs
+under `docs/**`). His run ended at `OK (0 registry IDs)` and he had no
+idea what was supposed to happen next.
+
+## The Gate stops at once: "no usable Python 3 found"
+
+**You'll see:** `FAIL: no usable Python 3 found (tried python3 and python;
+need 3.8 or newer).` and exit 2, before any scanning. Older versions died
+later and less clearly, with `python3: command not found` from inside the
+first refusal.
+
+**What's happening:** the Gate is a bash script that hands the JSON and SVG
+emit to Python. It looks for `SPECASSAY_PYTHON`, then `python3`, then
+`python`, and probes each one for version 3.8 or newer. On Windows under
+Git Bash the interpreter is usually installed as `python` only, and the
+Microsoft Store's `python` stub (present on a machine with no Python at
+all) fails the probe the same way an absent interpreter does.
+
+**Fix:** install Python 3 from https://www.python.org/downloads/ or your
+package manager, or set `SPECASSAY_PYTHON` to the interpreter you want.
+The first lines of every run show which interpreter it settled on
+(`python: python (3.12.4)`), so you can confirm the fix before reading
+anything else.
+
+**Taught by:** the same Windows cold install, 2026-09-03. His box had
+`python` but no `python3`, and the script hardcoded `python3`.

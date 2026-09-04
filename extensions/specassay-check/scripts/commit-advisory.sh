@@ -19,7 +19,19 @@ set -uo pipefail
 # dirname "$0" alone would resolve relative to .git/hooks, not this
 # script's real location. Follow the link first, portably (BSD
 # readlink has no -f).
-REAL_SELF="$(python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$0")"
+# Interpreter detection mirrors check-traceability.sh (python3, then
+# python; Windows Git Bash often has only the latter). Advisory-only, so
+# no Python at all means silently stand down rather than block a commit.
+PYTHON=""
+for cand in "${SPECASSAY_PYTHON:-}" python3 python; do
+  [[ -n "$cand" ]] || continue
+  command -v "$cand" >/dev/null 2>&1 || continue
+  if "$cand" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 8) else 1)' >/dev/null 2>&1; then
+    PYTHON="$cand"; break
+  fi
+done
+[[ -n "$PYTHON" ]] || exit 0
+REAL_SELF="$("$PYTHON" -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$0")"
 EXT_DIR="$(cd "$(dirname "$REAL_SELF")/.." && pwd)"
 PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$PROJECT_ROOT"

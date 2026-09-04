@@ -16,7 +16,7 @@ description: Run SpecAssay Check (Gate 2) — fail on silent gaps; emit trace-ma
 
    ## Steps
 
-   1. Confirm `.specify/extensions/specassay-check/specassay-check-config.yml` exists (copy from `config-template.yml` if missing) and points at this project's registry, specs, tasks, and source/test trees. Set `manifest_path` if you do not want `trace-manifest.json` at the project root.
+   1. The script reports its own config state on its first lines: `config: <path> (from ...)` when found, or `config: MISSING at <path>` followed by the exact `cp` command that scaffolds it from `config-template.yml`. If it reports MISSING, run that command once, then make sure the new file points at this project's registry, specs, tasks, and source/test trees. Set `manifest_path` if you do not want `trace-manifest.json` at the project root.
    2. From the project root, run:
 
       ```sh
@@ -26,4 +26,8 @@ description: Run SpecAssay Check (Gate 2) — fail on silent gaps; emit trace-ma
       ```
 
       The script writes `trace-manifest.json` (or the `manifest_path` from the
-      config) and exits non-zero if the Gate refuses.
+      config) and exits non-zero if the Gate refuses. Exit 2 means it could
+      not run at all (no usable Python 3, no config); the message says what
+      to install or create. A registry with zero IDs exits 0 and prints the
+      on-ramp to a first mint instead of a bare OK; relay that text to the
+      user, it is the next step.

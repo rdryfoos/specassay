@@ -46,15 +46,64 @@ if [[ -z "$PROJECT_ROOT" ]]; then
 fi
 cd "$PROJECT_ROOT"
 
-CONFIG="${SPECASSAY_CONFIG:-$EXT_DIR/specassay-check-config.yml}"
-if [[ ! -f "$CONFIG" ]]; then
-  if [[ -f "$EXT_DIR/config-template.yml" ]]; then
-    CONFIG="$EXT_DIR/config-template.yml"
-    echo "WARN: using config-template.yml; copy to specassay-check-config.yml for real projects" >&2
-  else
-    echo "FAIL: no specassay-check-config.yml (looked in $EXT_DIR)" >&2
-    exit 2
-  fi
+# @covers FR-GATE-100, AC-GATE-100b -- the interpreter is detected, never
+# hardcoded. The first Windows tester (Git Bash, 2026-09-03) had only
+# `python`, and a hardcoded `python3` died at the first record_fail with
+# "command not found", which taught nothing. Order: an explicit
+# SPECASSAY_PYTHON override, then python3, then python; each candidate
+# must actually run and report 3.8+ (the Microsoft Store `python` stub
+# and a Python 2 both fail that probe and fall through). Nothing usable
+# is a one-line failure with an install hint, exit 2, before any scanning.
+resolve_python() {
+  local cand
+  for cand in "${SPECASSAY_PYTHON:-}" python3 python; do
+    [[ -n "$cand" ]] || continue
+    command -v "$cand" >/dev/null 2>&1 || continue
+    if "$cand" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 8) else 1)' >/dev/null 2>&1; then
+      echo "$cand"
+      return 0
+    fi
+  done
+  return 1
+}
+if ! PYTHON="$(resolve_python)"; then
+  echo "FAIL: no usable Python 3 found (tried python3 and python; need 3.8 or newer)." >&2
+  echo "  Install Python 3 from https://www.python.org/downloads/ (or your package manager), or set SPECASSAY_PYTHON=/path/to/python3, then rerun." >&2
+  exit 2
+fi
+if [[ -n "${SPECASSAY_PYTHON:-}" && "$PYTHON" != "$SPECASSAY_PYTHON" ]]; then
+  echo "WARN: SPECASSAY_PYTHON=$SPECASSAY_PYTHON is not a usable Python 3.8+; using $PYTHON instead" >&2
+fi
+PYTHON_VERSION="$("$PYTHON" -c 'import sys; print("%d.%d.%d" % sys.version_info[:3])')"
+
+# @covers FR-GATE-100, AC-GATE-100c -- the script states its own config
+# state at startup, every run, so nobody has to wonder whether install
+# scaffolded the config. Three cases: an explicit SPECASSAY_CONFIG, the
+# extension's own specassay-check-config.yml, or neither, in which case
+# the run proceeds on config-template.yml's defaults and says exactly
+# which file to create to stop that.
+# Paths in user-facing lines are shown relative to the project root when
+# the extension lives under it (the normal .specify/extensions/ install).
+EXT_REL="${EXT_DIR#"$PROJECT_ROOT"/}"
+CONFIG_DEFAULT="$EXT_DIR/specassay-check-config.yml"
+CONFIG="${SPECASSAY_CONFIG:-$CONFIG_DEFAULT}"
+CONFIG_SOURCE="specassay-check-config.yml"
+[[ -n "${SPECASSAY_CONFIG:-}" ]] && CONFIG_SOURCE="SPECASSAY_CONFIG"
+CONFIG_SHOWN="${CONFIG#"$PROJECT_ROOT"/}"
+echo "SpecAssay Check (Gate 2) starting" >&2
+echo "  python: $PYTHON ($PYTHON_VERSION)" >&2
+if [[ -f "$CONFIG" ]]; then
+  echo "  config: $CONFIG_SHOWN (from $CONFIG_SOURCE)" >&2
+elif [[ -f "$EXT_DIR/config-template.yml" ]]; then
+  echo "  config: MISSING at $CONFIG_SHOWN (looked via $CONFIG_SOURCE)" >&2
+  echo "          running on config-template.yml defaults for now (registry PRD.md, specs/**, src/**, tests/**)" >&2
+  echo "          scaffold it once: cp $EXT_REL/config-template.yml $EXT_REL/specassay-check-config.yml" >&2
+  echo "          then edit registry, src_globs, and test_globs in that file for this repo" >&2
+  CONFIG="$EXT_DIR/config-template.yml"
+else
+  echo "  config: MISSING at $CONFIG, and no config-template.yml in $EXT_DIR to fall back on" >&2
+  echo "FAIL: no specassay-check-config.yml (looked in $EXT_DIR); reinstall the extension or restore config-template.yml" >&2
+  exit 2
 fi
 
 yaml_scalar() {
@@ -215,7 +264,7 @@ record_fail() {
   local detail="$3"
   echo "FAIL: $detail" >&2
   fail=1
-  python3 -c '
+  "$PYTHON" -c '
 import json,sys
 kind, id_, detail = sys.argv[1], sys.argv[2], sys.argv[3]
 row = {"kind": kind, "detail": detail}
@@ -235,7 +284,7 @@ record_diagnostic() {
   local id="${2:-}"
   local detail="$3"
   echo "DIAGNOSTIC: $detail" >&2
-  python3 -c '
+  "$PYTHON" -c '
 import json,sys
 kind, id_, detail = sys.argv[1], sys.argv[2], sys.argv[3]
 row = {"kind": kind, "detail": detail}
@@ -247,6 +296,7 @@ print(json.dumps(row, ensure_ascii=False))
 
 if [[ ! -f "$REGISTRY" ]]; then
   record_fail "registry-missing" "" "registry not found: $REGISTRY"
+  echo "  The config's registry: key names the file that holds your durable IDs. Either create it (touch $REGISTRY) and mint a first ID into it, or point registry: at the doc that already holds your requirements. Then rerun." >&2
   # Still try to emit an empty-ish manifest below if possible; exit after emit.
 fi
 
@@ -452,7 +502,7 @@ cut -d'|' -f3 "$tmp/proof_hits.txt" 2>/dev/null | sort -u > "$tmp/test_acs.txt" 
 : > "$tmp/execution_verified.txt"
 if [[ -n "$TEST_RESULTS" && -f "$TEST_RESULTS" ]]; then
   echo "true" > "$tmp/execution_verified.txt"
-  python3 - "$TEST_RESULTS" "$tmp/proof_hits.txt" "$tmp/test_acs.txt" <<'PY'
+  "$PYTHON" - "$TEST_RESULTS" "$tmp/proof_hits.txt" "$tmp/test_acs.txt" <<'PY'
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -628,7 +678,7 @@ export MANIFEST_OUT REGISTRY TARGET_NAME PROJECT_ROOT MATRIX_MODE MATRIX_MD MATR
 export MANIFEST_TMP="$tmp"
 export MANIFEST_FAIL="$fail"
 export EXT_VERSION="$(awk '/^  version:/{gsub(/"/,""); print $2; exit}' "$EXT_DIR/extension.yml" 2>/dev/null || echo 0.0.0)"
-python3 - <<'PY'
+"$PYTHON" - <<'PY'
 import json, os, re, datetime
 from pathlib import Path
 
@@ -1262,4 +1312,27 @@ if [[ "$fail" -ne 0 ]]; then
   exit 1
 fi
 
-echo "SpecAssay Check (Gate 2): OK ($(wc -l < "$tmp/registry.txt" | tr -d ' ') registry IDs)"
+registry_count="$(wc -l < "$tmp/registry.txt" | tr -d ' ')"
+if [[ "$registry_count" -eq 0 ]]; then
+  # @covers FR-GATE-100, AC-GATE-100a -- green on an empty registry is
+  # correct and teaches nothing: the first Windows tester's run ended
+  # exactly here ("OK (0 registry IDs)") with no idea what was supposed to
+  # happen next. Exit code stays 0; the words change. Two on-ramps are
+  # named because both audiences are real: greenfield (Spec Kit flow, the
+  # preset makes specs inherit IDs from the registry) and brownfield
+  # (existing docs, no IDs yet, mint one against a doc you already have).
+  cat <<EOF
+SpecAssay Check (Gate 2): OK, registry empty (0 IDs in $REGISTRY)
+  Nothing is promised yet, so there is nothing to check. The Gate stays green until a first ID exists; this green proves nothing.
+  Mint a first ID, either way:
+    greenfield (new work): mint the IDs for a story before writing its spec; the SpecAssay preset makes each Spec Kit spec inherit IDs from $REGISTRY rather than invent them.
+      bash $EXT_REL/scripts/mint-id.sh AC LOGIN --append "Given a wrong password, when the user signs in, then the form shows an error and no session starts."
+    brownfield (existing docs, no IDs yet): pick one requirement from a doc you already have and mint it with the same command, naming the doc in the statement. One is enough to start; do not backfill.
+      bash $EXT_REL/scripts/mint-id.sh AC LOGIN --append "Given a wrong password (docs/auth.md, Sign-in), when the user signs in, then the form shows an error."
+  Then rerun this check. Expect a refusal: the new ID has no spec, task, or test yet, so the Gate reports it as drift and a silent gap. That first honest red is the tool working.
+  Clear it either way. An open task line carrying "**Carries**: AC-LOGIN-10", and nothing else yet, is anointed backlog: green and honest.
+  Or name the ID in a specs/*/spec.md and on a task line with **Carries**, then write a test named test_AC_LOGIN_10_...: proven. Spec and task without the test is tracked-debt, also green.
+EOF
+  exit 0
+fi
+echo "SpecAssay Check (Gate 2): OK ($registry_count registry IDs)"

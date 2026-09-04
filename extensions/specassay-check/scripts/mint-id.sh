@@ -45,7 +45,8 @@ CONFIG="${SPECASSAY_CONFIG:-$EXT_DIR/specassay-check-config.yml}"
 if [[ ! -f "$CONFIG" ]]; then
   if [[ -f "$EXT_DIR/config-template.yml" ]]; then
     CONFIG="$EXT_DIR/config-template.yml"
-    echo "WARN: using config-template.yml; copy to specassay-check-config.yml for real projects" >&2
+    echo "WARN: config MISSING at $CONFIG; using config-template.yml defaults (registry PRD.md)" >&2
+    echo "  scaffold it once: cp $EXT_DIR/config-template.yml $EXT_DIR/specassay-check-config.yml" >&2
   else
     echo "FAIL: no specassay-check-config.yml (looked in $EXT_DIR)" >&2
     exit 2
@@ -119,8 +120,12 @@ highest_number() {
   # `|| true` on the grep: no existing entries (a brand-new area) is a
   # normal case, not a failure -- without this, pipefail + set -e would
   # abort the whole script silently on the very first mint in an area.
-  { grep -Eo "\\b${prefix}-${area}-[0-9]+\\b" "$REGISTRY" 2>/dev/null || true; } \
-    | sed -E "s/^${prefix}-${area}-//" \
+  # Lettered ACs (AC-GATE-90a) count toward the highest number too: the
+  # grammar allows an optional [a-z] suffix, and a mint that ignored it
+  # handed back AC-GATE-90 while AC-GATE-90a/b/c already existed (found
+  # 2026-09-03 running the documented command as a receipt).
+  { grep -Eo "\\b${prefix}-${area}-[0-9]+[a-z]?\\b" "$REGISTRY" 2>/dev/null || true; } \
+    | sed -E "s/^${prefix}-${area}-//; s/[a-z]$//" \
     | sort -n | tail -1
 }
 

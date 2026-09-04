@@ -78,12 +78,23 @@ class Project:
         self._config = self.write("config.yml", "\n".join(lines) + "\n")
         return self._config
 
-    def run(self, args=None):
-        """Run the real script against this fixture; return (proc, manifest)."""
+    def run(self, args=None, env=None):
+        """Run the real script against this fixture; return (proc, manifest).
+
+        `env` overrides individual environment variables for this one run
+        (a PATH with interpreter shims, a SPECASSAY_CONFIG pointing at a
+        file that does not exist); a value of None removes the variable.
+        """
         assert self._config is not None, "call project.config() first"
-        env = os.environ.copy()
-        env["SPECASSAY_PROJECT_ROOT"] = str(self.root)
-        env["SPECASSAY_CONFIG"] = str(self._config)
+        base_env = os.environ.copy()
+        base_env["SPECASSAY_PROJECT_ROOT"] = str(self.root)
+        base_env["SPECASSAY_CONFIG"] = str(self._config)
+        for key, value in (env or {}).items():
+            if value is None:
+                base_env.pop(key, None)
+            else:
+                base_env[key] = value
+        env = base_env
         proc = subprocess.run(
             ["bash", str(SCRIPT), *(args or [])],
             cwd=self.root,

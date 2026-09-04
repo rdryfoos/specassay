@@ -18,8 +18,9 @@ $ARGUMENTS
 ## Steps
 
 1. Confirm `.specify/extensions/specassay-check/specassay-check-config.yml`
-   exists (copy from `config-template.yml` if missing) and its `registry`
-   field points at this project's registry file.
+   exists and its `registry` field points at this project's registry file.
+   If it is missing, the script says so and prints the `cp` command that
+   scaffolds it from `config-template.yml`; run that once.
 2. **If the registry file itself does not exist yet** (first mint in a new
    project): create it empty (`touch <registry-path>`). The first mint
    below will fall back to a plain `- ID — statement` line style since

@@ -13,8 +13,9 @@ code; the feedback we want is your impressions.
 ## What you need
 
 - A GitHub repo with Actions enabled, where real PRs happen.
-- Spec Kit 0.14 or newer with any agent integration; bash; python3 3.8
-  or newer.
+- Spec Kit 0.14 or newer with any agent integration; bash (macOS, Linux,
+  or Git Bash/WSL on Windows); Python 3.8 or newer, found as `python3` or
+  `python`.
 - Requirements written as acceptance criteria while you build (stock
   Spec Kit flow).
 

@@ -33,6 +33,12 @@ $ARGUMENTS
    python3 <path-to-specassay>/extensions/specassay-check/scripts/dig.py $ARGUMENTS
    ```
 
+   Where `python3` is not on PATH (Windows Git Bash usually has only `python`), use:
+
+   ```sh
+   python <path-to-specassay>/extensions/specassay-check/scripts/dig.py $ARGUMENTS
+   ```
+
    Once installed via the extension's scaffold, the shipped copy lives at
    `.specify/extensions/specassay-check/scripts/dig.py`.
 
