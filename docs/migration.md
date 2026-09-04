@@ -79,9 +79,13 @@ update specassay-check` after the same cache clear also works but prompts
 For a git-clone install, pull the tag and re-add with `--force`:
 
 ```bash
-git -C /path/to/specassay fetch --tags && git -C /path/to/specassay checkout v0.4.13
+git -C /path/to/specassay fetch --tags
+git -C /path/to/specassay checkout "$(git -C /path/to/specassay describe --tags --abbrev=0 origin/main)"
 specify extension add --dev /path/to/specassay/extensions/specassay-check --force
 ```
+
+The second line checks out the newest tag reachable from `main`, so the
+snippet does not name a version and does not go stale.
 
 ## 4. The raw catalog URL lags a push by up to five minutes
 

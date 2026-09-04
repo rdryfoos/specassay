@@ -102,7 +102,8 @@ https://github.com/rdryfoos/specassay/blob/main/CHANGELOG.md
 
 ```bash
 # Install extension
-specify extension add specassay-check --from https://github.com/rdryfoos/specassay/releases/download/v0.4.13/specassay-check-0.4.13.zip
+specify extension add specassay-check --from https://github.com/rdryfoos/specassay/releases/latest/download/specassay-check.zip
+# (version-agnostic: redirects to the newest release; the CLI asks once to confirm a URL install)
 
 # Use the command (in your integration, e.g. Claude)
 /speckit.specassay-check.gate

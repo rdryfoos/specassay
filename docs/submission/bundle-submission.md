@@ -115,8 +115,9 @@ specify bundle catalog add --id specassay --policy install-allowed \
 specify bundle install specassay
 
 # Or install the downloaded artifact directly
-curl -L -o specassay-0.4.13.zip https://github.com/rdryfoos/specassay/releases/download/v0.4.13/specassay-0.4.13.zip
-specify bundle install ./specassay-0.4.13.zip
+curl -L -o specassay.zip https://github.com/rdryfoos/specassay/releases/latest/download/specassay.zip
+specify bundle install ./specassay.zip
+# (version-agnostic: redirects to the newest release; needs the two component catalogs above, install-allowed, because a bundle resolves its components through them)
 ```
 
 **Proposed Catalog Entry:**

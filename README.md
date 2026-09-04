@@ -160,6 +160,17 @@ Passing doesn't mean nothing's wrong; it means nothing's *hidden*.
 
 *This quickstart is `FR-DOCS-10` in this repo's own registry — see [`PRD.md`](./PRD.md).*
 
+**Direct download path (no catalogs):** both URLs redirect to the newest release, so they never go stale.
+
+```bash
+specify extension add specassay-check \
+  --from https://github.com/rdryfoos/specassay/releases/latest/download/specassay-check.zip
+specify preset add \
+  --from https://github.com/rdryfoos/specassay/releases/latest/download/specassay-preset.zip
+```
+
+The CLI asks once to confirm each URL install. Verified 2026-09-04 in a clean project: both report v0.4.13, and the extension install scaffolds the config.
+
 **Dev path:**
 
 ```bash

@@ -60,6 +60,15 @@ jobs:
           PRE_V=$(grep -m1 '  version:' presets/specassay/preset.yml | sed 's/.*"\(.*\)"/\1/')
           (cd extensions/specassay-check && zip -qr "$GITHUB_WORKSPACE/dist/specassay-check-${EXT_V}.zip" .)
           (cd presets/specassay && zip -qr "$GITHUB_WORKSPACE/dist/specassay-preset-${PRE_V}.zip" .)
+          # Unversioned aliases (added 2026-09-04): byte-identical copies so
+          # https://github.com/<repo>/releases/latest/download/<name>.zip
+          # always resolves to the newest release. Docs and install commands
+          # point at these; the catalogs keep the versioned names because a
+          # catalog entry pins a version by design.
+          BUNDLE_V=$(grep -m1 '  version:' bundle.yml | sed 's/.*"\(.*\)"/\1/')
+          cp "dist/specassay-${BUNDLE_V}.zip" dist/specassay.zip
+          cp "dist/specassay-check-${EXT_V}.zip" dist/specassay-check.zip
+          cp "dist/specassay-preset-${PRE_V}.zip" dist/specassay-preset.zip
           ls -la dist/
 
       - name: Publish the release
