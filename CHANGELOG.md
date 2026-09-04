@@ -3,12 +3,19 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
-## Unreleased
+## 0.4.13 (2026-09-04)
 
-Cold-install findings from the first Windows tester on record (2026-09-03:
-senior engineer, Git Bash, no Spec Kit experience, brownfield repo with
-specs under `docs/**`), fixed in the order he hit them. `FR-GATE-100`,
-`T920`.
+Two threads in one release. First, the cold-install findings from the
+first Windows tester on record (2026-09-03: senior engineer, Git Bash, no
+Spec Kit experience, brownfield repo with specs under `docs/**`), fixed in
+the order he hit them (`FR-GATE-100`, `T920`). Second, everything that
+landed on `main` between the 0.4.12 tag and this one without a release:
+five Gate features and the whole `dig` command, all registry-governed
+(`PRD.md`) and each proven by named tests in the engine's own suite,
+which grew from 27 tests to 81. All three components move to 0.4.13
+together, per the versioning law recorded under 0.3.3.
+
+### Cold install (2026-09-03)
 
 - **Green on an empty registry now says what to do next.** `OK (0 registry
   IDs)` was correct and taught nothing. The Gate still exits 0, but states
@@ -43,6 +50,61 @@ specs under `docs/**`), fixed in the order he hit them. `FR-GATE-100`,
   `dig.py` since 2026-08-22 but never minted into `PRD.md`, which kept
   this repo's own Self Gate red from 2026-08-23. Registered now, marked as
   coverage registered rather than newly attributed.
+
+### Gate features shipped since 0.4.12 (all 2026-08-21 and 2026-08-22)
+
+- **`--matrix` (`FR-GATE-10`, `T905`).** Writes `coverage.md` and
+  `coverage.svg` from the same run's already-computed rows: a summary
+  table, per-type sections, a generated-file banner, family status colors
+  in canonical order, the manifest's own `generatedAt` as visible text.
+  Never a second scan, never a second viewer. New command
+  `speckit.specassay-check.matrix`.
+- **`--portfolio` (`FR-GATE-20`, `T906`).** Writes `portfolio-snapshot.md`
+  for a cold reader with zero context: plain-prose opening, no CI banner,
+  scoped explicitly to this one repo's registry. Shares `coverage.svg`
+  with `--matrix`. New command `speckit.specassay-check.portfolio`.
+- **`retired`, a genuine fifth status (`FR-GATE-30`, `T907`).** Derives
+  only from an explicit, dated, reasoned `**Retires**: <ids> (YYYY-MM-DD):
+  reason` record on an open task; there is no settable field. In
+  `trace-manifest.json` (v4, frozen at four values) a retired row leaves
+  `rows[]` for a top-level `retired: [{id, date, reason}]` list; in
+  `trace-manifest.v5beta.json` it is a normal fifth row status. A
+  malformed record refuses before any scanning, no manifest written.
+- **`proofs[]` inherits execution-verified filtering (`FR-GATE-80`,
+  `T914`).** With `test_results` configured, a test name that matches
+  only inside a comment no longer appears in an ID's `proofs[]`; the same
+  filter `status_for()` already applied, now at the second call site.
+- **Parentage (`FR-GATE-90`, `T915`).** Opt-in `parent_derivation:
+  heading-nesting` derives a `parent` edge per row from the registry
+  document's own heading and list nesting, never from ID naming. Every row
+  with descendants carries a composition rollup over its whole subtree at
+  any depth, with a total row count. v5beta only. Dogfooded here: turning
+  it on caught real mis-nesting in this repo's own `PRD.md`.
+
+### `specassay dig`: archaeology mode, the no-LLM floor (`T916` to `T919`)
+
+- New command `speckit.specassay-check.dig` (`scripts/dig.py`, pure
+  Python, no dependencies, no LLM, no `--anoint` flag by law). Points at
+  any repo, SpecAssay-governed or not, and writes `dig-report.json` in
+  the operator's own current directory: a first-pass candidate registry
+  from test names and bodies, routes, README and `docs/*.md` prose and
+  tables, and recent commit history. Every row is `epistemicClass:
+  "inferred"` with a `provenance` file and line; nothing it writes is
+  ever registered, covered, or gated.
+- Level two (`T917`): README table mining recovers spec/scenario/test
+  tables completely; `candidateProof` first-class on every row; known
+  framework smoke tests labeled low confidence with a reason.
+- Level three (`T918`): `candidateBuild` per row from the proof test's own
+  project-package imports, resolved to real declaration files; Java and
+  Python import shapes both dogfooded against real repos.
+- Structure emission (`T919`): stable `rowId` per row and a
+  `candidateParent` list with basis `"table-adjacency"`.
+- Reference output from a real target: `samples/insurance-java.dig-report.json`.
+
+### Catalog correction
+
+- `catalogs/extensions.json` said the extension provides 2 commands; it
+  has provided 5 since dig, matrix, and portfolio shipped. Corrected.
 
 ## 0.4.12 — 2026-08-20
 
