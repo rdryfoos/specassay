@@ -77,3 +77,38 @@ still unresolved), and the commit that closed it.
    "Install in 20 minutes" framing (and the `specassay.com` CTA of the
    same name) implicitly assumes a fast, unattended run. Worth a line
    somewhere naming the friction, or softening the claim.
+
+7. **Inputs for ONBOARD.md, from the 2026-09-03 and 2026-09-04
+   commissions.** No onboarding doc exists yet; when its commission runs,
+   these are the facts it inherits, each verified in a clean `specify init`
+   project and recorded in `docs/submission/test-evidence.md` (v0.4.13) or
+   `extensions/specassay-check/README.md`:
+   - `specify bundle install specassay` (the README's catalog path) does
+     **not** scaffold `specassay-check-config.yml`; `specify extension add`
+     does. The Gate's first lines say which state you are in and print the
+     one `cp` command that fixes it. The onboarding doc should tell readers
+     to read those three lines before anything else, and never claim the
+     config "was scaffolded on install" without saying by which command.
+   - Green on an empty registry is the first thing a cold installer sees,
+     and it means nothing. Onboarding starts from "you are green and it
+     proves nothing" and walks to the first honest red; red is the
+     tutorial, not the failure case.
+   - Brownfield is the more common first state (existing docs, no IDs).
+     The on-ramp is "point `registry:` at the doc you already have, or
+     mint one ID that cites it", never backfill. Say that before the
+     greenfield story. `dig` is not the first instruction for that reader
+     until `FR-DIG-80/90/100` ship (`T921`).
+   - Every step's output belongs in the doc verbatim; readers compare
+     their screen to the page. The exact refusal after the first mint and
+     the exact status after each way of clearing it are the lesson.
+   - The status ladder for one ID, as a table: open task alone is
+     `backlog`; add a spec and it is `tracked-debt`; add the named test and
+     it is `proven`; spec and test with no task is a refusal. Verified
+     2026-09-03 by running all four.
+   - The upgrade command is two lines and the first is not optional
+     (`docs/migration.md`, "The upgrade command that works"); the raw
+     catalog URL lags a push by up to five minutes (friction 4).
+   - Prerequisites and platforms as the root README's "Before you install"
+     now states them: Spec Kit first, three installs by design, macOS and
+     Linux first-class, Windows under Git Bash or WSL, Python found as
+     `python3` or `python`.
