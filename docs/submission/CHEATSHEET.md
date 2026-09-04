@@ -78,6 +78,21 @@ anything — unzip and check, don't trust the source tree: that's how
 round 3's stale file was finally caught, after three prior sweeps had
 all missed it by reading the source tree instead of the artifact.
 
+**Then the site, same day.** specassay.com's hero CTA ("Install in 20
+minutes") pins to the tagged README: one `href` in
+`sites/specassay/src/index.html` in `dryfoos-sites`, of the form
+`blob/v0.4.13/README.md#install-catalog-path`. Policy (dryfoos-sites
+`5a0d718`, reaffirmed 2026-09-04): the pin is a tag, never `main` and
+never the `latest` alias, so the page's install promise names the exact
+bits the cold install verified. Bump it once the tag is public and the
+wall has passed: confirm the anchor resolves at the new ref (`curl -sL
+https://github.com/rdryfoos/specassay/blob/v0.4.13/README.md | grep -c
+install-catalog-path`, nonzero), edit the one href, `python3
+press/press.py specassay`, `node tools/smoke.mjs specassay`, commit. The
+site's own CI runs its em-dash and US-English lints. Taught by: v0.4.13,
+when the site sat on the v0.4.12 README for the hours between the tag
+going public and this step existing.
+
 ## v0.4.13 cut, 2026-09-04; filing not yet done
 
 Tag `v0.4.13` at `105c4845f8ae88f1af361d56c0de458089b50fad`, release
@@ -90,6 +105,10 @@ published zips were unzipped and checked, digests verified three ways,
 and the upgrade from a real v0.4.12 catalog install was run and recorded
 (`docs/submission/test-evidence.md`). The three paste-from docs are
 regenerated at 0.4.13 with the real digests.
+
+**Site pin bumped 2026-09-04:** specassay.com's hero CTA moved from the
+v0.4.12 README to v0.4.13 (dryfoos-sites `2a72872`), anchor verified live
+at the tag. The step is now written into the sweep above.
 
 **Signpost repaired 2026-09-04, same day:** one direct PR against all
 three community catalog files, [github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448),
