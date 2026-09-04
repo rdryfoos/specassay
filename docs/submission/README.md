@@ -1,6 +1,6 @@
 # Submission package — status and checklist
 
-**v0.4.13 released 2026-09-04, not yet filed.** Release, digests, and the
+**v0.4.13 released 2026-09-04. Catalog pointer PR open upstream: [github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448) (all three entries, one PR, because the bundle pins its components). Submission-form issues with the narrative not yet filed.** Release, digests, and the
 regenerated paste-from docs are ready; the three update issues are the
 human step (see the cheat sheet's "v0.4.13 cut" section). v0.4.12 is the
 version Spec Kit's community catalog currently carries (#4254, #4256,
@@ -25,7 +25,7 @@ catalog entry and URLs (3–7 business days; they do not audit code).
 | Item | Where | Verified |
 | --- | --- | --- |
 | `bundle.yml` / `extension.yml` / `preset.yml` manifests | repo root, `extensions/specassay-check/`, `presets/specassay/` | `specify bundle validate` ✓ |
-| Versioned release with the `specify bundle build` artifact | [v0.3.4](https://github.com/rdryfoos/specassay/releases/tag/v0.3.4): `specassay-0.3.4.zip` + component packs | built in CI by the real CLI |
+| Versioned release with the `specify bundle build` artifact | [latest release](https://github.com/rdryfoos/specassay/releases/latest) (v0.4.13 as of 2026-09-04): `specassay-0.3.4.zip` + component packs | built in CI by the real CLI |
 | Hosted catalogs with live download URLs | [`catalogs/*.json`](https://github.com/rdryfoos/specassay/tree/main/catalogs) | assets download and install ✓ |
 | Clean-project install, end to end, by bundle ID | — | [test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md) |
 | LICENSE (MIT) · README · CHANGELOG | repo root | — |

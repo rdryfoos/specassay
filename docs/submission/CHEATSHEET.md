@@ -91,6 +91,21 @@ and the upgrade from a real v0.4.12 catalog install was run and recorded
 (`docs/submission/test-evidence.md`). The three paste-from docs are
 regenerated at 0.4.13 with the real digests.
 
+**Signpost repaired 2026-09-04, same day:** one direct PR against all
+three community catalog files, [github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448),
+bumping `version`, `download_url`, `updated_at`, and the extension's
+`provides.commands` (2 to 5), exactly the fields the bot-generated
+#4254/#4256/#4257 changed. One PR rather than three because the bundle
+pins its component versions and a partial bump breaks `bundle install`
+resolution. The extension and bundle guides document the issue route for
+updates; if a maintainer redirects, the three paste-from docs are already
+at 0.4.13 and the issues become the fallback. Also new this day:
+unversioned release aliases (`specassay.zip`, `specassay-check.zip`,
+`specassay-preset.zip`) so `releases/latest/download/<name>.zip` always
+resolves; every community-facing install link now uses one, and
+`release.yml` publishes them automatically. Catalog `download_url`s stay
+versioned on purpose.
+
 **Still to do, by a human:** file the three new issues, in this order,
 each naming its 0.4.12 predecessor: extension (updates #4252, merged as
 #4254), preset (updates #4253, merged as #4256; the issue route worked for
