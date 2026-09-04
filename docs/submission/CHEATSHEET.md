@@ -78,6 +78,16 @@ anything — unzip and check, don't trust the source tree: that's how
 round 3's stale file was finally caught, after three prior sweeps had
 all missed it by reading the source tree instead of the artifact.
 
+Two more fields ride in the same sweep, learned 2026-09-04. (1) The
+`requires.speckit_version` claim lives in six places (the three manifests,
+the three `catalogs/*.json`) plus the three paste-from docs, and
+`build-release.sh` compares versions only, never this field: change it in
+the manifests first, and the catalogs and paste-from docs follow at the
+cut, so a catalog never claims a range the zip inside does not. (2) Every
+test-evidence entry names the `specify --version` it ran on, in its first
+paragraph; an entry that does not is not evidence of compatibility with
+anything.
+
 **Then the site, same day.** specassay.com's hero CTA ("Install in 20
 minutes") pins to the tagged README: one `href` in
 `sites/specassay/src/index.html` in `dryfoos-sites`, of the form

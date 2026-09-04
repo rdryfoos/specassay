@@ -81,6 +81,8 @@ Bundle id: `specassay`.
 
 **Supported platforms.** macOS and Linux are first-class and are where every command in these docs is verified. Windows requires a bash environment: Git Bash or WSL. The Gate is a bash script, and it calls Python 3.8 or newer as `python3` or `python`, whichever your machine has (first Windows run on record: 2026-09-03, Git Bash, worked once the interpreter fallback landed). PowerShell alone is not supported.
 
+**Spec Kit versions this release is verified on:** 0.14.0, 0.15.3.dev0, and 1.0.4 (install by catalog and by direct download, Gate, mint, refusal, upgrade from v0.4.12; `docs/submission/test-evidence.md`, 2026-09-04). The manifests require `>=0.14.0,<2.0.0`.
+
 ## Install (catalog path)
 
 <!-- @covers FR-DOCS-10 -->
@@ -104,7 +106,7 @@ specify bundle catalog add \
 specify bundle install specassay
 ```
 
-`specify extension add` scaffolds `.specify/extensions/specassay-check/specassay-check-config.yml` from the bundled template; `specify bundle install` (the path above) does not (verified 2026-09-04, Spec Kit 0.15.3.dev0). Either way you never have to check by hand: every Gate run prints its own state on its first lines, either
+`specify extension add` scaffolds `.specify/extensions/specassay-check/specassay-check-config.yml` from the bundled template. Whether `specify bundle install` (the path above) does depends on your Spec Kit: 0.15.3.dev0 did not, 1.0.4 does (github/spec-kit#4285, shipped in 1.0.3; both verified 2026-09-04). Either way you never have to check by hand: every Gate run prints its own state on its first lines, either
 
 ```text
   config: .specify/extensions/specassay-check/specassay-check-config.yml (from specassay-check-config.yml)

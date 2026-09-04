@@ -3,6 +3,21 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## Unreleased
+
+- **Compatibility claim names what is proven.** `requires.speckit_version`
+  moves from `>=0.14.0` to `>=0.14.0,<2.0.0` in all three manifests, after
+  v0.4.13 was run end to end on Spec Kit 1.0.4 (install by catalog and by
+  direct download, Gate, mint, refusal, upgrade from v0.4.12;
+  `docs/submission/test-evidence.md`). The upper bound is the major line,
+  not the last patch tested: Spec Kit enforces this field as a hard
+  install refusal and shipped three patches in three days this week, so a
+  literal `<=1.0.4` would refuse every adopter on the next one. Catalogs
+  and paste-from docs follow at the cut.
+- **README:** `specify bundle install` scaffolds the config on Spec Kit
+  1.0.3 and later (github/spec-kit#4285); the README said it never did,
+  which was true of 0.15.3.dev0 only.
+
 ## 0.4.13 (2026-09-04)
 
 Two threads in one release. First, the cold-install findings from the

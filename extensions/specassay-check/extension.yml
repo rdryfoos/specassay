@@ -13,7 +13,7 @@ extension:
   repository: "https://github.com/rdryfoos/specassay"
 
 requires:
-  speckit_version: ">=0.14.0"
+  speckit_version: ">=0.14.0,<2.0.0"
   # The Gate is a shell script; the Thread Report is Python, standard library
   # only. 3.8 is the floor we support and test against (the code itself parses
   # on 3.7, so the constraint is deliberately conservative).

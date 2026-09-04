@@ -11,7 +11,7 @@ preset:
   repository: "https://github.com/rdryfoos/specassay"
 
 requires:
-  speckit_version: ">=0.14.0"
+  speckit_version: ">=0.14.0,<2.0.0"
 
 provides:
   templates:
