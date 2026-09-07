@@ -44,9 +44,8 @@ catalog entry and URLs (3–7 business days; they do not audit code).
    - Templates: <https://github.com/github/spec-kit/issues/new/choose>
    - The form's checkboxes are all honestly tickable; the evidence for each
      is in [test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md).
-4. Optional cleanup: delete releases v0.1.0/v0.2.0 (pre-rename `clewseau-*`
-   asset names) and v0.3.0 (pre-namespace-fix command). Nothing references
-   them.
+4. Done: the pre-rename releases (v0.1.0, v0.2.0) and the pre-namespace-fix
+   v0.3.0 have been deleted. The public release list starts at v0.3.1.
 
 ## Cutting the next release 🔁
 

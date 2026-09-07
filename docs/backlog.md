@@ -95,11 +95,11 @@ for the full shape. Kept below as the incident record this design was
 built from, not rewritten to match the shipped form retroactively.
 
 **From:** HomesFlow — the family's first intent retirement (US/FR/AC-CLEW-01,
-the Clewseau cold-agent trial slice, 2026-08-18).
+the cold-agent trial slice, 2026-08-18).
 
 **What happened:** the trial concluded without ever getting a real carrier —
 no `@covers`, no passing test — because the thing it was probing (that a
-stock Spec Kit + Clewseau agent could take one AC end-to-end) was answered by
+stock Spec Kit + SpecAssay agent could take one AC end-to-end) was answered by
 running the trial itself, not by shipping `HomeDisplayName.normalized(_:)`.
 Closing the single task that had been carrying the three IDs as tracked-debt
 (`T900`) immediately flipped `AC-CLEW-01` to `GAP` under both the vendored

@@ -1,6 +1,6 @@
 """FR-GATE-30, AC-GATE-30: retired is a genuine fifth status, derived only
 from an explicit, dated, reasoned **Retires** record -- never a settable
-status field. Citing incident: HomesFlow's US/FR/AC-CLEW-01 (the Clewseau
+status field. Citing incident: HomesFlow's US/FR/AC-CLEW-01 (the
 cold-agent trial slice, 2026-08-18), hand-improvised with a tombstone
 comment before this feature existed -- see docs/backlog.md's "Pattern
 candidate" section for the full incident this design is built from.
@@ -22,7 +22,7 @@ def test_AC_GATE_30b_retired_id_leaves_v4_rows_and_gains_top_level_entry(project
     )
     project.write(
         "specs/backlog/tasks.md",
-        "- [ ] T900 Clewseau retirement carrier — **Carries**: AC-CLEW-01 "
+        "- [ ] T900 CLEW retirement carrier — **Carries**: AC-CLEW-01 "
         "**Retires**: AC-CLEW-01 (2026-08-18): cold-agent probe concluded; "
         "tooling archived at tag clew-era-final.\n",
     )
