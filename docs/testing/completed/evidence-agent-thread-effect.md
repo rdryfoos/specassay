@@ -103,6 +103,8 @@ The limits are the credibility. All of them:
 - **Agents, not humans.** This says nothing about whether the thread helps people, which was never in doubt and was never tested here.
 - **A known imperfection, left in.** One manifest row in the threaded arm cites a path that had moved. It was found mid-battery and deliberately **not** patched, because the protocol was frozen and patching would have broken poolability. It biases against the threaded arm, which is the safe direction.
 
+**The narrative version**, written for a general audience rather than this one, is Field Note 05 on dryfoos.com: [**Fluent and Wrong**](https://dryfoos.com/field-notes/fluent-and-wrong/).
+
 ## Where the records are
 
 Held in the experiment room, not in this repository: the pre-registered protocol, four dated amendments, five recorded caveats, the sealed holdout terms, the frozen rubrics and hidden tests, every run directory with transcript and diff and oracle output, and the analysis scripts that regenerate every number above from those records. `RESULTS-final.md` is the consolidation; `APPENDIX-reviewer-clustering.md` is Result 4 in full.
