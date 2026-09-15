@@ -10,9 +10,9 @@ excused from the silent-gap check while the TODO stays open.
 - [x] T002 Queue edits locally while offline and apply them optimistically — **Carries**: AC-OFFL-01
 - [x] T013 Keyboard reachability + assistive-tech announcements for list actions — **Carries**: AC-A11Y-01
 
-## Tracked debt
+## Completed (this PR)
 
-- [ ] T005 Field-level merge test for disjoint edits — **Carries**: AC-SYNC-02 — deferred to the sync milestone
+- [x] T005 Field-level merge test for disjoint edits — **Carries**: AC-SYNC-02
 
 ## Planning altitude (backlog — referenced so the registry set stays closed)
 
