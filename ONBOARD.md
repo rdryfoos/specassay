@@ -1,4 +1,6 @@
-# SpecAssay quickstart — rung one: see a Thread Report
+# SpecAssay Quickstart
+
+## step one: see a Thread Report
 
 <!-- @covers FR-DOCS-60 -->
 
@@ -59,7 +61,7 @@ You need four things. Block 1 checks three of them; the fourth is your account.
 
 You run every block below in your terminal — inside a Claude Code session or in a
 plain shell, your choice. Nothing here needs Claude Code to *do* anything for you
-yet; rung one is you driving the tools by hand, so you can see what each one
+yet; step one is you driving the tools by hand, so you can see what each one
 actually does.
 
 ---
@@ -610,8 +612,8 @@ The Thread Report turned that file into a briefing about one change: what moved
 on the thread, and what changed alongside it that nothing on the thread accounts
 for.
 
-**The next rung.** This page is rung one — see a Thread Report on a toy project
-you built in a sitting; rung two raises a full governed estate, a real repository
+**The next step.** This page is step one, see a Thread Report on a toy project
+you built in a sitting; step two raises a full governed estate, a real repository
 under the thread with the orchestration layer driving it, and lands when its own
 trial completes.
 
