@@ -112,3 +112,42 @@ still unresolved), and the commit that closed it.
      now states them: Spec Kit first, three installs by design, macOS and
      Linux first-class, Windows under Git Bash or WSL, Python found as
      `python3` or `python`.
+
+   **Resolved 2026-09-15** by `ONBOARD.md` (rung one of the onboarding
+   ladder: blank session to a first Thread Report in one short sitting).
+   Every input above is carried: the Gate's own three setup lines are what
+   the reader is told to read first; empty-green opens the walk and says it
+   proves nothing; the brownfield first move is stated before the reader
+   mints anything of their own; every receipt is that run's real output;
+   the status ladder appears as a table, all five lines re-run and verified
+   the same day. Two inputs are deliberately not carried: the upgrade
+   command (rung one installs cold, it never upgrades) and `dig` (still
+   not the first instruction for a brownfield reader). The whole document
+   was verified by extracting its own paste-blocks and running them in
+   order in a clean project, against SpecAssay v0.4.13 and Spec Kit v1.0.4.
+   It quotes no duration: no cold operator has produced a measured one yet,
+   and the document asks its first one for it.
+
+8. **`thread-report.py` mangles dotted paths.** `norm()` is
+   `p.lstrip("./")`, which strips *characters*, not a prefix, so any path
+   whose first segment starts with a dot loses it: a changed `.gitignore`
+   renders in the Off Thread list as `gitignore`, and
+   `.github/workflows/ci.yml` would render as `github/workflows/ci.yml`.
+   Found 2026-09-15 while writing `ONBOARD.md`, in a real report from the
+   tour project (the quickstart now commits `.gitignore` before the
+   comparison point, so the tour never displays it). Display is the visible
+   half; the same normalization feeds on-thread/off-thread matching, so a
+   dotfile governed by a `specs`/`tasks` glob could bucket wrong too. Open:
+   the fix is a prefix strip (`p[2:] if p.startswith("./") else p`), and it
+   wants a named test before it lands.
+
+9. **The agent commands are `/speckit-specassay-check-gate`, not
+   `speckit.specassay-check.gate`, for a Claude Code install.** The root
+   README and the extension README both spell the commands with dots. On
+   Spec Kit 1.0.4 with `--integration claude`, `specify bundle install`
+   writes them as Claude Code *skills* at
+   `.claude/skills/speckit-specassay-check-{gate,mint,matrix,portfolio,dig}/SKILL.md`,
+   and that hyphenated name is what the reader can actually type. Found
+   2026-09-15 in the `ONBOARD.md` verification run. Open: the dotted form
+   may still be right for other integrations, so this needs one line saying
+   the spelling follows your agent, not a blanket find-and-replace.
