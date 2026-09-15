@@ -25,12 +25,16 @@ tasks: "specs/**/tasks.md"
 # citation apart from a real local claim (docs/docs-gaps.md). FR-GATE-40
 # fixed the engine (domain-scoping + code-span/fence stripping); this line
 # is that fix's own build, restoring docs/** here as promised.
+# ONBOARD.md joined the list 2026-09-15, when the onboarding quickstart was
+# written: it is documentation this registry governs, same as README.md, and
+# it carries a real coverage mark that only counts if this list scans it.
 # @covers FR-DOCS-50
 src_globs:
   - "extensions/**"
   - "presets/**"
   - "docs/**"
   - "README.md"
+  - "ONBOARD.md"
   - "PROMOTION-CONTRACT.md"
   - "specassay-check-config.yml"
 

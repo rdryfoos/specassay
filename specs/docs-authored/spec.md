@@ -36,3 +36,16 @@ written; this spec is where the ID lands once it has.
   which predate this registry and aren't IDs in it) — so this FR's
   citation discipline applies to what this registry actually tracks, not
   a claim that every sentence in every doc now cites something.
+- FR-DOCS-60 — Onboarding ladder rung one. Shipped 2026-09-15 as `ONBOARD.md`:
+  twelve paste-blocks, each ending in a "You should now see" receipt, walking a
+  blank Claude Code session to a first Thread Report on a throwaway project —
+  install pinned, Gate an empty registry, mint one promise, clear the red two
+  ways, build and prove it, break it on purpose, fix it, read the report, open
+  Loupe. The refusal happens inside the sitting: block 9 renames the proof so
+  the test suite stays green while the Gate refuses, which is the gilt this
+  tool exists to catch, on a thread the reader minted themselves. Verified by
+  extracting the document's own paste-blocks and running them in order in a
+  clean project against SpecAssay v0.4.13 and Spec Kit v1.0.4; every quoted
+  receipt is that run's real output. Distinct from `FR-DOCS-10`, which stays
+  the README's install quickstart and keeps its own carrier there — one ID,
+  one carrier.

@@ -77,6 +77,8 @@ Bundle id: `specassay`.
 
 ## Before you install
 
+**Want to be walked through it once, on a toy project?** [`ONBOARD.md`](./ONBOARD.md) is the quickstart in paste-blocks: a blank session to a first Thread Report in one short sitting, pinned to the versions it was verified against, with the Gate's refusal demonstrated on purpose rather than described. This page is the reference; that one is the walk.
+
 **New to Spec Kit?** Start with the official [Spec Kit README](https://github.com/github/spec-kit#readme), get one `specify init` project working, then come back here. SpecAssay assumes that vocabulary (spec, plan, tasks, implement) and adds to it.
 
 **Three installs, each doing one job.** SpecAssay rides on Spec Kit, and Spec Kit installs through [uv](https://docs.astral.sh/uv/). So a cold machine does three installs, roughly ten minutes end to end: uv fetches Python tools, Spec Kit runs the spec-driven workflow, SpecAssay adds the Gate. That chain is by design, not an accident of packaging; none of the three does the others' work.
