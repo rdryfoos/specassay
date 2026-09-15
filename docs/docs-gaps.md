@@ -151,3 +151,27 @@ still unresolved), and the commit that closed it.
    2026-09-15 in the `ONBOARD.md` verification run. Open: the dotted form
    may still be right for other integrations, so this needs one line saying
    the spelling follows your agent, not a blanket find-and-replace.
+
+10. **The Gate's own CI filter did not cover the docs the Gate reads.**
+    `.github/workflows/self-gate.yml`'s `pull_request` trigger was
+    path-filtered to `PRD.md`, `specs/**`, `extensions/specassay-check/**`,
+    `presets/specassay/**`, and `specassay-check-config.yml`. None of the
+    four documentation paths in this repo's own `src_globs` was listed:
+    `README.md`, `ONBOARD.md`, `docs/**`, `PROMOTION-CONTRACT.md`. Those
+    files are scanned for live `@covers` marks, so a docs-only PR could
+    orphan a mark or remove a row's last carrier and still show green
+    checks at review time; the refusal would land only after merge, on the
+    unfiltered `push` trigger. Found 2026-09-15 on PR #7: it changed only
+    `ONBOARD.md`, no Self Gate run was created for its head, and the only
+    status on the PR was a review bot's skip. PR #8, the title-and-sweep
+    change, went through the same hole the same day. The irony is the
+    point: this repo's own README says CI is the property line, and the
+    property line had a gate on the driveway and none on the footpath.
+    Resolved: the four paths added to the filter, verified by the Gate
+    running at PR time on the very PR that adds them (it touches
+    `docs/**`). The `push` trigger stays unfiltered, so `main` was never
+    unprotected. Not closed by this: `.github/workflows/self-gate.yml`
+    itself is still absent from its own filter, so a change to the Gate's
+    CI wiring gets no PR-time Gate run either. Left open on purpose, as a
+    separate ruling about what should re-run the Gate rather than a fifth
+    line smuggled into a docs fix.
