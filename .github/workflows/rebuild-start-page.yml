@@ -15,6 +15,14 @@ name: Rebuild specassay.com/start
 # one more line under paths when its room asks for it.
 
 on:
+  # Run it by hand. The wiring is only provable by pinging the real hook, and
+  # without this the only trigger is an ONBOARD.md change reaching main, so the
+  # mechanism could sit untested until content happened to move, and a wrong or
+  # missing secret would surface on a day nobody chose. This is also how you
+  # re-run it after fixing the secret, with no new commit.
+  #
+  # Not a dry run: it pings the same hook and rebuilds the production page.
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
