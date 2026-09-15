@@ -660,6 +660,12 @@ CLI too, if you would rather end where you started.
 *This walkthrough is `FR-DOCS-60` in this repository's own registry: see
 [`PRD.md`](./PRD.md).*
 
+*It is also published as a web page at
+[www.specassay.com/start](https://www.specassay.com/start), which
+is rendered from this file at whatever commit `main` carries. That page holds no
+copy of these words: this file is the source, so corrections belong here and
+reach the page on its next build.*
+
 *Next, when you want the full reference rather than a walkthrough: the
 [README](./README.md) for what SpecAssay is and how it installs into a real
 project, [`PROMOTION-CONTRACT.md`](./PROMOTION-CONTRACT.md) for the rules the Gate
