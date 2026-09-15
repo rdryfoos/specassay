@@ -103,6 +103,16 @@ site's own CI runs its em-dash and US-English lints. Taught by: v0.4.13,
 when the site sat on the v0.4.12 README for the hours between the tag
 going public and this step existing.
 
+**Not a step of the sweep: specassay.com/start.** That page renders
+`ONBOARD.md` at build time, and since 2026-09-15 a push to `main` that
+touches `ONBOARD.md` pings the sites room's Vercel deploy hook by itself
+(`.github/workflows/rebuild-start-page.yml`, secret
+`VERCEL_DEPLOY_HOOK_START`). Do not add a manual rebuild for it here; if
+that page ever looks stale, read that workflow's run for the release
+rather than rebuilding by hand and leaving the cause in place. The hero
+pin above stays manual on purpose: it names a tag, which only a human cut
+decides.
+
 ## v0.4.13 cut, 2026-09-04; filing not yet done
 
 Tag `v0.4.13` at `105c4845f8ae88f1af361d56c0de458089b50fad`, release

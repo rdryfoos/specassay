@@ -1,0 +1,73 @@
+name: Rebuild specassay.com/start
+
+# Cross-estate freshness (2026-09-15, Rik's order). specassay.com/start renders
+# ONBOARD.md at build time, in the sites room's repo, so a merge here changes
+# what the page *should* say while the published page still says the old thing
+# until something rebuilds it. This is that something: one POST to a Vercel
+# deploy hook the sites room owns.
+#
+# The hook URL is a secret (VERCEL_DEPLOY_HOOK_START), never a literal in this
+# file: a deploy hook needs no auth header, so the URL *is* the credential, and
+# anyone holding it can trigger builds of that project at will.
+#
+# Scope is deliberately narrow: only a push to main that touches ONBOARD.md.
+# Other pages the sites room builds from this repo are not wired here; each is
+# one more line under paths when its room asks for it.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ONBOARD.md"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rebuild-start-page
+  cancel-in-progress: false
+
+jobs:
+  ping-deploy-hook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the sites room's deploy hook
+        env:
+          HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_START }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${HOOK_URL:-}" ]; then
+            echo "FAIL: no VERCEL_DEPLOY_HOOK_START secret is set in this repository."
+            echo "  ONBOARD.md changed on main, so specassay.com/start is now stale:"
+            echo "  the page renders this file at build time and nothing rebuilt it."
+            echo "  Fix: the sites room creates the Vercel deploy hook for that"
+            echo "  project and the URL is added here as the repository secret"
+            echo "  VERCEL_DEPLOY_HOOK_START (Settings > Secrets and variables >"
+            echo "  Actions). Then re-run this job; no new commit is needed."
+            exit 1
+          fi
+
+          # Three attempts, because a network blip should not read as a stale
+          # page. The URL is never echoed: it is the credential.
+          for attempt in 1 2 3; do
+            code="$(curl -sS -o /tmp/hook-response.txt -w '%{http_code}' \
+                      --max-time 30 -X POST "$HOOK_URL" || echo "000")"
+            if [ "$code" -ge 200 ] && [ "$code" -lt 300 ]; then
+              echo "Deploy hook accepted the rebuild (HTTP $code)."
+              echo "Response: $(head -c 300 /tmp/hook-response.txt)"
+              echo "specassay.com/start rebuilds from this commit's ONBOARD.md."
+              exit 0
+            fi
+            echo "Attempt $attempt: deploy hook returned HTTP $code."
+            [ "$attempt" -lt 3 ] && sleep $((attempt * 5))
+          done
+
+          echo "FAIL: the deploy hook did not accept the rebuild after 3 attempts."
+          echo "  Last HTTP status: $code. Last response body:"
+          head -c 500 /tmp/hook-response.txt || true
+          echo
+          echo "  specassay.com/start is stale until this succeeds or the sites"
+          echo "  room rebuilds by hand. A 404 usually means the hook was deleted"
+          echo "  or recreated, which mints a new URL: the secret needs updating."
+          exit 1
