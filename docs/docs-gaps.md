@@ -170,8 +170,11 @@ still unresolved), and the commit that closed it.
     Resolved: the four paths added to the filter, verified by the Gate
     running at PR time on the very PR that adds them (it touches
     `docs/**`). The `push` trigger stays unfiltered, so `main` was never
-    unprotected. Not closed by this: `.github/workflows/self-gate.yml`
-    itself is still absent from its own filter, so a change to the Gate's
-    CI wiring gets no PR-time Gate run either. Left open on purpose, as a
-    separate ruling about what should re-run the Gate rather than a fifth
-    line smuggled into a docs fix.
+    unprotected. **Closed in full 2026-09-15**, in two rulings: the four
+    documentation paths first, then `.github/workflows/*` after PR #10
+    became the second workflow-editing PR in a day to reach a hand merge
+    with no PR-time Gate run of its own. A change to how the Gate runs is
+    a change to whether the Gate runs, so it now re-runs the Gate. The
+    glob is deliberately `*` and not `**`: these workflows are flat files
+    in one directory, and a shallow glob says so rather than promising to
+    watch a tree that does not exist.

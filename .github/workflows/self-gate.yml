@@ -26,6 +26,11 @@ on:
       - "ONBOARD.md"
       - "docs/**"
       - "PROMOTION-CONTRACT.md"
+      # The Gate's own CI wiring, added 2026-09-15 by Rik's ruling closing the
+      # other half of docs/docs-gaps.md item 10. A change to how the Gate runs
+      # is a change to whether the Gate runs, so it re-runs the Gate. Two real
+      # PRs (#9 and #10) edited workflows and got no PR-time run of their own.
+      - ".github/workflows/*"
 
 jobs:
   self-gate:
