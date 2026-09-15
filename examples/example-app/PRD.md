@@ -11,7 +11,7 @@ an open `- [ ] … **Carries**:` TODO).
 
 - US-SYNC-01 — As a user, I keep my lists in sync across devices.
 - FR-SYNC-01 — Two-way sync reconciles list changes across devices.
-- AC-SYNC-01 — A change made offline appears on a second device within 5s of reconnect.
+- AC-SYNC-01 — A change made offline appears on a second device within 3s of reconnect.
 - AC-SYNC-02 — Disjoint field edits on two devices merge without conflict.
 - AC-OFFL-01 — The app is fully usable with no network; edits queue locally.
 
