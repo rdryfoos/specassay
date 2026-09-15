@@ -24,6 +24,7 @@ anointed backlog: reach a working Gate from the public quickstart alone).
 - FR-DOCS-40 — Every documented behavior cites the registry row(s) it documents.
 - AC-DOCS-10 — Given a cold installer with no prior context, when following the public quickstart alone, then a working Gate on their own repo within 30 minutes, zero questions asked of the author.
 - FR-DOCS-50 — Once FR-GATE-40 ships, restore `docs/**` to `specassay-check-config.yml`'s `src_globs`. Companion to FR-GATE-40, minted the same day: the current exclusion is a tracked temporary, not a settlement.
+- FR-DOCS-60 — Onboarding ladder rung one: a paste-block walkthrough from a blank agent session to a first Thread Report in one short sitting, on a throwaway project, with a refusal demonstrated inside the sitting rather than described.
 
 ## GATE
 

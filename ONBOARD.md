@@ -1,6 +1,6 @@
 # SpecAssay quickstart — rung one: see a Thread Report
 
-<!-- @covers FR-DOCS-10 -->
+<!-- @covers FR-DOCS-60 -->
 
 This page takes you from a blank Claude Code session to a **Thread Report** — the
 one-comment briefing SpecAssay posts on a change, saying what moved on the thread
@@ -48,7 +48,7 @@ You need four things. Block 1 checks three of them; the fourth is your account.
   Enterprise, or Console account; the free Claude.ai plan does not include Claude
   Code access ([Claude Code setup docs](https://code.claude.com/docs/en/setup)).
   It needs macOS 13.0+ and 4 GB+ RAM.
-- **A Mac.** macOS is what this version of the page is written and trialled for.
+- **A Mac.** macOS is what this version of the page is written and trialed for.
   Linux works the same way; Windows needs Git Bash or WSL, because the Gate is a
   bash script.
 - **git**, any recent version.
@@ -83,7 +83,7 @@ uv 0.8.17
 
 If `git --version` or `python3 --version` fails on a Mac, the usual fix is
 `xcode-select --install`, which installs Apple's command line tools; rerun this
-block afterwards. If `python3` is still missing, or older than 3.8, install a
+block afterward. If `python3` is still missing, or older than 3.8, install a
 current Python from [python.org](https://www.python.org/downloads/) or Homebrew.
 
 ---
@@ -251,7 +251,7 @@ check.
 ## 6. Mint one toy promise
 
 **Minting** is writing a durable ID into the registry at the moment you settle the
-intent — never inferred from code afterwards. `mint-id.sh` picks the next free
+intent — never inferred from code afterward. `mint-id.sh` picks the next free
 number (always a multiple of ten) and appends the line in the file's own style.
 
 ```bash
@@ -592,7 +592,7 @@ the Golden Thread is intact. That is the same file the Gate wrote in block 10 an
 the same file the Thread Report read in block 11 — one small, portable record of
 what you promised, what carries it, and what proves it.
 
-Want to see the other colour? Redo block 9 (break the proof), rerun the Gate, and
+Want to see the other color? Redo block 9 (break the proof), rerun the Gate, and
 load the file again: one row, red, and a header saying the thread is broken. The
 manifest is written on refusal too, so the break is in the file, not just on your
 screen.
@@ -654,6 +654,9 @@ That removes the project and everything this page installed into it. uv and the
 CLI too, if you would rather end where you started.
 
 ---
+
+*This walkthrough is `FR-DOCS-60` in this repository's own registry — see
+[`PRD.md`](./PRD.md).*
 
 *Next, when you want the full reference rather than a walkthrough: the
 [README](./README.md) for what SpecAssay is and how it installs into a real

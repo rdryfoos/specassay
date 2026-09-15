@@ -27,7 +27,7 @@ tasks: "specs/**/tasks.md"
 # is that fix's own build, restoring docs/** here as promised.
 # ONBOARD.md joined the list 2026-09-15, when the onboarding quickstart was
 # written: it is documentation this registry governs, same as README.md, and
-# it carries a real @covers mark (FR-DOCS-10) that only counts if it is scanned.
+# it carries a real coverage mark that only counts if this list scans it.
 # @covers FR-DOCS-50
 src_globs:
   - "extensions/**"
