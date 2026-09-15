@@ -15,6 +15,17 @@ on:
       - "extensions/specassay-check/**"
       - "presets/specassay/**"
       - "specassay-check-config.yml"
+      # The documentation this registry governs. These four are in
+      # specassay-check-config.yml's own src_globs, so a change to any of them
+      # can orphan a @covers mark or drop a row's last carrier -- a refusal the
+      # Gate would find. Until 2026-09-15 they were absent here, so a docs-only
+      # PR showed green checks at review time and was gated only after merge,
+      # by the unfiltered push trigger. Found on PR #7, which got no Gate run
+      # of its own for exactly this reason (docs/docs-gaps.md, item 10).
+      - "README.md"
+      - "ONBOARD.md"
+      - "docs/**"
+      - "PROMOTION-CONTRACT.md"
 
 jobs:
   self-gate:
