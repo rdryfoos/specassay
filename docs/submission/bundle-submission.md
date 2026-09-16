@@ -12,13 +12,20 @@ update filed as #4255 merged as #4257. Per
 #4255), after the extension and preset issues for this version exist, and
 reference both by number in Additional Context, below.
 
+**Skipped version, stated plainly:** `v0.4.13` was cut and released but its
+submission-form issue was never filed; only the catalog-pointer PR
+([github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448)) went out for
+it. This 0.5.0 filing therefore carries two versions' worth of change, and the issue
+it updates is the last one actually filed, named above — not a 0.4.13 issue, which
+does not exist.
+
 ---
 
 **Bundle ID:** `specassay`
 
 **Bundle Name:** SpecAssay
 
-**Version:** 0.4.13
+**Version:** 0.5.0
 
 **Role or Team:** developer
 
@@ -31,12 +38,15 @@ trace-manifest emission.
 **Repository URL:** https://github.com/rdryfoos/specassay
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.4.13/specassay-0.4.13.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.5.0/specassay-0.5.0.zip
 
-**Digest (sha256):** `8529e8b7542a712542321856368b4f3d7f2f820f98350f7c7f7115670005f18d`
-*(from the release asset itself — `gh api repos/rdryfoos/specassay/releases/tags/v0.4.13`
-— and independently re-verified by downloading the zip and hashing it locally;
-see `docs/submission/test-evidence.md`.)*
+**Digest (sha256):** *not yet known — fill at the cut.* The v0.5.0 assets do not
+exist until the tag is pushed, and a digest is a claim about a specific file: the
+0.4.13 digest under a 0.5.0 URL would be a false one, so it is removed rather than
+carried forward. At the cut, read it from the release asset itself
+(`gh api repos/rdryfoos/specassay/releases/tags/v0.5.0`), re-verify it by
+downloading the zip and hashing it locally, and record both in
+`docs/submission/test-evidence.md` before this form is filed.
 
 **Documentation URL:**
 https://github.com/rdryfoos/specassay/blob/main/README.md
@@ -132,7 +142,7 @@ specify bundle install ./specassay.zip
     "description": "Durable-ID promotion for stock Spec Kit: templates, Gate 2 refusal, and trace-manifest emission.",
     "author": "Rik Dryfoos",
     "license": "MIT",
-    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.4.13/specassay-0.4.13.zip",
+    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.5.0/specassay-0.5.0.zip",
     "repository": "https://github.com/rdryfoos/specassay",
     "requires": {
       "speckit_version": ">=0.14.0"

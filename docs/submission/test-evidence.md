@@ -1,4 +1,97 @@
-# Test evidence: SpecAssay bundle v0.4.13
+# Test evidence: SpecAssay bundle
+
+Entries are per release, newest first. **Standing rule (2026-09-04):** every
+test-evidence entry names the Spec Kit CLI version it ran on (`specify
+--version`), in its first paragraph. An entry that does not is not evidence of
+compatibility with anything.
+
+## v0.5.0 — pre-tag evidence, 2026-09-16
+
+Run in the SpecAssay repo and in a clean Spec Kit project on Linux with the real
+Spec Kit CLI (`specify 1.0.4`), Python 3.11.15, bash 5.2.21, on branch
+`claude/proof-direction` at `ac8a170` plus this sweep. **This is not the
+clean-project install test against the published release**, because there is no
+published release yet: the tag is a human cut, and everything below was run
+against the source tree and against zips built locally by
+`scripts/build-release.sh`. What the cut still owes is listed at the end of this
+entry, and the three paste-from docs carry no digests until it is done.
+
+### The suite, under both awks
+
+`python3 -m pytest extensions/specassay-check/tests/ -q` passes 92 tests. The
+same 92 pass with `awk` resolving to GNU Awk 5.2.1 instead of the container's
+mawk: the 0.5.0 fix includes an `awk -v` escape-processing divergence that CI
+(gawk) caught and the container (mawk) could not see, so the suite is now run
+under both rather than one.
+
+### The regression tests fail against the version they were written for
+
+Ten of the eleven new tests in
+`extensions/specassay-check/tests/test_gate_110_nonstock_grammar.py` fail when
+copied into a worktree checked out at the literal `v0.4.13` tag, and pass after
+(`10 failed, 1 passed`). The eleventh is the static `awk -v` guard, and it passes
+there for a real reason rather than a lucky one: at v0.4.13 the configured
+retirement mark was interpolated into `sed`, not passed through an
+escape-processed `awk -v` assignment. The `awk -v` shape was introduced by the
+first repair in this release and caught by CI, so that test guards against
+reintroducing a regression made while fixing v0.4.13, not against v0.4.13
+itself. A release that fixed these without tests that would have caught them
+would repeat the original error.
+
+### This repo's own Gate, at 65 rows
+
+`SPECASSAY_PROJECT_ROOT="$PWD" SPECASSAY_CONFIG="$PWD/specassay-check-config.yml"
+bash extensions/specassay-check/scripts/check-traceability.sh` exits 0:
+`OK (65 registry IDs)`, `gate.ok=True`, 59 proven / 1 tracked-debt / 0 GAP /
+5 backlog. Two `uncovered proof` diagnostics (`AC-LOGIN-10`, `AC-ZK9Q-01`) are
+unchanged from v0.4.13 and come from fixture ID strings inside the suite's own
+files. The six IDs minted for this release (`FR-GATE-110`/`AC-GATE-110`,
+`FR-GATE-120`/`AC-GATE-120`, `FR-GATE-130`/`AC-GATE-130`) all land `proven`,
+each AC by a named test and each FR by an `@covers` mark in the script that
+implements it.
+
+### The manifests agree and the artifacts build
+
+`specify bundle validate` in the repo root: `specassay is well-formed and
+valid.` `bash scripts/build-release.sh`: `Versions: bundle 0.5.0 · extension
+0.5.0 · preset 0.5.0`, three zips built, and its own closing check reports
+`Artifacts and catalog download URLs agree.`
+
+### A clean project, installed at 0.5.0
+
+`specify init --here --force --non-interactive --ignore-agent-tools
+--integration claude --script sh` in an empty directory, then `specify extension
+add <path-to-repo>/extensions/specassay-check --dev`. `specify extension list`
+reports `SpecAssay Check (v0.5.0)`, `Commands: 5 | Hooks: 1`, and the install
+scaffolds `.specify/extensions/specassay-check/specassay-check-config.yml`. The
+first Gate run there refuses honestly, naming the missing registry and both ways
+to fix it. A stock thread (one ID in `PRD.md`, named in a spec, carried by an
+open task, proven by `test_AC_LOGIN_10_wrong_password_shows_error`) then runs
+`OK (1 registry IDs)`.
+
+### The headline fix, end to end in that clean project
+
+With the scaffolded config's `id_regex` changed to
+`(AC|FR)-[0-9]+(\.[0-9]+)*[a-z]?` and `test_ac_regex` to
+`AC_[0-9]+(_[0-9]+)*(_[a-z])?`, a dotted ID `AC-5.6.1a` proven by
+`test_AC_5_6_1_a_replays_queued_cards` emits as `proven` with that test named in
+its `proofs[]`. On v0.4.13 the same thread was unreachable by any test, because
+the proof scan rewrote the test's token by a hardcoded rule instead of resolving
+it against the registry the config produced. This is a real install of the built
+extension, not a fixture.
+
+### Still owed at the cut
+
+- The clean-project install test against the **published** release, by bundle ID
+  through the catalog stack, naming `specify --version` as this entry does.
+- Digest verification three ways (release API, local hash of the downloaded zip,
+  contents of the zip rather than the source tree), then the three paste-from
+  docs filled in: they currently say the digest is not yet known, on purpose.
+- The upgrade path run for real from a project installed at v0.4.13.
+- The site's hero pin moved to the `v0.5.0` README anchor, per
+  `docs/submission/CHEATSHEET.md`.
+
+## v0.4.13 — published release, 2026-09-04
 
 Clean-project installation test, per the Bundle Submission checklist, run
 fresh against the tagged, published release on 2026-09-04 with the real Spec
@@ -10,18 +103,17 @@ passed, Gate 2 OK, 55 registry IDs) and the Release run that built and
 published the assets is
 <https://github.com/rdryfoos/specassay/actions/runs/33883485224>.
 
-**Standing rule (2026-09-04):** every test-evidence entry names the Spec Kit
-CLI version it ran on (`specify --version`), in its first paragraph. The
-v0.4.13 evidence above ran on 0.15.3.dev0 two days after Spec Kit 1.0.4
-shipped and nobody could tell from the file; that gap class dies here, the
-way the stale-version-link class did.
+Where the standing rule at the top of this file came from: this entry ran on
+`specify 0.15.3.dev0`, two days after Spec Kit 1.0.4 shipped, and nobody could
+tell from the file. That gap class died here, the way the stale-version-link
+class did.
 
-New this time, and worth reading first: an **upgrade-path** section at the
-end. A tester who installed v0.4.12 through the catalogs yesterday is waiting
-on this release, so the update commands were run for real from a project at
+New that release, and worth reading first: an **upgrade-path** section at the
+end. A tester who installed v0.4.12 through the catalogs the day before was
+waiting on it, so the update commands were run for real from a project at
 v0.4.12, not assumed from the CLI's help text.
 
-## Digest verification: downloaded bytes match the published release
+### Digest verification: downloaded bytes match the published release
 
 ```
 $ shasum -a 256 specassay-0.4.13.zip specassay-check-0.4.13.zip specassay-preset-0.4.13.zip
@@ -39,7 +131,7 @@ All three match. A local `specify bundle build` from the pristine tagged
 checkout (below) produced a bundle zip with the same digest as the published
 one, so the CI build is reproducible byte for byte.
 
-## Inside the artifacts, not the source tree
+### Inside the artifacts, not the source tree
 
 Per the cheat sheet's round-3 scar, the published zips were unzipped and
 checked directly:
@@ -61,7 +153,7 @@ $ grep -n releases/download pre/README.md
 The extension zip carries the interpreter detection and the empty-registry
 on-ramp; the preset zip's own README names the v0.4.13 asset.
 
-## Validate and build from the pristine tagged checkout
+### Validate and build from the pristine tagged checkout
 
 ```
 $ git clone --branch v0.4.13 https://github.com/rdryfoos/specassay.git clone
@@ -77,7 +169,7 @@ $ shasum -a 256 dist/specassay-0.4.13.zip
 8529e8b7542a712542321856368b4f3d7f2f820f98350f7c7f7115670005f18d  dist/specassay-0.4.13.zip
 ```
 
-## Clean Spec Kit project, install by bundle ID from the catalog stack
+### Clean Spec Kit project, install by bundle ID from the catalog stack
 
 ```sh
 mkdir evproj && cd evproj
@@ -114,7 +206,7 @@ Installed Extensions:
      Commands: 5 | Hooks: 1 | Priority: 10 | Status: Enabled
 ```
 
-## Gate run on the untouched fresh project
+### Gate run on the untouched fresh project
 
 `specify bundle install` does not scaffold `specassay-check-config.yml`
 (`specify extension add` does). As of this release the Gate says so itself
@@ -141,7 +233,7 @@ place the run is green and prints the on-ramp to a first ID instead of a
 bare OK (full text in `extensions/specassay-check/README.md`, "First run
 on a fresh project").
 
-## Upgrade path: a project installed at v0.4.12 through the catalogs
+### Upgrade path: a project installed at v0.4.12 through the catalogs
 
 Set up the way the README installs (bundle by ID), while the hosted
 catalogs still said 0.4.12, then upgraded after the 0.4.13 catalogs went
@@ -195,7 +287,7 @@ after the same cache clear also finds `0.4.12 → 0.4.13`, but prompts
 `Update these extensions? [y/N]` and so needs a terminal; `bundle update`
 does not prompt.
 
-## Upgrade path: a git-clone install
+### Upgrade path: a git-clone install
 
 ```
 $ git clone --branch v0.4.13 https://github.com/rdryfoos/specassay.git clone
@@ -209,7 +301,7 @@ SpecAssay Check (Gate 2): OK, registry empty (0 IDs in PRD.md)
 `--force` re-copies the scripts and reports `Config files already exist
 (preserved)`.
 
-## One measured friction, new this release
+### One measured friction, new this release
 
 `raw.githubusercontent.com` serves the catalogs with `cache-control:
 max-age=300`. A catalog fetched by anyone in the five minutes before a
@@ -220,7 +312,7 @@ observed here as a fresh install resolving 0.4.12 two minutes after the
 recorded in `docs/migration.md` so the next release does not read it as a
 broken push.
 
-## Spec Kit 1.0.4 validation, 2026-09-04
+### Spec Kit 1.0.4 validation, 2026-09-04
 
 Same v0.4.13 artifacts, run again on **Spec Kit 1.0.4** (the CLI pinned to
 the `v1.0.4` tag, commit `cb610277`; previously 0.15.3.dev0). Spec Kit

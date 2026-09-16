@@ -175,7 +175,7 @@ specify preset add \
   --from https://github.com/rdryfoos/specassay/releases/latest/download/specassay-preset.zip
 ```
 
-The CLI asks once to confirm each URL install. Verified 2026-09-04 in a clean project: both report v0.4.13, and the extension install scaffolds the config.
+The CLI asks once to confirm each URL install. Verified 2026-09-04 in a clean project: both reported v0.4.13, and the extension install scaffolds the config. These URLs are version-agnostic, so they follow the newest release: once the v0.5.0 tag is public they give v0.5.0, re-verified at that cut.
 
 **Dev path:**
 

@@ -45,10 +45,19 @@ One YAML file, in this directory. Paths and globs are relative to your project r
 | `test_globs` | Block list of globs scanned for AC-named tests. Edit this too. | `tests/**` and an iOS example |
 | `id_regex` | The ID grammar | `(FR\|NFR\|AC\|US)-<AREA>-<NN>[a-z]?` |
 | `covers_regex`, `carries_regex`, `retires_regex`, `test_ac_regex` | How marks, task carries, retirement records, and test-name IDs are spelled | the shapes shown above |
-| `test_results` | Optional JUnit XML from your own test run. When set, `proven` requires a passing test, not just a matching name. | unset |
+| `test_results` | Optional JUnit XML from your own test run. When set, `proven` requires a passing test, not just a matching name. A report with **zero** test cases is refused (exit 2) rather than read as "nothing passed": some toolchains write one file per test framework and leave the others empty. | unset |
 | `parent_derivation` | `heading-nesting` derives parent edges from the registry's own indentation; unset means no edges | unset |
 | `block_uncovered_proof` | Turns the `uncovered-proof` diagnostic into a refusal. Flip only once your own backlog of these is zero, with a dated comment. | unset (report-only) |
 | `matrix_md`, `matrix_svg`, `portfolio_md` | Output paths for `--matrix` and `--portfolio` | `coverage.md`, `coverage.svg`, `portfolio-snapshot.md` |
+
+**Your grammar is consumed as configured.** `id_regex`, `test_ac_regex` and
+the mark patterns are read as the project's own grammar everywhere, not just
+at the front door. A test name cannot carry an ID's punctuation (most
+languages forbid a dot or a hyphen in an identifier), so `AC-5.6.1a` is
+written `test_AC_5_6_1_a`; the engine maps that back by looking the ID up in
+your registry, not by substituting one character for another. Two IDs that
+differ only in punctuation are refused rather than guessed between, and
+`mint-id.sh` refuses to compose an ID your own `id_regex` would reject.
 
 The two list keys (`src_globs`, `test_globs`) must be block lists, one `- "glob"` per line. An inline array (`src_globs: ["src/**"]`) is refused before any scanning, on purpose: it used to parse as an empty list and silently mark everything backlog.
 
@@ -90,7 +99,7 @@ SpecAssay Check (Gate 2): OK (10 registry IDs)
 | --- | --- |
 | 0 | Green. Nothing unfinished is hidden at acceptance-criterion altitude. |
 | 1 | Red. At least one refusal; read the `FAIL:` lines. The manifest was still written. |
-| 2 | Could not run. No usable Python 3, no config, or a config key that would be misread. Not a verdict on your thread; nothing was scanned and no manifest was written. |
+| 2 | Could not run. No usable Python 3, no config, a config key that would be misread, or a `test_results` report carrying no test cases. Not a verdict on your thread; nothing was scanned and no manifest was written. |
 
 ## What green means
 
@@ -119,6 +128,7 @@ Each `FAIL:` line names one of these:
 | `duplicate definition line(s)` | The same ID minted twice, usually two branches. `scripts/mint-id.sh --resolve <ID>` hands back the next free offset. |
 | `task without Carries` | A checkbox task that does not say which ID it serves. |
 | `registry not found` | The config's `registry:` names a file that is not there. |
+| `ambiguous IDs under proof matching` | Two minted IDs differ only in punctuation (`AC-1-2` and `AC-12`), so a test named for one cannot be told from a test named for the other. The registry has to settle it; the engine will not guess. |
 
 The manifest is still written on red, with `gate.ok: false` and every refusal under `gate.failures[]`. Fix the named ID, rerun. Symptoms that have confused real users, each with what taught it: [`docs/troubleshooting.md`](../../docs/troubleshooting.md).
 

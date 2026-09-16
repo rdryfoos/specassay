@@ -97,3 +97,21 @@ where that same ID lands once it has.
     `test_AC_GATE_100b_explicit_override_wins`.
   - AC-GATE-100c — proven by `test_AC_GATE_100c_config_found_is_reported_with_its_path` and
     `test_AC_GATE_100c_config_missing_names_the_file_and_the_copy_command`.
+- FR-GATE-110 — A configured `test_results` report carrying no test cases,
+  or one the reader cannot parse, refuses the run (exit 2, no manifest)
+  instead of being believed as "nothing passed". Shipped 2026-09-16, proven
+  by `@covers` in `check-traceability.sh` and by
+  `extensions/specassay-check/tests/test_gate_110_nonstock_grammar.py`.
+  - AC-GATE-110 — proven by `test_AC_GATE_110_empty_junit_report_is_refused_not_trusted`.
+- FR-GATE-120 — Two registry IDs that reduce to the same key under
+  separator-insensitive proof matching are reported as an `ambiguous-id-key`
+  failure, never resolved by guess. Shipped 2026-09-16, proven by `@covers`
+  in `check-traceability.sh` and by
+  `extensions/specassay-check/tests/test_gate_110_nonstock_grammar.py`.
+  - AC-GATE-120 — proven by `test_AC_GATE_120_ids_differing_only_in_punctuation_are_refused`.
+- FR-GATE-130 — `mint-id.sh` refuses to compose an ID the configured
+  `id_regex` does not admit, naming the grammar and the ID it declined,
+  rather than issuing scope the Gate will reject. Shipped 2026-09-16, proven
+  by `@covers` in `mint-id.sh` and by
+  `extensions/specassay-check/tests/test_gate_110_nonstock_grammar.py`.
+  - AC-GATE-130 — proven by `test_AC_GATE_130_mint_refuses_rather_than_emit_an_id_the_grammar_rejects`.

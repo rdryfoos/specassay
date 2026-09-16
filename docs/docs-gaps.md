@@ -178,3 +178,21 @@ still unresolved), and the commit that closed it.
     glob is deliberately `*` and not `**`: these workflows are flat files
     in one directory, and a shallow glob says so rather than promising to
     watch a tree that does not exist.
+
+11. **`ONBOARD.md`'s receipts are pinned to v0.4.13 and the catalogs now
+    point at v0.5.0.** Open, 2026-09-16. The quickstart's contract is that
+    every block's quoted output is that block's real output from one run
+    against the pinned versions, never a sketch. That run happened on
+    2026-09-15 against SpecAssay v0.4.13. The 0.5.0 sweep moved `main`'s
+    catalogs to v0.5.0, so a reader following the page installs a version
+    the page was not captured on. Re-pinning the table without re-running
+    the sitting would break requirement one of the commission that wrote
+    it ("verified against the pinned versions rather than asserted from
+    memory"), so the table was left honest and the divergence named in a
+    note under it instead. The real fix is a re-capture: one cold operator,
+    one sitting, all twelve blocks, against v0.5.0 installed from the
+    catalogs for real, after the tag is public. 0.5.0 is a repair release
+    whose subject (reading a project's own configured ID grammar) the
+    quickstart never exercises, since it uses the stock grammar throughout,
+    so the receipts are expected to hold; expected is not the same as
+    verified, which is the whole reason this entry exists.

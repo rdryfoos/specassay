@@ -21,11 +21,22 @@ wrong you can name the block it went wrong in.
 
 | Thing | Pinned to |
 | --- | --- |
-| SpecAssay | **v0.4.13**, released 2026-09-04 (installed from `main`'s catalogs, which point at that release) |
+| SpecAssay | **v0.4.13**, released 2026-09-04. This is the version the sitting below was captured against, not necessarily the one you will install: see the note under the table. |
 | GitHub Spec Kit | **v1.0.4**, the newest version SpecAssay has been run against end to end (`docs/submission/test-evidence.md`, 2026-09-04). Spec Kit v1.0.5 and v1.0.6 exist and SpecAssay's manifests accept them (`>=0.14.0,<2.0.0`); they are not what this page's receipts were captured on. |
 | uv | 0.8.17 |
 | Python | 3.11.15 |
 | git | 2.43.0 |
+
+**One divergence, named rather than hidden (2026-09-16).** SpecAssay v0.5.0 is
+being cut, and `main`'s catalogs point at it, so `specify bundle install` will
+give you v0.5.0 while the receipts below were captured on v0.4.13. The release is
+a repair release: it makes SpecAssay read a project's own configured ID grammar
+everywhere instead of assuming the stock one. This sitting uses the stock grammar
+throughout, so nothing here is expected to read differently, and the block-by-block
+receipts are what a v0.4.13 run really printed. They have not yet been re-captured
+on v0.5.0 by a cold operator, which is the only thing that would let this table say
+v0.5.0 honestly. Until then: if your run differs from a receipt below in any way,
+that difference is a finding and we want it (see *When you stumble*, at the end).
 
 **Where the receipts come from.** Every block below was run in order, on
 2026-09-15, against those exact versions, and the output quoted under each block
