@@ -4,10 +4,6 @@
 
 <!-- @covers FR-DOCS-60 -->
 
-No hand-holding and dive right in?
-
-https://github.com/rdryfoos/specassay
-
 This page takes you from a blank Claude Code session to a **Thread Report**, the
 one-comment briefing SpecAssay posts on a change, saying what moved on the thread
 and what rode along untraced, on a tiny sample project you build here. You will
@@ -18,6 +14,9 @@ and read the result. Target: one short sitting, unassisted.
 You do not need to know Spec Kit or SpecAssay to follow it. Every block is a
 paste-block that ends with a **You should now see** receipt, so if something goes
 wrong you can name the block it went wrong in.
+
+> No hand-holding and dive right in?
+> [https://github.com/rdryfoos/specassay](https://github.com/rdryfoos/specassay)
 
 ---
 
