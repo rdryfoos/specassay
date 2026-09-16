@@ -36,13 +36,10 @@ Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).
 **Download URL:**
 https://github.com/rdryfoos/specassay/releases/download/v0.5.0/specassay-check-0.5.0.zip
 
-**Digest (sha256):** *not yet known — fill at the cut.* The v0.5.0 assets do not
-exist until the tag is pushed, and a digest is a claim about a specific file: the
-0.4.13 digest under a 0.5.0 URL would be a false one, so it is removed rather than
-carried forward. At the cut, read it from the release asset itself
-(`gh api repos/rdryfoos/specassay/releases/tags/v0.5.0`), re-verify it by
-downloading the zip and hashing it locally, and record both in
-`docs/submission/test-evidence.md` before this form is filed.
+**Digest (sha256):** `0aa651a6fe7a44e1030b555a55b94d415b2f10d0ab722d81dae4520019407394`
+*(read from the release asset itself — `gh api repos/rdryfoos/specassay/releases/tags/v0.5.0` — then independently re-verified by
+downloading the published zip and hashing it locally, and a third time by unzipping it and
+reading the version the manifest inside actually declares; see `docs/submission/test-evidence.md`.)*
 
 **License:** MIT
 

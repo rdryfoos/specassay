@@ -5,18 +5,16 @@ test-evidence entry names the Spec Kit CLI version it ran on (`specify
 --version`), in its first paragraph. An entry that does not is not evidence of
 compatibility with anything.
 
-## v0.5.0 — pre-tag evidence, 2026-09-16
+## v0.5.0 — released 2026-09-16
 
-Run in the SpecAssay repo and in a clean Spec Kit project on Linux with the real
-Spec Kit CLI (`specify 1.0.4`), Python 3.11.15, bash 5.2.21, on branch
-`claude/proof-direction` at `ac8a170` plus this sweep. **This is not the
-clean-project install test against the published release**, because there is no
-published release yet: the tag is a human cut, and everything below was run
-against the source tree and against zips built locally by
-`scripts/build-release.sh`. What the cut still owes is listed at the end of this
-entry, and the three paste-from docs carry no digests until it is done.
+Everything here ran on Linux with the real Spec Kit CLI (`specify 1.0.4`),
+Python 3.11.15, bash 5.2.21. The entry is in two halves and says which is which,
+because they were written on either side of the tag: **pre-tag** evidence came
+from the source tree and from zips built locally by `scripts/build-release.sh`,
+while the **post-tag** section below ran against the published assets. The tag
+is `v0.5.0` at `899420356a4b0fa89366034787d793b561ee1e0a`.
 
-### The suite, under both awks
+### Pre-tag: the suite, under both awks
 
 `python3 -m pytest extensions/specassay-check/tests/ -q` passes 92 tests. The
 same 92 pass with `awk` resolving to GNU Awk 5.2.1 instead of the container's
@@ -24,7 +22,7 @@ mawk: the 0.5.0 fix includes an `awk -v` escape-processing divergence that CI
 (gawk) caught and the container (mawk) could not see, so the suite is now run
 under both rather than one.
 
-### The regression tests fail against the version they were written for
+### Pre-tag: the regression tests fail against the version they were written for
 
 Ten of the eleven new tests in
 `extensions/specassay-check/tests/test_gate_110_nonstock_grammar.py` fail when
@@ -38,7 +36,7 @@ reintroducing a regression made while fixing v0.4.13, not against v0.4.13
 itself. A release that fixed these without tests that would have caught them
 would repeat the original error.
 
-### This repo's own Gate, at 65 rows
+### Pre-tag: this repo's own Gate, at 65 rows
 
 `SPECASSAY_PROJECT_ROOT="$PWD" SPECASSAY_CONFIG="$PWD/specassay-check-config.yml"
 bash extensions/specassay-check/scripts/check-traceability.sh` exits 0:
@@ -50,14 +48,14 @@ files. The six IDs minted for this release (`FR-GATE-110`/`AC-GATE-110`,
 each AC by a named test and each FR by an `@covers` mark in the script that
 implements it.
 
-### The manifests agree and the artifacts build
+### Pre-tag: the manifests agree and the artifacts build
 
 `specify bundle validate` in the repo root: `specassay is well-formed and
 valid.` `bash scripts/build-release.sh`: `Versions: bundle 0.5.0 · extension
 0.5.0 · preset 0.5.0`, three zips built, and its own closing check reports
 `Artifacts and catalog download URLs agree.`
 
-### A clean project, installed at 0.5.0
+### Pre-tag: a clean project, installed from the locally built zip
 
 `specify init --here --force --non-interactive --ignore-agent-tools
 --integration claude --script sh` in an empty directory, then `specify extension
@@ -69,7 +67,7 @@ to fix it. A stock thread (one ID in `PRD.md`, named in a spec, carried by an
 open task, proven by `test_AC_LOGIN_10_wrong_password_shows_error`) then runs
 `OK (1 registry IDs)`.
 
-### The headline fix, end to end in that clean project
+### Pre-tag: the headline fix, end to end in that clean project
 
 With the scaffolded config's `id_regex` changed to
 `(AC|FR)-[0-9]+(\.[0-9]+)*[a-z]?` and `test_ac_regex` to
@@ -80,16 +78,172 @@ the proof scan rewrote the test's token by a hardcoded rule instead of resolving
 it against the registry the config produced. This is a real install of the built
 extension, not a fixture.
 
-### Still owed at the cut
+### Post-tag: the published release, 2026-09-16
 
-- The clean-project install test against the **published** release, by bundle ID
-  through the catalog stack, naming `specify --version` as this entry does.
-- Digest verification three ways (release API, local hash of the downloaded zip,
-  contents of the zip rather than the source tree), then the three paste-from
-  docs filled in: they currently say the digest is not yet known, on purpose.
-- The upgrade path run for real from a project installed at v0.4.13.
+The tag `v0.5.0` is commit `899420356a4b0fa89366034787d793b561ee1e0a` (the merge
+of PR #14). The Self Gate on that commit is
+<https://github.com/rdryfoos/specassay/actions/runs/35151718593> and the Release
+run that built and published the assets is
+<https://github.com/rdryfoos/specassay/actions/runs/35151943499>. Everything
+below was run against the published assets on `specify 1.0.4`, Python 3.11.15,
+Linux, the same day.
+
+#### Digest verification, three ways
+
+```
+# 1. from the release itself
+$ gh api repos/rdryfoos/specassay/releases/tags/v0.5.0 --jq '.assets[] | "\(.name) \(.digest)"'
+specassay-0.5.0.zip         sha256:737c1963ec86e83a0a312bf1addb70069e177398f3d0be4f99dfdccd51dd9464
+specassay-check-0.5.0.zip   sha256:0aa651a6fe7a44e1030b555a55b94d415b2f10d0ab722d81dae4520019407394
+specassay-preset-0.5.0.zip  sha256:d5e4e75b3f07c0555ffb2fc318a6a5c308126ef73a4df1f0b8241b3da9fc2a8b
+
+# 2. the downloaded bytes, hashed locally
+$ sha256sum *.zip
+737c1963ec86e83a0a312bf1addb70069e177398f3d0be4f99dfdccd51dd9464  specassay-0.5.0.zip
+0aa651a6fe7a44e1030b555a55b94d415b2f10d0ab722d81dae4520019407394  specassay-check-0.5.0.zip
+d5e4e75b3f07c0555ffb2fc318a6a5c308126ef73a4df1f0b8241b3da9fc2a8b  specassay-preset-0.5.0.zip
+```
+
+Third way, inside the artifacts rather than the source tree: `bundle.yml`,
+`extension.yml`, and `preset.yml` unzipped from the published zips each declare
+`version: "0.5.0"`, and the bundle's `requires.speckit_version` reads
+`>=0.14.0,<2.0.0`. The preset README that ships inside its own zip installs from
+the version-agnostic `releases/latest/download/specassay-preset.zip`, so round
+3's stale-install-line class cannot recur there. No scratch output leaked in:
+no `trace-manifest.json`, `coverage.*`, or `portfolio-snapshot.md` at the bundle
+root (the `samples/*.trace-manifest.json` files that a naive grep catches are
+committed fixtures, not build residue). The extension zip's
+`scripts/check-traceability.sh` really carries the fix: `id_for_test_token`,
+`ambiguous-id-key`, and `ENVIRON[` all appear, and `mint-id.sh` carries its
+refusal.
+
+The unversioned aliases (`specassay.zip`, `specassay-check.zip`,
+`specassay-preset.zip`) are byte-identical to their versioned twins, same
+digests, which is what makes the `releases/latest/download/…` install lines
+honest.
+
+#### Clean project, installed by bundle ID from the catalog stack
+
+`specify init --here --force --non-interactive --ignore-agent-tools
+--integration claude --script sh`, then the three `catalog add` commands against
+`raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/…`.
+
+```
+$ specify bundle install specassay
+✓ Installed 'specassay' (2 added, 0 already present).
+
+$ specify bundle list
+  specassay v0.5.0 (2 components, installed 2026-09-16T22:27:16Z)
+
+$ specify preset list
+  SpecAssay (specassay) v0.5.0 — enabled — priority 10
+
+$ specify extension list
+  ✓ SpecAssay Check (v0.5.0)
+     Commands: 5 | Hooks: 1 | Priority: 10 | Status: Enabled
+```
+
+No raw-catalog lag this time: the install resolved 0.5.0 on the first try, about
+an hour after the catalogs were on `main`, well past the five-minute
+`max-age` window `docs/migration.md` §4 describes.
+
+#### The Gate on that fresh project, all the way to proven
+
+A missing `PRD.md` refuses and names both ways out. `touch PRD.md` gives the
+empty-registry on-ramp (`OK, registry empty (0 IDs in PRD.md)` with both mint
+commands printed). The printed `mint-id.sh` command works and appends
+`AC-LOGIN-10`. The next run refuses exactly as the on-ramp promised — missing
+from specs, missing from tasks, silent gap — and a spec mention, one open
+`**Carries**` line, and `test_AC_LOGIN_10_wrong_password_shows_error` turn it
+`proven`.
+
+#### The headline fix, on the published bits
+
+With the scaffolded config's `id_regex` set to
+`(AC|FR)-[0-9]+(\.[0-9]+)*[a-z]?` and `test_ac_regex` to
+`AC_[0-9]+(_[0-9]+)*(_[a-z])?`, a dotted `AC-5.6.1a` proven by
+`test_AC_5_6_1_a_replays_queued_cards` emits `proven` with that test named in
+its `proofs[]`.
+
+And the new refusal, on the same install, with `id_regex: "AC-[0-9-]+"`:
+
+```
+FAIL: ambiguous IDs under proof matching: AC-1-2 AC-12 differ only in
+punctuation, so a test named for one cannot be told from a test named for another
+SpecAssay Check (Gate 2): FAILED
+```
+
+That is `FR-GATE-120`, the upgrade-blocker, reading as intended for someone who
+meets it cold.
+
+#### Upgrade path, from a real v0.4.13 install
+
+A second clean project installed `specassay v0.4.13` by bundle ID from the
+catalogs at the `v0.4.13` ref, then got the same dotted thread: `PRD.md`,
+`specs/cards/spec.md`, an open task carrying the ID, and
+`test_AC_5_6_1_a_replays_queued_cards`, with the config's grammar keys edited to
+match.
+
+```
+# BEFORE, on the real published v0.4.13
+SpecAssay Check (Gate 2): OK (1 registry IDs)
+[('AC-5.6.1a', 'tracked-debt', [])]
+```
+
+Green, with a named passing test present and `proofs[]` empty. That is the
+defect this release exists for, reproduced on the shipped v0.4.13 bits rather
+than on a fixture: the criterion can never become `proven`, and nothing says so.
+(The row reads `tracked-debt` here because the ID is named in a spec; carried by
+a task alone it would read `backlog`. Both are legal passing states, which is
+what makes the failure silent either way.)
+
+Then the documented upgrade, exactly as `docs/migration.md` gives it:
+
+```
+$ rm -rf .specify/extensions/.cache .specify/presets/.cache
+$ specify bundle update specassay
+✓ Updated 'specassay' to v0.5.0.
+
+$ specify bundle list
+  specassay v0.5.0 (2 components, installed 2026-09-16T22:28:05Z)
+$ specify extension list
+  ✓ SpecAssay Check (v0.5.0)
+$ specify preset list
+  SpecAssay (specassay) v0.5.0 — enabled — priority 10
+```
+
+The edited `specassay-check-config.yml` survived the update untouched, both
+grammar keys intact. Same project, same files, same config, one command apart:
+
+```
+# AFTER
+SpecAssay Check (Gate 2): OK (1 registry IDs)
+[('AC-5.6.1a', 'proven', ['test_AC_5_6_1_a_replays_queued_cards'])]
+```
+
+The cache clear is still required, as it was for 0.4.12 → 0.4.13: without it the
+update reports the old version. That friction is unchanged and already
+documented.
+
+#### One setup artefact, named so nobody reads it as a finding
+
+The first `specify bundle update` in the upgrade project returned `Updated
+'specassay' to v0.4.13` — no move at all. Cause was this test's own scaffolding,
+not the tool: to install v0.4.13 after the catalogs had already moved, the
+project had catalogs pinned at the `v0.4.13` ref, and adding the `main` ones
+under a second name left both in the stack at the same priority, where the
+alphabetically earlier pinned entry won. A real adopter has one catalog entry
+pointing at `main` and never sees this. Removing the pinned entries and rerunning
+the documented command moved both components in one go, as shown above.
+
+#### Still owed
+
 - The site's hero pin moved to the `v0.5.0` README anchor, per
-  `docs/submission/CHEATSHEET.md`.
+  `docs/submission/CHEATSHEET.md`. That is the sites room's file, not this repo's.
+- The three submission-form issues upstream, which now carry two versions' worth
+  of change.
+- `ONBOARD.md`'s receipts re-captured on v0.5.0 by a cold operator
+  (`docs/docs-gaps.md` item 11).
 
 ## v0.4.13 — published release, 2026-09-04
 
