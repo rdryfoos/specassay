@@ -141,7 +141,8 @@ mint_primary() {
     next=$(( (highest / 10 + 1) * 10 ))
   fi
   local new_id="${prefix}-${area}-${next}"
-  # This decade scheme *is* the stock TYPE-DOMAIN-NN grammar, written out.
+  # @covers FR-GATE-130, AC-GATE-130 -- this decade scheme *is* the stock
+  # TYPE-DOMAIN-NN grammar, written out.
   # A project may configure another, and then the ID composed here is one
   # the Gate will refuse the moment it is used: the tool would be issuing
   # scope its own checker rejects. Say so instead, and let the registry's

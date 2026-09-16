@@ -113,6 +113,44 @@ rather than rebuilding by hand and leaving the cause in place. The hero
 pin above stays manual on purpose: it names a tag, which only a human cut
 decides.
 
+## v0.5.0 swept, 2026-09-16; tag not yet cut
+
+The sweep above was followed in full up to the point a tag is needed, on
+branch `claude/proof-direction`: all three manifests, the three catalogs
+(version, `download_url`, both `updated_at` fields), the three paste-from
+docs, the CHANGELOG, `docs/submission/README.md`, and a v0.5.0 entry in
+`docs/submission/test-evidence.md`. The in-zip READMEs needed no edit this
+round: both now install from the version-agnostic
+`releases/latest/download/...` URLs, which is round 3's fix working as
+intended.
+
+Two deliberate omissions, so nobody reads them as misses:
+
+1. **No digests in the paste-from docs.** They say "not yet known — fill at
+   the cut", with the commands to fill them. The assets do not exist until
+   the tag is pushed, and carrying the 0.4.13 digests under 0.5.0 URLs would
+   be a false claim about a specific file.
+2. **No site pin bump.** The hero CTA still names the `v0.4.13` README
+   anchor, because the pin is a tag and the tag is a human cut. Bump it after
+   the tag is public, per the sweep step above.
+
+Verified before the tag, in this order: `python3 -m pytest
+extensions/specassay-check/tests/ -q` (92 passed) under both mawk and gawk;
+the eleven new regression tests copied into a `v0.4.13` worktree (`10 failed,
+1 passed`, the pass being the static `awk -v` guard, which names a shape
+v0.4.13 does not have); the repo's own Gate (`OK (65 registry IDs)`,
+`gate.ok=True`); `specify bundle validate` (well-formed); `bash
+scripts/build-release.sh` (three zips, `Artifacts and catalog download URLs
+agree.`); and a clean `specify init` project on `specify 1.0.4` where the
+built extension installs as v0.5.0, scaffolds its config, refuses honestly on
+a missing registry, goes green on a stock thread, and proves a dotted
+`AC-5.6.1a` from `test_AC_5_6_1_a_replays_queued_cards` — the case v0.4.13
+could not reach. Receipts in `docs/submission/test-evidence.md`.
+
+What the cut owes is listed at the end of that entry: the published-release
+install test, digests three ways, the upgrade path from a real v0.4.13
+install, and the site pin.
+
 ## v0.4.13 cut, 2026-09-04; filing not yet done
 
 Tag `v0.4.13` at `105c4845f8ae88f1af361d56c0de458089b50fad`, release

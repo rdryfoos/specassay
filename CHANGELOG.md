@@ -5,69 +5,136 @@ the bundle version leads, component versions are listed per release.
 
 ## Unreleased
 
-### The configured grammar is consumed as configured
+## 0.5.0 (2026-09-16)
 
-Four defects with one root, found by running SpecAssay against a real
-estate whose IDs are dotted (`AC-5.6.1a`) rather than the stock
-`TYPE-DOMAIN-NN`. The front door accepted a configurable grammar and the
-back rooms assumed the stock one. Each is covered by a regression test
-that fails against the v0.4.13 tag and passes after
-(`tests/test_gate_110_nonstock_grammar.py`, ten tests).
+**One class, not six defects.** SpecAssay lets a project declare its own ID
+grammar, test-name grammar, coverage mark, carry mark, and retirement mark.
+The front door read those declarations; several back rooms assumed the stock
+`TYPE-DOMAIN-NN` shape anyway. Wherever that happened, the tool quietly stopped
+being about the project's promises and started being about SpecAssay's. This
+release settles the rule the whole family now holds to: **wherever a configured
+grammar is consumed, it is consumed as configured** — never rebuilt by a
+hardcoded rule, never interpolated raw into a pattern or a command, never
+guessed at from a shape the config never promised.
 
-- **The proof direction could not reach a non-stock ID.** The engine
-  rebuilt a registry ID from a test name with `tr '_' '-'`, so
-  `test_AC_5_6_1_a_...` resolved to `AC-5-6-1-a`, which matches no entry.
-  For any estate with dotted IDs, *no* acceptance criterion was reachable
-  by *any* test. It failed silently, because an unproven criterion carried
-  by an open task is `backlog`, a legal passing state: the Gate stayed
-  green for ever while nothing ever became proven. The mapping is now
-  derived from the registry's own IDs (separator-insensitive lookup), so
-  any grammar the config admits round-trips. The JUnit reader carried the
-  same hardcode in `id_forms()` and is fixed the same way, by matching on
-  the test's own name rather than on a guessed spelling of the ID.
-- **A configured `id_regex` with a top-level alternation escaped the
-  def-line anchor.** `def_line_regex` interpolated the value bare into
-  `^...%s...$`, so the trailing branch matched anywhere on any line and a
-  registry that minted each ID once read as dozens of definition lines.
-  The grammar is now grouped at the point of interpolation.
-- **A configured mark containing a slash broke the command that read it.**
-  `retires_regex` was interpolated into a `sed` substitution, so a value
-  like `\*\*Retires/Withdraws\*\*:` closed the `s///` early. The mark is
-  now passed to `awk` as data and never becomes part of a command's syntax.
-- **Orphan scoping went silent on a grammar with no domain segment.**
-  `is_local_domain()` took the second hyphen-separated field; a dotted ID
-  has none, so no unknown ID ever looked local and drift was never
-  reported. Where a registry's IDs carry no domain, every unknown ID is now
-  treated as local and reported: the check errs loud rather than silent.
-- **`mint-id.sh` now reads the configured grammar** for definition-line
-  detection, and refuses rather than composing an ID that the project's own
-  `id_regex` would reject. Issuing scope the Gate would then refuse was the
-  same assumption in the opposite direction.
-- **New refusal:** two IDs differing only in punctuation (`AC-1-2` and
-  `AC-12`) are ambiguous under proof matching, so the Gate refuses instead
-  of guessing which one a test proves.
+Found by running SpecAssay against a real estate whose IDs are dotted
+(`AC-5.6.1a`). The worst of it failed *silently*: an unproven criterion carried
+by an open task is `backlog`, a legal passing state, so a Gate that could not
+reach a single test stayed green for ever while nothing ever became proven.
+Silent green is the one failure this tool exists to refuse, and it was here,
+inside the refuser.
 
-- **The mark travels through the environment, not `awk -v`.** A `-v`
-  assignment is escape-processed, so gawk read the `\*` in
-  `\*\*Retires\*\*:` as a plain `*` while mawk passed it through: the same
-  config parsed on one machine and not on another. `ENVIRON[]` is not
+Eleven regression tests come with the fix
+(`extensions/specassay-check/tests/test_gate_110_nonstock_grammar.py`), on
+fixtures carrying dotted IDs, an underscore-bearing ID, an alternation in
+`id_regex`, and a retirement mark containing a slash. Ten of them fail against
+the v0.4.13 tag and pass after. A release that fixed these without tests that
+would have caught them would repeat the original error.
+
+All three components move to 0.5.0 together, per the versioning law recorded
+under 0.3.3: preset 0.5.0, extension `specassay-check` 0.5.0, bundle 0.5.0.
+
+### Upgrade-blocker: read this before upgrading
+
+**This release can refuse a registry that v0.4.13 accepted.** Proof matching is
+now separator-insensitive, which is what makes a dotted or underscore-bearing
+grammar provable at all. The one case it cannot serve is two IDs that differ
+only in punctuation: `AC-1-2` and `AC-12` reduce to the same key, so a test
+named for either could be credited to the wrong row. Rather than guess, the Gate
+fails with an `ambiguous-id-key` finding naming both IDs (`FR-GATE-120`).
+
+If your registry carries such a pair, your first run on 0.5.0 goes red where
+0.4.13 was green. That is not a mystery refusal and not a regression: v0.4.13
+never looked, and could have been crediting the wrong row the whole time.
+
+**The remedy:** the Gate names the clashing IDs, so pick the one that is wrong
+and retire it. Retire it properly rather than deleting the line, with a
+`**Retires**: <id> (<YYYY-MM-DD>): <reason>` record on an open task, then mint a
+replacement whose ID differs by more than punctuation. The retired row keeps its
+history and the manifest keeps saying so. Nothing else in 0.5.0 changes a status
+your registry already had.
+
+### Repairs: the configured grammar is consumed as configured
+
+Each of these restores a promise the registry already carries, so none of them
+mints a new ID. The row each repair answers to is named with it.
+
+- **The proof direction could not reach a non-stock ID** (Rule 6, the contract
+  that a named test proves an AC). The engine rebuilt a registry ID from a test
+  name with `tr '_' '-'`, so `test_AC_5_6_1_a_...` resolved to `AC-5-6-1-a`,
+  which matches no entry. For any estate with dotted IDs, *no* acceptance
+  criterion was reachable by *any* test. The mapping is now derived from the
+  registry's own IDs by separator-insensitive lookup, so any grammar the config
+  admits round-trips: both sides of the comparison come from the config's own
+  output. A token that resolves to no registry ID keeps its old treatment, so
+  untraced scope is still reported rather than lost.
+- **The JUnit reader carried the same hardcode** (`FR-GATE-80`, `AC-GATE-80`).
+  `id_forms()` built candidate spellings of an ID by rule. It is gone: a passing
+  test is now matched on the test's own name, as the report itself spells it.
+- **Name matching is bounded** (`FR-GATE-80`, `AC-GATE-80`). A needle now has to
+  sit on an alphanumeric boundary, so `AC_1` no longer matches inside `AC_10`.
+- **A configured `id_regex` with a top-level alternation escaped the def-line
+  anchor** (`FR-GATE-50`'s duplicate-ID check, which this defect defeated).
+  `def_line_regex` interpolated the value bare into `^...%s...$`, so the
+  trailing branch matched anywhere on any line and a registry that minted each
+  ID once read as dozens of definition lines. The grammar is now grouped at the
+  point of interpolation.
+- **A configured mark containing a slash broke the command that read it**
+  (`FR-GATE-30`, which defines the retirement record). `retires_regex` was
+  interpolated into a `sed` substitution, so a value like
+  `\*\*Retires/Withdraws\*\*:` closed the `s///` early. The mark is now passed to
+  `awk` as data and never becomes part of a command's syntax.
+- **The mark travels through the environment, not `awk -v`** (`FR-GATE-30`,
+  same row, second round). A `-v` assignment is escape-processed, so gawk read
+  the `\*` in `\*\*Retires\*\*:` as a plain `*` while mawk passed it through: the
+  same config parsed on one machine and not on another. `ENVIRON[]` is not
   escape-processed, so the mark reaches `match()` as the bytes the config
-  declared. Caught by CI, not by the suite, because the container that
-  wrote the fix runs mawk and the runner runs gawk; a static test now
-  refuses any configured pattern passed to awk through `-v`, which catches
-  the class in either environment.
+  declared. Caught by CI rather than by the suite, because the container that
+  wrote the first fix runs mawk and the runner runs gawk. A static test now
+  refuses any configured pattern passed to awk through `-v`, which catches the
+  class in either environment; a behavioural test cannot, on a machine with only
+  one awk.
+- **Orphan scoping went silent on a grammar with no domain segment**
+  (`FR-GATE-40`, `AC-GATE-40`, `AC-GATE-41`). `is_local_domain()` took the
+  second hyphen-separated field; a dotted ID has none, so no unknown ID ever
+  looked local and drift was never reported. Where a registry's IDs carry no
+  domain, every unknown ID is now treated as local and reported: the check errs
+  loud rather than silent.
 
-### An empty test report is refused, not believed
+`mint-id.sh` also now reads the configured `id_regex` for definition-line
+detection and for finding the highest existing number, instead of assuming the
+stock shape.
 
-A `test_results` report containing zero test cases was read as "nothing
-passed", which demoted every criterion and returned a green run with
-`executionVerified: true`. It is the absence of evidence, not evidence of
-absence, and it now exits 2 with the reason and the likely cause named: a
-toolchain that writes one report per test framework and leaves the others
-empty. Observed on Swift 6.3.3, where `swift test --xunit-output` wrote
-only the swift-testing file, with no cases, for an XCTest-only run; whose
-bug *that* is belongs to the toolchain, but trusting the file was ours.
+### New promises, minted for this release
 
+Three things 0.5.0 does that no existing row promised. They are registered in
+`PRD.md`, claimed in `specs/self-gate-config/spec.md`, carried by `T923`, and
+each is proven by a named test:
+
+- **`FR-GATE-110` / `AC-GATE-110` — an empty or unreadable test report is
+  refused, not believed.** A `test_results` report containing zero test cases
+  was read as "nothing passed", which demoted every criterion and returned a
+  green run with `executionVerified: true`. It is the absence of evidence, not
+  evidence of absence. It now exits 2 with the reason named, writes no manifest,
+  and points at the likely cause: a toolchain that writes one report per test
+  framework and leaves the others empty. Observed on Swift 6.3.3, where
+  `swift test --xunit-output` wrote only the swift-testing file, with no cases,
+  for an XCTest-only run; whose bug *that* is belongs to the toolchain, but
+  trusting the file was ours. A report the parser cannot read takes the same
+  exit.
+- **`FR-GATE-120` / `AC-GATE-120` — IDs that collide under proof matching are
+  refused, not resolved by guess.** See the upgrade-blocker note above.
+- **`FR-GATE-130` / `AC-GATE-130` — `mint-id.sh` refuses to compose an ID the
+  configured `id_regex` rejects.** Issuing scope the Gate would then refuse was
+  the same assumption in the opposite direction. The refusal quotes the
+  configured grammar, shows the ID it declined to compose, and says to mint by
+  hand into the registry in the grammar the config declares.
+
+The class itself stays unminted. A row that promised "every configured value is
+consumed as configured" would be a slogan the Gate cannot check, and the rows
+above already carry the parts of it that can be proven.
+
+### Also in this release
 
 - **Compatibility claim names what is proven.** `requires.speckit_version`
   moves from `>=0.14.0` to `>=0.14.0,<2.0.0` in all three manifests, after
@@ -75,12 +142,15 @@ bug *that* is belongs to the toolchain, but trusting the file was ours.
   direct download, Gate, mint, refusal, upgrade from v0.4.12;
   `docs/submission/test-evidence.md`). The upper bound is the major line,
   not the last patch tested: Spec Kit enforces this field as a hard
-  install refusal and shipped three patches in three days this week, so a
+  install refusal and shipped three patches in three days that week, so a
   literal `<=1.0.4` would refuse every adopter on the next one. Catalogs
   and paste-from docs follow at the cut.
 - **README:** `specify bundle install` scaffolds the config on Spec Kit
   1.0.3 and later (github/spec-kit#4285); the README said it never did,
   which was true of 0.15.3.dev0 only.
+- **`ONBOARD.md`** names its one divergence rather than hiding it: its receipts
+  were captured on v0.4.13 and have not yet been re-captured by a cold operator
+  on v0.5.0. Tracked as `docs/docs-gaps.md` item 11.
 
 ## 0.4.13 (2026-09-04)
 

@@ -281,7 +281,7 @@ def test_invented_id_is_reported_when_the_grammar_has_no_domain(project):
     )
 
 
-def test_mint_refuses_rather_than_emit_an_id_the_grammar_rejects(project):
+def test_AC_GATE_130_mint_refuses_rather_than_emit_an_id_the_grammar_rejects(project):
     """mint-id.sh must not hand back an ID this project could never carry.
 
     Its PREFIX-AREA-NN scheme is the stock grammar hardcoded. Against a
@@ -318,7 +318,7 @@ def test_mint_refuses_rather_than_emit_an_id_the_grammar_rejects(project):
 # --- The empty report: a loud refusal, not a silent demotion -----------
 
 
-def test_empty_junit_report_is_refused_not_trusted(project):
+def test_AC_GATE_110_empty_junit_report_is_refused_not_trusted(project):
     """Zero test cases cannot verify anything, and must say so.
 
     Observed on Swift 6.3.3, where `swift test --xunit-output` wrote only
@@ -357,7 +357,7 @@ def test_empty_junit_report_is_refused_not_trusted(project):
 # --- New refusal introduced by the fix, so it carries its own proof ----
 
 
-def test_ids_differing_only_in_punctuation_are_refused(project):
+def test_AC_GATE_120_ids_differing_only_in_punctuation_are_refused(project):
     """Separator-insensitive matching must not guess between two IDs.
 
     `AC-1-2` and `AC-12` reduce to the same key, so a test named for either

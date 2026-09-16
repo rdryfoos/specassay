@@ -361,9 +361,10 @@ while IFS= read -r rid; do
   printf '%s\t%s\n' "$(norm_key "$rid")" "$rid" >> "$tmp/id_by_key.txt"
 done < "$tmp/registry.txt"
 
-# Two IDs that differ only in punctuation (AC-1-2 and AC-12) are one key,
-# so a proof naming either could be credited to the wrong row. Refuse
-# rather than pick: the registry, not the engine, has to settle it.
+# @covers FR-GATE-120, AC-GATE-120 -- two IDs that differ only in punctuation
+# (AC-1-2 and AC-12) are one key under separator-insensitive proof matching,
+# so a proof naming either could be credited to the wrong row. Say so rather
+# than pick: the registry, not the engine, has to settle it.
 while IFS= read -r dupe_key; do
   [[ -z "$dupe_key" ]] && continue
   clashing="$(awk -F'\t' -v k="$dupe_key" '$1 == k { printf "%s ", $2 }' "$tmp/id_by_key.txt")"
@@ -630,11 +631,11 @@ with open(test_acs_path, "w") as f:
     for id_ in sorted(verified):
         f.write(id_ + "\n")
 PY
-  # Exit 3 from the reader means the report cannot verify anything (it
-  # carries no test cases). That is an unusable input, not a verdict on the
-  # thread, so it takes the same exit 2 as a missing config or interpreter:
-  # nothing is claimed and no manifest is written, rather than a green run
-  # asserting every criterion is unproven.
+  # @covers FR-GATE-110, AC-GATE-110 -- exit 3 from the reader means the
+  # report cannot verify anything (it carries no test cases). That is an
+  # unusable input, not a verdict on the thread, so it takes the same exit 2
+  # as a missing config or interpreter: nothing is claimed and no manifest is
+  # written, rather than a green run asserting every criterion is unproven.
   if (( junit_rc == 3 )); then
     echo "SpecAssay Check (Gate 2): could not run (test_results has no test cases)" >&2
     exit 2

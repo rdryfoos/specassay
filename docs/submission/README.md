@@ -1,10 +1,16 @@
 # Submission package — status and checklist
 
-**v0.4.13 released 2026-09-04. Catalog pointer PR open upstream: [github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448) (all three entries, one PR, because the bundle pins its components). Submission-form issues with the narrative not yet filed.** Release, digests, and the
-regenerated paste-from docs are ready; the three update issues are the
-human step (see the cheat sheet's "v0.4.13 cut" section). v0.4.12 is the
-version Spec Kit's community catalog currently carries (#4254, #4256,
-#4257 all merged).
+**v0.5.0 swept and ready; the tag is not yet cut.** All three manifests, the three
+catalogs, the three paste-from docs, the CHANGELOG, and `docs/submission/test-evidence.md`
+are at 0.5.0 on the release branch. The paste-from docs deliberately carry no digests: the
+assets do not exist until the tag is pushed, and a 0.4.13 digest under a 0.5.0 URL would be
+a false claim. What the cut still owes is listed at the end of the v0.5.0 entry in
+`test-evidence.md`.
+
+**v0.4.13 released 2026-09-04. Catalog pointer PR open upstream: [github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448) (all three entries, one PR, because the bundle pins its components). Its submission-form issues were never filed**, so the
+0.5.0 filing carries two versions' worth of change and updates the last issues actually filed
+(#4252 extension, #4253 preset, #4255 bundle). v0.4.12 is the version Spec Kit's community
+catalog currently carries (#4254, #4256, #4257 all merged).
 
 **Filed 2026-08-11** — all three issues are in Spec Kit's queue:
 [#4057](https://github.com/github/spec-kit/issues/4057) (extension) ·
