@@ -181,6 +181,15 @@ validate_list_key() {
 # the same sense a malformed src_globs/test_globs key is (FR-GATE-70):
 # refuses loudly before any scanning rather than emitting a manifest built
 # on a guess. Shape: **Retires**: <id-list> (<YYYY-MM-DD>): <reason>.
+# Return the part of a line after a configured mark. The mark is passed to
+# awk as a *value*, never interpolated into a command's syntax: the previous
+# form built a sed substitution around it, so a configured pattern containing
+# a slash ("\*\*Retires/Withdraws\*\*:") closed the s/// early and broke the
+# command rather than changing what it matched.
+strip_through_mark() {
+  awk -v re="$2" '{ if (match($0, re)) { rest = substr($0, RSTART + RLENGTH); sub(/^[[:space:]]+/, "", rest); print rest } }' <<<"$1"
+}
+
 validate_retires_format() {
   local f
   while IFS= read -r f; do
@@ -190,7 +199,7 @@ validate_retires_format() {
       local lineno="${line%%:*}"
       local rest="${line#*:}"
       local after
-      after="$(sed -E "s/^.*${RETIRES_RE}[[:space:]]*//" <<<"$rest")"
+      after="$(strip_through_mark "$rest" "$RETIRES_RE")"
       if [[ -z "$(grep -Eo "$ID_RE" <<<"${after%%(*}" || true)" ]]; then
         {
           echo "FAIL: malformed **Retires** record ($f:$lineno) -- names no registry ID before the dated reason."
@@ -326,6 +335,42 @@ fi
 # what's actually minted.
 cut -d'|' -f1 "$tmp/def_line_hits.txt" 2>/dev/null | sort -u > "$tmp/registry.txt" || : > "$tmp/registry.txt"
 
+# A test name cannot carry an ID's punctuation: most languages forbid a dot
+# or a hyphen in an identifier, so AC-5.6.1a is written test_AC_5_6_1_a. The
+# engine therefore has to map the test-name form back to the registry form.
+# It used to do that by substituting one character for another (tr '_' '-'),
+# which silently assumes the stock grammar -- under any other, every test
+# resolved to an ID that does not exist, no criterion was ever reachable by
+# any test, and the Gate stayed green because "backlog" is a legal state.
+#
+# The mapping is now derived from the registry's own IDs instead of guessed:
+# each minted ID is reduced to a separator-insensitive key (lowercased,
+# non-alphanumerics removed), and a token found in a test name is reduced
+# the same way and looked up. Any grammar the config admits round-trips,
+# because both sides of the comparison come from the config's own output.
+norm_key() { printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]'; }
+: > "$tmp/id_by_key.txt"
+while IFS= read -r rid; do
+  [[ -z "$rid" ]] && continue
+  printf '%s\t%s\n' "$(norm_key "$rid")" "$rid" >> "$tmp/id_by_key.txt"
+done < "$tmp/registry.txt"
+
+# Two IDs that differ only in punctuation (AC-1-2 and AC-12) are one key,
+# so a proof naming either could be credited to the wrong row. Refuse
+# rather than pick: the registry, not the engine, has to settle it.
+while IFS= read -r dupe_key; do
+  [[ -z "$dupe_key" ]] && continue
+  clashing="$(awk -F'\t' -v k="$dupe_key" '$1 == k { printf "%s ", $2 }' "$tmp/id_by_key.txt")"
+  record_fail "ambiguous-id-key" "" "ambiguous IDs under proof matching: ${clashing% } differ only in punctuation, so a test named for one cannot be told from a test named for another"
+done < <(cut -d'	' -f1 "$tmp/id_by_key.txt" | sort | uniq -d)
+
+# Resolve a token as it appears in a test name to the registry ID it names.
+# Prints nothing when the registry has no such ID; callers keep the raw
+# token in that case, so untraced scope is still reported rather than lost.
+id_for_test_token() {
+  awk -F'\t' -v k="$(norm_key "$1")" '$1 == k { print $2; exit }' "$tmp/id_by_key.txt"
+}
+
 # Duplicate-id: two independent mints of the same ID, usually two branches
 # that each computed the same "next" number before either saw the other's
 # commit. registry.txt's sort -u above already erases this silently for
@@ -434,7 +479,7 @@ while IFS= read -r f; do
   grep -nE "$RETIRES_RE" "$f" 2>/dev/null | while IFS= read -r line; do
     lineno="${line%%:*}"
     rest="${line#*:}"
-    after="$(sed -E "s/^.*${RETIRES_RE}[[:space:]]*//" <<<"$rest")"
+    after="$(strip_through_mark "$rest" "$RETIRES_RE")"
     while IFS= read -r id; do
       [[ -n "$id" ]] || continue
       printf '%s|%s|%s|%s\n' "$f" "$lineno" "$id" "$after"
@@ -478,7 +523,14 @@ while IFS= read -r g; do
       rest="${line#*:}"
       raw="$(grep -Eo "$TEST_AC_RE" <<<"$rest" | head -1 || true)"
       [[ -n "$raw" ]] || continue
-      id="$(printf '%s' "$raw" | tr '_' '-')"
+      id="$(id_for_test_token "$raw")"
+      # A token the registry cannot claim is untraced scope, and is still
+      # reported as such. It falls back to the old character substitution
+      # purely so that the *name* it is reported and scoped under does not
+      # change for projects on the stock grammar: under that grammar the
+      # substitution is correct, and this path is only ever reached for an
+      # ID the registry does not have.
+      [[ -n "$id" ]] || id="$(printf '%s' "$raw" | tr '_' '-')"
       name="$(grep -Eo 'test_[A-Za-z0-9_]+|func test_[A-Za-z0-9_]+' <<<"$rest" | head -1 | sed 's/^func //' || true)"
       [[ -n "$name" ]] || name="$raw"
       printf '%s|%s|%s|%s\n' "$f" "$lineno" "$id" "$name"
@@ -502,7 +554,8 @@ cut -d'|' -f3 "$tmp/proof_hits.txt" 2>/dev/null | sort -u > "$tmp/test_acs.txt" 
 : > "$tmp/execution_verified.txt"
 if [[ -n "$TEST_RESULTS" && -f "$TEST_RESULTS" ]]; then
   echo "true" > "$tmp/execution_verified.txt"
-  "$PYTHON" - "$TEST_RESULTS" "$tmp/proof_hits.txt" "$tmp/test_acs.txt" <<'PY'
+  junit_rc=0
+  "$PYTHON" - "$TEST_RESULTS" "$tmp/proof_hits.txt" "$tmp/test_acs.txt" <<'PY' || junit_rc=$?
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -519,29 +572,71 @@ for testcase in tree.getroot().iter("testcase"):
     label = f'{testcase.get("classname", "")} {testcase.get("name", "")}'
     passing_names.append(label)
 
-def id_forms(id_):
-    # AC-BIND-10 (as it appears in JS description-string test names) and
-    # AC_BIND_10 (as it appears in Python test_AC_BIND_10_... function
-    # names) are the two conventions this project family actually uses.
-    return {id_, id_.replace("-", "_")}
+# A report that contains no test cases cannot verify anything. Trusting it
+# silently demoted every criterion to backlog -- a legal, passing state --
+# so the run came back green with executionVerified: true while nothing had
+# been verified at all. Observed where a toolchain wrote an empty report for
+# a run whose tests live under a different framework. Whoever writes the
+# file, believing it is ours.
+if not passing_names and not any(True for _ in ET.parse(results_path).getroot().iter("testcase")):
+    sys.stderr.write(
+        "FAIL: test_results (%s) contains no test cases, so it can verify "
+        "nothing.\n" % results_path
+    )
+    sys.stderr.write(
+        "  A report with zero cases is not evidence that nothing passed; it is\n"
+        "  the absence of evidence, and treating it as the former would mark\n"
+        "  every criterion unproven on a green run.\n"
+        "  Check that the run wrote the report you configured: a toolchain may\n"
+        "  emit one file per test framework and leave the others empty.\n"
+        "  Unset test_results to fall back to name-matching, which says so in\n"
+        "  the manifest as executionVerified: false.\n"
+    )
+    sys.exit(3)
+
+def bounded(needle, haystack):
+    # Bounded on both sides, so AC-1 is never credited by a test named for
+    # AC-12. The old test was a bare substring and could do exactly that.
+    return re.search(
+        r"(?<![A-Za-z0-9])%s(?![A-Za-z0-9])" % re.escape(needle), haystack
+    ) is not None
 
 verified = set()
 with open(proof_hits_path, encoding="utf-8", errors="replace") as f:
     for line in f:
         parts = line.rstrip("\n").split("|", 3)
-        if len(parts) < 3:
+        if len(parts) < 4:
             continue
-        id_ = parts[2]
+        id_, name = parts[2], parts[3]
         if id_ in verified:
             continue
-        forms = id_forms(id_)
-        if any(any(form in label for form in forms) for label in passing_names):
+        # The scan already resolved this ID *from* a test, and kept that
+        # test's own name. Matching on the name needs no transform at all,
+        # which is why it works for any grammar: it is the identifier the
+        # report itself prints. The ID's own forms stay as alternatives for
+        # suites that name their cases in prose ("AC-BIND-10 renders ...")
+        # rather than in a function name.
+        forms = [name, id_, re.sub(r"[^A-Za-z0-9]", "_", id_)]
+        if any(bounded(form, label) for form in forms for label in passing_names):
             verified.add(id_)
 
 with open(test_acs_path, "w") as f:
     for id_ in sorted(verified):
         f.write(id_ + "\n")
 PY
+  # Exit 3 from the reader means the report cannot verify anything (it
+  # carries no test cases). That is an unusable input, not a verdict on the
+  # thread, so it takes the same exit 2 as a missing config or interpreter:
+  # nothing is claimed and no manifest is written, rather than a green run
+  # asserting every criterion is unproven.
+  if (( junit_rc == 3 )); then
+    echo "SpecAssay Check (Gate 2): could not run (test_results has no test cases)" >&2
+    exit 2
+  elif (( junit_rc != 0 )); then
+    echo "FAIL: could not read test_results ($TEST_RESULTS); exit $junit_rc" >&2
+    echo "SpecAssay Check (Gate 2): could not run (test_results unreadable)" >&2
+    exit 2
+  fi
 elif [[ -n "$TEST_RESULTS" ]]; then
   echo "WARN: test_results configured ($TEST_RESULTS) but the file does not exist; falling back to name-matching only, executionVerified=false in the manifest" >&2
 fi
@@ -557,9 +652,25 @@ fi
 # local typo almost always keeps the real local domain and gets the
 # number (or the domain itself) wrong in a way that still matches one of
 # these domains, or fails the separate unclaimed check below regardless.
-cut -d'-' -f2 "$tmp/registry.txt" 2>/dev/null | sort -u > "$tmp/local_domains.txt" || : > "$tmp/local_domains.txt"
+awk -F'-' 'NF >= 3 && $2 ~ /^[A-Za-z][A-Za-z0-9]*$/ { print $2 }' "$tmp/registry.txt" 2>/dev/null \
+  | sort -u > "$tmp/local_domains.txt" || : > "$tmp/local_domains.txt"
+# The domain is the middle segment of the stock TYPE-DOMAIN-NN grammar. A
+# configured grammar need not have one: a dotted ID (AC-5.6.1a) has no such
+# field, and cut returned either a number or the whole token, so no unknown
+# ID ever looked local and orphan detection went silent -- the same class of
+# silent miss as the proof direction, in the check meant to catch drift.
+#
+# When this registry's IDs carry no domain segment, the concept does not
+# apply and there is nothing to scope by, so every unknown ID is treated as
+# local and reported. That errs loud: a foreign ID quoted in prose may now
+# be named, which a reader can see and dismiss, where the old behavior hid
+# real drift, which a reader could not.
 is_local_domain() {
-  grep -qx "$(cut -d'-' -f2 <<<"$1")" "$tmp/local_domains.txt"
+  [[ -s "$tmp/local_domains.txt" ]] || return 0
+  local seg
+  seg="$(cut -d'-' -f2 <<<"$1")"
+  [[ "$seg" == "$1" ]] && return 0
+  grep -qx "$seg" "$tmp/local_domains.txt"
 }
 
 # 1) Exact-set drift: registry ≡ specs, registry ≡ tasks (HomesFlow Gate 2 parity).

@@ -79,4 +79,10 @@ test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
 # testcase, not just a matching name; when unset, the Gate falls back
 # to name-matching alone and says so loudly (gate.executionVerified:
 # false in the trace-manifest), never a silent, implied upgrade.
+#
+# A report with zero test cases is refused (exit 2), not believed: it is
+# the absence of evidence, not evidence that nothing passed, and reading
+# it as the latter would mark every criterion unproven on a green run.
+# Some toolchains emit one report per test framework and leave the ones
+# they did not run empty, so check which file your run actually wrote.
 # test_results: "test-results.xml"

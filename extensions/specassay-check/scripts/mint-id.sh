@@ -83,7 +83,9 @@ usage() {
 # Shared with check-traceability.sh's duplicate-id detection so both
 # scripts agree on what a "real" registry entry looks like.
 source "$(dirname "$0")/lib-def-line.sh"
-DEF_LINE_RE="$(def_line_regex '(FR|NFR|AC|US)-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?')"
+ID_RE="$(yaml_scalar id_regex)"
+[[ -n "$ID_RE" ]] || ID_RE='(FR|NFR|AC|US)-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?'
+DEF_LINE_RE="$(def_line_regex "$ID_RE")"
 
 style_template() {
   grep -Em1 "$DEF_LINE_RE" "$REGISTRY" || true
@@ -101,7 +103,7 @@ render_line() {
     return
   fi
   local sample_id before after
-  sample_id="$(grep -Eo '(FR|NFR|AC|US)-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?' <<<"$sample" | head -1)"
+  sample_id="$(grep -Eo "$ID_RE" <<<"$sample" | head -1)"
   before="${sample%%"$sample_id"*}"
   after="${sample#*"$sample_id"}"
   # after starts with whatever closes the ID (e.g. "** — " or " — ")
@@ -139,6 +141,18 @@ mint_primary() {
     next=$(( (highest / 10 + 1) * 10 ))
   fi
   local new_id="${prefix}-${area}-${next}"
+  # This decade scheme *is* the stock TYPE-DOMAIN-NN grammar, written out.
+  # A project may configure another, and then the ID composed here is one
+  # the Gate will refuse the moment it is used: the tool would be issuing
+  # scope its own checker rejects. Say so instead, and let the registry's
+  # own grammar be minted by hand.
+  if ! grep -qE "^${ID_RE}$" <<<"$new_id"; then
+    echo "FAIL: mint-id composes ${prefix}-${area}-NN, which this project's configured id_regex does not admit:" >&2
+    echo "  id_regex: $ID_RE" >&2
+    echo "  would have minted: $new_id" >&2
+    echo "  Mint this ID by hand into $REGISTRY in the grammar the config declares; the Gate reads the registry, not this helper." >&2
+    exit 2
+  fi
   echo "$new_id"
   if [[ -n "$append_text" ]]; then
     render_line "$new_id" "$append_text" >> "$REGISTRY"
@@ -154,6 +168,9 @@ resolve_duplicate() {
   local prefix area decade
   if [[ ! "$dup_id" =~ ^(FR|NFR|AC|US)-([A-Z][A-Z0-9]{1,5})-([0-9]+)$ ]]; then
     echo "FAIL: '$dup_id' doesn't look like PREFIX-AREA-NUMBER" >&2
+    echo "  --resolve allocates from the stock grammar's reserved 1-9 offset lane, which only exists in that grammar." >&2
+    echo "  This project's configured id_regex is: $ID_RE" >&2
+    echo "  If that is not the stock shape, resolve the duplicate by hand in $REGISTRY." >&2
     exit 2
   fi
   prefix="${BASH_REMATCH[1]}"

@@ -5,6 +5,60 @@ the bundle version leads, component versions are listed per release.
 
 ## Unreleased
 
+### The configured grammar is consumed as configured
+
+Four defects with one root, found by running SpecAssay against a real
+estate whose IDs are dotted (`AC-5.6.1a`) rather than the stock
+`TYPE-DOMAIN-NN`. The front door accepted a configurable grammar and the
+back rooms assumed the stock one. Each is covered by a regression test
+that fails against the v0.4.13 tag and passes after
+(`tests/test_gate_110_nonstock_grammar.py`, ten tests).
+
+- **The proof direction could not reach a non-stock ID.** The engine
+  rebuilt a registry ID from a test name with `tr '_' '-'`, so
+  `test_AC_5_6_1_a_...` resolved to `AC-5-6-1-a`, which matches no entry.
+  For any estate with dotted IDs, *no* acceptance criterion was reachable
+  by *any* test. It failed silently, because an unproven criterion carried
+  by an open task is `backlog`, a legal passing state: the Gate stayed
+  green for ever while nothing ever became proven. The mapping is now
+  derived from the registry's own IDs (separator-insensitive lookup), so
+  any grammar the config admits round-trips. The JUnit reader carried the
+  same hardcode in `id_forms()` and is fixed the same way, by matching on
+  the test's own name rather than on a guessed spelling of the ID.
+- **A configured `id_regex` with a top-level alternation escaped the
+  def-line anchor.** `def_line_regex` interpolated the value bare into
+  `^...%s...$`, so the trailing branch matched anywhere on any line and a
+  registry that minted each ID once read as dozens of definition lines.
+  The grammar is now grouped at the point of interpolation.
+- **A configured mark containing a slash broke the command that read it.**
+  `retires_regex` was interpolated into a `sed` substitution, so a value
+  like `\*\*Retires/Withdraws\*\*:` closed the `s///` early. The mark is
+  now passed to `awk` as data and never becomes part of a command's syntax.
+- **Orphan scoping went silent on a grammar with no domain segment.**
+  `is_local_domain()` took the second hyphen-separated field; a dotted ID
+  has none, so no unknown ID ever looked local and drift was never
+  reported. Where a registry's IDs carry no domain, every unknown ID is now
+  treated as local and reported: the check errs loud rather than silent.
+- **`mint-id.sh` now reads the configured grammar** for definition-line
+  detection, and refuses rather than composing an ID that the project's own
+  `id_regex` would reject. Issuing scope the Gate would then refuse was the
+  same assumption in the opposite direction.
+- **New refusal:** two IDs differing only in punctuation (`AC-1-2` and
+  `AC-12`) are ambiguous under proof matching, so the Gate refuses instead
+  of guessing which one a test proves.
+
+### An empty test report is refused, not believed
+
+A `test_results` report containing zero test cases was read as "nothing
+passed", which demoted every criterion and returned a green run with
+`executionVerified: true`. It is the absence of evidence, not evidence of
+absence, and it now exits 2 with the reason and the likely cause named: a
+toolchain that writes one report per test framework and leaves the others
+empty. Observed on Swift 6.3.3, where `swift test --xunit-output` wrote
+only the swift-testing file, with no cases, for an XCTest-only run; whose
+bug *that* is belongs to the toolchain, but trusting the file was ours.
+
+
 - **Compatibility claim names what is proven.** `requires.speckit_version`
   moves from `>=0.14.0` to `>=0.14.0,<2.0.0` in all three manifests, after
   v0.4.13 was run end to end on Spec Kit 1.0.4 (install by catalog and by
