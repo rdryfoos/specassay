@@ -187,7 +187,13 @@ validate_list_key() {
 # a slash ("\*\*Retires/Withdraws\*\*:") closed the s/// early and broke the
 # command rather than changing what it matched.
 strip_through_mark() {
-  awk -v re="$2" '{ if (match($0, re)) { rest = substr($0, RSTART + RLENGTH); sub(/^[[:space:]]+/, "", rest); print rest } }' <<<"$1"
+  # The pattern travels through the environment, not through awk's -v: a -v
+  # assignment runs escape processing on its value, so gawk reads the "\*" in
+  # a mark like "\*\*Retires\*\*:" as a plain "*" (and says so on stderr),
+  # while mawk passes it through untouched. The same config would then parse
+  # on one machine and not on another. ENVIRON is not escape-processed, so
+  # the mark reaches match() as the bytes the config actually declared.
+  SPECASSAY_MARK_RE="$2" awk '{ if (match($0, ENVIRON["SPECASSAY_MARK_RE"])) { rest = substr($0, RSTART + RLENGTH); sub(/^[[:space:]]+/, "", rest); print rest } }' <<<"$1"
 }
 
 validate_retires_format() {

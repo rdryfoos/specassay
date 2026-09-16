@@ -47,6 +47,16 @@ that fails against the v0.4.13 tag and passes after
   `AC-12`) are ambiguous under proof matching, so the Gate refuses instead
   of guessing which one a test proves.
 
+- **The mark travels through the environment, not `awk -v`.** A `-v`
+  assignment is escape-processed, so gawk read the `\*` in
+  `\*\*Retires\*\*:` as a plain `*` while mawk passed it through: the same
+  config parsed on one machine and not on another. `ENVIRON[]` is not
+  escape-processed, so the mark reaches `match()` as the bytes the config
+  declared. Caught by CI, not by the suite, because the container that
+  wrote the fix runs mawk and the runner runs gawk; a static test now
+  refuses any configured pattern passed to awk through `-v`, which catches
+  the class in either environment.
+
 ### An empty test report is refused, not believed
 
 A `test_results` report containing zero test cases was read as "nothing

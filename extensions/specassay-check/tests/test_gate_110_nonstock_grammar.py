@@ -14,6 +14,7 @@ its criterion in `backlog`, which is a legal, passing state, so the Gate
 stays green for ever while nothing ever becomes proven.
 """
 
+import re
 import subprocess
 from pathlib import Path
 
@@ -383,3 +384,31 @@ def test_ids_differing_only_in_punctuation_are_refused(project):
         f"failures={kinds}\n{proc.stdout}"
     )
     assert proc.returncode == 1
+
+
+def test_no_configured_pattern_reaches_awk_through_a_v_assignment():
+    """A config value must not travel through `awk -v`, in any script.
+
+    `-v` runs escape processing on its value, so gawk reads the `\\*` in a
+    mark like `\\*\\*Retires\\*\\*:` as a plain `*` and mawk does not: the same
+    config then parses on one machine and not on another. This one was
+    caught by CI rather than by the suite, because the container that wrote
+    the fix runs mawk and the runner runs gawk. A behavioural test cannot
+    see that difference without both awks present; reading the scripts can,
+    anywhere.
+    """
+    offenders = []
+    pattern = re.compile(
+        r"""awk\s+(-[A-Za-z]+\s+)*-v\s+\w+=["']?\$\{?"""
+        r"""(ID_RE|COVERS_RE|CARRIES_RE|RETIRES_RE|TEST_AC_RE|\d)"""
+    )
+    for script in sorted(SCRIPTS.glob("*.sh")):
+        for lineno, line in enumerate(script.read_text().splitlines(), 1):
+            if pattern.search(line):
+                offenders.append(f"{script.name}:{lineno}: {line.strip()}")
+
+    assert not offenders, (
+        "a configured pattern is passed to awk through -v, which is "
+        "escape-processed; pass it through the environment and read it with "
+        "ENVIRON[] instead:\n  " + "\n  ".join(offenders)
+    )
