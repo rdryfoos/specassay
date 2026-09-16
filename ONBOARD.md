@@ -4,6 +4,10 @@
 
 <!-- @covers FR-DOCS-60 -->
 
+No hand-holding and dive right in?
+
+https://github.com/rdryfoos/specassay
+
 This page takes you from a blank Claude Code session to a **Thread Report**, the
 one-comment briefing SpecAssay posts on a change, saying what moved on the thread
 and what rode along untraced, on a tiny sample project you build here. You will
