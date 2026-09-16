@@ -15,7 +15,7 @@ You do not need to know Spec Kit or SpecAssay to follow it. Every block is a
 paste-block that ends with a **You should now see** receipt, so if something goes
 wrong you can name the block it went wrong in.
 
-> Not into hand-holding and wanna dive right in?
+> **Not into hand-holding and wanna dive right in?**
 > [https://github.com/rdryfoos/specassay](https://github.com/rdryfoos/specassay)
 
 ---
