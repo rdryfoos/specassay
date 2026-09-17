@@ -4,9 +4,9 @@ Welcome. This page takes you from a computer with nothing on it to a working set
 the thing all of it is for: writing down what you are actually promising, in your own words, so
 that later you can watch those promises come back proven.
 
-You do not need to be a programmer to follow it. You do need an account on this computer that you
-can install software on, and enough of an unhurried stretch to get through it without rushing the
-last step.
+You do not need to be a programmer to follow it, and you do not need to be an administrator of
+this computer: everything here installs into your own account. You do need enough of an unhurried
+stretch to get through it without rushing the last step.
 
 How long the whole thing takes, honestly: nobody knows yet. Nobody has run this page start to
 finish and timed it, so there is no number here to give you. The one part that has a length is the
@@ -70,7 +70,7 @@ or Linux the shape is the same, but the exact messages are not ones anyone has c
 this exact version:
 
 ```
-https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v1/FIRST-LIGHT.md
+https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v2/FIRST-LIGHT.md
 ```
 
 If you are not sure the copy you hold is the newest, the current one is always at
@@ -80,9 +80,8 @@ nothing: no step here is harmed by being run twice.
 ## Step 0: Where you are
 
 **Something the session does.** Before anything else, it reads your machine and tells you, in
-plain words: which account you are signed in as, whether that account can install software, which
-operating system this is, and whether you are reading this inside the desktop app or in a terminal
-window.
+plain words: which account you are signed in as, which operating system this is, and whether you
+are reading this inside the desktop app or in a terminal window.
 
 Nothing is changed or installed. This is only so you know where you are standing, and so the rest
 of the page can tell you which parts apply to you.
@@ -90,11 +89,17 @@ of the page can tell you which parts apply to you.
 If you are reading on your own, this is that same look, and it changes nothing:
 
 ```
-whoami; sw_vers 2>/dev/null || uname -a; id -Gn | tr ' ' '\n' | grep -qx admin && echo "this account can install software" || echo "this account cannot install software"
+whoami; sw_vers 2>/dev/null || uname -a; [ -n "$ANTHROPIC_BASE_URL" ] && echo "you appear to be reading this inside the desktop app" || echo "you appear to be in a terminal window"
 ```
 
-If your account cannot install software, stop here and ask the person who sent you. The rest of
-this page needs it.
+That last line is a guess from one clue: the desktop app sets something in the environment that a
+plain terminal does not. Step 1 explains why that matters. If it guesses wrong, nothing here
+breaks.
+
+**You do not need to be an administrator of this machine.** Everything this page installs goes
+into your own account, and nothing it runs asks for a password. The one exception is the desktop
+app in step 2, which may ask for an administrator password depending on where you choose to put
+it, and that step says so.
 
 ## Step 1: A quirk of the desktop app, and why some checks look odd
 
@@ -127,7 +132,10 @@ https://claude.com/download
 ```
 
 That page tells you what you are installing and offers the right version for your computer. Open
-it, download, and install the app the way you install any other app. Then open the app and sign
+it, download, and install the app the way you install any other app. This is the one place on the
+page that may ask for an administrator password, depending on where you put the app; if you do not
+have one, you can keep the app in your own account's Applications folder, or ask whoever looks
+after the machine. Then open the app and sign
 in. That is the first of the two sign-ins.
 
 **This one is yours to do.** Installing an application and signing into an account are things you
@@ -166,10 +174,10 @@ command -v claude || echo "not on PATH"; ls -l "$HOME/.local/bin/claude" 2>/dev/
 the tool afterward. All three are in one block on purpose, which is explained just below.
 
 ```
-curl -fsSL https://claude.ai/install.sh -o "$TMPDIR/claude-install.sh" && bash "$TMPDIR/claude-install.sh" && echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
+curl -fsSL https://claude.ai/install.sh -o "$TMPDIR/claude-install.sh" && bash "$TMPDIR/claude-install.sh" && echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshenv && export PATH="$HOME/.local/bin:$PATH" && claude --version
 ```
 
-Two things worth knowing about that block:
+Three things worth knowing about that block:
 
 **Why the last part is in the same block.** The installer finishes by printing this, word for
 word:
@@ -191,6 +199,13 @@ its success message:
 
 So the fix is part of the same block, and you are not left following an instruction that fails.
 
+**Why the fix is not word for word what the installer suggests.** The installer says to add the
+line to `~/.zshrc`. That file is read by terminal windows you open and type in, and not by
+commands run for you in the background, which is how this page runs things when a session is
+helping you. The block above puts the same line in `~/.zshenv` instead, which is read by both. If
+you have already followed the installer's version, no harm done: running this block as well is
+safe, and the only cost is the line appearing in two places.
+
 **Why this is not the command on the website.** The download page publishes a shorter form that
 pipes the installer straight into a shell. That form is not wrong, and you may have seen it. The
 block above downloads the installer first and then runs it, which is the form that was actually
@@ -207,6 +222,9 @@ When the installer succeeds it prints a block like this one, with the version an
   Location: ~/.local/bin/claude
 ```
 
+The block ends by asking the tool for its version, so you see it work in the same breath as
+installing it.
+
 **Not tested:** whether `claude --help` works in a window that was already open before you ran
 that block. If it does not, close that window and open a new one.
 
@@ -215,10 +233,14 @@ that block. If it does not, close that window and open a new one.
 **A block to paste.** This is the second half of the block above, on its own:
 
 ```
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshenv && export PATH="$HOME/.local/bin:$PATH" && claude --version
 ```
 
 ## Step 4: Does it actually run
+
+If step 3 did not finish, come back to this one afterward. A half-finished install answers these
+checks with plumbing errors rather than the messages this page quotes, and then the page is
+describing a different problem than the one on your screen.
 
 **Something the session does.** It asks the tool for its version and shows you the answer, and
 compares it with the version the installer reported.
@@ -226,7 +248,7 @@ compares it with the version the installer reported.
 On your own:
 
 ```
-claude --version
+command -v claude >/dev/null 2>&1 && claude --version || echo "the tool is not on this shell's path yet: finish step 3, including the last part of its block"
 ```
 
 If this prints a version, the tool is installed and reachable. If it prints anything else, stop
@@ -251,7 +273,7 @@ stripped out for the reason given in step 1, and tells you the answer.
 On your own:
 
 ```
-env -i HOME="$HOME" USER="$USER" PATH="$HOME/.local/bin:/usr/bin:/bin" claude auth status
+env -i HOME="$HOME" USER="$USER" PATH="$HOME/.local/bin:/usr/bin:/bin" sh -c 'command -v claude >/dev/null 2>&1 && claude auth status || echo "the tool is not installed yet: go back to step 3"'
 ```
 
 If it says you are signed in, skip to step 6.
@@ -273,25 +295,34 @@ When you are through it, come back and run the check above again. It should say 
 
 ## Step 6: The tools for handling code
 
-**Something the session does.** It checks for two programs and tells you which are present:
+**Something the session does.** It checks that two programs are present and actually work:
 
-- `git`, which is what actually copies the project onto your machine;
+- `git`, which is what copies the project onto your machine;
 - `gh`, which is how you sign in to the place the project is kept.
 
 On your own:
 
 ```
-command -v git || echo "git missing"; command -v gh || echo "gh missing"
+git --version || echo "git did not answer"; gh --version | head -1 || echo "gh did not answer"
 ```
 
-On the machine where this page was tested, both were already present, so neither installation was
-tried. If either is missing on yours, **ask the person who sent you** rather than following an
+It asks each one for its version rather than only asking whether a file exists, because on a Mac
+there is a stand-in for `git` that is present before the real thing is installed. Asking it a
+question is what tells the two apart. If a window appears offering to install developer tools,
+that is the stand-in answering: accept it, let it finish, and run the block again.
+
+On the machine where this page was tested, both were already present and both answered, so
+neither installation was tried. If either is missing on yours, **ask the person who sent you** rather than following an
 instruction from here. Installing developer tools differs by machine, and this page will not hand
 you a command that nobody checked.
 
 ## Step 7: Signing in to where the code lives
 
-**Something the session does.** It asks whether you are already signed in, with the app's settings
+**This step is only for people joining someone else's project.** If you came here with an idea of
+your own, skip it, along with steps 9 and 10, and go to step 8, which is the one that matters
+most. Step 9 says more about why, and nothing later needs this sign-in.
+
+**Something the session does**, for the joining reader. It asks whether you are already signed in, with the app's settings
 stripped out again.
 
 On your own:
@@ -329,7 +360,7 @@ There is a template beside this page that walks you through it, and it is worth 
 start:
 
 ```
-https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v1/CASE-TEMPLATE.md
+https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v2/CASE-TEMPLATE.md
 ```
 
 It has eight sections. The five below are its heart; the other three ask what the smallest first
@@ -433,8 +464,10 @@ copied is worth more than a description of it, and none of this is your fault to
 ## Receipts
 
 Everything quoted on this page was observed on 2026-09-17, on a Mac Mini, on a newly created
-non-admin account with no previous use, from a session in the Claude desktop app. Anything not
-observed is marked as untested where it appears, rather than being written as though it were
+non-admin account with no previous use, from a session in the Claude desktop app. The page was
+then run start to finish by a second fresh non-admin account, which is where the six corrections
+in this version come from and where the timing below was measured. Anything not observed is marked
+as untested where it appears, rather than being written as though it were
 known.
 
 Quoted above, verbatim: the installer's setup warning and its success block; the installer's
@@ -442,11 +475,34 @@ Quoted above, verbatim: the installer's setup warning and its success block; the
 app installed and signed in; the sign-in state showing `loggedIn false` on that same account; and
 the GitHub tool's "You are not logged into any GitHub hosts" message.
 
-No timing is recorded anywhere on this page, because none was taken. The cold-start sitting ran
-parts of this across an interrupted afternoon, which measures nothing, and the half hour named for
-the writing step is that step's design intent rather than a stopwatch reading. The first person to
-run this page start to finish in one sitting produces that receipt, and the number replaces this
-paragraph.
+Timing, measured on the first cold run of this page from end to end: about 100 seconds of machine
+time in total. Roughly 80 of those are the first pass of checks, 16 are the install, and
+everything after it is under a second. That number deliberately excludes the two parts with real
+duration in them, the two sign-ins and the writing step, because those are a person thinking and
+typing rather than a machine working. The half hour named for the writing step is still that
+step's design intent rather than a stopwatch reading, and what a finished terminal sign-in prints
+is still unrecorded.
+
+The PATH fix in step 3 was checked directly, in a throwaway home directory with a stand-in tool
+on it, asking zsh the same question four ways. With nothing set up, neither a background command
+nor a typed window could find the tool. With the line in `~/.zshrc`, which is what the installer
+suggests, a typed window found it and a background command still did not. With the line in
+`~/.zshenv`, which is what this page does, both found it.
+
+## A note for whoever edits this page next
+
+The cold run turned up one thing worth keeping in front of anyone tempted to tidy this page.
+
+The most elaborate commands here, the `env -i` blocks in the sign-in steps, are the most robust
+ones. They name an explicit path, so they work whether or not the shell that runs them has been
+set up. The simplest command, a bare `claude --version`, was the most fragile: it depended on a
+shell having read a file that a background command never reads, and it failed in exactly the mode
+this page is most often run in.
+
+The elaboration was added for an unrelated reason, to stop the desktop app answering for the
+machine, and it incidentally made those steps immune. That was luck rather than design. So: before
+simplifying a command here, ask which shell will run it and what that shell has read. A command
+that only works when a person types it into a window is not one this page can rely on.
 
 Recorded as untested, and therefore not described here: what a completed terminal sign-in prints;
 whether `claude --help` resolves in a terminal window opened before the PATH line was run; and any
