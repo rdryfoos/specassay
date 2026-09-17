@@ -12,12 +12,13 @@ update filed as #4255 merged as #4257. Per
 #4255), after the extension and preset issues for this version exist, and
 reference both by number in Additional Context, below.
 
-**Skipped version, stated plainly:** `v0.4.13` was cut and released but its
-submission-form issue was never filed; only the catalog-pointer PR
-([github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448)) went out for
-it. This 0.5.0 filing therefore carries two versions' worth of change, and the issue
-it updates is the last one actually filed, named above — not a 0.4.13 issue, which
-does not exist.
+**Skipped versions, stated plainly:** neither `v0.4.13` nor `v0.5.0` was ever filed
+on a submission form. v0.4.13 got only the catalog-pointer PR
+([github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448)); v0.5.0 was
+released and swept but its three issues were not filed either. This 0.5.1 filing
+therefore carries three versions' worth of change, and the issue it updates is the
+last one actually filed, named above — not a 0.4.13 or 0.5.0 issue, neither of
+which exists.
 
 ---
 
@@ -25,7 +26,7 @@ does not exist.
 
 **Bundle Name:** SpecAssay
 
-**Version:** 0.5.0
+**Version:** 0.5.1
 
 **Role or Team:** developer
 
@@ -38,12 +39,15 @@ trace-manifest emission.
 **Repository URL:** https://github.com/rdryfoos/specassay
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.5.0/specassay-0.5.0.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-0.5.1.zip
 
-**Digest (sha256):** `737c1963ec86e83a0a312bf1addb70069e177398f3d0be4f99dfdccd51dd9464`
-*(read from the release asset itself — `gh api repos/rdryfoos/specassay/releases/tags/v0.5.0` — then independently re-verified by
-downloading the published zip and hashing it locally, and a third time by unzipping it and
-reading the version the manifest inside actually declares; see `docs/submission/test-evidence.md`.)*
+**Digest (sha256):** *not yet known — fill at the cut.* The v0.5.1 assets do not
+exist until the tag is pushed, and a digest is a claim about a specific file: the
+0.5.0 digest under a 0.5.1 URL would be a false one, so it is removed rather than
+carried forward. At the cut, read it from the release asset itself
+(`gh api repos/rdryfoos/specassay/releases/tags/v0.5.1`), re-verify it by
+downloading the zip and hashing it locally, and record both in
+`docs/submission/test-evidence.md` before this form is filed.
 
 **Documentation URL:**
 https://github.com/rdryfoos/specassay/blob/main/README.md
@@ -139,7 +143,7 @@ specify bundle install ./specassay.zip
     "description": "Durable-ID promotion for stock Spec Kit: templates, Gate 2 refusal, and trace-manifest emission.",
     "author": "Rik Dryfoos",
     "license": "MIT",
-    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.5.0/specassay-0.5.0.zip",
+    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-0.5.1.zip",
     "repository": "https://github.com/rdryfoos/specassay",
     "requires": {
       "speckit_version": ">=0.14.0"

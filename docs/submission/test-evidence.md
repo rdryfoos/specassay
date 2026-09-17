@@ -5,6 +5,98 @@ test-evidence entry names the Spec Kit CLI version it ran on (`specify
 --version`), in its first paragraph. An entry that does not is not evidence of
 compatibility with anything.
 
+## v0.5.1 — pre-tag evidence, 2026-09-17
+
+Run on Linux with the real Spec Kit CLI (`specify 1.0.4`), Python 3.11.15,
+bash 5.2.21, on branch `claude/amazing-cray-lgftgd` at the sweep commit. **This
+is not the clean-project install test against the published release**: there is
+no published release yet, the tag is a human cut, and everything below ran
+against the source tree and a locally built zip. What the cut still owes is at
+the end of this entry, and the three paste-from docs carry no digests until it
+is done.
+
+A display release. Worth stating up front, because it shapes what this evidence
+can and cannot be: **the Gate is untouched.** Not a line of
+`check-traceability.sh` changed. No status derives differently, no exit code
+moved, no manifest field appeared or vanished. So the Gate evidence below is a
+regression check, not a demonstration.
+
+### The suite and the Gate
+
+`python3 -m pytest extensions/specassay-check/tests/ -q` passes **110 tests**,
+up from 92 at 0.5.0: eighteen new display tests, six of them named for
+`AC_THREAD_10`, one per clause of that criterion.
+
+This repo's own Gate: `OK (67 registry IDs)`, `gate.ok=True`, 61 proven / 1
+tracked-debt / 0 GAP / 5 backlog. Two rows up from 0.5.0's 65, both minted this
+release (`FR-THREAD-10`, `AC-THREAD-10`) and both landing `proven` on the first
+run, the AC carrying all six of its named proofs and a derived
+`parent: FR-THREAD-10`. The two long-standing `uncovered proof` diagnostics
+(`AC-LOGIN-10`, `AC-ZK9Q-01`) are unchanged; they come from fixture ID strings
+inside the suite's own files.
+
+### The manifests agree and the artifacts build
+
+`specify bundle validate`: `specassay is well-formed and valid.`
+`bash scripts/build-release.sh`: `Versions: bundle 0.5.1 · extension 0.5.1 ·
+preset 0.5.1`, three zips built, closing check `Artifacts and catalog download
+URLs agree.` The in-zip READMEs needed no edit again: both install from the
+version-agnostic `releases/latest/download/…` URLs.
+
+### A clean project at 0.5.1, and the path the estate is blocked on
+
+`specify init --here --force --non-interactive --ignore-agent-tools
+--integration claude --script sh`, then `specify extension add <repo>/extensions/specassay-check --dev`.
+`specify extension list` reports **`SpecAssay Check (v0.5.1)`**.
+
+A one-promise thread was driven from `tracked-debt` to `proven` in that project
+with a deliberate unmarked file alongside, and the report rendered **with
+`--receipts`** — the surface Chalkup is waiting on:
+
+```
+🟢 **Golden Thread intact** · **1** proved · **1** files off thread
+
+<details><summary><b>What moved</b> — 1 row in 1 family</summary>
+| `AC-GREET-10` | `tracked-debt` → 🟢 **`proven`** | `test_greet.py` `greet.py` |
+
+<details><summary><b>Off thread</b> — 1 changed file sits off the thread</summary>
+- `src/stray.py`
+
+<details><summary><b>Receipts</b> — the run behind this report</summary>
+gate: verdict GREEN, exit 0
+  7 tests: green, 16 testcase(s), 0 failing
+```
+
+The receipt is rendered verbatim and folded; the report neither read nor
+reformatted it.
+
+### Who consumes the report's text, checked rather than assumed
+
+The only shape-sensitive question this release raises is whether a consumer
+parses the report's Markdown. Two consumers exist and both were read:
+
+- **Chalkup's `gate/gate.sh`** captures the report's stdout whole
+  (`THREAD="$(python3 "$TR" "$@" …)"`), appends its own caveat and gate log
+  after it, and writes the result between its own
+  `<!-- thread-report:begin/end -->` markers. It never parses inside the report.
+- **This repo's `ack-gate.yml` / `thread-report.yml`** match a required human
+  tick with `/^- \[[ x]\] .*required`\)_\s*$/m`. Rendered with
+  `--offthread-ack required`, the report still produces exactly one match, and
+  the tick sits outside every fold (`<details>` opened before it: 0).
+
+No known consumer breaks. That is the evidence the 0.5.1-over-0.6.0 argument
+rests on.
+
+### Still owed at the cut
+
+- The clean-project install test against the **published** release, by bundle ID
+  through the catalog stack, naming `specify --version` as this entry does.
+- Digest verification three ways (release API, local hash of the downloaded zip,
+  the manifests read from inside the zips), then the three paste-from docs
+  filled in: they currently say the digest is not yet known, on purpose.
+- The upgrade path run for real from a project installed at v0.5.0.
+- The site's hero pin moved to the `v0.5.1` README anchor.
+
 ## v0.5.0 — released 2026-09-16
 
 Everything here ran on Linux with the real Spec Kit CLI (`specify 1.0.4`),

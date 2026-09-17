@@ -30,18 +30,23 @@ wrong you can name the block it went wrong in.
 | Python | 3.11.15 |
 | git | 2.43.0 |
 
-**One divergence, named rather than hidden (2026-09-16).** SpecAssay v0.5.0 is
-released and `main`'s catalogs point at it, so `specify bundle install` gives you
-v0.5.0 while the receipts below were captured on v0.4.13. The release is a repair
-release: it makes SpecAssay read a project's own configured ID grammar everywhere
-instead of assuming the stock one. This sitting uses the stock grammar throughout,
-so nothing here is expected to read differently, and the same install-to-green path
-was run against the published v0.5.0 on release day
-(`docs/submission/test-evidence.md`). But the block-by-block receipts below are
-what a v0.4.13 run really printed, and they have not yet been re-captured on
-v0.5.0 by a cold operator, which is the only thing that would let this table say
-v0.5.0 honestly. Until then: if your run differs from a receipt below in any way,
-that difference is a finding and we want it (see *When you stumble*, at the end).
+**One divergence, named rather than hidden (last checked 2026-09-17).** The table
+above says what this sitting was *captured on*. `main`'s catalogs always point at
+the newest release, so `specify bundle install` gives you that instead — **v0.5.1**
+as this is written. Two releases have landed since the capture, and neither touches
+what this page does. v0.5.0 made SpecAssay read a project's own configured ID
+grammar everywhere instead of assuming the stock one, and this sitting uses the
+stock grammar throughout. v0.5.1 changed only how the Thread Report in block 11
+*displays*, and block 11's receipt was re-captured against it — that block is the
+one part of this page already current.
+
+The install-to-green path was run against each published release on its own release
+day (`docs/submission/test-evidence.md`). But the block-by-block receipts below are
+what a v0.4.13 run really printed, and they have not been re-captured end to end by
+a cold operator since, which is the only thing that would let the table above name a
+newer version honestly. Until then: if your run differs from a receipt below in any
+way, that difference is a finding and we want it (see *When you stumble*, at the
+end).
 
 **Where the receipts come from.** Every block below was run in order, on
 2026-09-15, against those exact versions, and the output quoted under each block

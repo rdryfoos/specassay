@@ -5,6 +5,28 @@ the bundle version leads, component versions are listed per release.
 
 ## Unreleased
 
+## 0.5.1 (2026-09-17)
+
+A display release. The Gate is untouched: not a line of
+`check-traceability.sh` changed, no status derives differently, no exit code
+moved, no manifest field appeared or vanished. What changed is the Thread
+Report, the illuminate rung, which renders what the Gate already decided.
+
+**Why 0.5.1 and not 0.6.0.** Nothing this release ships can refuse anything that
+passed before, which is the test 0.5.0's own minor bump was argued on. The one
+new surface, `--receipts`, is additive and off by default: a caller passing no
+`--receipts` gets the same behaviour it got yesterday, bar the rendering. The
+rendered text *did* change shape, and that is the only thing that could break a
+consumer — so the consumers were checked rather than assumed. The estate that
+drives this tool captures the report's stdout whole and never parses inside it.
+The one machine reader of the report's own text, this repo's `ack-gate`
+workflow, matches a required tick by regex; the tick still renders outside every
+fold and the regex still finds it. No known consumer breaks. (Strict semver
+would call a new flag a MINOR bump; under semver §4 a 0.x line is exempt, and
+this estate's practice has moved the minor digit for newly-possible refusals —
+0.4.13 shipped the whole `dig` command as a patch. If that convention is ever
+retired ahead of 1.0, this is the release where the two rules disagree.)
+
 ### The Thread Report reads in five seconds, and folds the rest
 
 The first Thread Report to render on a real estate was longer than a reviewer
