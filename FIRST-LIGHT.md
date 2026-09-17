@@ -66,6 +66,17 @@ they are in the same block.
 on 2026-09-17. Where something was not tested, this page says so rather than guessing. On Windows
 or Linux the shape is the same, but the exact messages are not ones anyone has checked.
 
+**Which copy you are holding.** This page lives at a fixed address, and that address always shows
+this exact version:
+
+```
+https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v1/FIRST-LIGHT.md
+```
+
+If you are not sure the copy you hold is the newest, the current one is always at
+https://github.com/rdryfoos/specassay/blob/main/FIRST-LIGHT.md, and starting over from there costs
+nothing: no step here is harmed by being run twice.
+
 ## Step 0: Where you are
 
 **Something the session does.** Before anything else, it reads your machine and tells you, in
@@ -318,7 +329,7 @@ There is a template beside this page that walks you through it, and it is worth 
 start:
 
 ```
-CASE-TEMPLATE.md
+https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v1/CASE-TEMPLATE.md
 ```
 
 It has eight sections. The five below are its heart; the other three ask what the smallest first
