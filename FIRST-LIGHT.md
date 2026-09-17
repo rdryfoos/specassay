@@ -1,22 +1,28 @@
 # FIRST-LIGHT
 
-Welcome. This page takes you from a computer with nothing on it to a working setup, ready for the
-rest of the instructions. It is the only page you need to start, and you were handed it because
-everything else assumes things you do not have yet.
+Welcome. This page takes you from a computer with nothing on it to a working setup, and then to
+the thing all of it is for: writing down what you are actually promising, in your own words, so
+that later you can watch those promises come back proven.
 
-You do not need to be a programmer to follow it. You do need about an hour, an account you can
-install software on, and one person who can give you access to the project's code. That person is
-whoever sent you here.
+You do not need to be a programmer to follow it. You do need about an hour and a half, and an
+account on this computer that you can install software on.
+
+Two kinds of people arrive here, and both are expected. Some were sent by someone who already has
+a project and wants them to join it. Some found this page on their own and have an idea of their
+own. The setup is the same for both. Where the two part company, near the end, the page says so
+and points each one onward.
 
 ## What this will ask of you
 
-Four things, and none of them are hidden further down:
+Five things, and none of them are hidden further down:
 
 1. **A download and an install.** The desktop app, from a page you click.
 2. **Two sign-ins.** One in the app, and a second one in the terminal. They are genuinely
    separate, which surprises most people, and it is explained where it happens.
-3. **Access to the project's code**, which only the person who sent you here can give you.
-4. **Your permission**, each time anything is installed or changed on your machine, at the moment
+3. **Half an hour with a blank page**, writing what you are setting out to do, by hand and in
+   your own words. This is the part that matters most, and it needs nothing installed.
+4. **If you are joining someone's project: access to it**, which only they can give you.
+5. **Your permission**, each time anything is installed or changed on your machine, at the moment
    it happens rather than all at once up front.
 
 ## What this will not do
@@ -290,11 +296,44 @@ gh auth login
 It asks a short series of questions and then opens a browser page for you to approve. Follow it to
 the end, then come back.
 
-## Step 8: Where the project is, and getting let in
+## Step 8: Write down what you are actually promising
 
-This is the one thing neither this page nor you can supply, and it is worth saying clearly rather
-than letting you discover it: **the project's location is not written on this page, and access to
-it is not something you can grant yourself.**
+Everything up to here was plumbing. This step is the reason for it.
+
+**Yours to do, and it needs nothing installed.** Before you get access to anything, before any
+code is copied to your machine, sit down for about half an hour with a blank page and write your
+case: what you are setting out to do and why. By hand, in your own words, in whatever you write
+in. No tool is required and none is provided.
+
+Five questions, and honest short answers beat polished long ones:
+
+1. **What is the problem?** The thing that is wrong or missing now, described as it actually
+   shows up, not as a feature you already want to build.
+2. **Who has it?** Real people you could name or describe, not "users". If you are one of them,
+   say so.
+3. **What are you promising?** What will be true for those people that is not true today, and the
+   one thing this will deliberately refuse to do.
+4. **How would you know it is working?** A handful of things you could look at and see plainly,
+   even a rough one. If you cannot name any, that is worth knowing now.
+5. **What are you assuming?** The things you believe that, if wrong, make the rest pointless.
+   Which one would hurt most to be wrong about, and how cheaply could you find out?
+
+Nobody needs to see this. It is not a document to submit, and nothing checks it. It is the thing
+that makes everything afterward mean something: from here on, the work is built against what you
+wrote, and the proofs that come back are proofs of these promises rather than of somebody's
+generic idea of done. A setup without this is the wrong half of the gift.
+
+If you are joining someone else's project, write it anyway, about your own part in it. You will
+read their promises soon enough, and the half hour tells you whether you agree with them.
+
+## Step 9: Where the project is, and getting let in
+
+This is where the two kinds of reader part company.
+
+### If you were sent here to join a project
+
+The project's location is not written on this page, and access to it is not something you can
+grant yourself. Saying that plainly is better than letting you discover it after seven steps.
 
 On the machine where this was tested, a new account had no way to find the project at all. There
 was no copy of it, no address, and no pointer to one anywhere the account could read. That is the
@@ -309,27 +348,47 @@ gap this page exists to close, and this is the step where it closes.
 the project, and tells you plainly if it cannot. A refusal here almost always means the access has
 not come through yet, not that you did anything wrong.
 
-## Step 9: Your copy of the project
+### If you came on your own, with your own idea
+
+There is nothing for you to ask for and nobody to wait on. You have a working machine and you have
+your case, which is more than most projects start with.
+
+What comes next for you is the part that turns a case into a working project of its own, with the
+promises you just wrote at the center of it. That is being written now, and this page will point
+to it when it exists. No date is promised here, because a date nobody can keep is worse than an
+honest gap.
+
+In the meantime, your case is yours and it keeps. Nothing you did in the last hour goes to waste:
+the machine is set up, and the half hour you spent on those five questions is the part that would
+have been hardest to go back and do later.
+
+## Step 10: Your copy of the project
+
+Skip this step if you came with your own idea; there is nothing yet to copy.
 
 **Something the session does, with your permission.** It makes a copy of the project on your
 machine, in a folder you choose, and tells you where it put it.
 
 It will ask before it writes anything. If you would rather do it yourself, the session will give
-you the exact command once you have the address from step 8, since the address is the part this
+you the exact command once you have the address from step 9, since the address is the part this
 page cannot print.
 
-## Step 10: Where you are now
+## Step 11: Where you are now
 
 **Something the session does.** It runs every check on this page once more, from the top, and tells
 you the state of each one. Nothing is installed or changed in this pass. You end with a short list
 of what is true on your machine.
 
 When all of them pass, you have: the app, the command line tool, both sign-ins, the tools for
-handling code, access to the project, and a copy of it on your machine.
+handling code, and your case written in your own words. If you were joining a project, you also
+have access to it and a copy on your machine.
 
-That is the whole purpose of this page, and it is where the project's own instructions begin.
-Their first section starts by checking the same things this page just finished, which is
-deliberate: you should be able to start there and be told, in its words, that you are ready.
+For someone joining a project, this is where that project's own instructions begin. Their first
+section starts by checking the same things this page just finished, which is deliberate: you
+should be able to start there and be told, in its words, that you are ready.
+
+For someone who came with their own idea, this is where you stop for now, with the machine ready
+and the promises written. What follows is being written, and it will be linked from this page.
 
 ## If something here did not work
 
