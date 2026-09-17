@@ -4,8 +4,15 @@ Welcome. This page takes you from a computer with nothing on it to a working set
 the thing all of it is for: writing down what you are actually promising, in your own words, so
 that later you can watch those promises come back proven.
 
-You do not need to be a programmer to follow it. You do need about an hour and a half, and an
-account on this computer that you can install software on.
+You do not need to be a programmer to follow it. You do need an account on this computer that you
+can install software on, and enough of an unhurried stretch to get through it without rushing the
+last step.
+
+How long the whole thing takes, honestly: nobody knows yet. Nobody has run this page start to
+finish and timed it, so there is no number here to give you. The one part that has a length is the
+writing near the end, and that is half an hour by design rather than by measurement: it is meant
+to be short enough to do today and long enough to be worth doing. When someone has run the whole
+page through in one sitting, the time it took will be written here.
 
 Two kinds of people arrive here, and both are expected. Some were sent by someone who already has
 a project and wants them to join it. Some found this page on their own and have an idea of their
@@ -19,8 +26,9 @@ Five things, and none of them are hidden further down:
 1. **A download and an install.** The desktop app, from a page you click.
 2. **Two sign-ins.** One in the app, and a second one in the terminal. They are genuinely
    separate, which surprises most people, and it is explained where it happens.
-3. **Half an hour with a blank page**, writing what you are setting out to do, by hand and in
-   your own words. This is the part that matters most, and it needs nothing installed.
+3. **A stretch with a blank page**, writing what you are setting out to do, by hand and in your
+   own words. Half an hour is the intent. This is the part that matters most, and it needs
+   nothing installed.
 4. **If you are joining someone's project: access to it**, which only they can give you.
 5. **Your permission**, each time anything is installed or changed on your machine, at the moment
    it happens rather than all at once up front.
@@ -301,8 +309,9 @@ the end, then come back.
 Everything up to here was plumbing. This step is the reason for it.
 
 **Yours to do, and it needs nothing installed.** Before you get access to anything, before any
-code is copied to your machine, sit down for about half an hour with a blank page and write your
-case: what you are setting out to do and why. By hand, in your own words, in whatever you write
+code is copied to your machine, sit down with a blank page and write your case: what you are
+setting out to do and why. Half an hour is what this step is meant to take, which is a design
+intent rather than a measurement: short enough to do today, long enough to be worth doing. By hand, in your own words, in whatever you write
 in. No tool is required and none is provided.
 
 Five questions, and honest short answers beat polished long ones:
@@ -324,7 +333,7 @@ wrote, and the proofs that come back are proofs of these promises rather than of
 generic idea of done. A setup without this is the wrong half of the gift.
 
 If you are joining someone else's project, write it anyway, about your own part in it. You will
-read their promises soon enough, and the half hour tells you whether you agree with them.
+read their promises soon enough, and this is what tells you whether you agree with them.
 
 ## Step 9: Where the project is, and getting let in
 
@@ -358,9 +367,9 @@ promises you just wrote at the center of it. That is being written now, and this
 to it when it exists. No date is promised here, because a date nobody can keep is worse than an
 honest gap.
 
-In the meantime, your case is yours and it keeps. Nothing you did in the last hour goes to waste:
-the machine is set up, and the half hour you spent on those five questions is the part that would
-have been hardest to go back and do later.
+In the meantime, your case is yours and it keeps. Nothing you did today goes to waste: the machine
+is set up, and the time you spent on those five questions is the part that would have been hardest
+to go back and do later.
 
 ## Step 10: Your copy of the project
 
@@ -408,6 +417,12 @@ Quoted above, verbatim: the installer's setup warning and its success block; the
 `Next: Run claude --help to get started` line; `claude not found` on an account with the desktop
 app installed and signed in; the sign-in state showing `loggedIn false` on that same account; and
 the GitHub tool's "You are not logged into any GitHub hosts" message.
+
+No timing is recorded anywhere on this page, because none was taken. The cold-start sitting ran
+parts of this across an interrupted afternoon, which measures nothing, and the half hour named for
+the writing step is that step's design intent rather than a stopwatch reading. The first person to
+run this page start to finish in one sitting produces that receipt, and the number replaces this
+paragraph.
 
 Recorded as untested, and therefore not described here: what a completed terminal sign-in prints;
 whether `claude --help` resolves in a terminal window opened before the PATH line was run; and any
