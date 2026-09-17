@@ -5,15 +5,13 @@ test-evidence entry names the Spec Kit CLI version it ran on (`specify
 --version`), in its first paragraph. An entry that does not is not evidence of
 compatibility with anything.
 
-## v0.5.1 — pre-tag evidence, 2026-09-17
+## v0.5.1 — released 2026-09-17
 
 Run on Linux with the real Spec Kit CLI (`specify 1.0.4`), Python 3.11.15,
-bash 5.2.21, on branch `claude/amazing-cray-lgftgd` at the sweep commit. **This
-is not the clean-project install test against the published release**: there is
-no published release yet, the tag is a human cut, and everything below ran
-against the source tree and a locally built zip. What the cut still owes is at
-the end of this entry, and the three paste-from docs carry no digests until it
-is done.
+bash 5.2.21. In two halves, marked, because they were written either side of the
+tag: **pre-tag** ran against the source tree and a locally built zip;
+**post-tag** ran against the published assets. The tag is `v0.5.1` at
+`0f5976e52bccd374471f615fca37da0e8c6c76ee` (the merge of PR #19).
 
 A display release. Worth stating up front, because it shapes what this evidence
 can and cannot be: **the Gate is untouched.** Not a line of
@@ -21,7 +19,7 @@ can and cannot be: **the Gate is untouched.** Not a line of
 moved, no manifest field appeared or vanished. So the Gate evidence below is a
 regression check, not a demonstration.
 
-### The suite and the Gate
+### Pre-tag: the suite and the Gate
 
 `python3 -m pytest extensions/specassay-check/tests/ -q` passes **110 tests**,
 up from 92 at 0.5.0: eighteen new display tests, six of them named for
@@ -35,7 +33,7 @@ run, the AC carrying all six of its named proofs and a derived
 (`AC-LOGIN-10`, `AC-ZK9Q-01`) are unchanged; they come from fixture ID strings
 inside the suite's own files.
 
-### The manifests agree and the artifacts build
+### Pre-tag: the manifests agree and the artifacts build
 
 `specify bundle validate`: `specassay is well-formed and valid.`
 `bash scripts/build-release.sh`: `Versions: bundle 0.5.1 · extension 0.5.1 ·
@@ -43,7 +41,7 @@ preset 0.5.1`, three zips built, closing check `Artifacts and catalog download
 URLs agree.` The in-zip READMEs needed no edit again: both install from the
 version-agnostic `releases/latest/download/…` URLs.
 
-### A clean project at 0.5.1, and the path the estate is blocked on
+### Pre-tag: a clean project at 0.5.1, and the path the estate is blocked on
 
 `specify init --here --force --non-interactive --ignore-agent-tools
 --integration claude --script sh`, then `specify extension add <repo>/extensions/specassay-check --dev`.
@@ -70,7 +68,7 @@ gate: verdict GREEN, exit 0
 The receipt is rendered verbatim and folded; the report neither read nor
 reformatted it.
 
-### Who consumes the report's text, checked rather than assumed
+### Pre-tag: who consumes the report's text, checked rather than assumed
 
 The only shape-sensitive question this release raises is whether a consumer
 parses the report's Markdown. Two consumers exist and both were read:
@@ -87,15 +85,122 @@ parses the report's Markdown. Two consumers exist and both were read:
 No known consumer breaks. That is the evidence the 0.5.1-over-0.6.0 argument
 rests on.
 
-### Still owed at the cut
+### Post-tag: the published release, 2026-09-17
 
-- The clean-project install test against the **published** release, by bundle ID
-  through the catalog stack, naming `specify --version` as this entry does.
-- Digest verification three ways (release API, local hash of the downloaded zip,
-  the manifests read from inside the zips), then the three paste-from docs
-  filled in: they currently say the digest is not yet known, on purpose.
-- The upgrade path run for real from a project installed at v0.5.0.
-- The site's hero pin moved to the `v0.5.1` README anchor.
+The Release run that built and published the assets is the one fired by the tag;
+the Self Gate on the merge commit is
+<https://github.com/rdryfoos/specassay/actions/runs/35179486802>.
+
+#### Digest verification, three ways
+
+```
+# 1. from the release itself
+specassay-0.5.1.zip         sha256:962421be236991f5afa4a93f48bd16a9b2e61cd9221985b9f233b93407132246
+specassay-check-0.5.1.zip   sha256:874728251c850e84d71f7a94dbdc326073703a8b408690d87a62b68d43dc6eff
+specassay-preset-0.5.1.zip  sha256:41e5b5e807bbb2b7d4d90253886122416109465af023d85a110cd522c16848fc
+
+# 2. the downloaded bytes, hashed locally
+$ sha256sum *.zip
+962421be236991f5afa4a93f48bd16a9b2e61cd9221985b9f233b93407132246  specassay-0.5.1.zip
+874728251c850e84d71f7a94dbdc326073703a8b408690d87a62b68d43dc6eff  specassay-check-0.5.1.zip
+874728251c850e84d71f7a94dbdc326073703a8b408690d87a62b68d43dc6eff  specassay-check.zip
+41e5b5e807bbb2b7d4d90253886122416109465af023d85a110cd522c16848fc  specassay-preset-0.5.1.zip
+41e5b5e807bbb2b7d4d90253886122416109465af023d85a110cd522c16848fc  specassay-preset.zip
+962421be236991f5afa4a93f48bd16a9b2e61cd9221985b9f233b93407132246  specassay.zip
+```
+
+The three unversioned aliases are byte-identical to their versioned twins, which
+is what makes the `releases/latest/download/…` install lines honest.
+
+Third way, inside the artifacts rather than the source tree: `bundle.yml`,
+`extension.yml` and `preset.yml` unzipped from the published zips each declare
+`version: "0.5.1"`, and the bundle's `requires.speckit_version` reads
+`>=0.14.0,<2.0.0`. The shipped `scripts/thread-report.py` carries this release's
+own change — the `fold()` helper, the `--receipts` argument, and the
+`@covers FR-THREAD-10, AC-THREAD-10` mark. As a regression check, the shipped
+`scripts/check-traceability.sh` still carries 0.5.0's fix (`id_for_test_token`,
+`ambiguous-id-key`, `ENVIRON[`). The preset README inside its own zip still
+installs from the version-agnostic `latest/download` URL, and no scratch output
+leaked into the bundle root.
+
+#### Clean project, installed by bundle ID from the catalogs
+
+```
+$ specify bundle install specassay
+✓ Installed 'specassay' (2 added, 0 already present).
+
+$ specify bundle list
+  specassay v0.5.1 (2 components, installed 2026-09-17T03:51:37Z)
+$ specify preset list
+  SpecAssay (specassay) v0.5.1 — enabled — priority 10
+$ specify extension list
+  ✓ SpecAssay Check (v0.5.1)
+```
+
+Resolved 0.5.1 on the first try. A thread was then driven from an empty registry
+to `proven` on the published bits, and the report rendered with `--receipts`,
+folded and verbatim.
+
+#### Upgrade path, from a real published v0.5.0 install — and the block itself
+
+A second clean project installed `specassay v0.5.0` by bundle ID from the
+catalogs at the `v0.5.0` ref, and got the same thread. **Before**, on the real
+published v0.5.0, the report renders the old shape:
+
+```
+🟢 **Golden Thread intact**
+
+### What moved
+- 🟢 **`AC-GREET-10`** — `tracked-debt` → **`proven`** · `test_greet.py` `greet.py`
+
+### Thread Status
+**GREET**
+…
+```
+
+and `--receipts` is refused outright, which is the block Chalkup was sitting on
+and correctly declined to patch around locally:
+
+```
+$ python3 …/thread-report.py … --receipts run.log
+thread-report.py: error: unrecognized arguments: --receipts run.log
+```
+
+Then the documented upgrade, cache clear and all, unchanged since 0.4.12:
+
+```
+$ rm -rf .specify/extensions/.cache .specify/presets/.cache
+$ specify bundle update specassay
+✓ Updated 'specassay' to v0.5.1.
+  specassay v0.5.1 (2 components)
+  ✓ SpecAssay Check (v0.5.1)
+  SpecAssay (specassay) v0.5.1 — enabled — priority 10
+```
+
+Same project, same files, one command apart, the report is the new shape and the
+receipt lands folded with `rc=0`:
+
+```
+🟢 **Golden Thread intact** · **1** proved · **1** files off thread
+
+<details><summary><b>Receipts</b> — the run behind this report</summary>
+
+gate: verdict GREEN, exit 0
+```
+
+The 0.5.0 catalog-priority artefact was avoided rather than re-encountered: the
+tag-pinned catalog entries were **removed** before `main`'s were added, instead
+of adding `main`'s alongside them at equal priority where the alphabetically
+earlier pinned entry wins.
+
+#### Still owed
+
+- The site's hero pin moved to the `v0.5.1` README anchor. That is the sites
+  room's file, not this repo's.
+- The three submission-form issues upstream, which now carry three versions'
+  worth of change: neither v0.4.13 nor v0.5.0 was ever filed.
+- `ONBOARD.md`'s receipts re-captured end to end by a cold operator
+  (`docs/docs-gaps.md` item 11). Block 11's is current; the other eleven are not.
 
 ## v0.5.0 — released 2026-09-16
 
