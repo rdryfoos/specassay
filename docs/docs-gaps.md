@@ -179,26 +179,37 @@ still unresolved), and the commit that closed it.
     in one directory, and a shallow glob says so rather than promising to
     watch a tree that does not exist.
 
-11. **`ONBOARD.md`'s receipts are pinned to v0.4.13 and the catalogs now
-    point at v0.5.0.** Open, 2026-09-16. The quickstart's contract is that
-    every block's quoted output is that block's real output from one run
-    against the pinned versions, never a sketch. That run happened on
-    2026-09-15 against SpecAssay v0.4.13. The 0.5.0 sweep moved `main`'s
-    catalogs to v0.5.0, so a reader following the page installs a version
-    the page was not captured on. Re-pinning the table without re-running
-    the sitting would break requirement one of the commission that wrote
-    it ("verified against the pinned versions rather than asserted from
-    memory"), so the table was left honest and the divergence named in a
-    note under it instead. The real fix is a re-capture: one cold operator,
-    one sitting, all twelve blocks, against v0.5.0 installed from the
-    catalogs for real, after the tag is public. 0.5.0 is a repair release
-    whose subject (reading a project's own configured ID grammar) the
-    quickstart never exercises, since it uses the stock grammar throughout,
-    so the receipts are expected to hold; expected is not the same as
-    verified, which is the whole reason this entry exists. **Still open at
-    v0.5.1 (2026-09-17)**, and now two releases behind the capture rather
-    than one. Block 11 is the exception: its quoted Thread Report was
-    re-captured for 0.5.1's display change by replaying blocks 5 through 11,
-    so that one receipt is current. The other eleven are not, and the note
-    under the pin table now says so in terms that do not need rewriting every
-    release.
+11. **`ONBOARD.md`'s receipts were pinned to v0.4.13 while the catalogs moved
+    on.** **Closed 2026-09-17.** The quickstart's contract is that every block's
+    quoted output is that block's real output from one run against the pinned
+    versions, never a sketch. That run had happened on 2026-09-15 against
+    v0.4.13, and two releases landed after it, so a reader following the page
+    installed a version the page was not captured on. For a week the divergence
+    was named in a note under the pin table rather than papered over, because
+    re-pinning the table without re-running the sitting would have broken
+    requirement one of the commission that wrote the page.
+
+    Resolved the way the entry always said it had to be: by re-running it. All
+    twelve blocks were replayed in order on v0.5.1 on 2026-09-17, installing
+    through the documented catalog path, and **every receipt reproduced
+    unchanged**. The pin table now names v0.5.1 and the divergence note is gone,
+    because there is no divergence left to name. That the receipts held is worth
+    recording and is not the same as having assumed they would: the assumption
+    was stated in this entry for a week, and it is now a measurement.
+
+    One incident worth keeping from the replay, since it is what a cold reader
+    could hit: `specify bundle install specassay` failed once with
+    `HTTP Error 500` fetching the preset asset from GitHub, and said
+    `No changes were recorded`. Both asset URLs returned 200 when probed
+    directly a moment later and the retry installed cleanly, so it was transient
+    on GitHub's side rather than a defect here. The CLI's own behaviour was
+    correct: it refused to record a partial install.
+
+12. **Version numbers and receipts are written by hand into prose and go stale
+    silently at every cut.** Open, 2026-09-17. Items 8 and 11 above, the README's
+    Spec Kit compatibility line, and the README's clean-project verification line
+    are four instances of one failure: a number observed once, typed into a
+    sentence, and then left to rot while the thing it describes moves. Each cut
+    has been patched by hand afterwards, which works and does not scale. A
+    mechanism to make the lie impossible rather than merely discouraged is
+    proposed in `docs/version-assertion-proposal.md`, pending a ruling.

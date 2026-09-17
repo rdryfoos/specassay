@@ -20,45 +20,30 @@ wrong you can name the block it went wrong in.
 
 ---
 
-## Pinned, as of 2026-09-15
+## Pinned, as of 2026-09-17
 
 | Thing | Pinned to |
 | --- | --- |
-| SpecAssay | **v0.4.13**, released 2026-09-04. This is the version the sitting below was captured against, not necessarily the one you will install: see the note under the table. |
-| GitHub Spec Kit | **v1.0.4**, the newest version SpecAssay has been run against end to end (`docs/submission/test-evidence.md`, 2026-09-04). Spec Kit v1.0.5 and v1.0.6 exist and SpecAssay's manifests accept them (`>=0.14.0,<2.0.0`); they are not what this page's receipts were captured on. |
+| SpecAssay | **v0.5.1**, released 2026-09-17. This is what `specify bundle install` gives you, and it is what every receipt below was captured on. |
+| GitHub Spec Kit | **v1.0.4**. SpecAssay's manifests accept `>=0.14.0,<2.0.0`, and the floor was checked at v0.5.1 on 2026-09-17: the bundle installs and the Gate runs on Spec Kit 0.14.0, though that version does not scaffold the settings file, so the Gate there reports `config: MISSING` and continues on defaults. v1.0.5 and v1.0.6 exist and the manifests accept them; they are not what this page was captured on. |
 | uv | 0.8.17 |
 | Python | 3.11.15 |
 | git | 2.43.0 |
 
-**One divergence, named rather than hidden (last checked 2026-09-17).** The table
-above says what this sitting was *captured on*. `main`'s catalogs always point at
-the newest release, so `specify bundle install` gives you that instead — **v0.5.1**
-as this is written. Two releases have landed since the capture, and neither touches
-what this page does. v0.5.0 made SpecAssay read a project's own configured ID
-grammar everywhere instead of assuming the stock one, and this sitting uses the
-stock grammar throughout. v0.5.1 changed only how the Thread Report in block 11
-*displays*, and block 11's receipt was re-captured against it — that block is the
-one part of this page already current.
-
-The install-to-green path was run against each published release on its own release
-day (`docs/submission/test-evidence.md`). But the block-by-block receipts below are
-what a v0.4.13 run really printed, and they have not been re-captured end to end by
-a cold operator since, which is the only thing that would let the table above name a
-newer version honestly. Until then: if your run differs from a receipt below in any
-way, that difference is a finding and we want it (see *When you stumble*, at the
-end).
-
 **Where the receipts come from.** Every block below was run in order, on
-2026-09-15, against those exact versions, and the output quoted under each block
+2026-09-17, against those exact versions, and the output quoted under each block
 is that run's real output, trimmed to the lines that carry the receipt, never a
-sketch of what it might say. That run was on Linux, not a Mac.
+sketch of what it might say. All twelve were re-captured that day on v0.5.1. The
+previous capture was on v0.4.13, and every receipt reproduced unchanged, which is
+worth knowing and is not the same as having assumed it. That run was on Linux,
+not a Mac.
 macOS and Linux are both first-class for these commands, and the only difference
 we expect is the `python:` version string and your own paths. **If your Mac shows
 anything else different, that difference is a finding: report it** (see *When
 you stumble*, at the end).
 
 An unpinned quickstart rots silently, so this one carries its versions and its
-date. If you are reading it long after 2026-09-15, the versions above are what it
+date. If you are reading it long after 2026-09-17, the versions above are what it
 was true for.
 
 ---
@@ -85,9 +70,21 @@ plain shell, your choice. Nothing here needs Claude Code to *do* anything for yo
 yet; step one is you driving the tools by hand, so you can see what each one
 actually does.
 
+**If the commands look daunting, skip them.** They are here so the page is
+runnable, not because you have to read them. Every block opens with a plain
+sentence or two saying what it is about to do and why, and closes with a plain
+sentence saying what just happened. Read only those, skip every grey box in
+between, and you will still come out understanding what this tool is for. That
+is a real claim about this page, not a courtesy: it was written to survive a
+reader who never types a single line.
+
 ---
 
 ## 1. Check the machine
+
+Three tools have to already be on this machine: git, Python, and a Python
+installer called uv. This block just asks each one its version, so you find out
+now rather than three blocks in.
 
 ```bash
 git --version
@@ -104,6 +101,9 @@ Python 3.11.15
 uv 0.8.17
 ```
 
+Nothing has been installed or changed yet. You have only confirmed the machine
+is ready.
+
 If `git --version` or `python3 --version` fails on a Mac, the usual fix is
 `xcode-select --install`, which installs Apple's command line tools; rerun this
 block afterward. If `python3` is still missing, or older than 3.8, install a
@@ -113,9 +113,13 @@ current Python from [python.org](https://www.python.org/downloads/) or Homebrew.
 
 ## 2. Install Spec Kit, pinned
 
-**uv** is the Python tool installer Spec Kit ships through; **Spec Kit** is
-GitHub's spec-driven development toolkit, the workflow SpecAssay rides on. Skip
-the first line if block 1 already printed a uv version.
+SpecAssay is not a standalone program. It attaches to **Spec Kit**, which is
+GitHub's toolkit for writing down what software should do before building it. So
+Spec Kit gets installed first, and pinned to one exact version, so that what you
+see on your screen matches what is written on this page.
+
+**uv** is the Python tool installer Spec Kit ships through. Skip the first line
+if block 1 already printed a uv version.
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -129,6 +133,9 @@ specify --version
 specify 1.0.4
 ```
 
+Spec Kit is now on your machine, at the version this page was written against.
+It has not been pointed at any project yet.
+
 If `uv tool install` stops saying it cannot find a suitable Python, run
 `uv python install 3.11` and repeat the `uv tool install` line; that fetches a
 Python for uv's own use and leaves your system Python alone. If `uv` is not found
@@ -138,6 +145,10 @@ to your `PATH` for new shells.
 ---
 
 ## 3. Make the sample project
+
+Now a throwaway project to work in, so nothing on this page touches anything you
+care about. You can delete the whole folder when you are done and nothing else on
+your machine will change.
 
 `specify init` scaffolds a Spec Kit project; `--integration claude` installs the
 Spec Kit skills into `.claude/skills` so Claude Code can drive them later.
@@ -167,6 +178,9 @@ git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 ```
 
+You now have an empty project with Spec Kit's own scaffolding in it, and one
+commit recording what it looked like before SpecAssay arrived.
+
 Two notes on what just happened. `specify init` does **not** create a git
 repository for you at v1.0.4 (git is an opt-in Spec Kit extension), which is why
 you ran `git init` yourself; the Thread Report in block 11 needs git history to
@@ -177,6 +191,11 @@ whether you commit the emitted manifest is your call, and CI emits it either way
 ---
 
 ## 4. Layer in SpecAssay
+
+Time to add SpecAssay itself. It arrives as two pieces: a **preset**, which
+changes what Spec Kit's templates ask you to write, and an **extension**, which
+is the Gate, the check that reads what you wrote. Block 5 is where the Gate
+starts doing something.
 
 SpecAssay installs as a Spec Kit **bundle**, a named set of components Spec Kit
 installs in one operation. These three `catalog add` commands tell Spec Kit where
@@ -205,6 +224,9 @@ Updated execute permissions on 4 script(s) recursively
 ✓ Installed 'specassay' (2 added, 0 already present).
 ```
 
+SpecAssay is installed. Nothing has been checked yet, because you have not
+written anything down for it to check.
+
 The two components are the **preset** (durable-ID grammar appended to Spec Kit's
 templates) and the **extension** `specassay-check` (the Gate and the file it
 emits). If the CLI asks you to confirm a URL, say yes: it asks once per install
@@ -221,10 +243,26 @@ interpreting it for you.
 
 ## 5. Run the Gate on nothing
 
-The **registry** is the one file that holds your durable IDs (`PRD.md` by
-default); a **durable ID** is a name like `AC-GREET-10` minted once at intent and
-never renumbered. You have no registry yet, so make an empty one and run the
-Gate against it.
+You just installed the thing this page is about, so here is what it is. The
+**Gate** is a check you run, the way you run your tests. It reads two kinds
+of thing you already write: the promises you have written down in plain English,
+and the code and tests in your repository. Then it answers one question. **For
+every promise you have written down, is there something in this repository that
+answers for it?** If yes, it passes. If a promise has quietly ended up with
+nothing behind it, it refuses and names the promise.
+
+That is the whole idea. Everything else on this page is you giving the Gate
+something to check and watching what it says.
+
+The promises live in one file, called the **registry**. Yours will be `PRD.md`,
+which the Gate reads by default. Each promise in it gets a **durable ID**, a name
+like `AC-GREET-10` that you give it once, when you decide to promise the thing,
+and never renumber afterwards. The name is what lets the Gate match a promise to
+the test that answers for it, so the name has to hold still.
+
+You have not promised anything yet, and that is deliberate. Running the Gate on
+an empty registry first is the clearest way to see what it means when it says
+yes. So make the empty file and run it.
 
 ```bash
 touch PRD.md
@@ -248,34 +286,51 @@ SpecAssay Check (Gate 2): OK, registry empty (0 IDs in PRD.md)
 exit: 0
 ```
 
-(The real output prints the full command for each on-ramp; it is abridged here
-only to keep this page short.)
+**What just happened, in one sentence:** the Gate passed, and then told you the
+pass was worth nothing.
 
-Two files got written even with nothing to check. The one that matters is the
-**trace-manifest** (`trace-manifest.json`): the small, portable record of what the
-Gate found (every ID, its state, what carries it, what proves it, and whether the
-Gate passed), which any viewer can read without re-scanning your repository. The
-`.v5beta.json` beside it is the next schema version, carrying two things v4
-cannot; ignore it for the tour.
+That is the sentence to take from this block. Most tools that pass go quiet. This
+one passed and immediately said so in plain words: *nothing is promised yet, so
+there is nothing to check*, and *this green proves nothing*. It will keep saying
+that until you promise something.
 
-Read the first three lines every time you run the Gate: which Python it found, and
-which config file it resolved. If that third line says `config: MISSING`, it also
-prints the one `cp` command that scaffolds the config, and the run continues on
-template defaults meanwhile. On Spec Kit v1.0.4 the bundle install scaffolds it
-for you, which is why ours says `from specassay-check-config.yml`.
+Think about what the alternative would look like. A check that reads an empty
+registry, finds no broken promises, prints `OK`, and stops has told you the truth
+and left you with a false impression. You would be looking at a green result on a
+project where nothing has been checked at all. Refusing to take credit for that
+is the first honest thing this tool does, and it is the same instinct behind
+everything it does later: a pass always comes with the scope of what was actually
+examined.
 
-This is the empty-green case, and it is the first honest thing SpecAssay says to
-you: **green on an empty registry means nothing has been promised, not that
-anything has been checked.** Everything from here is you giving it something to
-check.
+Two smaller things from that output, which you can take on trust for now.
+
+The Gate wrote a file called `trace-manifest.json`. That is its record of what it
+found: every promise, what state each one is in, what carries it, what proves it,
+and whether the Gate passed. It is a small plain file, and it is the thing other
+tools read later in this tour, in blocks 11 and 12, instead of scanning your
+repository again. A second file with `v5beta` in the name is a draft of the next
+version of that format; ignore it here.
+
+The first three lines of every run tell you which Python it found and which
+settings file it is using. Worth a glance each time. If that third line ever says
+`config: MISSING`, the Gate keeps going on built-in defaults and prints the one
+command that creates the settings file for you.
+
+(The output above is abridged in one place: the real run prints the full command
+for each of those two on-ramps, which is too wide for this page.)
 
 ---
 
 ## 6. Mint one toy promise
 
-**Minting** is writing a durable ID into the registry at the moment you settle the
-intent, never inferred from code afterward. `mint-id.sh` picks the next free
-number (always a multiple of ten) and appends the line in the file's own style.
+Now write down exactly one promise, and nothing else. No code, no test, no plan.
+Then run the Gate again and watch it refuse, because a promise with nothing
+behind it is precisely what it is looking for.
+
+**Minting** is the word for writing a promise into the registry at the moment you
+decide on it, rather than working out afterwards what the code seems to have
+promised. `mint-id.sh` picks the next free number (always a multiple of ten) and
+appends the line in the file's own style.
 
 ```bash
 bash .specify/extensions/specassay-check/scripts/mint-id.sh AC GREET \
@@ -308,6 +363,9 @@ statement names the requirement in that document. One is enough to start, and yo
 never go back and backfill IDs for everything already built: the tour mints from
 nothing only because the tour starts from nothing.
 
+**What just happened:** you wrote down a promise, and the Gate stopped your
+build over it.
+
 Three refusals, and all three are correct. You have promised something
 (`AC-GREET-10` is an **acceptance criterion**: one testable statement of what
 "done" means) and nothing in the repository answers for it yet. The third line is
@@ -319,11 +377,15 @@ records refusals rather than hiding them.
 
 ## 7. Give it a spec and a task
 
-Two ways to clear that red, and they teach the difference between hidden and
-admitted incompleteness. This block takes the honest-debt route first: a
-**spec** (the Spec Kit feature document that references the ID, never re-mints
-it) and an open **task** carrying a `**Carries**:` mark (the task-side line naming
-which ID that task serves).
+There are two honest ways to answer that refusal, and the difference between them
+is the point of the whole tool. This block takes the first one: admit the work is
+not done yet. You are not going to write any code here. You are going to say, on
+the record, that this promise is started and its proof is still owed, and the
+Gate is going to accept that and go green.
+
+Mechanically that means a **spec** (the Spec Kit feature document that references
+the ID, never re-mints it) and an open **task** carrying a `**Carries**:` mark
+(the task-side line naming which ID that task serves).
 
 ```bash
 mkdir -p specs/greet
@@ -356,6 +418,10 @@ SpecAssay Check (Gate 2): OK (1 registry IDs)
 AC-GREET-10 tracked-debt
 ```
 
+**What just happened:** you cleared a refusal without writing a line of code, by
+admitting in writing that the work is unfinished. That is allowed, and it is
+supposed to be.
+
 **`tracked-debt`** means started, proof missing, and admitted on an open task:
 visible, on the books, not hidden. That is why the Gate passes: passing never
 means "everything is done", it means nothing unfinished is *hidden* at
@@ -369,7 +435,12 @@ belongs to; the Thread Report compares *before* against *after*, so it needs bot
 
 ## 8. Build it and prove it
 
-Now the other route: real code and a real test. The **`@covers` mark** is the
+Now the second honest answer: actually do the work. Write the code, write a test,
+and name the test after the promise so that a machine can see which test answers
+for which promise. That naming is the whole trick, and it is the only thing this
+tool asks you to do differently from normal.
+
+The **`@covers` mark** is the
 one-line comment on the code that serves an intent; the **proof** is a test whose
 *name* carries the acceptance criterion's ID, which is how the Gate knows which
 test answers for which promise. `src/banner.py` is deliberately unmarked, a small
@@ -426,6 +497,10 @@ SpecAssay Check (Gate 2): OK (1 registry IDs)
 AC-GREET-10 proven
 ```
 
+**What just happened:** the promise moved from admitted debt to answered, because
+a test now carries its name. You did not tell the Gate that. It worked it out
+from the test's name.
+
 (Rewriting `tasks.md` ticks the task's checkbox, `- [ ]` to `- [x]`, now that the
 work is done. A ticked task is no longer an open admission of debt, which is
 exactly what block 9 is about to exploit.)
@@ -464,9 +539,14 @@ pinned versions; blocks 6 to 9 produce three of them in front of you.)
 
 ## 9. Break it on purpose
 
-Green is a screenshot. Red is the demo. Rename the proof so it no longer names the
-criterion: the same move as deleting the test, but sneakier, because the test
-suite stays green.
+This is the block the tool exists for, so it is worth reading even if you read
+nothing else. You are about to break the link between the promise and the test
+that answers for it, by renaming the test. Nothing else changes. The code still works. The test
+still passes. Your test suite will report success. On any ordinary project this
+is invisible, and it is how a promise quietly ends up with nothing behind it:
+nobody deleted anything, a name just drifted.
+
+Watch what the two tools say about the same repository.
 
 ```bash
 cat > tests/test_greet.py <<'EOF'
@@ -498,6 +578,11 @@ exit: 1
 AC-GREET-10 GAP
 ```
 
+**What just happened:** your test suite said everything is fine, and the Gate
+said a promise has nothing answering for it. Both are correct, about the same
+repository, at the same moment. That disagreement is the thing this tool was
+built to produce.
+
 That gap between the two lines is the whole point of the tool. Your tests are
 green. Your promise is unanswered. Nothing in an ordinary CI run would have told
 you, because the code still has its `@covers` mark and the task is still ticked:
@@ -509,6 +594,10 @@ what would fail your build.
 ---
 
 ## 10. Fix it
+
+Put the name back. That is the entire fix, and it is worth noticing how small it
+is: the repair for a broken promise here is to say again, in the test's name,
+which promise it answers.
 
 ```bash
 cat > tests/test_greet.py <<'EOF'
@@ -535,17 +624,29 @@ exit: 0
 AC-GREET-10 proven
 ```
 
+**What just happened:** the promise is answered again, and the Gate went green
+without being told to.
+
 Green, red, green. You have now seen the Gate pass work it can vouch for and
-refuse work it cannot, on a thread you minted yourself.
+refuse work it cannot, on a promise you wrote yourself. If you stop reading here,
+you have the idea.
 
 ---
 
 ## 11. Land the Thread Report
 
-The **Thread Report** is the briefing SpecAssay posts on a pull request: one line
-saying what this change did to the thread, and under it what moved and which
-changed files sit **off the thread**, changed but carrying no mark tying them to
-an intent this change moved. It illuminates; it never refuses. In CI it runs on every
+The Gate answers one question: does anything have a promise with nothing behind
+it. That is a yes or a no, and it is the half that can stop a build. This block is
+the other half, the half that talks to a person.
+
+The **Thread Report** is a short briefing posted on a change, saying what that
+change did to the promises: which ones moved, and which files were edited that no
+promise claims. It never refuses anything. It just tells the reviewer what to
+look at.
+
+One line saying what this change did, and under it what moved and which changed
+files sit **off the thread**, changed but carrying no mark tying them to an intent
+this change moved. It illuminates; it never refuses. In CI it runs on every
 pull request and posts one comment; here you run it by hand, comparing the
 snapshot you saved in block 7 against the thread as it stands now.
 
@@ -591,6 +692,9 @@ Changed, but nothing in them carries a mark tying them to an intent this PR move
 </details>
 ```
 
+**What just happened:** you got the paragraph a reviewer would get, generated
+from the same file the Gate wrote, with nobody writing a summary by hand.
+
 On a pull request those `<details>` blocks render as two collapsed lines you can
 click open. Here in your terminal you are seeing the raw Markdown, tags and all,
 which is the same text GitHub turns into that.
@@ -619,8 +723,13 @@ config file's own directory and reads every changed file as off-thread.
 
 ## 12. Open Loupe and look at what you made
 
+One last look, at the file rather than the tools. Everything you have seen since
+block 5 came out of one small file the Gate writes. This block opens that file in
+something that has never seen your repository, to show that the record stands on
+its own.
+
 **Loupe** is a viewer for the emitted file: it reads a `trace-manifest.json` and
-nothing else: it never re-scans your repository and never mints anything.
+nothing else, it never re-scans your repository, and it never mints anything.
 
 ```bash
 echo "Load this file into Loupe: $PWD/trace-manifest.json"
@@ -633,6 +742,10 @@ path that command printed.
 the Golden Thread is intact. That is the same file the Gate wrote in block 10 and
 the same file the Thread Report read in block 11: one small, portable record of
 what you promised, what carries it, and what proves it.
+
+**What just happened:** a tool that knows nothing about your project told you the
+state of your promises, from a file alone. That portability is why the record
+exists as a file instead of as output on a screen.
 
 Want to see the other color? Redo block 9 (break the proof), rerun the Gate, and
 load the file again: one row, red, and a header saying the thread is broken. The

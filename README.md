@@ -85,7 +85,13 @@ Bundle id: `specassay`.
 
 **Supported platforms.** macOS and Linux are first-class and are where every command in these docs is verified. Windows requires a bash environment: Git Bash or WSL. The Gate is a bash script, and it calls Python 3.8 or newer as `python3` or `python`, whichever your machine has (first Windows run on record: 2026-09-03, Git Bash, worked once the interpreter fallback landed). PowerShell alone is not supported.
 
-**Spec Kit versions this release is verified on:** 0.14.0, 0.15.3.dev0, and 1.0.4 (install by catalog and by direct download, Gate, mint, refusal, upgrade from v0.4.12; `docs/submission/test-evidence.md`, 2026-09-04). The manifests require `>=0.14.0,<2.0.0`.
+**Spec Kit versions this release is verified on.** Each line names the SpecAssay release it was observed on, because these are separate observations and not one standing claim:
+
+- **1.0.4** on SpecAssay **v0.5.1**, 2026-09-17: install by catalog, Gate, mint, refusal, and the upgrade from a real published v0.5.0 (`docs/submission/test-evidence.md`).
+- **0.14.0**, the declared floor, on SpecAssay **v0.5.1**, 2026-09-17: the bundle installs and the Gate runs. That version does not scaffold the settings file, so the Gate reports `config: MISSING` and continues on `config-template.yml` defaults.
+- **0.15.3.dev0** on SpecAssay **v0.4.13**, 2026-09-04: install by catalog and by direct download, Gate, mint, refusal, upgrade from v0.4.12. Not re-checked since.
+
+The manifests require `>=0.14.0,<2.0.0`.
 
 ## Install (catalog path)
 
@@ -110,7 +116,7 @@ specify bundle catalog add \
 specify bundle install specassay
 ```
 
-`specify extension add` scaffolds `.specify/extensions/specassay-check/specassay-check-config.yml` from the bundled template. Whether `specify bundle install` (the path above) does depends on your Spec Kit: 0.15.3.dev0 did not, 1.0.4 does (github/spec-kit#4285, shipped in 1.0.3; both verified 2026-09-04). Either way you never have to check by hand: every Gate run prints its own state on its first lines, either
+`specify extension add` scaffolds `.specify/extensions/specassay-check/specassay-check-config.yml` from the bundled template. Whether `specify bundle install` (the path above) does depends on your Spec Kit: 0.14.0 does not and 1.0.4 does (both observed on SpecAssay v0.5.1, 2026-09-17), and 0.15.3.dev0 did not (observed on v0.4.13, 2026-09-04). The change landed in Spec Kit 1.0.3, github/spec-kit#4285. Either way you never have to check by hand: every Gate run prints its own state on its first lines, either
 
 ```text
   config: .specify/extensions/specassay-check/specassay-check-config.yml (from specassay-check-config.yml)
