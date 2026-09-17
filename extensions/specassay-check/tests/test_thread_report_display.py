@@ -12,6 +12,12 @@ rather than listed, and everything else one click down. They are display tests
 on purpose — none of them asserts a status, and every fact the old report
 carried is still reachable in the new one. Collapsed is not dropped, so most
 of what follows checks that something folded is still *there*.
+
+Six of them carry `AC_THREAD_10` in their names and are that criterion's real
+proof, one per clause of it: the verdict line, said-once, unchanged-footnoted,
+and the three things about folding — what folds, and the two that never do.
+The rest are the same contract read from other angles, and prove nothing on
+their own; they exist so a break names itself precisely.
 """
 
 import json
@@ -62,7 +68,7 @@ def verdict_line(text: str) -> str:
 # --- the five-second read -------------------------------------------------
 
 
-def test_verdict_line_carries_the_counts_a_reader_came_for(tmp_path):
+def test_AC_THREAD_10_verdict_line_carries_the_counts_a_reader_came_for(tmp_path):
     base = [row("AC-SYNC-10", "backlog"), row("AC-SYNC-20", "backlog"),
             row("US-SYNC-10", "backlog")]
     head = [row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",)),
@@ -112,7 +118,7 @@ def test_nothing_moving_says_nothing_moved_rather_than_going_silent(tmp_path):
 # --- said once, not twice -------------------------------------------------
 
 
-def test_a_moved_row_is_reported_once_not_as_a_bullet_and_again_as_a_table_row(tmp_path):
+def test_AC_THREAD_10_a_moved_row_is_reported_once_not_twice(tmp_path):
     base = [row("AC-SYNC-10", "backlog")]
     head = [row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))]
     out, _ = report(tmp_path, base, head, ["tests/test_sync.py"])
@@ -142,7 +148,7 @@ def test_the_table_carries_what_the_bullet_list_used_to_say(tmp_path):
 # --- moved shown, unchanged footnoted -------------------------------------
 
 
-def test_unchanged_rows_are_footnoted_with_their_states_not_listed(tmp_path):
+def test_AC_THREAD_10_unchanged_rows_are_footnoted_with_their_states_not_listed(tmp_path):
     base = [row("AC-SYNC-10", "backlog")] + [
         row(f"AC-SYNC-{n}", "proven", proofs=("tests/test_sync.py",)) for n in (20, 30)
     ] + [row("AC-SYNC-40", "backlog")]
@@ -213,7 +219,7 @@ def test_the_off_thread_files_are_still_named_under_the_fold(tmp_path):
 # --- what must not fold ----------------------------------------------------
 
 
-def test_intent_changed_is_never_folded(tmp_path):
+def test_AC_THREAD_10_intent_changed_is_never_folded(tmp_path):
     base = [row("AC-SYNC-10", "proven", statement="AC-SYNC-10 — within 5s of reconnect.",
                 proofs=("tests/test_sync.py",))]
     head = [row("AC-SYNC-10", "proven", statement="AC-SYNC-10 — within 2s of reconnect.",
@@ -229,7 +235,7 @@ def test_intent_changed_is_never_folded(tmp_path):
     assert "**1** restated" in verdict_line(out)
 
 
-def test_a_required_human_tick_stays_outside_the_fold(tmp_path):
+def test_AC_THREAD_10_a_required_human_tick_stays_outside_the_fold(tmp_path):
     base = head = [row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))]
     out, _ = report(tmp_path, base, head, ["docs/notes.md"], offthread_ack="required")
 
@@ -243,7 +249,7 @@ def test_a_required_human_tick_stays_outside_the_fold(tmp_path):
 # --- receipts --------------------------------------------------------------
 
 
-def test_receipts_render_folded_and_verbatim(tmp_path):
+def test_AC_THREAD_10_receipts_render_folded_and_verbatim(tmp_path):
     (tmp_path / "run.md").write_text("```\ngate: verdict GREEN, exit 0\n```\n")
     base = head = [row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))]
     out, _ = report(tmp_path, base, head, receipts=str(tmp_path / "run.md"))

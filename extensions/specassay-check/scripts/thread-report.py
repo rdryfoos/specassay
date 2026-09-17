@@ -50,6 +50,11 @@ import re
 import sys
 from pathlib import Path
 
+# @covers FR-THREAD-10, AC-THREAD-10 -- the display contract this file is held
+# to: one verdict line with the counts, every moved row stated once, unmoved
+# rows footnoted rather than listed, everything else inside a <details>, and two
+# things that never fold -- Intent Changed, and a required human tick.
+
 BADGE = {"proven": "🟢", "tracked-debt": "🟠", "backlog": "🔵", "GAP": "🔴"}
 ACK_CHOICES = ("off", "record", "required")
 

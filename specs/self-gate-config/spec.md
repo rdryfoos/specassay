@@ -115,3 +115,17 @@ where that same ID lands once it has.
   by `@covers` in `mint-id.sh` and by
   `extensions/specassay-check/tests/test_gate_110_nonstock_grammar.py`.
   - AC-GATE-130 — proven by `test_AC_GATE_130_mint_refuses_rather_than_emit_an_id_the_grammar_rejects`.
+- FR-THREAD-10 — The Thread Report's display contract: one verdict line with
+  the non-zero counts, every moved row stated once in a family table carrying
+  both the move and the state, unmoved rows footnoted by status rather than
+  listed, everything else inside a `<details>` — and two things that never
+  fold, *Intent Changed* and a required human tick. Shipped 2026-09-17, proven
+  by `@covers` in `thread-report.py` and by
+  `extensions/specassay-check/tests/test_thread_report_display.py`.
+  - AC-THREAD-10 — proven by `test_AC_THREAD_10_verdict_line_carries_the_counts_a_reader_came_for`,
+    `test_AC_THREAD_10_a_moved_row_is_reported_once_not_twice`,
+    `test_AC_THREAD_10_unchanged_rows_are_footnoted_with_their_states_not_listed`,
+    `test_AC_THREAD_10_receipts_render_folded_and_verbatim`,
+    `test_AC_THREAD_10_intent_changed_is_never_folded`, and
+    `test_AC_THREAD_10_a_required_human_tick_stays_outside_the_fold` — one per
+    clause of the criterion, so a break names the clause it broke.
