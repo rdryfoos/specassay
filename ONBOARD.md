@@ -1,6 +1,6 @@
 # SpecAssay Quickstart
 
-## step one: see a Thread Report
+## See a Thread Report
 
 <!-- @covers FR-DOCS-60 -->
 
