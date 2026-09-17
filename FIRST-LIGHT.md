@@ -311,8 +311,19 @@ Everything up to here was plumbing. This step is the reason for it.
 **Yours to do, and it needs nothing installed.** Before you get access to anything, before any
 code is copied to your machine, sit down with a blank page and write your case: what you are
 setting out to do and why. Half an hour is what this step is meant to take, which is a design
-intent rather than a measurement: short enough to do today, long enough to be worth doing. By hand, in your own words, in whatever you write
-in. No tool is required and none is provided.
+intent rather than a measurement: short enough to do today, long enough to be worth doing. By
+hand, in your own words, in whatever you write in.
+
+There is a template beside this page that walks you through it, and it is worth opening before you
+start:
+
+```
+CASE-TEMPLATE.md
+```
+
+It has eight sections. The five below are its heart; the other three ask what the smallest first
+piece would be, what you are deliberately leaving out for now, and what you are still unsure
+about. You do not need it: the questions below are the same ones, and a blank page works.
 
 Five questions, and honest short answers beat polished long ones:
 
@@ -327,7 +338,9 @@ Five questions, and honest short answers beat polished long ones:
 5. **What are you assuming?** The things you believe that, if wrong, make the rest pointless.
    Which one would hurt most to be wrong about, and how cheaply could you find out?
 
-Nobody needs to see this. It is not a document to submit, and nothing checks it. It is the thing
+Nobody needs to see this. It is not a document to submit, and nothing checks it. The template says
+the same, and tells you what to leave out: no technology choices, no screens, and no identifiers,
+because those are minted later and attached to what you wrote. It is the thing
 that makes everything afterward mean something: from here on, the work is built against what you
 wrote, and the proofs that come back are proofs of these promises rather than of somebody's
 generic idea of done. A setup without this is the wrong half of the gift.
