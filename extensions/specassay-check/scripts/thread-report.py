@@ -4,12 +4,21 @@
 Diffs a base trace-manifest against a PR-head trace-manifest and buckets the
 PR's changed files, then emits a Markdown **Thread Report** for a PR comment:
 
-  1. What moved — status changes, IDs minted / retired, proofs & covers added.
-  1b. Intent Changed — statements of intent whose wording was restated, with the blast-radius
-     re-confirm list (the build and proof written against the old wording).
-  2. Thread Status — per domain touched by the PR (untouched backlog rows hidden).
-  3. Off Thread — changed files that carry no mark tying them to any intent this
-     PR moved. Not a defect; a visibility call.
+  0. The verdict line — the thread's state and the counts that answer "what did
+     this card do": rows proved, rows moved to admitted debt, files off thread.
+     Everything else is one click down, in a <details>.
+  1. Intent Changed — statements of intent whose wording was restated, with the
+     blast-radius re-confirm list (the build and proof written against the old
+     wording). Never folded: it asks the reader to do something.
+  2. What moved — the family tables, carrying both the move and the state, with
+     unchanged rows footnoted rather than listed. One section, not two: the
+     tables hold the state, so a bullet list saying the same thing twice is
+     display, not truth.
+  3. Off thread — changed files that carry no mark tying them to any intent this
+     PR moved. Not a defect; a visibility call. Any human tick stays outside the
+     fold, because a checkbox nobody can see is not a ceremony.
+  4. Receipts — whatever the caller passes with --receipts (a gate log, a
+     toolchain line). A receipt, not a headline, so it renders folded.
 
 Doctrine: this **illuminates, never refuses**. It always exits 0 and never
 blocks a merge — even when the head Gate is broken, it posts a briefing that
@@ -29,7 +38,7 @@ Usage:
   thread-report.py --base base.json --head head.json \
       --changed-files changed.txt [--config specassay-check-config.yml]
       [--pr-url https://github.com/o/r/pull/1] [--head-sha SHA]
-      [--offthread-ack off|record|required]
+      [--offthread-ack off|record|required] [--receipts run-log.md]
 
   --changed-files accepts a file (one path per line) or `-` for stdin.
 """
@@ -284,9 +293,17 @@ def what_moved(base: dict, head: dict) -> dict:
 
 # ---- render ----
 
+def fold(summary: str, body: list) -> list:
+    """One click down. GitHub only renders Markdown inside <details> when a
+    blank line separates it from the tags, so the blank lines are load-bearing."""
+    while body and not body[-1].strip():
+        body = body[:-1]
+    return ["<details>", f"<summary>{summary}</summary>", ""] + body + ["", "</details>", ""]
+
+
 def render(base: dict, head: dict, near: list, far: list, ack: str,
            link: Linker | None = None, project_root: str = "",
-           intent_ack: str = "off") -> str:
+           intent_ack: str = "off", receipts: str = "") -> str:
     moved = what_moved(base, head)
     h = rows_by_id(head)
     gate_ok = head.get("gate", {}).get("ok", True)
@@ -296,10 +313,64 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     registry_moved = set(moved["minted"]) | {r["id"] for r in moved["restated"]}
     out = []
 
-    # Header — the name, then a single gate-state line (no color; the dot carries it).
+    # What each moved row did, as one line per row. Built once and read twice:
+    # by the verdict line's counts and by the family tables. A row can do more
+    # than one thing (minted AND restated), so notes accumulate per ID.
+    move_note: dict = {}
+
+    def note(id_: str, text: str) -> None:
+        move_note.setdefault(id_, []).append(text)
+
+    landed: dict = {}  # status -> how many rows moved INTO it in this PR
+    carrier_only = 0
+    for c in moved["changes"]:
+        if c["kind"] == "status":
+            landed[c["to"]] = landed.get(c["to"], 0) + 1
+            note(c["id"], f"`{c['from']}` → {BADGE.get(c['to'],'')} **`{c['to']}`**")
+        else:
+            carrier_only += 1
+            got = []
+            if c.get("covers", 0) > 0:
+                got.append(f"+{c['covers']} `@covers`")
+            if c.get("proofs", 0) > 0:
+                got.append(f"+{c['proofs']} proof")
+            held = h.get(c["id"], {}).get("status", "")
+            note(c["id"], f"{', '.join(got)} · status held at {BADGE.get(held,'')} `{held}`")
+    for i in moved["minted"]:
+        st = h.get(i, {}).get("status", "backlog")
+        move_note.setdefault(i, []).insert(0, f"🆕 minted ({BADGE.get(st,'')} `{st}`)")
+    for r in moved["restated"]:
+        note(r["id"], "✍️ restated")
+    for i in moved["retired"]:
+        note(i, "🪦 retired (tombstoned)")
+
+    # Header — the name, then one line a reader can take in whole: the thread's
+    # verdict and the counts that say what this card did. Everything else folds.
     out.append("## 🧵 Thread Report")
     out.append("")
-    out.append("🟢 **Golden Thread intact**" if gate_ok else "🔴 **Golden Thread broken**")
+    verdict = "🟢 **Golden Thread intact**" if gate_ok else "🔴 **Golden Thread broken**"
+    tally = []
+    if landed.get("proven"):
+        tally.append(f"**{landed['proven']}** proved")
+    if landed.get("tracked-debt"):
+        tally.append(f"**{landed['tracked-debt']}** to admitted debt")
+    if landed.get("GAP"):
+        tally.append(f"**{landed['GAP']}** now GAP")
+    if landed.get("backlog"):
+        tally.append(f"**{landed['backlog']}** back to backlog")
+    if moved["minted"]:
+        tally.append(f"**{len(moved['minted'])}** minted")
+    if moved["retired"]:
+        tally.append(f"**{len(moved['retired'])}** retired")
+    if moved["restated"]:
+        tally.append(f"**{len(moved['restated'])}** restated")
+    if carrier_only:
+        noun = "carrier" if carrier_only == 1 else "carriers"
+        tally.append(f"**{carrier_only}** {noun} added, status held")
+    if not tally:
+        tally.append("**no rows moved**")
+    tally.append(f"**{len(far)}** files off thread" if far else "**nothing** off thread")
+    out.append(" · ".join([verdict] + tally))
     out.append("")
 
     def fmt_id(id_: str) -> str:
@@ -322,60 +393,27 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                     hits.append((kind, p))
         return hits
 
-    def carrier_suffix(id_: str) -> str:
-        hits = changed_carriers(id_)
-        if not hits:
-            return ""
-        parts = []
-        for _kind, p in hits:
-            label = p.rsplit("/", 1)[-1]
-            parts.append(f"[`{label}`]({link.file_hunk(p)})" if (link and link.ok) else f"`{label}`")
-        return " · " + " ".join(parts)
-
-    def changed_marker(id_: str) -> str:
-        """`◀ changed` — linked to the diff that moved this row. A carrier change
-        points at the carrier's diff hunk (proof preferred, then `@covers`); a
-        registry move (restated wording / minted) points at the registry file's
-        diff, since that's where the change lives."""
-        if not (link and link.ok):
-            return "◀ changed"
+    def changed_in(id_: str) -> str:
+        """Where in this PR the change that moved this row lives — the carrier
+        files it touched, or the registry file when the move was a mint or a
+        restatement. Blank when the move came from a file carrying no mark of
+        its own (a task line gaining a **Carries**, say): the table says the row
+        moved, and does not invent a link it cannot stand behind."""
         hits = changed_carriers(id_)
         if hits:
-            return f"[◀ changed]({link.file_hunk(hits[0][1])})"
+            return " ".join(
+                f"[`{p.rsplit('/', 1)[-1]}`]({link.file_hunk(p)})" if (link and link.ok)
+                else f"`{p.rsplit('/', 1)[-1]}`"
+                for _kind, p in hits
+            )
         if id_ in registry_moved:
             reg = (h.get(id_) or {}).get("registry", {}).get("path")
             if reg:
-                return f"[◀ changed]({link.file_hunk(reg)})"
-        return "◀ changed"
+                label = reg.rsplit("/", 1)[-1]
+                return f"[`{label}`]({link.file_hunk(reg)})" if (link and link.ok) else f"`{label}`"
+        return "—"
 
-    # 1. What moved
-    out.append("### What moved")
-    lines = []
-    for c in moved["changes"]:
-        if c["kind"] == "status":
-            lines.append(
-                f"- {BADGE.get(c['to'],'')} **{fmt_id(c['id'])}** — `{c['from']}` → "
-                f"**`{c['to']}`**{carrier_suffix(c['id'])}".rstrip()
-            )
-        else:
-            got = []
-            if c.get("covers", 0) > 0:
-                got.append(f"+{c['covers']} `@covers`")
-            if c.get("proofs", 0) > 0:
-                got.append(f"+{c['proofs']} proof")
-            lines.append(
-                f"- **{fmt_id(c['id'])}** — carrier added ({', '.join(got)}), "
-                f"status held{carrier_suffix(c['id'])}"
-            )
-    for i in moved["minted"]:
-        st = h.get(i, {}).get("status", "backlog")
-        lines.append(f"- 🆕 **{fmt_id(i)}** — minted ({st})")
-    for i in moved["retired"]:
-        lines.append(f"- 🪦 **`{i}`** — retired (tombstoned)")
-    out.append("\n".join(lines) if lines else "_No status changes in this PR._")
-    out.append("")
-
-    # 1b. Intent Changed — restated statements of intent + blast-radius re-confirm list
+    # 1. Intent Changed — restated statements of intent + blast-radius re-confirm list
     if moved["restated"]:
         _carrier_cache: dict = {}
 
@@ -473,59 +511,82 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             out.append("- [ ] **Each restated intent still holds — its code and tests re-confirmed.** _(a human must tick this before merge — `intent_ack: required`)_")
         out.append("")
 
-    # 2. Thread Status, per domain the PR touched (untouched backlog rows hidden)
-    restated_ids = {r["id"] for r in moved["restated"]}
-    touched = sorted({domain_of(c["id"]) for c in moved["changes"]}
-                     | {domain_of(i) for i in moved["minted"]}
-                     | {domain_of(i) for i in restated_ids})
-    if touched:
-        out.append("### Thread Status")
-        moved_ids = {c["id"] for c in moved["changes"]} | set(moved["minted"]) | restated_ids
-        for dom in touched:
-            fam = [r for r in head.get("rows", []) if domain_of(r["id"]) == dom]
-            type_rank = {"US": 0, "FR": 1, "NFR": 2, "AC": 3}
-            fam.sort(key=lambda r: (type_rank.get(r["id"].split("-")[0], 9), r["id"]))
-            shown = [r for r in fam if r["status"] != "backlog" or r["id"] in moved_ids]
-            hidden = len(fam) - len(shown)
-            out.append(f"**{dom}**")
-            out.append("")
-            out.append("| ID | Status | |")
-            out.append("|----|--------|--|")
-            for r in shown:
-                mark = changed_marker(r["id"]) if r["id"] in moved_ids else ""
-                out.append(f"| {fmt_id(r['id'])} | {BADGE.get(r['status'],'')} {r['status']} | {mark} |")
-            if hidden:
-                noun = "row" if hidden == 1 else "rows"
-                out.append(f"\n<sub>+{hidden} untouched backlog {noun} not shown.</sub>")
-            out.append("")
+    # 2. What moved — the family tables. One section, not two: the table carries
+    # the move AND the state, so the reader is not told the same fact twice. Only
+    # rows this PR moved are listed; the rest of each family is footnoted with its
+    # status counts, so the state is still there without the reading.
+    type_rank = {"US": 0, "FR": 1, "NFR": 2, "AC": 3}
+    moved_ids = set(move_note)
+    if moved_ids:
+        families: dict = {}
+        for id_ in moved_ids:
+            families.setdefault(domain_of(id_), []).append(id_)
+        fam_count = len(families)
+        row_noun = "row" if len(moved_ids) == 1 else "rows"
+        fam_noun = "family" if fam_count == 1 else "families"
+        body = []
+        for dom in sorted(families):
+            ids = sorted(families[dom], key=lambda i: (type_rank.get(i.split("-")[0], 9), i))
+            body.append(f"**{dom}**")
+            body.append("")
+            body.append("| ID | Moved | Changed in |")
+            body.append("|----|-------|------------|")
+            for id_ in ids:
+                body.append(
+                    f"| {fmt_id(id_)} | {' · '.join(move_note[id_])} | {changed_in(id_)} |"
+                )
+            rest: dict = {}
+            for r in head.get("rows", []):
+                if domain_of(r["id"]) == dom and r["id"] not in moved_ids:
+                    rest[r["status"]] = rest.get(r["status"], 0) + 1
+            if rest:
+                total = sum(rest.values())
+                noun = "row" if total == 1 else "rows"
+                breakdown = ", ".join(
+                    f"{rest[st]} {BADGE.get(st,'')} {st}"
+                    for st in sorted(rest, key=lambda k: (-rest[k], k))
+                )
+                body.append(
+                    f"\n<sub>+{total} unchanged {noun} in this family, not listed: "
+                    f"{breakdown}.</sub>"
+                )
+            body.append("")
+        out.extend(fold(
+            f"<b>What moved</b> — {len(moved_ids)} {row_noun} in {fam_count} {fam_noun}",
+            body,
+        ))
 
-    # 3. Off thread
-    out.append("### Off Thread")
+    # 3. Off thread. The list folds; the human tick does not — a checkbox nobody
+    # can see is not a ceremony, and `offthread_ack: required` holds a merge on it.
     if far:
         n = len(far)
         verb = "sits" if n == 1 else "sit"
         noun = "file" if n == 1 else "files"
         pron = "it" if n == 1 else "them"
-        out.append(
-            f"{n} changed {noun} {verb} **off the thread** — changed, but nothing "
-            f"in {pron} carries a mark tying it to an intent this PR moved. Not a defect "
-            "(a refactor and unwanted scope look identical here); just worth a glance:"
-        )
-        out.append("")
+        body = [
+            f"Changed, but nothing in {pron} carries a mark tying {pron} to an intent "
+            "this PR moved. Not a defect (a refactor and unwanted scope look identical "
+            "here); just worth a glance:",
+            "",
+        ]
         for f in far:
-            p = f["path"]
-            if link and link.ok:
-                out.append(f"- [`{p}`]({link.file_hunk(p)})")
-            else:
-                out.append(f"- `{p}`")
-        out.append("")
+            fp = f["path"]
+            body.append(f"- [`{fp}`]({link.file_hunk(fp)})" if (link and link.ok) else f"- `{fp}`")
+        out.extend(fold(f"<b>Off thread</b> — {n} changed {noun} {verb} off the thread", body))
         if ack == "record":
             out.append("- [ ] **These untraced changes are incidental.** _(tick to record — informational)_")
+            out.append("")
         elif ack == "required":
             out.append("- [ ] **These untraced changes are incidental.** _(a human must tick this before merge — `offthread_ack: required`)_")
+            out.append("")
     else:
         out.append("_Every changed file carries a mark tying it to an intent. Nothing sits off the thread._")
-    out.append("")
+        out.append("")
+
+    # 4. Receipts — the run behind the report. A receipt, not a headline.
+    if receipts.strip():
+        out.extend(fold("<b>Receipts</b> — the run behind this report",
+                        receipts.rstrip().split("\n")))
 
     out.append("---")
     ack_note = (
@@ -565,6 +626,10 @@ def main() -> int:
                     help="the affirm ceremony on the off-thread list; overrides the config key")
     ap.add_argument("--intent-ack", default=None, choices=ACK_CHOICES,
                     help="the affirm ceremony on restated intent; overrides the config key")
+    ap.add_argument("--receipts", default=None,
+                    help="a Markdown file whose contents render folded at the end of the "
+                         "report (a gate log, a toolchain line). The report never reads or "
+                         "reformats it; a receipt belongs under one click, not in the lead.")
     ap.add_argument("--out", default="-", help="write report here (default stdout)")
     args = ap.parse_args()
 
@@ -581,8 +646,17 @@ def main() -> int:
     intent_ack = args.intent_ack if args.intent_ack is not None else cfg.get("intent_ack", "off")
     link = Linker(args.pr_url, args.head_sha, project_root) if args.pr_url else None
 
+    receipts = ""
+    if args.receipts:
+        try:
+            receipts = Path(args.receipts).read_text(encoding="utf-8", errors="replace")
+        except OSError as exc:
+            # Illuminate, never refuse: a missing receipt loses the appendix, not
+            # the report, and says so on stderr rather than in the reader's face.
+            print(f"warning: --receipts {args.receipts}: {exc}", file=sys.stderr)
     near, far = classify_changed(changed, head, cfg, project_root)
-    report = render(base, head, near, far, ack, link, project_root, intent_ack=intent_ack)
+    report = render(base, head, near, far, ack, link, project_root,
+                    intent_ack=intent_ack, receipts=receipts)
 
     if args.out == "-":
         sys.stdout.write(report)

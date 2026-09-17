@@ -537,10 +537,10 @@ refuse work it cannot, on a thread you minted yourself.
 
 ## 11. Land the Thread Report
 
-The **Thread Report** is the briefing SpecAssay posts on a pull request: what
-moved on the thread, the touched story walked top to bottom, and the changed files
-that sit **off the thread**, changed but carrying no mark tying them to an
-intent this change moved. It illuminates; it never refuses. In CI it runs on every
+The **Thread Report** is the briefing SpecAssay posts on a pull request: one line
+saying what this change did to the thread, and under it what moved and which
+changed files sit **off the thread**, changed but carrying no mark tying them to
+an intent this change moved. It illuminates; it never refuses. In CI it runs on every
 pull request and posts one comment; here you run it by hand, comparing the
 snapshot you saved in block 7 against the thread as it stands now.
 
@@ -562,31 +562,50 @@ cat thread-report.md
 ```text
 ## 🧵 Thread Report
 
-🟢 **Golden Thread intact**
+🟢 **Golden Thread intact** · **1** proved · **2** files off thread
 
-### What moved
-- 🟢 **`AC-GREET-10`** — `tracked-debt` → **`proven`** · `test_greet.py` `greet.py`
+<details>
+<summary><b>What moved</b> — 1 row in 1 family</summary>
 
-### Thread Status
 **GREET**
 
-| ID | Status | |
-|----|--------|--|
-| `AC-GREET-10` | 🟢 proven | ◀ changed |
+| ID | Moved | Changed in |
+|----|-------|------------|
+| `AC-GREET-10` | `tracked-debt` → 🟢 **`proven`** | `test_greet.py` `greet.py` |
 
-### Off Thread
-2 changed files sit **off the thread** — changed, but nothing in them carries a mark tying it to an intent this PR moved. Not a defect (a refactor and unwanted scope look identical here); just worth a glance:
+</details>
+
+<details>
+<summary><b>Off thread</b> — 2 changed files sit off the thread</summary>
+
+Changed, but nothing in them carries a mark tying them to an intent this PR moved. Not a defect (a refactor and unwanted scope look identical here); just worth a glance:
 
 - `src/banner.py`
 - `tests/__init__.py`
+
+</details>
 ```
 
-Read it as a reviewer would. *What moved*: one promise went from admitted debt to
-proven, and here are the two files that did it. *Thread Status*: the GREET story
-as it stands after the change. *Off Thread*: `src/banner.py`, which you wrote,
-which is harmless, and which nothing in the repository ties to any stated intent.
-The tool refuses to guess whether that is a tidy-up or scope nobody asked for,
-because from here those look identical; it hands you a spotlight, not a verdict.
+On a pull request those `<details>` blocks render as two collapsed lines you can
+click open. Here in your terminal you are seeing the raw Markdown, tags and all,
+which is the same text GitHub turns into that.
+
+Read it as a reviewer would, starting with the one line at the top. That line is
+the whole verdict: the thread is intact, one promise proved on this change, two
+changed files sit off the thread. If nothing there surprises you, you are done
+reading.
+
+Click down when it does. *What moved* names the promise, the move it made
+(`tracked-debt` → `proven`) and the two files that did it. *Off thread* names
+`src/banner.py`, which you wrote, which is harmless, and which nothing in the
+repository ties to any stated intent. The tool refuses to guess whether that is a
+tidy-up or scope nobody asked for, because from here those look identical; it
+hands you a spotlight, not a verdict.
+
+The report shows what *moved*, and footnotes the rest. On a toy project with one
+promise there is no rest; on a real one, a family's unchanged rows are summarised
+under its table by status rather than listed, so the report stays about this
+change without losing the state around it.
 
 `--project-root .` is not optional: without it the tool measures paths from the
 config file's own directory and reads every changed file as off-thread.
