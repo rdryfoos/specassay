@@ -5,6 +5,58 @@ the bundle version leads, component versions are listed per release.
 
 ## Unreleased
 
+### The Thread Report reads in five seconds, and folds the rest
+
+The first Thread Report to render on a real estate was longer than a reviewer
+would read. Three trims, all display: nothing was dropped, only collapsed.
+
+- **One verdict line.** The report opens with the thread's state and the counts
+  that say what the change did — rows proved, rows moved to admitted debt,
+  changed files off thread, plus minted, retired, restated, moved to `GAP` or
+  carrier-added when they occur. A term appears only when its count is
+  non-zero, so a PR that minted nothing never says "0 minted"; a PR that moved
+  nothing says so rather than going quiet.
+- **Every move is stated once.** "What moved" and "Thread Status" had been
+  saying the same thing twice — each changed row as a bullet, then again as a
+  table row marked `◀ changed`. The bullets are gone and the family tables
+  absorbed them, carrying the move *and* the state. The `◀ changed` marker went
+  with them: every row in the table moved now, so a marker saying so says
+  nothing.
+- **Unmoved rows are footnoted, not listed**, with their status counts, the way
+  untouched backlog rows already were. Where a row moved with no carrier to
+  point at, the cell is an em dash rather than blank: absence renders as
+  absence, never an invented link.
+- **`--receipts FILE`** renders a caller's Markdown folded at the end of the
+  report. The run that produced a report is a receipt, not a headline. The
+  report never reads, parses or reformats that text; a missing file costs the
+  appendix and warns on stderr, never the report.
+- **Two things never fold**, and the criterion says so by name: *Intent
+  Changed*, because a restated promise asks the reader to go re-confirm
+  something, and a required human tick, because it holds a merge. A warning
+  behind a click is a warning nobody read.
+
+Minted as `FR-THREAD-10` / `AC-THREAD-10`: the **display contract only**. A
+shipped tool this repo's own registry did not govern was the assay office
+running an ungoverned instrument, and the display is the promise a reader can
+hold us to. Governing the tool's behaviour more broadly waits until there is
+behaviour worth naming. Six of the eighteen new tests are that criterion's
+proof, one per clause.
+
+### Correction to the 0.5.0 notes (2026-09-17)
+
+0.5.0's lead said that an unproven criterion carried by an open task is
+`backlog`, a legal passing state, and that this is what made the proof-direction
+defect silent. That is true of one of its two shapes. When the ID is *also*
+named in a spec, the same unproven row reads `tracked-debt` instead. Both are
+legal passing states, so the failure was silent either way and nothing in the
+0.5.0 fix or its tests changes — but the upgrade evidence measured
+`tracked-debt`, not `backlog`, and the notes named only one.
+
+Recorded here rather than edited into the published 0.5.0 section. Rewriting a
+released note in place is the same shape as re-pinning receipts that were never
+re-earned: the correction is dated and points back, so the record shows both
+what was said and when it was corrected.
+
 ## 0.5.0 (2026-09-16)
 
 **One class, not six defects.** SpecAssay lets a project declare its own ID
