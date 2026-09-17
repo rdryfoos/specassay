@@ -1,10 +1,14 @@
 # Submission package — status and checklist
 
-**v0.5.1 swept and ready; the tag is not yet cut.** A display release (the Thread
-Report's trims, `--receipts`, the `THREAD` rows, a dated correction to the 0.5.0
-notes); the Gate is untouched. Manifests, catalogs, paste-from docs, CHANGELOG and
-`test-evidence.md` are all at 0.5.1. The paste-from digests are deliberately blank
-until the assets exist. Chalkup is blocked on this release for `--receipts`.
+**v0.5.1 released 2026-09-17; filing not yet done.** Tag `v0.5.1`, release
+<https://github.com/rdryfoos/specassay/releases/tag/v0.5.1>. A display release (the
+Thread Report's trims, `--receipts`, the `THREAD` rows, a dated correction to the
+0.5.0 notes); the Gate is untouched. Digests verified three ways and the three
+paste-from docs filled from them; the clean-project install and the upgrade from a
+real v0.5.0 are recorded in `test-evidence.md`, including the block it unblocks —
+`--receipts` is refused outright by v0.5.0 and works after one `bundle update`.
+**Chalkup is unblocked.** Two steps remain: the site's hero pin, still on the
+v0.4.13 README anchor and now two releases stale, and the submission-form issues.
 
 **v0.5.0 released 2026-09-16; never filed.** Tag `v0.5.0`, release
 <https://github.com/rdryfoos/specassay/releases/tag/v0.5.0>. Digests were verified

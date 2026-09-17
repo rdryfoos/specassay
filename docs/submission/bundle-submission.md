@@ -41,13 +41,10 @@ trace-manifest emission.
 **Download URL:**
 https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-0.5.1.zip
 
-**Digest (sha256):** *not yet known — fill at the cut.* The v0.5.1 assets do not
-exist until the tag is pushed, and a digest is a claim about a specific file: the
-0.5.0 digest under a 0.5.1 URL would be a false one, so it is removed rather than
-carried forward. At the cut, read it from the release asset itself
-(`gh api repos/rdryfoos/specassay/releases/tags/v0.5.1`), re-verify it by
-downloading the zip and hashing it locally, and record both in
-`docs/submission/test-evidence.md` before this form is filed.
+**Digest (sha256):** `962421be236991f5afa4a93f48bd16a9b2e61cd9221985b9f233b93407132246`
+*(read from the release asset itself — `gh api repos/rdryfoos/specassay/releases/tags/v0.5.1` — then independently re-verified by
+downloading the published zip and hashing it locally, and a third time by unzipping it and
+reading the version the manifest inside actually declares; see `docs/submission/test-evidence.md`.)*
 
 **Documentation URL:**
 https://github.com/rdryfoos/specassay/blob/main/README.md
