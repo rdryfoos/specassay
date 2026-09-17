@@ -113,10 +113,14 @@ rather than rebuilding by hand and leaving the cause in place. The hero
 pin above stays manual on purpose: it names a tag, which only a human cut
 decides.
 
-## v0.5.0 swept, 2026-09-16; tag not yet cut
+## v0.5.0 cut, 2026-09-16; filing not yet done
 
-The sweep above was followed in full up to the point a tag is needed, on
-branch `claude/proof-direction`: all three manifests, the three catalogs
+Tag `v0.5.0` at `899420356a4b0fa89366034787d793b561ee1e0a`, release
+<https://github.com/rdryfoos/specassay/releases/tag/v0.5.0>, built by the Release
+workflow (<https://github.com/rdryfoos/specassay/actions/runs/35151943499>).
+
+The sweep above was followed in full, in two passes either side of the tag. The
+first pass, on branch `claude/proof-direction`: all three manifests, the three catalogs
 (version, `download_url`, both `updated_at` fields), the three paste-from
 docs, the CHANGELOG, `docs/submission/README.md`, and a v0.5.0 entry in
 `docs/submission/test-evidence.md`. The in-zip READMEs needed no edit this
@@ -124,15 +128,12 @@ round: both now install from the version-agnostic
 `releases/latest/download/...` URLs, which is round 3's fix working as
 intended.
 
-Two deliberate omissions, so nobody reads them as misses:
-
-1. **No digests in the paste-from docs.** They say "not yet known — fill at
-   the cut", with the commands to fill them. The assets do not exist until
-   the tag is pushed, and carrying the 0.4.13 digests under 0.5.0 URLs would
-   be a false claim about a specific file.
-2. **No site pin bump.** The hero CTA still names the `v0.4.13` README
-   anchor, because the pin is a tag and the tag is a human cut. Bump it after
-   the tag is public, per the sweep step above.
+Two things were left for the cut rather than guessed at. The paste-from digests
+said "not yet known — fill at the cut", with the commands, because carrying the
+0.4.13 digests under 0.5.0 URLs would have been a false claim about a specific
+file; **they are now filled from the published assets.** The site pin names a
+tag, so it waited too, and **it is the one step of this sweep still
+outstanding**: the hero CTA is on the `v0.4.13` README anchor.
 
 Verified before the tag, in this order: `python3 -m pytest
 extensions/specassay-check/tests/ -q` (92 passed) under both mawk and gawk;
@@ -147,9 +148,20 @@ a missing registry, goes green on a stock thread, and proves a dotted
 `AC-5.6.1a` from `test_AC_5_6_1_a_replays_queued_cards` — the case v0.4.13
 could not reach. Receipts in `docs/submission/test-evidence.md`.
 
-What the cut owes is listed at the end of that entry: the published-release
-install test, digests three ways, the upgrade path from a real v0.4.13
-install, and the site pin.
+The second pass, after the tag, is recorded in the same entry under
+**Post-tag**: digests verified three ways (release API, local hash of the
+downloaded bytes, and the manifests read from inside the zips), the three
+paste-from docs filled from those digests, a clean-project install by bundle ID
+that resolved 0.5.0 on the first try, the Gate driven from empty registry to
+`proven` on the published bits, the `FR-GATE-120` refusal read cold, and the
+upgrade path run from a real published v0.4.13 install — where the same project,
+the same files and the same edited config go from `('AC-5.6.1a', 'tracked-debt',
+[])` to `('AC-5.6.1a', 'proven', ['test_AC_5_6_1_a_replays_queued_cards'])` one
+command apart. The cache clear that 0.4.12 → 0.4.13 needed is still needed;
+`docs/migration.md`'s upgrade command is unchanged and correct.
+
+Still owed: the site pin, and the three submission-form issues, which now carry
+two versions' worth of change because v0.4.13's were never filed.
 
 ## v0.4.13 cut, 2026-09-04; filing not yet done
 

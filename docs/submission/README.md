@@ -1,11 +1,11 @@
 # Submission package — status and checklist
 
-**v0.5.0 swept and ready; the tag is not yet cut.** All three manifests, the three
-catalogs, the three paste-from docs, the CHANGELOG, and `docs/submission/test-evidence.md`
-are at 0.5.0 on the release branch. The paste-from docs deliberately carry no digests: the
-assets do not exist until the tag is pushed, and a 0.4.13 digest under a 0.5.0 URL would be
-a false claim. What the cut still owes is listed at the end of the v0.5.0 entry in
-`test-evidence.md`.
+**v0.5.0 released 2026-09-16; filing not yet done.** Tag `v0.5.0`, release
+<https://github.com/rdryfoos/specassay/releases/tag/v0.5.0>. Digests verified three
+ways and the three paste-from docs filled from the published assets; the clean-project
+install and the upgrade from a real v0.4.13 install are both recorded in
+`test-evidence.md`. Two steps remain: the site's hero pin, still on the v0.4.13 README
+anchor, and the three submission-form issues.
 
 **v0.4.13 released 2026-09-04. Catalog pointer PR open upstream: [github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448) (all three entries, one PR, because the bundle pins its components). Its submission-form issues were never filed**, so the
 0.5.0 filing carries two versions' worth of change and updates the last issues actually filed

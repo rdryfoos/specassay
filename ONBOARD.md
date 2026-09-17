@@ -31,13 +31,15 @@ wrong you can name the block it went wrong in.
 | git | 2.43.0 |
 
 **One divergence, named rather than hidden (2026-09-16).** SpecAssay v0.5.0 is
-being cut, and `main`'s catalogs point at it, so `specify bundle install` will
-give you v0.5.0 while the receipts below were captured on v0.4.13. The release is
-a repair release: it makes SpecAssay read a project's own configured ID grammar
-everywhere instead of assuming the stock one. This sitting uses the stock grammar
-throughout, so nothing here is expected to read differently, and the block-by-block
-receipts are what a v0.4.13 run really printed. They have not yet been re-captured
-on v0.5.0 by a cold operator, which is the only thing that would let this table say
+released and `main`'s catalogs point at it, so `specify bundle install` gives you
+v0.5.0 while the receipts below were captured on v0.4.13. The release is a repair
+release: it makes SpecAssay read a project's own configured ID grammar everywhere
+instead of assuming the stock one. This sitting uses the stock grammar throughout,
+so nothing here is expected to read differently, and the same install-to-green path
+was run against the published v0.5.0 on release day
+(`docs/submission/test-evidence.md`). But the block-by-block receipts below are
+what a v0.4.13 run really printed, and they have not yet been re-captured on
+v0.5.0 by a cold operator, which is the only thing that would let this table say
 v0.5.0 honestly. Until then: if your run differs from a receipt below in any way,
 that difference is a finding and we want it (see *When you stumble*, at the end).
 
