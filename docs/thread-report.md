@@ -24,41 +24,43 @@ changes nothing about it: not the title, not the description, not the diff.
 
 ## What it posts
 
-The comment has a one-line header plus three sections. This is the real report
-from green [PR #1](https://github.com/rdryfoos/specassay/pull/1), where a
-developer paid off tracked debt (`AC-SYNC-02`, the disjoint-field merge) by
-adding the proof that was owed, and dropped in a small `metrics.py` along the
-way.
+The comment is **one line a reviewer reads, and everything else one click
+down**. The examples below come from green
+[PR #1](https://github.com/rdryfoos/specassay/pull/1), where a developer paid
+off tracked debt (`AC-SYNC-02`, the disjoint-field merge) by adding the proof
+that was owed, and dropped in a small `metrics.py` along the way.
 
-### Header: the Gate line
+**A note on why it is shaped this way.** The first Thread Report to render on a
+real estate (Chalkup, 2026-09-17) was longer than a reviewer would read: every
+moved row appeared twice, once as a bullet and again as a table row marked
+changed; the family tables listed rows that had not moved beside the ones that
+had; and the gate log that produced the report sat open at the bottom. The trims
+below are display, not truth. Nothing was dropped, only collapsed.
+
+### The verdict line
 
 ```
 ## 🧵 Thread Report
 
-🟢 **Golden Thread intact**
+🟢 **Golden Thread intact** · **1** proved · **1** files off thread
 ```
 
-One line, one fact: does the thread hold. `🟢 Golden Thread intact` when
-`gate.ok` is true; `🔴 Golden Thread broken` when it isn't (see *The broken
-path* below). No colour on the word; the dot carries it, so it reads the same
-in a comment (where GitHub strips inline colour) and on the page. A passing Gate
-does **not** mean "everything is done"; it means nothing *unfinished* is
-*hidden* at AC altitude.
+One line, and it is meant to be the whole read for most PRs: does the thread
+hold, how many rows proved on this change, how many moved to admitted debt, how
+many changed files sit off the thread. `🟢 Golden Thread intact` when `gate.ok`
+is true; `🔴 Golden Thread broken` when it isn't (see *The broken path* below).
+No colour on the word; the dot carries it, so it reads the same in a comment
+(where GitHub strips inline colour) and on the page. A passing Gate does **not**
+mean "everything is done"; it means nothing *unfinished* is *hidden* at AC
+altitude.
 
-### 1. What moved
+The counts name only what happened: a term appears when its count is non-zero,
+so a PR that minted nothing never says "0 minted". Rows moving to `GAP`, rows
+minted, retired or restated, and carriers added with the status held each get
+their own term when they occur. When no row moved at all the line says so
+(`**no rows moved**`) rather than going quiet.
 
-The base-vs-head manifest diff, in prose:
-
-```
-- 🟢 **AC-SYNC-02** — `tracked-debt` → **`proven`** · `test_sync.py` `sync.py`
-```
-
-Status changes, carriers added, IDs **🆕 minted**, IDs **🪦 retired**. The
-trailing files are the **on-thread** files *this PR changed* that carry the
-moved ID (its proof and `@covers`), rendered so the reviewer can click straight
-to the change that did the moving.
-
-### 1b. Intent Changed
+### 1. Intent Changed
 
 The one section that's about the intent itself, not the code. When a PR
 **restates** an existing registry ID (changes its *wording*), the report
@@ -108,8 +110,8 @@ but it only ever asks a human to look; it never *refuses* on a restatement. This
 is the blast-radius integrity property argued in
 [`scope-and-pull-requests.md` §5](scope-and-pull-requests.md), made mechanical
 and surfaced on the PR that moves the intent (`intent_ack` escalates it to a
-human tick; see *Configuration*). A restated intent also lights up *Thread
-Status* (`◀ changed`).
+human tick; see *Configuration*). A restated intent also appears in *What
+moved*, marked `✍️ restated`, pointing at the registry hunk that reworded it.
 
 **The two shapes, told apart by the carriers.** A restatement arrives either as
 a **PR from Intent** (the wording moves alone: live
@@ -125,55 +127,91 @@ diff. The partial case renders both marks at once: *updated in this PR* yet
 With minted / retired (in *What moved*) and restated here, the report now covers
 all three legible-intent-diff types.
 
-### 2. Thread Status
+### 2. What moved
 
-For each **domain** the PR touched (the middle ID token: `US-SYNC-01` →
-`SYNC`), the family walked top-down (`US → FR → NFR → AC`) as it stands *after*
-this PR, with moved rows flagged `◀ changed`:
+Folded. One section, not two: the table carries the move *and* the state, so no
+fact is stated twice. For each **domain** the PR touched (the middle ID token:
+`US-SYNC-01` → `SYNC`), the rows this PR moved, walked top-down
+(`US → FR → NFR → AC`):
 
 ```
+<details>
+<summary><b>What moved</b> — 1 row in 1 family</summary>
+
 **SYNC**
-| ID          | Status     |           |
-|-------------|------------|-----------|
-| `AC-SYNC-01`| 🟢 proven  |           |
-| `AC-SYNC-02`| 🟢 proven  | ◀ changed |
 
-+2 untouched backlog rows not shown.
+| ID | Moved | Changed in |
+|----|-------|------------|
+| `AC-SYNC-02` | `tracked-debt` → 🟢 **`proven`** | `test_sync.py` `sync.py` |
+
+<sub>+3 unchanged rows in this family, not listed: 2 🔵 backlog, 1 🟢 proven.</sub>
+
+</details>
 ```
 
-**Untouched `backlog` rows are hidden**: a story this PR didn't move doesn't
-need its inert planning rows reprinted every time. The count of what's hidden is
-stated, never silently dropped. A reviewer sees the live part of the thread the
-change lives on, not the whole planning tree.
+The **Moved** cell says what the row did: a status transition, `🆕 minted`,
+`🪦 retired`, `✍️ restated`, or a carrier added with the status held. A row that
+did more than one of those (minted *and* restated) carries both, separated by
+`·`, on its one line.
 
-### 3. Off Thread
+**Changed in** names the **on-thread** files *this PR changed* that carry the
+moved ID (its proof and `@covers`), so the reviewer can click straight to the
+change that did the moving. For a mint or a restatement the move lives in the
+registry, so it points there instead. When the move came from a file carrying no
+mark of its own — a task line gaining a `**Carries**`, say — the cell is an em
+dash: absence renders as absence, never as an invented link.
 
-The whole point. Changed files that carry **no mark** tying them to an intent
-this PR moved:
+**Rows this PR did not move are footnoted, not listed**, with their statuses
+counted so the state is still there without the reading. A report about this
+change should show what moved; the family around it is context, one summarised
+line of it. A family where everything moved carries no footnote at all.
+
+### 3. Off thread
+
+The whole point, and also folded. Changed files that carry **no mark** tying
+them to an intent this PR moved:
 
 ```
-1 changed file sits **off the thread** …
+<details>
+<summary><b>Off thread</b> — 1 changed file sits off the thread</summary>
+
+Changed, but nothing in it carries a mark tying it to an intent this PR moved. …
+
 - src/metrics.py
+
+</details>
 ```
 
 `metrics.py` changed, but nothing in it carries an `@covers`, is a named proof,
 or edits the registry / a spec / a tasks file. A legitimate refactor and
 unwanted scope look **identical** from here, so the machine refuses to guess. It
 hands the reviewer a spotlight, not a verdict. If every changed file carries a
-mark, the section says so.
+mark, the report says so in one unfolded line.
+
+**The human tick never folds.** When `offthread_ack` is `record` or `required`,
+the checkbox renders *outside* the `<details>`, because a `required` tick holds
+a merge and a checkbox nobody can see is not a ceremony. The same goes for
+*Intent Changed*, which is never folded at all: it asks the reader to go and
+re-confirm something.
+
+### 4. Receipts
+
+Optional, folded, and never written by the report itself. `--receipts FILE`
+renders that file's Markdown at the end of the report under one click. It exists
+because the run that produced a report — a gate log, a toolchain line — is a
+**receipt, not a headline**: worth keeping, not worth leading with. The report
+never reads, parses or reformats what it is given; the caller owns that text.
 
 ## Clickable: a spotlight you can click
 
 Given `--pr-url` (and `--head-sha`), the report renders live links, so the
 reviewer moves from briefing to exact line in one click:
 
-- **Changed files** (the off-thread list, and the on-thread build and proof in
+- **Changed files** (the off-thread list, and the **Changed in** column of
   *What moved*) → their **diff hunk in this PR**: `…/pull/N/files#diff-<sha256(path)>`.
+  For a restatement or a mint that column points at the **registry file's** hunk
+  instead, because the change *is* the wording.
 - **IDs** → their **registry line**: `…/blob/<head-sha>/<registry>#L<line>`.
-- **`◀ changed`** (in *Thread Status*) → the **diff** that moved that row: the
-  carrier's hunk (proof / `@covers`) for a code move, or the **registry file's**
-  hunk when the move is a restatement or a mint (the change is the wording
-  itself), so each moved row jumps to its change.
 - **Re-confirm build and proof** (in *Intent Changed*) → their **current code**
   (`blob@head`), not a diff: the build and proof usually didn't change; you're
   being sent *to* them to re-check against the new wording.
@@ -288,7 +326,9 @@ python3 extensions/specassay-check/scripts/thread-report.py \
 ```
 
 `--changed-files` takes a file (one path per line) or `-` for stdin. `--pr-url`
-/ `--head-sha` are optional (they enable links). It reads schema v3 / v4
+/ `--head-sha` are optional (they enable links). `--receipts FILE` appends that
+file's Markdown, folded, at the end of the report; a missing file costs the
+appendix and warns on stderr, never the report. It reads schema v3 / v4
 manifests and has zero dependencies.
 
 ### In CI
