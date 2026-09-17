@@ -195,4 +195,10 @@ still unresolved), and the commit that closed it.
     whose subject (reading a project's own configured ID grammar) the
     quickstart never exercises, since it uses the stock grammar throughout,
     so the receipts are expected to hold; expected is not the same as
-    verified, which is the whole reason this entry exists.
+    verified, which is the whole reason this entry exists. **Still open at
+    v0.5.1 (2026-09-17)**, and now two releases behind the capture rather
+    than one. Block 11 is the exception: its quoted Thread Report was
+    re-captured for 0.5.1's display change by replaying blocks 5 through 11,
+    so that one receipt is current. The other eleven are not, and the note
+    under the pin table now says so in terms that do not need rewriting every
+    release.

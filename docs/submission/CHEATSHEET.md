@@ -113,6 +113,38 @@ rather than rebuilding by hand and leaving the cause in place. The hero
 pin above stays manual on purpose: it names a tag, which only a human cut
 decides.
 
+## v0.5.1 swept, 2026-09-17; tag not yet cut
+
+A display release: the Thread Report's trims, `--receipts`, the `THREAD`
+registry rows, and a dated correction to the 0.5.0 notes. The Gate is untouched.
+
+The sweep above was followed in full up to the point a tag is needed, on branch
+`claude/amazing-cray-lgftgd`: all three manifests, the three catalogs (version,
+`download_url`, both `updated_at` fields), the three paste-from docs, the
+CHANGELOG, `docs/submission/README.md`, and a v0.5.1 entry in
+`docs/submission/test-evidence.md`. The in-zip READMEs needed no edit for the
+second release running, which is round 3's version-agnostic fix holding.
+
+Two deliberate omissions, the same two as 0.5.0 and for the same reasons: the
+paste-from digests say "not yet known — fill at the cut", because the assets do
+not exist until the tag and a 0.5.0 digest under a 0.5.1 URL would be a false
+claim about a specific file; and the site pin names a tag, so it waits.
+
+**The paste-from docs now name two skipped filings, not one.** Neither v0.4.13
+nor v0.5.0 was ever filed on a submission form — v0.4.13 got only the catalog
+PR, and v0.5.0's three issues were swept but never filed. The 0.5.1 filing
+therefore carries three versions' worth of change and updates the last issues
+actually filed (#4252 extension, #4253 preset, #4255 bundle). Worth deciding
+before filing: whether to keep deferring, or file once and stop the arrears
+growing.
+
+Verified before the tag: 110 tests; this repo's own Gate `OK (67 registry IDs)`;
+`specify bundle validate` well-formed; `scripts/build-release.sh` three zips
+with `Artifacts and catalog download URLs agree.`; and a clean `specify init`
+project on `specify 1.0.4` where the extension installs as **v0.5.1**, a thread
+runs to `proven`, and the report renders with `--receipts` folded — the surface
+Chalkup is blocked on. Receipts in `docs/submission/test-evidence.md`.
+
 ## v0.5.0 cut, 2026-09-16; filing not yet done
 
 Tag `v0.5.0` at `899420356a4b0fa89366034787d793b561ee1e0a`, release

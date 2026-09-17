@@ -11,12 +11,13 @@ update merged as #4254, filed as #4252. Per
 `docs/submission/CHEATSHEET.md`, this must go out as a **new** issue, not
 an edit to a closed one. Say in the new issue that it updates #4252.
 
-**Skipped version, stated plainly:** `v0.4.13` was cut and released but its
-submission-form issue was never filed; only the catalog-pointer PR
-([github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448)) went out for
-it. This 0.5.0 filing therefore carries two versions' worth of change, and the issue
-it updates is the last one actually filed, named above — not a 0.4.13 issue, which
-does not exist.
+**Skipped versions, stated plainly:** neither `v0.4.13` nor `v0.5.0` was ever filed
+on a submission form. v0.4.13 got only the catalog-pointer PR
+([github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448)); v0.5.0 was
+released and swept but its three issues were not filed either. This 0.5.1 filing
+therefore carries three versions' worth of change, and the issue it updates is the
+last one actually filed, named above — not a 0.4.13 or 0.5.0 issue, neither of
+which exists.
 
 ---
 
@@ -24,7 +25,7 @@ does not exist.
 
 **Extension Name:** SpecAssay Check
 
-**Version:** 0.5.0
+**Version:** 0.5.1
 
 **Description:**
 Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).
@@ -34,12 +35,15 @@ Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).
 **Repository URL:** https://github.com/rdryfoos/specassay
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.5.0/specassay-check-0.5.0.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-check-0.5.1.zip
 
-**Digest (sha256):** `0aa651a6fe7a44e1030b555a55b94d415b2f10d0ab722d81dae4520019407394`
-*(read from the release asset itself — `gh api repos/rdryfoos/specassay/releases/tags/v0.5.0` — then independently re-verified by
-downloading the published zip and hashing it locally, and a third time by unzipping it and
-reading the version the manifest inside actually declares; see `docs/submission/test-evidence.md`.)*
+**Digest (sha256):** *not yet known — fill at the cut.* The v0.5.1 assets do not
+exist until the tag is pushed, and a digest is a claim about a specific file: the
+0.5.0 digest under a 0.5.1 URL would be a false one, so it is removed rather than
+carried forward. At the cut, read it from the release asset itself
+(`gh api repos/rdryfoos/specassay/releases/tags/v0.5.1`), re-verify it by
+downloading the zip and hashing it locally, and record both in
+`docs/submission/test-evidence.md` before this form is filed.
 
 **License:** MIT
 
@@ -127,7 +131,7 @@ specify extension add specassay-check --from https://github.com/rdryfoos/specass
     "version": "0.4.13",
     "description": "Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).",
     "author": "Rik Dryfoos",
-    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.5.0/specassay-check-0.5.0.zip",
+    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-check-0.5.1.zip",
     "repository": "https://github.com/rdryfoos/specassay",
     "homepage": "https://www.specassay.com",
     "documentation": "https://github.com/rdryfoos/specassay/blob/main/extensions/specassay-check/README.md",
