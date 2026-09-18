@@ -37,6 +37,7 @@ The first sweep refused 304 times and ended at 0 with two honest warnings. Five
 were real defects rather than missing annotations, the sharpest a submission
 checklist row claiming the latest release was v0.4.13 while naming
 `specassay-0.3.4.zip` as its artifact.
+<!-- specassay:stale-ok quotes the two stale numbers the defect contained; correcting them here would delete the finding -->
 
 ### The capture method can lie about the thing being captured
 

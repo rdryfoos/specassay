@@ -15,7 +15,7 @@ provides no fixture, domain, or feature.
   appeared in SpecAssay development, documentation, examples, or prior trials.
   Record its exact wording. This runbook does not prescribe its domain or
   feature.
-- [GitHub Spec Kit](https://github.com/github/spec-kit) 0.14.0 or newer.
+- [GitHub Spec Kit](https://github.com/github/spec-kit) 0.14.0 <!-- specassay:pinned Spec Kit --> or newer.
 - A fresh agent session with no prior exposure to the chosen repository,
   SpecAssay, or its trials through memory, rules, history, or transcripts.
 - Necessary credentials and an external evidence directory.

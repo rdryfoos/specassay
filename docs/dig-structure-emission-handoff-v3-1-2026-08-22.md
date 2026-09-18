@@ -1,4 +1,4 @@
-# The Dig — Structure Emission Handoff v3.1 FROZEN 2026-08-22 (evening)
+# The Dig — Structure Emission Handoff v3.1 FROZEN 2026-08-22 (evening) <!-- specassay:stale-ok a dated build handoff, closed 2026-08-22; its version numbers are the state of the work then -->
 
 For: the SpecAssay room. Receipt by version line. Builds on level three (0.3.0 lineage, T918). Ruled by Rik tonight: the dig learns to emit PROPOSED STRUCTURE — the story-map tree it already mined but never wrote down. Standing laws unchanged: no LLM ever; inferred never conflates with attested; the dig writes only its report; statement templates per evidence kind; no heuristic from a single specimen.
 

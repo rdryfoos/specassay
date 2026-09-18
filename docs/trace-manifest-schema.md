@@ -40,7 +40,7 @@ Each failure: `{ kind, detail, id? }`.
 | `spec-orphan` / `task-orphan`       | Spec or tasks reference an ID not in the registry        |
 | `spec-unclaimed` / `task-unclaimed` | Registry ID absent from specs or tasks (exact-set drift) |
 | `registry-missing`                  | Configured registry file absent                          |
-| `duplicate-id`                      | Two independent definition lines mint the same ID (v0.4.0+) |
+| `duplicate-id`                      | Two independent definition lines mint the same ID (v0.4.0+) | <!-- specassay:provenance -->
 
 **Registry drift:** Gate 2 requires **exact set** match: registry IDs ≡ IDs found under configured `specs` globs ≡ IDs found under configured `tasks` globs. Feature specs inherit; they do not mint. Registry IDs may not wait unclaimed.
 
@@ -50,13 +50,13 @@ Same shape as a failure (`{ kind, detail, id? }`), but never sets `gate.ok` to `
 
 | `kind`             | Meaning                                                                  |
 | ------------------ | ------------------------------------------------------------------------ |
-| `uncovered-proof`   | ID with a real, passing proof that no file's `@covers` mark names (v0.4.7+) |
+| `uncovered-proof`   | ID with a real, passing proof that no file's `@covers` mark names (v0.4.7+) | <!-- specassay:provenance -->
 
 `uncovered-proof` is the mirror of `orphan-covers`: that failure catches an `@covers` mark naming an ID that isn't registered; this catches the reverse, a registered, tested, `proven` ID that no file's own `@covers` mark claims. Applies to any type (`AC`, `FR`, `NFR`, `US`), since rule 6 grants `proven` from a test alone for every type, not only `AC`.
 
 ### `gate.executionVerified`
 
-`true` when `test_results` (config key, a JUnit XML path) was configured and found: `proven` on this run was derived from a *passing* test-results report, not name-matching alone (Rule 6a, v0.4.9+). `false` when `test_results` was absent or the file did not exist: `proven` fell back to the pre-6a name-matching-only meaning, and the Gate said so on stderr rather than silently proceeding. Viewers should render this distinction, not hide it: a `proven` row under `executionVerified: false` is a weaker claim than the same row under `true`.
+`true` when `test_results` (config key, a JUnit XML path) was configured and found: `proven` on this run was derived from a *passing* test-results report, not name-matching alone (Rule 6a, v0.4.9+). `false` when `test_results` was absent or the file did not exist: `proven` fell back to the pre-6a name-matching-only meaning, and the Gate said so on stderr rather than silently proceeding. Viewers should render this distinction, not hide it: a `proven` row under `executionVerified: false` is a weaker claim than the same row under `true`. <!-- specassay:provenance -->
 
 **Invariant for viewers:** Gate PASS (`gate.ok`) ⇔ contiguous descent braid; Gate FAIL ⇔ fray, the Golden Thread broken. Tracked debt and excused incompleteness may still show amber (owed) or blue (not-yet) nodes without fray.
 
@@ -141,7 +141,7 @@ before shipping it, not discover the bug in production.
 
 Every Gate 2 run writes **two** files, not one: `trace-manifest.json` (this
 schema, v4, the primary emit) and `trace-manifest.v5beta.json` alongside it
-(since v0.4.5). If you're running the Gate for the first time and see a line
+(since v0.4.5). If you're running the Gate for the first time and see a line <!-- specassay:provenance -->
 like `Wrote trace-manifest.v5beta.json (N rows, schemaVersion 5, beta)` you
 haven't done anything wrong — that's expected, every run. v4 stays primary
 and unchanged; the beta file is an early, additive look at schema v5, which

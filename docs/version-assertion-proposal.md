@@ -1,4 +1,4 @@
-# Proposal: make a stale version number impossible to ship
+# Proposal: make a stale version number impossible to ship <!-- specassay:stale-ok the record of one argument and the examples it was argued from; rewriting its numbers would rewrite the argument -->
 
 Status: **ruled on and built, 2026-09-18.** Proposed 2026-09-17. Kept as written
 below, with the outcome recorded here, because what the proposal got wrong is
@@ -35,6 +35,70 @@ warnings. Five were real defects rather than missing annotations. The sharpest:
 a submission checklist row claiming the latest release was v0.4.13 while naming
 `specassay-0.3.4.zip` as its artifact, two different stale numbers in one table
 cell, carried for months and read past by everyone including me.
+
+## Phase two, 2026-09-18: the whole corpus
+
+Ruled the same day phase one merged: widen past the ten governed documents, as
+its own change with its own sweep. Governed went from 10 documents to 54, which
+is everything in the repository except `examples/**`, the fixture project whose
+pages are specimen material for the tests rather than claims this repo makes.
+
+The CHANGELOG came in, reversing phase one's own stated exclusion. That
+exclusion was written while the checker refused the ledger 91 times, on the
+argument that a dated ledger passes by construction and so adds nothing. Both
+halves were wrong in the same direction: the 91 was a bug in the checker, not a
+property of the ledger, and once fixed the CHANGELOG refused twice, both real.
+A reason that only held while a bug held is not a reason. The archives came in
+too, on a narrower argument: nobody acting on a version number in a closed
+handoff is probably true, and is not the same as the number being allowed to sit
+there unlabelled.
+
+**Before the sweep: 47 refusals**, measured and reported first, as in phase one.
+Nine in `specs/backlog/tasks.md`, six in this file, five each in
+`RELEASE-HANDOFF.md` and the structure-emission handoff, the rest scattered.
+Every one was a missing annotation on something correctly historical. Phase two
+found no new lie, which is the honest result and a thinner one than phase one's.
+
+**What the corpus forced, again.** Two things, and neither came from thinking
+about the checker.
+
+The first is a finding rather than a nuisance. The dig handoffs say
+"generatorVersion bumps (0.3.0 to 0.4.0)". That is not a pin of somebody else's
+tool, and it is not an observation of the bundle: it is a **second version line
+living inside this repository**, versioning the dig report format on its own
+schedule. The checker had assumed a repository has one version line and that
+every other number in its prose is either an observation of that line or a
+dependency's. Neither was true. The mechanism needed no change, which is exactly
+what makes it worth writing down: what was wrong was the class's stated meaning,
+"a deliberate pin of somebody else's version", which is the sentence the refusal
+prints at an author. An author with their own second version line reads that and
+concludes the class is not for them. The class is now "a version belonging to
+another subject", and the subject is allowed to be ours. A checker that accepts
+the right thing for a reason nobody can find is one document away from being
+worked around.
+
+**One discipline the sweep taught, worth writing down because the checker
+cannot enforce it.** A heading-level mark scopes everything beneath it, so a
+mark placed inside a scoped section does nothing at all, and a reader cannot
+tell which of the two is carrying the weight. Both directions were in the first
+pass of this sweep: `RELEASE-HANDOFF.md` had three provenance marks under a
+title-level `stale-ok` that made them unreachable, and the two cold-agent trial
+pages had a title-level `stale-ok` that was not needed, since the single pinned
+Spec Kit line was doing the work. Both were fixed by the same rule: use the
+narrowest annotation that suffices, and prove it is the narrowest by removing
+the wider one and watching the check refuse. A mark that does nothing is a claim
+nobody can test, which is the shape this tool exists to refuse.
+
+The second is a fifth bug, the same shape as the fourth one level up: a heading
+carrying `stale-ok` scoped its section out of the age rule but did not classify
+it, so an author who had answered the question on the heading was still refused
+for not answering it. Both are the checker ignoring the answer it asked for.
+
+Phase one's count was five of six corrections found by pointing the checker at
+real documents. Phase two adds two more, both from the same source and neither
+from thinking harder about it. The ratio has not moved between phases, which is
+the reason `PROMOTION-CONTRACT.md` rule 13 exists: a rule proposed from a desk
+names three classes, a rule met by the corpus needs five.
 
 ---
 

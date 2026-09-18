@@ -1,4 +1,4 @@
-# SpecAssay.com Messaging Surgery — Handoff v1.0 FROZEN 2026-08-22
+# SpecAssay.com Messaging Surgery — Handoff v1.0 FROZEN 2026-08-22 <!-- specassay:stale-ok a dated design record from 2026-08-22, kept as written -->
 
 For: the SpecAssay/Docs room. Receipt by version line. Scope: specassay.com landing page COPY and SECTION ORDER plus one hero-image swap. EDITING-CANON.md governs all prose. Rik's voice rules: every copy block below is PROPOSED; he cuts, rewrites, or rejects at review before deploy.
 

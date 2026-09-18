@@ -16,7 +16,7 @@ Mint durable IDs at intent; refuse silent gaps; allow tracked debt to stay visib
 
 4. **Propagation.** Every task declares `Carries:` with the ID(s) it serves. Source that serves an intent carries an `@covers` mark (or language equivalent). Every verifying test names the AC in its identifier. **Exact-set:** registry ≡ specs ≡ tasks. No unclaimed registry IDs, no invented feature IDs. One deliberate exception: anointed backlog (rule 5a).
 
-   **4a. Propagation is bidirectional.** An `@covers` mark naming an ID that isn't real (`orphan-covers`) has been gated since early on; the reverse direction — a real, tested, proven ID that no file's `@covers` mark claims at all — was not, and stayed invisible for as long as no one checked it by hand (`uncovered-proof`, added v0.4.7, 2026-08-17). Rule 4's own text always covered both directions; only one of them had an enforcement surface. A `proven` verdict does not require `@covers` (rule 6 grants it from a test alone), so `uncovered-proof` is a real, named gap in self-documentation, not a correctness defect — the Gate's own history at first shipped it report-only, exactly because a rule with no enforcement surface can accumulate a real backlog before anyone learns its size.
+   **4a. Propagation is bidirectional.** An `@covers` mark naming an ID that isn't real (`orphan-covers`) <!-- specassay:provenance --> has been gated since early on; the reverse direction — a real, tested, proven ID that no file's `@covers` mark claims at all — was not, and stayed invisible for as long as no one checked it by hand (`uncovered-proof`, added v0.4.7, 2026-08-17). Rule 4's own text always covered both directions; only one of them had an enforcement surface. A `proven` verdict does not require `@covers` (rule 6 grants it from a test alone), so `uncovered-proof` is a real, named gap in self-documentation, not a correctness defect — the Gate's own history at first shipped it report-only, exactly because a rule with no enforcement surface can accumulate a real backlog before anyone learns its size.
 
 5. **Coverage altitude.** An intent counts as covered when its acceptance criteria are covered, or explicitly tracked as debt. **AC is the atomic unit of "covered"** and the only altitude where silent-gap refusal applies. US/FR/NFR are planning altitude: without a carrier of their own they are `backlog`, never `GAP`. An ID sitting quietly in the PRD with no claim at all is not allowed; that is exact-set drift, not a spec switch.
 
@@ -85,6 +85,20 @@ Mint durable IDs at intent; refuse silent gaps; allow tracked debt to stay visib
     every class it turns out to need as a finding about how people actually
     write rather than a nuisance to be exempted. A rule that never refuses
     anything surprising has not met its corpus yet. Added 2026-09-18.
+
+    **Amended 2026-09-18, by the rule taking its own advice.** Widening the
+    same check from ten documents to the whole repository corrected it twice
+    more, both from the corpus and neither from thought. The sharper of the two
+    did not change a line of behaviour: the class described above as "a version
+    that pins somebody else's software" turned out to be wrong about whose
+    software. This repository carries a second version line of its own, the dig
+    report's `generatorVersion`, which moves on its own schedule and is neither
+    a dependency nor an observation of the bundle. The check already accepted
+    it. What was wrong was the sentence it printed at an author, who would read
+    "somebody else's version" and conclude the class was not for them. So: a
+    rule can be corrected by the corpus without failing on it. A class stated in
+    terms of the examples that forced it, rather than of what they have in
+    common, is a class the next author will not recognise as theirs.
 
 ## What SpecAssay is not
 

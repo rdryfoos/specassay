@@ -19,7 +19,7 @@ written; this spec is where the ID lands once it has.
 - FR-DOCS-20 — Trace-manifest format reference, versioned with the schema.
   `docs/trace-manifest-schema.md` already covered the v4 shape in full; the
   one real gap (never mentioning `trace-manifest.v5beta.json`, which the
-  Gate has emitted on every run since v0.4.5) is closed 2026-08-18.
+  Gate has emitted on every run since v0.4.5) <!-- specassay:provenance --> is closed 2026-08-18.
 - FR-DOCS-30 — Troubleshooting built from real failure classes, each entry
   citing the incident that taught it. Shipped 2026-08-18 as
   `docs/troubleshooting.md`: seven entries, each citing a real incident

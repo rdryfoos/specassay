@@ -65,6 +65,7 @@ still unresolved), and the commit that closed it.
    evidence was written against. Not yet resolved: needs a decision on
    whether to pin a version, or state the docs are flag-minimal by design
    and let Spec Kit's own docs own CLI-flag currency.
+   <!-- specassay:stale-ok the record of one trial and of the CLI it met; re-observing it would delete the skew this item exists to report -->
 5. **`specify extension add --from` rejects local paths and `file://`.**
    Found in the same trial: only `https://` URLs work. Not documented
    anywhere in this repo — worth one line in `docs/troubleshooting.md` so
@@ -215,3 +216,7 @@ still unresolved), and the commit that closed it.
     governed document that states a version without saying which kind of claim
     it is making. Registered as `FR-DOCS-70`. The proposal, the ruling, and what
     the proposal got wrong are in `docs/version-assertion-proposal.md`.
+    **Widened 2026-09-18** from ten governed documents to the whole repository
+    except the fixture project: 54 documents, 47 refusals before the sweep, 0
+    after. No new lie was found, and two more corrections to the checker were,
+    both forced by the corpus rather than by thought. Same file for both.
