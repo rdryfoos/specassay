@@ -126,6 +126,11 @@ of it and a thread from each promise to the code and tests that answer for it. T
 built now and is not automated yet, so it is not on this page. When it exists, this page will
 point at it.
 
+If you want to see the machinery itself before then, there is a tutorial at
+https://specassay.com/start. It builds a small sample project and takes it through the whole
+cycle; it does not touch the case you just wrote. It is twelve blocks where this page is three
+steps, so it is a longer and denser sit than this one, and it is optional.
+
 ## If something did not work
 
 Keep exactly what your screen printed and take it to whoever sent you here. A message you copied
