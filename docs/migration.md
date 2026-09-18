@@ -2,7 +2,7 @@
 
 For an adopter already running SpecAssay 0.3.x or 0.4.x. Three real
 frictions below, each tested directly against the real `specify` CLI
-(0.15.3.dev0) — not assumed, not carried over from an old note without
+(0.15.3.dev0) <!-- specassay:pinned Spec Kit --> — not assumed, not carried over from an old note without
 checking it still holds.
 
 ## 1. Presets have no update command
@@ -54,7 +54,7 @@ specify bundle install specassay
 ```
 
 There's no `--refresh`/`--no-cache` flag on any of these commands as of
-0.15.3.dev0 — the cache directory itself is the only lever.
+0.15.3.dev0 <!-- specassay:pinned Spec Kit --> — the cache directory itself is the only lever.
 
 ## The upgrade command that works (re-verified 2026-09-04, v0.4.12 to v0.4.13)
 
@@ -93,7 +93,7 @@ snippet does not name a version and does not go stale.
 `cache-control: max-age=300`. If anyone fetched the catalog in the five
 minutes before a version bump was pushed, the old JSON keeps being served
 until that window expires. Measured 2026-09-04: a fresh `specify bundle
-install specassay` resolved 0.4.12 two minutes after the 0.4.13 catalogs
+install specassay` resolved 0.4.12 two minutes after the 0.4.13 catalogs <!-- specassay:stale-ok the measurement of the raw-catalog cache window, taken once on 2026-09-04; the versions are which two it caught -->
 were on `main` (`x-cache: HIT`, `source-age: 285`), then 0.4.13 four
 minutes later with nothing else changed. If an install or update lands on
 the previous version right after a release, wait five minutes and rerun;
@@ -103,7 +103,7 @@ nothing is broken.
 
 Diff your own `specassay-check-config.yml` against the current
 `config-template.yml` for keys that didn't exist when you first
-installed — `block_uncovered_proof` (v0.4.8) and `test_results` (v0.4.9)
+installed — `block_uncovered_proof` (v0.4.8) and `test_results` (v0.4.9) <!-- specassay:provenance -->
 are both opt-in and won't appear in an older config automatically. Then
 run the Gate once locally to confirm it still passes before trusting CI:
 

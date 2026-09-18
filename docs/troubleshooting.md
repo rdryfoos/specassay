@@ -74,7 +74,7 @@ projects' real `@covers` lines (`docs/docs-gaps.md`, resolved entry 2).
 beta)` printed right before the familiar `Wrote trace-manifest.json`. If
 you've never seen it before, it looks like something broke.
 
-**What's happening:** nothing broke. Since v0.4.5, every Gate run writes a
+**What's happening:** nothing broke. Since v0.4.5, every Gate run writes a <!-- specassay:provenance -->
 second, additive file alongside the primary v4 manifest — an early, beta
 look at schema v5 (opens the format to a second emitter, `clew`). v4 stays
 primary and unchanged.
@@ -111,7 +111,7 @@ resolved entry 3).
 names it"` — that weren't there before, but `gate.ok` is unaffected.
 
 **What's happening:** this isn't new drift; it's a real, pre-existing gap
-in self-documentation the Gate only started checking for in v0.4.7. A test
+in self-documentation the Gate only started checking for in v0.4.7. <!-- specassay:provenance --> A test
 can genuinely prove an AC (`proven` doesn't require `@covers`, per Rule 6)
 while no file's `@covers` line ever claims it — invisible until this check
 existed. It ships report-only on purpose: the finding needed to be
@@ -127,10 +127,10 @@ Rule 4a).
 (`bind.py`'s `@covers` line missing `AC-BIND-10/20/30` since its first
 commit); a report-only survey across real projects at the time this shipped
 found dozens more spread across multiple projects, including two in this
-repo's own bundled `example-app` (CHANGELOG.md, v0.4.7).
+repo's own bundled `example-app` (CHANGELOG.md, v0.4.7). <!-- specassay:provenance -->
 
 ![Terminal: DIAGNOSTIC line boxed, gate.ok=True untouched, and the uncovered-proof entry boxed inside gate.diagnostics[]](images/uncovered-proof-diagnostic-20260819.png)
-*Real Gate run (specassay-check v0.4.11, 2026-08-19); output verbatim,
+*Real Gate run (specassay-check v0.4.11, 2026-08-19); <!-- specassay:stale-ok a verbatim transcript of that run; re-quoting it from a newer run would make it a different transcript --> output verbatim,
 rendered for capture in a headless environment. Self-dated in the title
 bar (version + UTC timestamp of the run). Blue boxes are pointing-only
 annotation.*
@@ -228,14 +228,14 @@ work), and make sure that file actually exists by the time the Gate runs.
 `proven` then requires a passing testcase, not just a matching name, and
 `executionVerified` flips to `true`.
 
-**Taught by:** the founding-sentence repair (CHANGELOG.md, v0.4.9), verified
+**Taught by:** the founding-sentence repair (CHANGELOG.md, v0.4.9), <!-- specassay:provenance --> verified
 at the time against a real, controlled fixture — a genuinely failing test
 named to match a real AC showed `proven`/`gate.ok: true` under the old
 name-matching path, and `GAP`/`gate.ok: false` once `test_results` was wired
 in — the exact gilt this rule exists to catch.
 
 ![Terminal: the real WARN line for a configured-but-missing test_results file, boxed, above the emitted manifest's gate object with executionVerified: false boxed](images/execution-verified-false-20260819.png)
-*Real Gate run (specassay-check v0.4.11, 2026-08-19); output verbatim,
+*Real Gate run (specassay-check v0.4.11, 2026-08-19); <!-- specassay:stale-ok a verbatim transcript of that run; re-quoting it from a newer run would make it a different transcript --> output verbatim,
 rendered for capture in a headless environment. Self-dated in the title
 bar (version + UTC timestamp of the run). Blue boxes are pointing-only
 annotation.*
@@ -265,19 +265,19 @@ SpecAssay Check (Gate 2): OK (1 registry IDs)
 (a symlink, per its own README), commit a message naming a registry ID with
 no matching `@covers` mark staged, and get no warning at all.
 
-**What's happening (pre-0.4.11):** the hook resolved its own location with
+**What's happening (pre-0.4.11):** <!-- specassay:provenance --> the hook resolved its own location with
 `dirname "$0"`, which resolves relative to the *symlink's* location
 (`.git/hooks`), not the real script's — so it computed the wrong extension
 directory, silently failed its own config lookup, and exited without ever
 running the check. The standalone script (not installed as a symlink)
 never showed the bug, which is exactly why it went unnoticed.
 
-**Fix:** upgrade to 0.4.11+, which resolves the real path with
+**Fix:** upgrade to 0.4.11+, <!-- specassay:provenance --> which resolves the real path with
 `python3 -c 'os.path.realpath(...)'` before computing the extension
 directory.
 
 **Taught by:** testing the hook as *actually installed* in a real repo, not
-just running the standalone script (CHANGELOG.md, v0.4.11).
+just running the standalone script (CHANGELOG.md, v0.4.11). <!-- specassay:provenance -->
 
 ## Loupe shows a green `PROVEN` badge, but the Proof panel says "No proof"
 
@@ -354,7 +354,7 @@ all) fails the probe the same way an absent interpreter does.
 **Fix:** install Python 3 from https://www.python.org/downloads/ or your
 package manager, or set `SPECASSAY_PYTHON` to the interpreter you want.
 The first lines of every run show which interpreter it settled on
-(`python: python (3.12.4)`), so you can confirm the fix before reading
+(`python: python (3.12.4)`), <!-- specassay:stale-ok an illustration of the line's shape; the number is arbitrary --> so you can confirm the fix before reading
 anything else.
 
 **Taught by:** the same Windows cold install, 2026-09-03. His box had

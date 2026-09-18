@@ -5,6 +5,8 @@ Paste-ready answers for Spec Kit's **Bundle Submission** form
 Fields below appear in the form's exact order.
 Title: `[Bundle]: Add specassay`.
 
+## Filing history, as of 2026-09-18 <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
+
 **Update note:** this is a version-bump filing, not a first submission.
 The original (`v0.3.4`) merged as #4125, closed via #4059; the `v0.4.12`
 update filed as #4255 merged as #4257. Per
@@ -27,6 +29,7 @@ which exists.
 **Bundle Name:** SpecAssay
 
 **Version:** 0.5.1
+<!-- specassay:current -->
 
 **Role or Team:** developer
 
@@ -40,11 +43,13 @@ trace-manifest emission.
 
 **Download URL:**
 https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-0.5.1.zip
+<!-- specassay:current -->
 
 **Digest (sha256):** `962421be236991f5afa4a93f48bd16a9b2e61cd9221985b9f233b93407132246`
 *(read from the release asset itself — `gh api repos/rdryfoos/specassay/releases/tags/v0.5.1` — then independently re-verified by
 downloading the published zip and hashing it locally, and a third time by unzipping it and
 reading the version the manifest inside actually declares; see `docs/submission/test-evidence.md`.)*
+<!-- specassay:current -->
 
 **Documentation URL:**
 https://github.com/rdryfoos/specassay/blob/main/README.md
@@ -52,6 +57,7 @@ https://github.com/rdryfoos/specassay/blob/main/README.md
 **License:** MIT
 
 **Required Spec Kit Version:** >=0.14.0
+<!-- specassay:current -->
 
 **Integration Target (optional):** *(leave empty — integration-agnostic)*
 
@@ -61,6 +67,7 @@ https://github.com/rdryfoos/specassay/blob/main/README.md
 - extensions: specassay-check@0.4.13
 - presets: specassay@0.4.13
 ```
+<!-- specassay:current -->
 
 **Required Component Catalogs:**
 
@@ -81,6 +88,7 @@ https://github.com/rdryfoos/specassay/blob/main/README.md
 - New in 0.4.13: the Gate talks a first-time installer through its own state (empty-registry on-ramp, Python detected as python3 or python, config state reported every run); since 0.4.12: --matrix, --portfolio, the retired status, derived parentage, and the dig archaeology command
 - New in 0.4.x: uncovered-proof (report-only, ratcheted to blocking per project), domain-scoped orphan checks, and loud refusal on malformed config instead of a silent no-op
 ```
+<!-- specassay:current -->
 
 **Testing Checklist:** tick all seven — the full transcript is
 [test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md)
@@ -94,6 +102,7 @@ through the install-allowed catalog stack, and a real Gate run).
 ```
 **Tested on:**
 - macOS, Spec Kit CLI `specify 0.15.3.dev0`
+<!-- specassay:current -->
 
 **Test project:** clean `specify init` project; full transcript in
 https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md
@@ -107,6 +116,7 @@ https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md
 6. Verified with `specify bundle list`, `specify extension list`, `specify preset list`
 7. Ran the installed Gate on the fresh project (real, loud FAIL — no registry minted yet — trace-manifest still written) and on a real project, HomesFlow (https://github.com/rdryfoos/HomesFlow) — ~81-row trace-manifest
 ```
+<!-- specassay:current -->
 
 **Example Usage:**
 
@@ -156,6 +166,7 @@ specify bundle install ./specassay.zip
   }
 }
 ```
+<!-- specassay:current -->
 
 *(kept in sync with [`catalogs/bundles.json`](https://github.com/rdryfoos/specassay/blob/main/catalogs/bundles.json);
 paste it verbatim under the top-level `bundles` object)*
@@ -164,6 +175,7 @@ paste it verbatim under the top-level `bundles` object)*
 
 ```
 Updates #4255 (closed, merged as #4257 at v0.4.12; the original #4059 merged as #4125 at v0.3.4). Component submissions for the two bundled components at this version, each itself an update to its own closed 0.4.12 issue: the extension issue (updates #4252) and the preset issue (updates #4253), filed first and referenced here by number.
+<!-- specassay:current -->
 
 The emitted trace-manifest is deliberately vendor-neutral (`format` + `schemaVersion` are the contract); a v5 interop revision is in beta with a second emitter (docs/trace-manifest-schema.md). The walkthrough site (https://www.specassay.com) shows the Thread Report and intent-PR behavior on live PRs in this repository.
 ```

@@ -41,6 +41,28 @@ Mint durable IDs at intent; refuse silent gaps; allow tracked debt to stay visib
 
 10. **Viewer invariant.** Gate PASS ⇔ contiguous braid in Loupe; Gate FAIL ⇔ fray, the Golden Thread broken. Excused incompleteness carries its own color without fray: amber for tracked debt, blue for not-yet backlog. Red is reserved for fray and refusal only.
 
+11. **A self-report is not evidence, including ours.** The reason this
+    project refuses a status a project declares about itself applies to the
+    project's own documentation. A generated receipt is unfalsifiable by its
+    reader: they cannot check it against anything, they can only trust the
+    generator, and claim and verification collapse into one act performed by
+    the machine with no independent party. So a receipt stays human-written and
+    the machine's job is not to write it but to refuse it when it lies. Added
+    2026-09-18, ruling on the mechanism for keeping version numbers in the docs
+    honest: the choice was between generating them and asserting against them,
+    and generation was refused on this ground.
+
+12. **The capture method can lie about the thing being captured.** A number you
+    did not watch being produced is a number you do not know. Twice in one
+    sitting an instrument misreported the material it was pointed at: a Gate run
+    piped through `grep` reported the pipe's exit status rather than the Gate's,
+    turning a refusal into a pass in a quoted receipt, and a search for a phrase
+    reported it missing because the phrase wrapped across a line. Neither was a
+    defect in the thing being measured. When a receipt is being taken, run the
+    command as the page writes it, and read the output rather than a summary of
+    it. Added 2026-09-18, on a ruling that the lesson was worth more than either
+    fix.
+
 ## What SpecAssay is not
 
 - Not a fork of Spec Kit, and not a replacement: a bundle that overlays the stock workflow.

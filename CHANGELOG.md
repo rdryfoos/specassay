@@ -5,6 +5,48 @@ the bundle version leads, component versions are listed per release.
 
 ## Unreleased
 
+### A stale version number is now refused, not noticed
+
+Four instances of one failure had been patched by hand, later each time: the
+README's install verification, the README's Spec Kit compatibility line,
+`ONBOARD.md`'s pin table, and the paste-from digests. `scripts/check-doc-versions.py`
+answers the class instead of the instances (`FR-DOCS-70`).
+
+It is deliberately not a generator. A generated receipt is unfalsifiable by its
+reader: they cannot check it against anything, only trust the generator, which
+makes the documentation a self-report, the one epistemic class this tool exists
+to refuse. So the receipt stays human-written and the machine refuses it when it
+lies. That is now `PROMOTION-CONTRACT.md` rule 11.
+
+- **Every version number says which kind of claim it is.** A current claim, a
+  dated observation, a declared range, a pinned dependency, or provenance. A
+  bare number is refused, because nobody can tell later whether it meant
+  current or historical, and that ambiguity is what rots.
+- **A current claim must equal the version being cut**, and a quoted range must
+  equal what the bundle manifest declares.
+- **A dated observation carries an age**, measured in releases. Past the
+  threshold it is refused unless the page states why it is kept, where a reader
+  sees the reason.
+- Runs in **Self Gate at pull-request time**, which is where the failure should
+  be seen, and in the **release workflow before anything is built**, which is
+  what makes it a refusal.
+- `scripts/**` joined this repo's own `src_globs`, having been ungoverned scope
+  since the beginning.
+
+The first sweep refused 304 times and ended at 0 with two honest warnings. Five
+were real defects rather than missing annotations, the sharpest a submission
+checklist row claiming the latest release was v0.4.13 while naming
+`specassay-0.3.4.zip` as its artifact.
+
+### The capture method can lie about the thing being captured
+
+`PROMOTION-CONTRACT.md` rule 12, recorded on a ruling that the lesson outweighed
+the fix. Twice in one sitting an instrument misreported the material it was
+pointed at: a Gate run piped through `grep` reported the pipe's exit status
+rather than the Gate's, which would have published a refusal as a pass in a
+quoted receipt, and a search reported a phrase missing because it wrapped across
+a line. A number you did not watch being produced is a number you do not know.
+
 ## 0.5.1 (2026-09-17)
 
 A display release. The Gate is untouched: not a line of

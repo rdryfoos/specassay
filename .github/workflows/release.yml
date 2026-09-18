@@ -28,6 +28,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Before anything is built or published. A tag must not be able to
+      # produce assets while a governed document states a version that is not
+      # the one being cut, or an observation too old to still be guidance.
+      # Self Gate runs this at pull-request time too, which is where the
+      # failure should be seen; this is the refusal that makes it binding.
+      - name: Docs must not lie about the version being cut
+        run: |
+          set -euo pipefail
+          TAG="${{ inputs.tag }}"
+          [ -n "$TAG" ] || TAG="${GITHUB_REF_NAME}"
+          echo "Checking governed documents against $TAG"
+          python3 scripts/check-doc-versions.py --version "$TAG"
+
       - name: Install Spec Kit CLI
         run: pip install --quiet "git+https://github.com/github/spec-kit.git"
 

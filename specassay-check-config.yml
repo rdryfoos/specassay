@@ -29,8 +29,12 @@ tasks: "specs/**/tasks.md"
 # written: it is documentation this registry governs, same as README.md, and
 # it carries a real coverage mark that only counts if this list scans it.
 # @covers FR-DOCS-50
+# scripts/** joined 2026-09-18, when check-doc-versions.py was built and its
+# @covers mark went unread because this list never included the directory. The
+# repo's own release tooling has been ungoverned scope the whole time.
 src_globs:
   - "extensions/**"
+  - "scripts/**"
   - "presets/**"
   - "docs/**"
   - "README.md"
