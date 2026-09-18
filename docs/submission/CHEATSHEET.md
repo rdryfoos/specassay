@@ -100,7 +100,7 @@ https://github.com/rdryfoos/specassay/blob/v0.4.13/README.md | grep -c
 install-catalog-path`, nonzero), edit the one href, `python3
 press/press.py specassay`, `node tools/smoke.mjs specassay`, commit. The
 site's own CI runs its em-dash and US-English lints. Taught by: v0.4.13,
-when the site sat on the v0.4.12 README for the hours between the tag
+when the site sat on the v0.4.12 README for the hours between the tag <!-- specassay:provenance -->
 going public and this step existing.
 
 **Not a step of the sweep: specassay.com/start.** That page renders
@@ -266,7 +266,7 @@ Preceded by the design room's own independent cold-install verification
 (`RELEASE-HANDOFF.md`, "Wall passed, 2026-08-20") before any of the three
 were filed.
 
-## Amending a filed issue (closed history, 2026-08-13 – 08-14)
+## Amending a filed issue (closed history, 2026-08-13 – 08-14) <!-- specassay:stale-ok closed history of the 0.3.x filings, kept as the record of how the bot behaved -->
 
 **All three merged 2026-08-14.** Extension via #4113, preset via #4123,
 bundle via #4125, all at v0.3.4. The three original issues (#4057,

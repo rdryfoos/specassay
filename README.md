@@ -89,7 +89,7 @@ Bundle id: `specassay`.
 
 - **1.0.4** on SpecAssay **v0.5.1**, 2026-09-17: install by catalog, Gate, mint, refusal, and the upgrade from a real published v0.5.0 (`docs/submission/test-evidence.md`).
 - **0.14.0**, the declared floor, on SpecAssay **v0.5.1**, 2026-09-17: the bundle installs and the Gate runs. That version does not scaffold the settings file, so the Gate reports `config: MISSING` and continues on `config-template.yml` defaults.
-- **0.15.3.dev0** on SpecAssay **v0.4.13**, 2026-09-04: install by catalog and by direct download, Gate, mint, refusal, upgrade from v0.4.12. Not re-checked since.
+- **0.15.3.dev0** on SpecAssay **v0.4.13**, 2026-09-04: install by catalog and by direct download, Gate, mint, refusal, upgrade from v0.4.12. Not re-checked since. <!-- specassay:stale-ok the only observation of Spec Kit 0.15.3.dev0 there is; kept as the record of that trial rather than deleted -->
 
 The manifests require `>=0.14.0,<2.0.0`.
 

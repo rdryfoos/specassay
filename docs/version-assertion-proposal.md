@@ -1,6 +1,43 @@
 # Proposal: make a stale version number impossible to ship
 
-Status: **proposed, not built.** Written 2026-09-17, for a ruling.
+Status: **ruled on and built, 2026-09-18.** Proposed 2026-09-17. Kept as written
+below, with the outcome recorded here, because what the proposal got wrong is
+more useful than what it got right.
+
+**The ruling.** Assertion over generation, on the reason argued below. All three
+rules, with the classification rule leading. The reason itself is now
+`PROMOTION-CONTRACT.md` rule 11 and `PRD.md`'s `FR-DOCS-70`.
+
+**What shipped.** `scripts/check-doc-versions.py`, `tests/test_doc_versions.py`,
+wired into Self Gate at pull-request time and into the release workflow as a
+refusal before anything is built. Ten documents are governed; the CHANGELOG and
+the dated handoff archives are excluded with the reason written into the script.
+
+**What the proposal got wrong, found by running it rather than reasoning about
+it.** The three rules survived intact. The classification did not: it named
+three classes and needed five.
+
+| Added | Why |
+| --- | --- |
+| Pinned dependency | ONBOARD pins Spec Kit v1.0.4. Marking that a current claim made the checker demand it equal SpecAssay's own version. |
+| Provenance | "Since v0.4.5 the Gate writes a manifest on refusal too" is a fact about history. It does not go stale, and it is the commonest idiom in the troubleshooting and migration pages. |
+
+Four bugs in the checker itself surfaced the same way, each now a named
+regression test: a sub-heading cleared the date its parent section had set, so a
+correctly organised ledger failed 91 times; a section titled for the release it
+describes was age-refused although its own title says how old it is; a mark
+covered only its own line, so an author had to break their line wrapping to
+satisfy the checker; and `stale-ok` exempted the age rule without satisfying the
+classification rule, so a marked line was still refused as unclassified.
+
+**The sweep.** 304 refusals on the first run, 0 at the end with two honest
+warnings. Five were real defects rather than missing annotations. The sharpest:
+a submission checklist row claiming the latest release was v0.4.13 while naming
+`specassay-0.3.4.zip` as its artifact, two different stale numbers in one table
+cell, carried for months and read past by everyone including me.
+
+---
+
 
 ## The failure being answered
 

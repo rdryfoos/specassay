@@ -62,7 +62,7 @@ You need four things. Block 1 checks three of them; the fourth is your account.
 - **git**, any recent version.
 - **Python 3**, version 3.8 or newer, on your `PATH` as `python3` or `python`,
   which is what the Gate runs on. Spec Kit's own CLI wants Python 3.11 or newer
-  ([Spec Kit v1.0.4 installation guide](https://github.com/github/spec-kit/blob/v1.0.4/docs/installation.md));
+  ([Spec Kit v1.0.4 installation guide](https://github.com/github/spec-kit/blob/v1.0.4/docs/installation.md)); <!-- specassay:pinned Spec Kit -->
   block 2 says what to do if yours is older.
 
 You run every block below in your terminal, inside a Claude Code session or in a
@@ -182,7 +182,8 @@ You now have an empty project with Spec Kit's own scaffolding in it, and one
 commit recording what it looked like before SpecAssay arrived.
 
 Two notes on what just happened. `specify init` does **not** create a git
-repository for you at v1.0.4 (git is an opt-in Spec Kit extension), which is why
+repository for you at v1.0.4 (git is an opt-in Spec Kit extension), <!-- specassay:pinned Spec Kit -->
+which is why
 you ran `git init` yourself; the Thread Report in block 11 needs git history to
 know what changed. And the `.gitignore` line keeps the tour's emitted files out of
 git so the Thread Report's file list stays about your code; in a real repository,

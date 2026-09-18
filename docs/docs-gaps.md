@@ -210,6 +210,8 @@ still unresolved), and the commit that closed it.
     Spec Kit compatibility line, and the README's clean-project verification line
     are four instances of one failure: a number observed once, typed into a
     sentence, and then left to rot while the thing it describes moves. Each cut
-    has been patched by hand afterwards, which works and does not scale. A
-    mechanism to make the lie impossible rather than merely discouraged is
-    proposed in `docs/version-assertion-proposal.md`, pending a ruling.
+    has been patched by hand afterwards, which works and does not scale.
+    **Closed 2026-09-18** by `scripts/check-doc-versions.py`, which refuses a
+    governed document that states a version without saying which kind of claim
+    it is making. Registered as `FR-DOCS-70`. The proposal, the ruling, and what
+    the proposal got wrong are in `docs/version-assertion-proposal.md`.

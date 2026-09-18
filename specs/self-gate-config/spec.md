@@ -129,3 +129,17 @@ where that same ID lands once it has.
     `test_AC_THREAD_10_intent_changed_is_never_folded`, and
     `test_AC_THREAD_10_a_required_human_tick_stays_outside_the_fold` — one per
     clause of the criterion, so a break names the clause it broke.
+- FR-DOCS-70 — A version number in a governed document declares which kind of
+  claim it is making, and the check refuses one that does not: unclassified
+  tokens, current claims that do not equal the version being cut, dated
+  observations past their age threshold, and quoted ranges that disagree with
+  the bundle manifest. Shipped 2026-09-18, proven by `@covers` in
+  `scripts/check-doc-versions.py` and by `tests/test_doc_versions.py`.
+  - AC-DOCS-20 — proven by `test_AC_DOCS_20_a_bare_version_number_in_prose_is_refused`,
+    `test_AC_DOCS_20_every_classification_is_accepted`,
+    `test_AC_DOCS_20_a_current_claim_naming_the_wrong_version_is_refused`,
+    `test_AC_DOCS_20_a_dated_observation_too_far_behind_is_refused`,
+    `test_AC_DOCS_20_a_recent_dated_observation_warns_without_refusing`,
+    `test_AC_DOCS_20_a_stated_reason_keeps_an_old_observation`, and
+    `test_AC_DOCS_20_a_quoted_range_must_match_the_bundle` — one per clause, so
+    a break names the clause it broke.

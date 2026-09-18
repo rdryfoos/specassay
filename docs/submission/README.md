@@ -1,6 +1,8 @@
 # Submission package — status and checklist
 
-**v0.5.1 released 2026-09-17; filing not yet done.** Tag `v0.5.1`, release
+## v0.5.1, released 2026-09-17: filing not yet done
+
+Tag `v0.5.1`, release
 <https://github.com/rdryfoos/specassay/releases/tag/v0.5.1>. A display release (the
 Thread Report's trims, `--receipts`, the `THREAD` rows, a dated correction to the
 0.5.0 notes); the Gate is untouched. Digests verified three ways and the three
@@ -10,16 +12,22 @@ real v0.5.0 are recorded in `test-evidence.md`, including the block it unblocks 
 **Chalkup is unblocked.** Two steps remain: the site's hero pin, still on the
 v0.4.13 README anchor and now two releases stale, and the submission-form issues.
 
-**v0.5.0 released 2026-09-16; never filed.** Tag `v0.5.0`, release
+## v0.5.0, released 2026-09-16: never filed
+
+Tag `v0.5.0`, release
 <https://github.com/rdryfoos/specassay/releases/tag/v0.5.0>. Digests were verified
 three ways and the clean-project install and v0.4.13 upgrade are recorded in
 `test-evidence.md`, but its three submission-form issues were never filed, so the
 arrears now stand at two releases.
 
-**v0.4.13 released 2026-09-04. Catalog pointer PR open upstream: [github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448) (all three entries, one PR, because the bundle pins its components). Its submission-form issues were never filed**, so the
+## v0.4.13, released 2026-09-04: catalog pointer filed, forms not
+
+Catalog pointer PR open upstream: [github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448) (all three entries, one PR, because the bundle pins its components). Its submission-form issues were never filed**, so the
 0.5.0 filing carries two versions' worth of change and updates the last issues actually filed
 (#4252 extension, #4253 preset, #4255 bundle). v0.4.12 is the version Spec Kit's community
 catalog currently carries (#4254, #4256, #4257 all merged).
+
+## v0.3.4, filed 2026-08-11
 
 **Filed 2026-08-11** — all three issues are in Spec Kit's queue:
 [#4057](https://github.com/github/spec-kit/issues/4057) (extension) ·
@@ -40,11 +48,11 @@ catalog entry and URLs (3–7 business days; they do not audit code).
 | Item | Where | Verified |
 | --- | --- | --- |
 | `bundle.yml` / `extension.yml` / `preset.yml` manifests | repo root, `extensions/specassay-check/`, `presets/specassay/` | `specify bundle validate` ✓ |
-| Versioned release with the `specify bundle build` artifact | [latest release](https://github.com/rdryfoos/specassay/releases/latest) (v0.4.13 as of 2026-09-04): `specassay-0.3.4.zip` + component packs | built in CI by the real CLI |
+| Versioned release with the `specify bundle build` artifact | [latest release](https://github.com/rdryfoos/specassay/releases/latest) (v0.5.1 as of 2026-09-17): `specassay-0.5.1.zip` + component packs <!-- specassay:current --> | built in CI by the real CLI |
 | Hosted catalogs with live download URLs | [`catalogs/*.json`](https://github.com/rdryfoos/specassay/tree/main/catalogs) | assets download and install ✓ |
 | Clean-project install, end to end, by bundle ID | — | [test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md) |
 | LICENSE (MIT) · README · CHANGELOG | repo root | — |
-| Command namespace rule (`speckit.{extension-id}.{command}`) | `speckit.specassay-check.gate` | installer accepts ✓ (it refused the old name — see CHANGELOG 0.3.1) |
+| Command namespace rule (`speckit.{extension-id}.{command}`) | `speckit.specassay-check.gate` | installer accepts ✓ (it refused the old name, see CHANGELOG 0.3.1) <!-- specassay:stale-ok a citation of a CHANGELOG section, which does not move --> |
 | Paste-ready issue bodies | [bundle](https://github.com/rdryfoos/specassay/blob/main/docs/submission/bundle-submission.md) · [extension](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md) · [preset](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md) | mirror the actual issue-form fields |
 
 ## What a human does (the actual filing) 🖐 — done 2026-08-11, see issue links above
@@ -61,14 +69,14 @@ catalog entry and URLs (3–7 business days; they do not audit code).
      is in [test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md).
 4. Optional cleanup: delete releases v0.1.0/v0.2.0 (pre-rename `clewseau-*`
    asset names) and v0.3.0 (pre-namespace-fix command). Nothing references
-   them.
+   them. <!-- specassay:stale-ok names three specific old release artifacts to delete; the names are the point -->
 
 ## Cutting the next release 🔁
 
 Bump versions in the three manifests + `catalogs/*.json` (and refresh the
 catalog entries inlined in the three issue bodies here), update
 CHANGELOG.md, then run the **Release** workflow
-(`Actions → Release → Run workflow`) with the new tag (e.g. `v0.4.0`) — it
+(`Actions → Release → Run workflow`) with the new tag, which is the one you just wrote into the manifests, and it
 creates the tag, validates and builds with the real CLI through the hosted
 catalogs, and publishes the assets the catalogs point at. (Tag pushes also
 trigger it, where the git remote allows tag pushes.)

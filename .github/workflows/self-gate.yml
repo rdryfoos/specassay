@@ -41,7 +41,11 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m pip install --quiet pytest
-          python3 -m pytest extensions/specassay-check/tests/ -q
+          python3 -m pytest extensions/specassay-check/tests/ tests/ -q
+      - name: Docs state which kind of claim each version number is
+        run: |
+          set -euo pipefail
+          python3 scripts/check-doc-versions.py
       - name: Gate 2 — this repo's own registry
         run: |
           set -euo pipefail

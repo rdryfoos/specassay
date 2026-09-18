@@ -5,6 +5,8 @@ Paste-ready answers for Spec Kit's **Preset Submission** form
 Fields below appear in the form's exact order.
 Title: `[Preset]: Add specassay`.
 
+## Filing history, as of 2026-09-18 <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
+
 **Update note:** this is a version-bump filing, not a first submission.
 The original (`v0.3.4`) merged as #4123, closed via #4058; the `v0.4.12`
 update filed as #4253 merged as #4256, through the issue route, so that
@@ -30,6 +32,7 @@ which exists.
 **Preset Name:** SpecAssay
 
 **Version:** 0.5.1
+<!-- specassay:current -->
 
 **Description:**
 Appends durable-ID, Carries, and SpecAssay vocabulary onto Spec Kit spec,
@@ -41,21 +44,25 @@ tasks, and constitution templates.
 
 **Download URL:**
 https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-preset-0.5.1.zip
+<!-- specassay:current -->
 
 **Digest (sha256):** `41e5b5e807bbb2b7d4d90253886122416109465af023d85a110cd522c16848fc`
 *(read from the release asset itself — `gh api repos/rdryfoos/specassay/releases/tags/v0.5.1` — then independently re-verified by
 downloading the published zip and hashing it locally, and a third time by unzipping it and
 reading the version the manifest inside actually declares; see `docs/submission/test-evidence.md`.)*
+<!-- specassay:current -->
 
 **Documentation URL:**
 https://github.com/rdryfoos/specassay/blob/main/presets/specassay/README.md
 *(preset-scoped README; contains the `specify preset add --from <download-url>`
 command the form requires — checked directly and it correctly names the
 `v0.4.13` asset, not an older one; checked inside the published zip, not the source tree)*
+<!-- specassay:stale-ok a note about how the v0.4.13 digest was checked at the time -->
 
 **License:** MIT
 
 **Required Spec Kit Version:** >=0.14.0
+<!-- specassay:current -->
 
 **Required Extensions (optional):** *(leave empty — works standalone; pairs
 with `specassay-check`, noted under Key Features)*
