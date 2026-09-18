@@ -180,6 +180,30 @@ still unresolved), and the commit that closed it.
     in one directory, and a shallow glob says so rather than promising to
     watch a tree that does not exist.
 
+    **Reopened and closed differently, 2026-09-18.** It came back. The
+    2026-09-15 fix named the four documents that existed then, which is
+    the only thing a list can do. Three root-level pages were born after
+    it (`FIRST-LIGHT.md`, `FIRST-LIGHT-NOTES.md`, `CASE-TEMPLATE.md`),
+    each joined the version checker's governed set, none joined this
+    filter, and PR #32 touched only `FIRST-LIGHT.md` and produced no
+    checks at all. Worse than the original shape: there a reviewer saw
+    green that meant nothing, here they see an empty check list, which
+    reads as "none required" rather than "none ran".
+
+    Two lists needed a human to remember them, in two files, and they had
+    drifted by three entries. Both are deleted rather than synchronised:
+    the `pull_request` path filter is gone, so Self Gate runs on every
+    pull request, and root-level documents are governed by glob rather
+    than by name. The cost was measured rather than assumed before
+    deleting the filter: fourteen real runs span 23 to 35 seconds, median
+    28, one billed minute each, on a public repository where Actions
+    minutes are free.
+
+    The lesson, which is the part that outlives both fixes: closing this
+    by extending a list was closing it at the altitude of the instances
+    rather than of the cause. The second occurrence was in the design of
+    the first repair.
+
 11. **`ONBOARD.md`'s receipts were pinned to v0.4.13 while the catalogs moved
     on.** **Closed 2026-09-17.** The quickstart's contract is that every block's
     quoted output is that block's real output from one run against the pinned
