@@ -8,29 +8,30 @@ name: Self Gate
 on:
   push:
     branches: [main]
+  # No path filter. Every pull request runs this, whatever it touches.
+  #
+  # There was a filter, and it was a list of the paths somebody had thought of.
+  # It was added on 2026-09-15 to close docs/docs-gaps.md item 10, where a
+  # docs-only pull request showed green checks at review time and was gated only
+  # after merge by the unfiltered push trigger above. That fix named the four
+  # documents that existed then. Three more were born afterwards
+  # (FIRST-LIGHT.md, FIRST-LIGHT-NOTES.md, CASE-TEMPLATE.md), each joined the
+  # version checker's governed set, and none joined this list. So on 2026-09-18
+  # a pull request touching only FIRST-LIGHT.md produced no checks at all: not a
+  # red check, no checks, which a reviewer reads as "none required" rather than
+  # "none ran".
+  #
+  # The same defect twice, from the same cause: a list a human has to remember.
+  # So the list is deleted rather than extended a second time. An empty check
+  # list on a pull request should be impossible to produce.
+  #
+  # The cost was measured before this was done, not assumed: fourteen real runs
+  # of this workflow span 23 to 35 seconds, median 28, which bills one minute
+  # each, and this repository is public, so Actions minutes are free. If that
+  # ever stops being true, the answer is to make the job cheaper, not to make it
+  # run less often: a check that skips the change in front of it is not cheaper,
+  # it is absent.
   pull_request:
-    paths:
-      - "PRD.md"
-      - "specs/**"
-      - "extensions/specassay-check/**"
-      - "presets/specassay/**"
-      - "specassay-check-config.yml"
-      # The documentation this registry governs. These four are in
-      # specassay-check-config.yml's own src_globs, so a change to any of them
-      # can orphan a @covers mark or drop a row's last carrier -- a refusal the
-      # Gate would find. Until 2026-09-15 they were absent here, so a docs-only
-      # PR showed green checks at review time and was gated only after merge,
-      # by the unfiltered push trigger. Found on PR #7, which got no Gate run
-      # of its own for exactly this reason (docs/docs-gaps.md, item 10).
-      - "README.md"
-      - "ONBOARD.md"
-      - "docs/**"
-      - "PROMOTION-CONTRACT.md"
-      # The Gate's own CI wiring, added 2026-09-15 by Rik's ruling closing the
-      # other half of docs/docs-gaps.md item 10. A change to how the Gate runs
-      # is a change to whether the Gate runs, so it re-runs the Gate. Two real
-      # PRs (#9 and #10) edited workflows and got no PR-time run of their own.
-      - ".github/workflows/*"
 
 jobs:
   self-gate:

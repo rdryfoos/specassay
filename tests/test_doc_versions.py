@@ -218,3 +218,33 @@ def test_an_unclassified_number_is_told_about_every_class(tmp_path):
     proc = run(build(tmp_path, "# T\n\nIt was 0.4.13.\n"))
     assert proc.returncode == 1
     assert "belonging to another subject" in proc.stderr
+
+
+# --- regressions: the two hand-kept lists that drifted -------------------
+
+
+def test_a_root_document_nobody_registered_is_still_governed(tmp_path):
+    """The list was the defect. Every root-level document born after phase two
+    needed a line in GOVERNED_FILES and another in Self Gate's path filter, and
+    by 2026-09-18 three files were in the first and absent from the second, so a
+    pull request touching only those produced no checks at all. Governing root
+    *.md by glob means a new page is governed the moment it exists, with nobody
+    remembering anything."""
+    root = build(tmp_path, "# T\n\nBoth report 0.5.1. <!-- specassay:current -->\n")
+    (root / "BRAND-NEW-PAGE.md").write_text("# New\n\nIt was 0.4.13.\n")
+    proc = run(root)
+    assert proc.returncode == 1
+    assert "BRAND-NEW-PAGE.md" in proc.stderr
+    assert "unclassified version number" in proc.stderr
+
+
+def test_the_root_exclusion_list_is_empty_and_that_is_deliberate(tmp_path):
+    """An exclusion is a claim that a document makes no claim to anybody. None
+    of this repository's root-level pages qualifies, so the list is empty. This
+    test exists so that emptying it back out is a decision somebody takes rather
+    than a line that quietly reappears."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("c", SCRIPT)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    assert mod.EXCLUDED_ROOT_DOCS == ()

@@ -123,22 +123,37 @@ MAX_AGE_REFUSE = 3
 # nobody acts on a version number in them, which is probably true and is not the
 # same as the number being allowed to be ambiguous.
 GOVERNED_ROOTS = ["docs", "specs", "presets", "extensions"]
-GOVERNED_FILES = [
-    "README.md",
-    "ONBOARD.md",
-    "CHANGELOG.md",
-    "PRD.md",
-    "FIRST-LIGHT.md",
-    "FIRST-LIGHT-NOTES.md",
-    "CASE-TEMPLATE.md",
-    "PROMOTION-CONTRACT.md",
-    "RELEASE-HANDOFF.md",
-]
+
+# Root-level documents are governed by glob, not by a hand-kept list.
+#
+# The list was itself the defect. Every root-level document born after phase two
+# needed a line added here AND a line added to Self Gate's pull_request path
+# filter, nothing refused when either was forgotten, and by 2026-09-18 the two
+# had drifted: FIRST-LIGHT.md, FIRST-LIGHT-NOTES.md and CASE-TEMPLATE.md were in
+# this list and absent from that filter, so a pull request touching only those
+# files produced no checks at all. Not a red check. No checks, which a reviewer
+# reads as "none required" rather than "none ran".
+#
+# Both halves are deleted rather than synchronised. This glob deletes one list;
+# removing that path filter deletes the other. A convention that needs a human to
+# remember it in two places is a convention with a countdown on it.
+#
+# EXCLUDED_ROOT_DOCS is empty, and that is a statement rather than a placeholder:
+# on 2026-09-18 every one of the nine root-level Markdown files makes a claim to
+# somebody, so none of them earns an exemption. An entry added here must carry
+# its reason on the same line, the way the examples/** exclusion below does.
+# "It was noisy" is not a reason.
+GOVERNED_ROOT_GLOB = "*.md"
+EXCLUDED_ROOT_DOCS: tuple = ()
 EXCLUDED_PARTS = ("examples",)
 
 
 def governed_files(root: Path) -> list[Path]:
-    out = [root / name for name in GOVERNED_FILES]
+    out = [
+        p
+        for p in sorted(root.glob(GOVERNED_ROOT_GLOB))
+        if p.name not in EXCLUDED_ROOT_DOCS
+    ]
     for sub in GOVERNED_ROOTS:
         out += sorted((root / sub).rglob("*.md"))
     seen, uniq = set(), []
