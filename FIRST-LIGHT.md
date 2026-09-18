@@ -31,7 +31,12 @@ to leave it. Nothing is installed and nothing is changed by reading it this way.
 
 If you would rather read in a browser, the same page is at
 https://github.com/rdryfoos/specassay/blob/main/FIRST-LIGHT.md. Either way is fine; the command
-above is here because it needs nothing but the window you just opened.
+above is here because reading the page this way needs nothing but the window you just opened.
+
+**That is true of reading the page, and not of the whole sitting.** One step later on, the
+sign-in, opens a browser window itself: the terminal opens it for you, you approve there, and you
+come back to the terminal. It is the only place that happens, and the step says so again when you
+get to it. Better to expect it than to be surprised by it.
 
 ## Two windows
 
@@ -197,8 +202,9 @@ printed: that message is what the person helping you will need.
 
 ## Step 3: Signing in
 
-This is the one sign-in on this page. It happens in the terminal, and it opens a browser page for
-you to approve.
+This is the one sign-in on this page, and **the one place on this page where a browser opens**.
+You start it in the terminal, the terminal opens the browser window for you, you approve there,
+and you come back to the terminal. Nothing else here leaves the window you are working in.
 
 **A block to paste.** First, are you already signed in:
 
