@@ -23,7 +23,7 @@ blinking cursor.
 front of you, in that window:
 
 ```
-curl -fsSL https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v4/FIRST-LIGHT.md | less
+curl -fsSL https://specassay.com/FIRST-LIGHT | less
 ```
 
 The page appears. Press the space bar to move down a screen at a time, and press `q` when you want
@@ -98,16 +98,22 @@ they are in the same block.
 than guessing. On Windows or Linux the shape is the same, but the exact messages are not ones
 anyone has checked.
 
-**Which copy you are holding.** This page lives at a fixed address, the one the command at the top
-of the page uses, and that address always shows this exact version:
+**Which copy you are holding.** This page lives at one address, the one the command at the top of
+the page uses, and that address always shows the current page:
 
 ```
-https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v4/FIRST-LIGHT.md
+https://specassay.com/FIRST-LIGHT
 ```
 
-If you are not sure the copy you hold is the newest, the current one is always at
-https://github.com/rdryfoos/specassay/blob/main/FIRST-LIGHT.md, and starting over from there costs
-nothing: no step here is harmed by being run twice.
+That is deliberate, and it is the opposite of what a version number would give you. Nobody builds
+against this page, so a frozen copy buys you nothing and costs you the one thing that matters: a
+reader following a frozen copy gets instructions that no longer match the tool, with no way to
+tell. Versions of this page are still tagged, for citing what was true at some moment; they are
+not what anyone is handed. The address sits on a domain rather than on any one code host, so the
+page can move without this command changing.
+
+If you are not sure the copy you hold is the newest, fetch it again: no step here is harmed by
+being run twice.
 
 ## Step 0: Where you are
 
@@ -303,7 +309,7 @@ intent rather than a measurement: short enough to do today, long enough to be wo
 hand, in your own words, in whatever you write in.
 
 There is a template beside this page that walks you through it, and it is worth opening before you
-start: https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v4/CASE-TEMPLATE.md, which
+start: https://raw.githubusercontent.com/rdryfoos/specassay/main/CASE-TEMPLATE.md, which
 is a page to read rather than a block to paste.
 
 It has eight sections. The five below are its heart; the other three ask what the smallest first
