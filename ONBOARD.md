@@ -21,12 +21,12 @@ wrong you can name the block it went wrong in.
 > **Starting from a machine with nothing on it?**
 > A companion page sets the machine up first, and it is read in the terminal
 > rather than in a browser. Paste
-> `curl -fsSL https://specassay.com/FIRST-LIGHT | less` and it comes to you. It
-> installs Claude Code, signs you in, and hands you a blank page to write down
-> what you are actually promising, in your own words. Expect an unhurried
-> stretch, about half an hour of it spent writing. Reading it changes nothing on
-> your machine, and you can come back here at any point: block 1 checks what you
-> have rather than assuming it.
+> `curl -fsSL https://specassay.com/FIRST-LIGHT | less` and it comes to you.
+> Three steps: it installs Claude Code, signs you in, and hands you a blank page
+> to write down what you are actually promising, in your own words, which is half
+> an hour and the part it exists for. Reading it changes nothing on your machine,
+> and you can come back here at any point: block 1 checks what you have rather
+> than assuming it.
 
 ---
 
