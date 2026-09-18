@@ -129,6 +129,7 @@ GOVERNED_FILES = [
     "CHANGELOG.md",
     "PRD.md",
     "FIRST-LIGHT.md",
+    "FIRST-LIGHT-NOTES.md",
     "CASE-TEMPLATE.md",
     "PROMOTION-CONTRACT.md",
     "RELEASE-HANDOFF.md",
