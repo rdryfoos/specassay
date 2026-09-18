@@ -8,36 +8,51 @@ You do not need to be a programmer to follow it, and you do not need to be an ad
 this computer: everything here installs into your own account. You do need enough of an unhurried
 stretch to get through it without rushing the last step.
 
-How long the whole thing takes, honestly: nobody knows yet. Nobody has run this page start to
-finish and timed it, so there is no number here to give you. The one part that has a length is the
-writing near the end, and that is half an hour by design rather than by measurement: it is meant
-to be short enough to do today and long enough to be worth doing. When someone has run the whole
-page through in one sitting, the time it took will be written here.
-
 Two kinds of people arrive here, and both are expected. Some were sent by someone who already has
 a project and wants them to join it. Some found this page on their own and have an idea of their
 own. The setup is the same for both. Where the two part company, near the end, the page says so
 and points each one onward.
 
+## Before you start: two windows
+
+This page asks you to copy blocks of text and paste them somewhere. That goes much better with two
+windows open side by side: one to read this page in, and one to paste into.
+
+The window you paste into is called **Terminal**. On a Mac, hold down Command and press the space
+bar, type `terminal`, and press Return. A window opens with some text and a blinking cursor. That
+is the one you paste into. Leave it open; you will come back to it at every step.
+
+Keep this page open in the other window, in your browser or wherever you are reading it. If you
+are reading it in a terminal too, open a second terminal for pasting, so you are never scrolling
+away from the instructions to run something.
+
+## If you already have the Claude desktop app
+
+You may already have the Claude app on this machine, or you may have met Claude that way. That is
+fine, and it is not what this page uses. **You do not need the desktop app for anything here, and
+nothing on this page opens it.** Everything happens in the terminal window you just opened. If you
+have the app, leave it alone; if you do not, there is nothing to install.
+
 ## What this will ask of you
 
-Five things, and none of them are hidden further down:
+Four things, and none of them are hidden further down:
 
-1. **A download and an install.** The desktop app, from a page you click.
-2. **Two sign-ins.** One in the app, and a second one in the terminal. They are genuinely
-   separate, which surprises most people, and it is explained where it happens.
+1. **One installation**, which is a block you paste and which installs into your own account.
+2. **One sign-in**, in the terminal, which opens a browser page for you to approve.
 3. **A stretch with a blank page**, writing what you are setting out to do, by hand and in your
    own words. Half an hour is the intent. This is the part that matters most, and it needs
    nothing installed.
 4. **If you are joining someone's project: access to it**, which only they can give you.
-5. **Your permission**, each time anything is installed or changed on your machine, at the moment
-   it happens rather than all at once up front.
+
+Plus your permission, each time anything is installed or changed on your machine, at the moment it
+happens rather than all at once up front.
 
 ## What this will not do
 
 It will not change anything on your machine without asking you first. It will not read another
 person's files on this computer, even if you share it. It will not ask you to type a password into
-anything but the official sign-in pages, and it will never ask you for one directly.
+anything but the official sign-in page in your browser, and it will never ask you for one
+directly.
 
 ## How to read it
 
@@ -53,24 +68,24 @@ Every step is one of three kinds, and each says which it is:
 
 - **A link to click.** The address is written out, so you can see where it goes before you go.
 - **A block to paste.** It works from any folder, and there is nothing in it for you to fill in
-  or edit. Copy the whole block.
-- **Something the session does.** If you are reading this inside a Claude session, it does the
-  work and tells you what happened, asking before it changes anything. Where that is the case,
-  the same command is also written out, so you can run it yourself if you prefer, or if you are
-  reading this on your own.
+  or edit. Copy the whole block, paste it into the terminal window, and press Return.
+- **Something a helper does.** If a Claude session is helping you through this page, it does the
+  work and tells you what happened, asking before it changes anything. Where that is the case, the
+  same block is written out too, so you can paste it yourself instead.
 
 Nothing is more than one step pretending to be one step. Where two things must happen together,
 they are in the same block.
 
-**Where this was tested.** Everything quoted here was observed on a Mac, on a brand new account,
-on 2026-09-17. Where something was not tested, this page says so rather than guessing. On Windows
-or Linux the shape is the same, but the exact messages are not ones anyone has checked.
+**Where this was tested.** Everything quoted here was observed on a Mac, on brand new accounts, on
+2026-09-17, in a plain terminal window. Where something was not tested, this page says so rather
+than guessing. On Windows or Linux the shape is the same, but the exact messages are not ones
+anyone has checked.
 
 **Which copy you are holding.** This page lives at a fixed address, and that address always shows
 this exact version:
 
 ```
-https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v2/FIRST-LIGHT.md
+https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v3/FIRST-LIGHT.md
 ```
 
 If you are not sure the copy you hold is the newest, the current one is always at
@@ -79,116 +94,51 @@ nothing: no step here is harmed by being run twice.
 
 ## Step 0: Where you are
 
-**Something the session does.** Before anything else, it reads your machine and tells you, in
-plain words: which account you are signed in as, which operating system this is, and whether you
-are reading this inside the desktop app or in a terminal window.
-
-Nothing is changed or installed. This is only so you know where you are standing, and so the rest
-of the page can tell you which parts apply to you.
-
-If you are reading on your own, this is that same look, and it changes nothing:
+**A block to paste.** This asks your machine who you are signed in as and which version of macOS
+this is. It changes nothing.
 
 ```
-whoami; sw_vers 2>/dev/null || uname -a; [ -n "$ANTHROPIC_BASE_URL" ] && echo "you appear to be reading this inside the desktop app" || echo "you appear to be in a terminal window"
+whoami; sw_vers 2>/dev/null || uname -a
 ```
 
-That last line is a guess from one clue: the desktop app sets something in the environment that a
-plain terminal does not. Step 1 explains why that matters. If it guesses wrong, nothing here
-breaks.
+You should see a short name, which is your account, and a version. That is all this step is for:
+knowing where you are standing before anything happens.
 
-**You do not need to be an administrator of this machine.** Everything this page installs goes
-into your own account, and nothing it runs asks for a password. The one exception is the desktop
-app in step 2, which may ask for an administrator password depending on where you choose to put
-it, and that step says so.
+## Step 1: The tool this page installs
 
-## Step 1: A quirk of the desktop app, and why some checks look odd
+The thing you are installing is called Claude Code. It is a program you run by typing its name in
+the terminal window. It is not the desktop app, and having the app does not give you this.
 
-**Something the session does, and it is mostly an explanation.**
-
-If you are reading this inside the Claude desktop app, then commands run here inherit some
-settings from the app itself. That matters in one specific way: a question like "am I signed in?"
-can be answered by the app's own settings rather than by your actual terminal, and you would be
-told everything is fine when it is not.
-
-So when this page checks anything about signing in, it deliberately runs the check in a stripped
-environment, one with the app's settings removed. You will see that in the blocks as `env -i`
-followed by a short list. It looks strange, and that is why it is there: it asks your machine the
-question, not the app.
-
-This was tested. The app really does hand its own settings down, and a check run without that
-precaution measures the app.
-
-## Step 2: The desktop app
-
-**A check first.** The session looks for the Claude desktop app on this machine and tells you
-whether it is there.
-
-If it is missing, here is the step:
-
-**A link to click:**
+**A block to paste.** This checks whether you already have it. It changes nothing.
 
 ```
-https://claude.com/download
+command -v claude || echo "not installed yet, which is expected"
 ```
 
-That page tells you what you are installing and offers the right version for your computer. Open
-it, download, and install the app the way you install any other app. This is the one place on the
-page that may ask for an administrator password, depending on where you put the app; if you do not
-have one, you can keep the app in your own account's Applications folder, or ask whoever looks
-after the machine. Then open the app and sign
-in. That is the first of the two sign-ins.
+If that printed a path, you already have it: skip to step 2.
 
-**This one is yours to do.** Installing an application and signing into an account are things you
-do, not things this page does for you.
+If it said "not installed yet", here is the install.
 
-When the app is open and signed in, come back here.
-
-## Step 3: The command line tool, and the surprise that catches everyone
-
-There are two different things called Claude: the app you just installed, and a command line tool
-of the same name. **Installing the app does not install the tool**, and this catches almost
-everyone.
-
-Tested on a new account with the app installed and signed in, asking the machine where the tool
-was gave exactly this:
-
-```
-claude not found
-```
-
-That is expected at this point. It is not a sign that anything went wrong.
-
-**Something the session does.** It checks two separate things, because they fail differently:
-whether the tool is installed at all, and whether your terminal can find it. A tool that is
-installed but cannot be found is the most common outcome, and it has its own fix below.
-
-If you are reading on your own:
-
-```
-command -v claude || echo "not on PATH"; ls -l "$HOME/.local/bin/claude" 2>/dev/null || echo "not installed at the usual place"
-```
-
-### If it is not installed
-
-**A block to paste.** This downloads the installer, runs it, and makes sure your terminal can find
-the tool afterward. All three are in one block on purpose, which is explained just below.
+**A block to paste.** It downloads the installer, runs it, tells your machine where to find the
+tool afterward, and then asks the tool for its version so you see it working:
 
 ```
 curl -fsSL https://claude.ai/install.sh -o "$TMPDIR/claude-install.sh" && bash "$TMPDIR/claude-install.sh" && echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshenv && export PATH="$HOME/.local/bin:$PATH" && claude --version
 ```
 
-Three things worth knowing about that block:
+It takes under a minute. Three things about it are worth knowing, and all three are things the
+installer itself will show you.
 
-**Why the last part is in the same block.** The installer finishes by printing this, word for
-word:
+**The installer says to add a line to a file called `~/.zshrc`. This page adds it to `~/.zshenv`
+instead.** The reason is small and it matters: `~/.zshrc` is read only by a window you typed in
+yourself, while `~/.zshenv` is read both by that window and by commands run for you in the
+background. Using the file the installer names would work while you type and fail when a helper
+runs something for you. If you have already followed the installer's version, no harm done:
+running this block as well is safe.
 
-```
-  Next: Run claude --help to get started
-```
-
-On a new account that instruction does not work yet, because your terminal does not know where the
-tool was put. The installer knows, and says so in its own warning, printed just above and below
-its success message:
+**The installer prints a warning about that same file, twice**, once above its success message and
+once below. It looks like this, and it is why the line above is part of this block rather than a
+separate step:
 
 ```
 ⚠ Setup notes:
@@ -197,20 +147,9 @@ its success message:
     echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
 ```
 
-So the fix is part of the same block, and you are not left following an instruction that fails.
-
-**Why the fix is not word for word what the installer suggests.** The installer says to add the
-line to `~/.zshrc`. That file is read by terminal windows you open and type in, and not by
-commands run for you in the background, which is how this page runs things when a session is
-helping you. The block above puts the same line in `~/.zshenv` instead, which is read by both. If
-you have already followed the installer's version, no harm done: running this block as well is
-safe, and the only cost is the line appearing in two places.
-
-**Why this is not the command on the website.** The download page publishes a shorter form that
-pipes the installer straight into a shell. That form is not wrong, and you may have seen it. The
-block above downloads the installer first and then runs it, which is the form that was actually
-tested end to end for this page. You can see the file before it runs, and a page that hands you a
-command should hand you the one that was tried.
+**The installer ends by suggesting `claude --help`.** You do not need it. It prints several
+hundred lines listing every option the tool has, which is useful once you know the tool and
+overwhelming before that. Nothing on this page asks you to run it.
 
 When the installer succeeds it prints a block like this one, with the version and the location:
 
@@ -222,113 +161,96 @@ When the installer succeeds it prints a block like this one, with the version an
   Location: ~/.local/bin/claude
 ```
 
-The block ends by asking the tool for its version, so you see it work in the same breath as
-installing it.
+**Not tested:** whether the tool works in a terminal window that was already open before you ran
+that block. If a window says it cannot find `claude`, close it and open a new one.
 
-**Not tested:** whether `claude --help` works in a window that was already open before you ran
-that block. If it does not, close that window and open a new one.
+## Step 2: Does it actually run
 
-### If it is installed but your terminal cannot find it
-
-**A block to paste.** This is the second half of the block above, on its own:
+**A block to paste.** It asks the tool for its version:
 
 ```
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshenv && export PATH="$HOME/.local/bin:$PATH" && claude --version
+"$HOME/.local/bin/claude" --version
 ```
 
-## Step 4: Does it actually run
+It names the exact place the tool was installed rather than relying on your window having noticed
+it yet, so it answers the same whether you paste it or a helper runs it for you.
 
-If step 3 did not finish, come back to this one afterward. A half-finished install answers these
-checks with plumbing errors rather than the messages this page quotes, and then the page is
-describing a different problem than the one on your screen.
+If this prints a version, you are installed. If it prints anything else, stop and keep what it
+printed: that message is what the person helping you will need.
 
-**Something the session does.** It asks the tool for its version and shows you the answer, and
-compares it with the version the installer reported.
+## Step 3: Signing in
 
-On your own:
+This is the one sign-in on this page. It happens in the terminal, and it opens a browser page for
+you to approve.
 
-```
-command -v claude >/dev/null 2>&1 && claude --version || echo "the tool is not on this shell's path yet: finish step 3, including the last part of its block"
-```
-
-If this prints a version, the tool is installed and reachable. If it prints anything else, stop
-and keep what it printed; that message is what the person helping you will need.
-
-## Step 5: The second sign-in
-
-This is the part that surprises people, so here it is plainly: **signing into the app does not
-sign you into the tool.** They keep separate sign-ins, and the tool cannot borrow the app's.
-
-This was tested on a new account, with the app installed and signed in. Asking the tool about its
-sign-in answered with a short report whose first two lines were these:
+**A block to paste.** First, are you already signed in:
 
 ```
-  "loggedIn": false,
-  "authMethod": "none",
+if [ -x "$HOME/.local/bin/claude" ]; then "$HOME/.local/bin/claude" auth status; else echo "The tool is not installed: go back to step 1."; fi
 ```
 
-**Something the session does.** It asks the same question on your machine, with the app's settings
-stripped out for the reason given in step 1, and tells you the answer.
+You will see a short report. The line that matters is the first one:
 
-On your own:
+- `"loggedIn": true` means you are signed in already. Skip to step 4.
+- `"loggedIn": false` means the tool is installed and not yet signed in, which is the normal
+  answer at this point. Carry on below.
 
-```
-env -i HOME="$HOME" USER="$USER" PATH="$HOME/.local/bin:/usr/bin:/bin" sh -c 'command -v claude >/dev/null 2>&1 && claude auth status || echo "the tool is not installed yet: go back to step 3"'
-```
-
-If it says you are signed in, skip to step 6.
-
-If it says you are not, **this one is yours to do**: start the tool by typing its name in a
-terminal window and follow what it shows you.
+**This one is yours to do.** Type the tool's name and press Return:
 
 ```
 claude
 ```
 
-**What happens next, honestly.** The first time it runs, it asks you a few setup questions before
-anything else, starting with how it should look in your terminal. Answer those, then complete the
-sign-in it offers. This page does not describe what a finished sign-in looks like, because nobody
-has run one through to the end while writing this down, and describing a screen nobody has seen is
-how pages start lying to you.
+The first time it runs it asks two questions before anything else. First it asks which colors suit
+your terminal; any answer is fine, and it can be changed later. Then it asks how you want to sign
+in, and offers three ways. Choose the one that matches the account you have.
 
-When you are through it, come back and run the check above again. It should say you are signed in.
+It then opens a page in your browser. Approve it there, and come back to the terminal window,
+where you will see something like this:
 
-## Step 6: The tools for handling code
+```
+Logged in as you@example.com
+Login successful. Press Enter to continue…
+```
 
-**Something the session does.** It checks that two programs are present and actually work:
+The address shown will be your own. Press Return, and you are signed in. You can leave the tool
+running or close that window; either is fine.
 
-- `git`, which is what copies the project onto your machine;
-- `gh`, which is how you sign in to the place the project is kept.
+Run the check at the top of this step again if you want to see it say `"loggedIn": true`.
 
-On your own:
+## Step 4: Two more tools, if your project needs them
+
+These two matter only if you are joining a project that already exists. If you came here with your
+own idea, skip to step 6; nothing you do needs them.
+
+- `git` is what copies a project onto your machine.
+- `gh` is how you sign in to the place the project is kept.
+
+**A block to paste.** It asks each one for its version rather than only asking whether it exists,
+because on a Mac there is a stand-in for `git` that is present before the real thing is installed,
+and asking it a question is what tells the two apart:
 
 ```
 git --version || echo "git did not answer"; gh --version | head -1 || echo "gh did not answer"
 ```
 
-It asks each one for its version rather than only asking whether a file exists, because on a Mac
-there is a stand-in for `git` that is present before the real thing is installed. Asking it a
-question is what tells the two apart. If a window appears offering to install developer tools,
-that is the stand-in answering: accept it, let it finish, and run the block again.
+If a window appears offering to install developer tools, that is the stand-in answering: accept
+it, let it finish, and paste the block again.
 
-On the machine where this page was tested, both were already present and both answered, so
-neither installation was tried. If either is missing on yours, **ask the person who sent you** rather than following an
-instruction from here. Installing developer tools differs by machine, and this page will not hand
-you a command that nobody checked.
+On the machines where this page was tested, both were already present and both answered, so
+neither installation was tried here. If either is missing on yours, **ask the person who sent
+you** rather than following an instruction from this page. Installing developer tools differs by
+machine, and this page will not hand you a command that nobody has run.
 
-## Step 7: Signing in to where the code lives
+## Step 5: Signing in to where the code lives
 
 **This step is only for people joining someone else's project.** If you came here with an idea of
-your own, skip it, along with steps 9 and 10, and go to step 8, which is the one that matters
-most. Step 9 says more about why, and nothing later needs this sign-in.
+your own, skip it, along with steps 7 and 8, and go to step 6, which is the one that matters most.
 
-**Something the session does**, for the joining reader. It asks whether you are already signed in, with the app's settings
-stripped out again.
-
-On your own:
+**A block to paste.** Are you already signed in:
 
 ```
-env -i HOME="$HOME" USER="$USER" PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin" gh auth status
+gh auth status
 ```
 
 On a new account this answers:
@@ -346,7 +268,7 @@ gh auth login
 It asks a short series of questions and then opens a browser page for you to approve. Follow it to
 the end, then come back.
 
-## Step 8: Write down what you are actually promising
+## Step 6: Write down what you are actually promising
 
 Everything up to here was plumbing. This step is the reason for it.
 
@@ -360,7 +282,7 @@ There is a template beside this page that walks you through it, and it is worth 
 start:
 
 ```
-https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v2/CASE-TEMPLATE.md
+https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v3/CASE-TEMPLATE.md
 ```
 
 It has eight sections. The five below are its heart; the other three ask what the smallest first
@@ -382,22 +304,22 @@ Five questions, and honest short answers beat polished long ones:
 
 Nobody needs to see this. It is not a document to submit, and nothing checks it. The template says
 the same, and tells you what to leave out: no technology choices, no screens, and no identifiers,
-because those are minted later and attached to what you wrote. It is the thing
-that makes everything afterward mean something: from here on, the work is built against what you
-wrote, and the proofs that come back are proofs of these promises rather than of somebody's
-generic idea of done. A setup without this is the wrong half of the gift.
+because those are minted later and attached to what you wrote. It is the thing that makes
+everything afterward mean something: from here on, the work is built against what you wrote, and
+the proofs that come back are proofs of these promises rather than of somebody's generic idea of
+done. A setup without this is the wrong half of the gift.
 
 If you are joining someone else's project, write it anyway, about your own part in it. You will
 read their promises soon enough, and this is what tells you whether you agree with them.
 
-## Step 9: Where the project is, and getting let in
+## Step 7: Where the project is, and getting let in
 
 This is where the two kinds of reader part company.
 
 ### If you were sent here to join a project
 
 The project's location is not written on this page, and access to it is not something you can
-grant yourself. Saying that plainly is better than letting you discover it after seven steps.
+grant yourself. Saying that plainly is better than letting you discover it after six steps.
 
 On the machine where this was tested, a new account had no way to find the project at all. There
 was no copy of it, no address, and no pointer to one anywhere the account could read. That is the
@@ -406,11 +328,11 @@ gap this page exists to close, and this is the step where it closes.
 **What to ask for**, from the person who sent you here:
 
 1. the project's address;
-2. read access to it, for the account you signed in with in step 7.
+2. read access to it, for the account you signed in with in step 5.
 
-**Something the session does**, once you have both: it checks that your sign-in can actually reach
-the project, and tells you plainly if it cannot. A refusal here almost always means the access has
-not come through yet, not that you did anything wrong.
+**Something a helper does**, once you have both: it checks that your sign-in can reach the
+project, and tells you plainly if it cannot. A refusal here almost always means the access has not
+come through yet, not that you did anything wrong.
 
 ### If you came on your own, with your own idea
 
@@ -426,26 +348,29 @@ In the meantime, your case is yours and it keeps. Nothing you did today goes to 
 is set up, and the time you spent on those five questions is the part that would have been hardest
 to go back and do later.
 
-## Step 10: Your copy of the project
+## Step 8: Your copy of the project
 
 Skip this step if you came with your own idea; there is nothing yet to copy.
 
-**Something the session does, with your permission.** It makes a copy of the project on your
-machine, in a folder you choose, and tells you where it put it.
+**Something a helper does, with your permission.** It makes a copy of the project on your machine,
+in a folder you choose, and tells you where it put it.
 
-It will ask before it writes anything. If you would rather do it yourself, the session will give
-you the exact command once you have the address from step 9, since the address is the part this
-page cannot print.
+It will ask before it writes anything. If you would rather do it yourself, you will be given the
+exact block once you have the address from step 7, since the address is the part this page cannot
+print.
 
-## Step 11: Where you are now
+## Step 9: Where you are now
 
-**Something the session does.** It runs every check on this page once more, from the top, and tells
-you the state of each one. Nothing is installed or changed in this pass. You end with a short list
-of what is true on your machine.
+**A block to paste.** This runs the checks from this page once more and prints what is true.
+Nothing is installed or changed:
 
-When all of them pass, you have: the app, the command line tool, both sign-ins, the tools for
-handling code, and your case written in your own words. If you were joining a project, you also
-have access to it and a copy on your machine.
+```
+"$HOME/.local/bin/claude" --version; "$HOME/.local/bin/claude" auth status; git --version 2>/dev/null; gh auth status 2>&1 | head -2
+```
+
+When those answer, you have: the tool, your sign-in, and, if you are joining a project, the two
+code tools and access to it. Along with your case, written in your own words, which is the part
+none of the rest was any use without.
 
 For someone joining a project, this is where that project's own instructions begin. Their first
 section starts by checking the same things this page just finished, which is deliberate: you
@@ -463,56 +388,45 @@ copied is worth more than a description of it, and none of this is your fault to
 
 ## Receipts
 
-Everything quoted on this page was observed on 2026-09-17, on a Mac Mini, on a newly created
-non-admin account with no previous use, from a session in the Claude desktop app. The page was
-then run start to finish by a second fresh non-admin account, which is where the six corrections
-in this version come from and where the timing below was measured. Anything not observed is marked
-as untested where it appears, rather than being written as though it were
-known.
+Everything quoted on this page was observed on 2026-09-17, on a Mac Mini, on newly created
+non-admin accounts with no previous use. The first two runs went through the Claude desktop app's
+own terminal; the third, which this version is written from, went through a plain Terminal window
+on an account with no desktop app on it at all. Anything not observed is marked as untested where
+it appears, rather than being written as though it were known.
 
-Quoted above, verbatim: the installer's setup warning and its success block; the installer's
-`Next: Run claude --help to get started` line; `claude not found` on an account with the desktop
-app installed and signed in; the sign-in state showing `loggedIn false` on that same account; and
-the GitHub tool's "You are not logged into any GitHub hosts" message.
+Quoted above, verbatim: the installer's setup warning and its success block; `You are not logged
+into any GitHub hosts`; the sign-in state lines `"loggedIn": true` and `"loggedIn": false`; and
+the two lines the tool prints when a sign-in finishes, with the account's address replaced by a
+placeholder because this page is public.
 
-Timing, measured on the first cold run of this page from end to end: about 100 seconds of machine
-time in total. Roughly 80 of those are the first pass of checks, 16 are the install, and
-everything after it is under a second. That number deliberately excludes the two parts with real
-duration in them, the two sign-ins and the writing step, because those are a person thinking and
-typing rather than a machine working. The half hour named for the writing step is still that
-step's design intent rather than a stopwatch reading, and what a finished terminal sign-in prints
-is still unrecorded.
+The sign-in sequence is recorded as it happened: a question about colors, then a choice of three
+ways to sign in, then a browser page to approve, then those two lines in the terminal.
 
-The PATH fix in step 3 was checked directly, in a throwaway home directory with a stand-in tool
-on it, asking zsh the same question four ways. With nothing set up, neither a background command
-nor a typed window could find the tool. With the line in `~/.zshrc`, which is what the installer
+Timing, measured on an earlier run of this page, before it was simplified to the terminal alone:
+about 100 seconds of machine time in total, of which roughly 80 were the first pass of checks and
+16 the install. That number excludes the sign-in and the writing step, because those are a person
+thinking rather than a machine working. This version has fewer steps than the one that was timed,
+so it should be faster; nobody has put a stopwatch on it yet, and the half hour named for the
+writing step is still a design intent rather than a measurement.
+
+The install's path fix was checked directly, in a throwaway home directory with a stand-in tool on
+it, asking the same question four ways. With nothing set up, neither a typed window nor a
+background command could find the tool. With the line in `~/.zshrc`, which is what the installer
 suggests, a typed window found it and a background command still did not. With the line in
 `~/.zshenv`, which is what this page does, both found it.
 
 ## A note for whoever edits this page next
 
-The cold run turned up one thing worth keeping in front of anyone tempted to tidy this page.
+Two things are worth keeping in front of anyone tempted to tidy this page.
 
-The most elaborate commands here, the `env -i` blocks in the sign-in steps, are the most robust
-ones. They name an explicit path, so they work whether or not the shell that runs them has been
-set up. The simplest command, a bare `claude --version`, was the most fragile: it depended on a
-shell having read a file that a background command never reads, and it failed in exactly the mode
-this page is most often run in.
+**Name the tool's location rather than assuming the window found it.** The blocks in steps 2, 3
+and 9 spell out `$HOME/.local/bin/claude` instead of the shorter `claude`. That is not fussiness.
+A command run for you in the background has not read the file that teaches a window where the tool
+lives, and the short form failed in exactly that mode during an earlier cold run. Before
+simplifying a command here, ask which window will run it and what that window has read.
 
-The elaboration was added for an unrelated reason, to stop the desktop app answering for the
-machine, and it incidentally made those steps immune. That was luck rather than design. So: before
-simplifying a command here, ask which shell will run it and what that shell has read. A command
-that only works when a person types it into a window is not one this page can rely on.
-
-Recorded as untested, and therefore not described here: what a completed terminal sign-in prints;
-whether `claude --help` resolves in a terminal window opened before the PATH line was run; and any
-way to install `git` or `gh`, neither of which was needed on the machine tested.
-
-One more thing worth recording, because it affects anyone testing this page as much as anyone
-reading it: the desktop app passes its own settings down to commands run inside it, including an
-override of which service the tool talks to. Any check of sign-in state run inside the app without
-stripping that first measures the app rather than the machine. That is why several checks above
-look more elaborate than they need to.
-
-The install form published on the download page pipes the installer directly into a shell. This
-page hands over the downloaded-then-run form instead, because that is the form that was tested.
+**A check must tell apart the states it is describing.** An earlier version of the sign-in step
+decided "installed or not" from whether the check succeeded, but the sign-in check reports failure
+when you are simply not signed in yet, which is the normal answer at that point. It sent a reader
+backward to reinstall a tool they already had. A guard that cannot tell "missing" from "present
+and not yet signed in" will send someone in a circle.
