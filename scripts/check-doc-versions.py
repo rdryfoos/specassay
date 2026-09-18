@@ -61,11 +61,21 @@ FENCE = re.compile(r"^\s*(```|~~~)")
 CURRENT_MARK = "<!-- specassay:current -->"
 STALE_OK = re.compile(r"<!--\s*specassay:stale-ok\s+(.+?)\s*-->")
 
-# A deliberate pin of somebody else's version: Spec Kit, Python, uv. It is
-# neither an observation nor a claim about what this repo is cutting, so
-# equality and age both mean nothing for it. The class exists because real
-# pages forced it: ONBOARD pins Spec Kit v1.0.4, and marking that "current"
-# made the checker demand it equal SpecAssay's own version.
+# A version belonging to a subject other than the bundle: Spec Kit, Python, uv,
+# or the dig report's own generatorVersion. It is neither an observation nor a
+# claim about what this repo is cutting, so equality and age both mean nothing
+# for it. The class exists because real pages forced it: ONBOARD pins Spec Kit
+# v1.0.4, and marking that "current" made the checker demand it equal
+# SpecAssay's own version.
+#
+# Phase two widened what the class means, and the widening was forced the same
+# way. The dig handoffs say "generatorVersion bumps (0.3.0 to 0.4.0)", which is
+# not a pin of anybody else's tool: it is a second version line living inside
+# this repository, versioning the dig report format independently of the
+# bundle. The checker had assumed a repository has one version line and that
+# every other number in its prose is either an observation of that line or a
+# dependency's. Neither was true. The class is not "somebody else's version",
+# it is "a version belonging to another subject", and the subject can be ours.
 PINNED = re.compile(r"<!--\s*specassay:pinned\s+(.+?)\s*-->")
 
 # A version naming WHEN something changed: "since v0.4.5 the Gate writes a
@@ -91,41 +101,53 @@ MAX_AGE_WARN = 2
 MAX_AGE_REFUSE = 3
 
 
-# The documents that make a live claim to a reader. A version number here is
-# something somebody will act on, which is why they are governed first.
-GOVERNED = [
-    "README.md",            # the repo root, where a cold installer lands
-    "ONBOARD.md",           # the quickstart, read start to finish by strangers
-    "docs/troubleshooting.md",
-    "docs/migration.md",
-    "docs/submission/README.md",
-    "docs/submission/CHEATSHEET.md",
-    "docs/submission/test-evidence.md",
-    "docs/submission/bundle-submission.md",
-    "docs/submission/extension-submission.md",
-    "docs/submission/preset-submission.md",
+# Phase two, 2026-09-18: the whole corpus. Phase one governed the ten documents
+# that make a live claim to a reader, deliberately, so the convention could be
+# established on the pages that matter before it was imposed on the ones that do
+# not. That worked, and the reason for stopping there has expired.
+#
+# The CHANGELOG is now included, reversing phase one's stated exclusion. That
+# exclusion was written when the checker refused it 91 times and the reason
+# given was that a dated ledger passes by construction and adds nothing. Both
+# halves turned out to be wrong in the same direction: the 91 was a bug in the
+# checker rather than a property of the ledger, and once fixed the CHANGELOG
+# refused twice, both of them real. A reason that only held while a bug held is
+# not a reason.
+#
+# Still excluded, and only this:
+#
+#   examples/**   A fixture project. Its docs are specimen material for the
+#                 tests, not claims this repo makes to anybody.
+#
+# The archives are in. They were excluded in phase one on the argument that
+# nobody acts on a version number in them, which is probably true and is not the
+# same as the number being allowed to be ambiguous.
+GOVERNED_ROOTS = ["docs", "specs", "presets", "extensions"]
+GOVERNED_FILES = [
+    "README.md",
+    "ONBOARD.md",
+    "CHANGELOG.md",
+    "PRD.md",
+    "FIRST-LIGHT.md",
+    "PROMOTION-CONTRACT.md",
+    "RELEASE-HANDOFF.md",
 ]
-
-# Not governed, and each for a reason rather than because it was noisy.
-#
-#   CHANGELOG.md          A ledger. Every released section is dated by its own
-#                         heading, so the released part passes by construction
-#                         and adds nothing. The Unreleased section is undated by
-#                         definition, and governing it would fail every pull
-#                         request between two cuts for saying "since 0.4.12".
-#
-#   docs/*-handoff-*.md   Dated records of work already done. They are archives:
-#   docs/testing/*        nobody acts on a version number in them, and rewriting
-#   docs/*-brief-*.md     history to satisfy a checker is the opposite of the
-#                         point.
-#
-# Widening this list is one line. It was kept narrow on purpose for the first
-# cut, so the convention is established on the pages that matter before it is
-# imposed on the ones that do not.
+EXCLUDED_PARTS = ("examples",)
 
 
 def governed_files(root: Path) -> list[Path]:
-    return [root / name for name in GOVERNED if (root / name).is_file()]
+    out = [root / name for name in GOVERNED_FILES]
+    for sub in GOVERNED_ROOTS:
+        out += sorted((root / sub).rglob("*.md"))
+    seen, uniq = set(), []
+    for p in out:
+        if not p.is_file() or p in seen:
+            continue
+        if any(part in EXCLUDED_PARTS for part in p.relative_to(root).parts):
+            continue
+        seen.add(p)
+        uniq.append(p)
+    return uniq
 
 
 def released_versions(root: Path) -> list[str]:
@@ -221,6 +243,15 @@ def scan(path: Path, current: str, order: list[str], root: Path):
 
             block = block_marks.get(i, line)
 
+            # A heading that scopes its section classifies what is under it, as
+            # well as exempting it from age. Scoping one rule but not the other
+            # left an author who had answered the question on the heading still
+            # refused for not answering it, which is the checker ignoring its
+            # own answer. The same inconsistency, one level up, as stale-ok
+            # exempting age without satisfying classification.
+            if version_scoped:
+                continue
+
             if PINNED.search(block) or PROVENANCE.search(block):
                 continue
 
@@ -240,8 +271,6 @@ def scan(path: Path, current: str, order: list[str], root: Path):
                 continue
 
             if DATE.search(block) or heading_has_date:
-                if version_scoped:
-                    continue  # a section about that version; its age is its title
                 age = age_in_releases(token, current, order)
                 if age is None or age <= 0:
                     continue
@@ -260,7 +289,7 @@ def scan(path: Path, current: str, order: list[str], root: Path):
                    f"is: {CURRENT_MARK} if it describes the release being cut, "
                    "<!-- specassay:provenance --> if it names when something "
                    "changed, <!-- specassay:pinned NAME --> if it is a "
-                   "deliberate pin of somebody else's version, or give the "
+                   "version belonging to another subject, or give the "
                    "sentence the date it was observed on")
 
 

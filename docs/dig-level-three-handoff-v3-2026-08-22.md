@@ -1,4 +1,4 @@
-# The Dig — Level Three Build Handoff v3.0 FROZEN 2026-08-22
+# The Dig — Level Three Build Handoff v3.0 FROZEN 2026-08-22 <!-- specassay:stale-ok a dated build handoff, closed 2026-08-22; its version numbers are the state of the work then -->
 
 For: the SpecAssay room. Receipt by version line. Builds on level two (d7cd42f lineage, generatorVersion 0.2.0). Ruled by Rik 2026-08-22, three choices on record: build it · imports-only first · Monday-timeboxed. The archaeology hard laws stand unchanged: inferred and attested never conflate; the dig writes only its report; anointment is a pull request; NO LLM ever (§0 of level two, standing).
 

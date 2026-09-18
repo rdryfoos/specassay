@@ -177,3 +177,44 @@ def test_an_explicit_version_overrides_the_manifest(tmp_path):
                version="v0.6.0")
     assert proc.returncode == 1
     assert "the version being cut is 0.6.0" in proc.stderr
+
+
+# --- regressions: what phase two's corpus forced --------------------------
+
+
+def test_a_scoping_heading_classifies_its_section_not_only_its_age(tmp_path):
+    """Bug five, same shape as bug four one level up. A heading carrying
+    stale-ok exempted its section from the age rule but did not classify it, so
+    an author who had answered the question on the heading was still refused
+    for not answering it."""
+    proc = run(build(tmp_path,
+        "# T <!-- specassay:stale-ok closed history, kept as written -->\n"
+        "\nThe assets were 0.4.12 and the floor was 0.4.9.\n"))
+    assert proc.returncode == 0, proc.stderr
+
+
+def test_a_version_of_another_subject_in_this_repo_is_pinnable(tmp_path):
+    """Phase two's finding. The dig report carries its own generatorVersion,
+    bumped on its own schedule. It is not a dependency and not an observation
+    of the bundle: it is a second version line inside this repository, which
+    the checker had assumed away.
+
+    This test passes against the pre-phase-two checker too, and is pinned here
+    anyway. Nothing in the mechanism had to change; what was wrong was the
+    class's stated meaning, "somebody else's version", which tells an author
+    reading the refusal that their own second version line does not qualify. A
+    checker that accepts the right thing for a reason nobody can find is one
+    document away from being worked around."""
+    proc = run(build(tmp_path,
+        "# T\n\ngeneratorVersion bumps 0.3.0 to 0.4.0.\n"
+        "<!-- specassay:pinned dig report generatorVersion -->\n"))
+    assert proc.returncode == 0, proc.stderr
+
+
+def test_an_unclassified_number_is_told_about_every_class(tmp_path):
+    """The refusal has to name the way out, including the class phase two
+    renamed. An author reading 'somebody else's version' does not see that
+    their own second version line qualifies."""
+    proc = run(build(tmp_path, "# T\n\nIt was 0.4.13.\n"))
+    assert proc.returncode == 1
+    assert "belonging to another subject" in proc.stderr

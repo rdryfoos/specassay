@@ -1,4 +1,4 @@
-# SpecAssay community release — handoff from the design room
+# SpecAssay community release — handoff from the design room <!-- specassay:stale-ok the design room's handoff for the v0.4.x community release, kept as written; its versions are the state of that release -->
 
 Date: 2026-08-18. You are the **release room**: one mission, ship the
 next public SpecAssay bundle to the GitHub community, then this room
