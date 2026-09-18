@@ -23,7 +23,7 @@ blinking cursor.
 front of you, in that window:
 
 ```
-curl -fsSL https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v3/FIRST-LIGHT.md | less
+curl -fsSL https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v4/FIRST-LIGHT.md | less
 ```
 
 The page appears. Press the space bar to move down a screen at a time, and press `q` when you want
@@ -102,7 +102,7 @@ anyone has checked.
 of the page uses, and that address always shows this exact version:
 
 ```
-https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v3/FIRST-LIGHT.md
+https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v4/FIRST-LIGHT.md
 ```
 
 If you are not sure the copy you hold is the newest, the current one is always at
@@ -168,7 +168,9 @@ separate step:
 hundred lines listing every option the tool has, which is useful once you know the tool and
 overwhelming before that. Nothing on this page asks you to run it.
 
-When the installer succeeds it prints a block like this one, with the version and the location:
+When the installer succeeds it prints a block like this one. The version in it is what was printed
+on 2026-09-17 on the machine this page was written from; yours may be a higher number, and that is
+expected rather than a sign of trouble. <!-- specassay:pinned Claude Code -->
 
 ```
 ✔ Claude Code successfully installed!
@@ -230,8 +232,13 @@ Logged in as you@example.com
 Login successful. Press Enter to continue…
 ```
 
-The address shown will be your own. Press Return, and you are signed in. You can leave the tool
-running or close that window; either is fine.
+The address shown will be your own. Press Return, and you are signed in.
+
+**Now get your prompt back.** After signing in, the tool keeps the window: where your prompt used
+to be, there is a full-screen program waiting for you to talk to it, and every later block on this
+page needs that prompt back. Type `/exit` and press Return to leave the tool. If that does not do
+it, closing the window and opening a new one always works, and costs you nothing but the keystroke
+that opened the first one.
 
 Run the check at the top of this step again if you want to see it say `"loggedIn": true`.
 
@@ -248,7 +255,7 @@ because on a Mac there is a stand-in for `git` that is present before the real t
 and asking it a question is what tells the two apart:
 
 ```
-git --version || echo "git did not answer"; gh --version | head -1 || echo "gh did not answer"
+if git --version >/dev/null 2>&1; then git --version; else echo "git did not answer"; fi; if gh --version >/dev/null 2>&1; then gh --version | head -1; else echo "gh did not answer"; fi
 ```
 
 If a window appears offering to install developer tools, that is the stand-in answering: accept
@@ -296,11 +303,8 @@ intent rather than a measurement: short enough to do today, long enough to be wo
 hand, in your own words, in whatever you write in.
 
 There is a template beside this page that walks you through it, and it is worth opening before you
-start:
-
-```
-https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v3/CASE-TEMPLATE.md
-```
+start: https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v4/CASE-TEMPLATE.md, which
+is a page to read rather than a block to paste.
 
 It has eight sections. The five below are its heart; the other three ask what the smallest first
 piece would be, what you are deliberately leaving out for now, and what you are still unsure
@@ -378,11 +382,20 @@ print.
 
 ## Step 9: Where you are now
 
-**A block to paste.** This runs the checks from this page once more and prints what is true.
-Nothing is installed or changed:
+**A block to paste, for everyone.** This runs the checks from this page once more and prints what
+is true. Nothing is installed or changed:
 
 ```
-"$HOME/.local/bin/claude" --version; "$HOME/.local/bin/claude" auth status; git --version 2>/dev/null; gh auth status 2>&1 | head -2
+"$HOME/.local/bin/claude" --version; "$HOME/.local/bin/claude" auth status
+```
+
+**A second block, only if you are joining someone else's project.** It checks the two code tools
+and your sign-in to where the code lives. If you came here with your own idea, skip it: you have
+nothing to sign in to yet, and pasting it prints an invitation to sign in that does not apply to
+you.
+
+```
+if git --version >/dev/null 2>&1; then git --version; else echo "git did not answer"; fi; gh auth status 2>&1 | head -2
 ```
 
 When those answer, you have: the tool, your sign-in, and, if you are joining a project, the two
