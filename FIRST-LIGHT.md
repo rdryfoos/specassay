@@ -13,18 +13,35 @@ a project and wants them to join it. Some found this page on their own and have 
 own. The setup is the same for both. Where the two part company, near the end, the page says so
 and points each one onward.
 
-## Before you start: two windows
+## Reading this page
 
-This page asks you to copy blocks of text and paste them somewhere. That goes much better with two
-windows open side by side: one to read this page in, and one to paste into.
+The window everything here happens in is called **Terminal**. On a Mac, hold down Command and
+press the space bar, type `terminal`, and press Return. A window opens with some text and a
+blinking cursor.
 
-The window you paste into is called **Terminal**. On a Mac, hold down Command and press the space
-bar, type `terminal`, and press Return. A window opens with some text and a blinking cursor. That
-is the one you paste into. Leave it open; you will come back to it at every step.
+**A block to paste**, and the only one that has to come before the others. It puts this page in
+front of you, in that window:
 
-Keep this page open in the other window, in your browser or wherever you are reading it. If you
-are reading it in a terminal too, open a second terminal for pasting, so you are never scrolling
-away from the instructions to run something.
+```
+curl -fsSL https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v3/FIRST-LIGHT.md | less
+```
+
+The page appears. Press the space bar to move down a screen at a time, and press `q` when you want
+to leave it. Nothing is installed and nothing is changed by reading it this way.
+
+If you would rather read in a browser, the same page is at
+https://github.com/rdryfoos/specassay/blob/main/FIRST-LIGHT.md. Either way is fine; the command
+above is here because it needs nothing but the window you just opened.
+
+## Two windows
+
+Open a second Terminal window the same way, with Command and the space bar.
+
+**Window one is where you read this page.** **Window two is where you paste the blocks.** Keeping
+them apart means you never have to leave the instructions to run something, then find your place
+again. The reader who tried this page without the second window ended up quitting the page,
+scrolling back, and retyping from memory, which is friction you can avoid by opening one more
+window now.
 
 ## If you already have the Claude desktop app
 
@@ -68,7 +85,7 @@ Every step is one of three kinds, and each says which it is:
 
 - **A link to click.** The address is written out, so you can see where it goes before you go.
 - **A block to paste.** It works from any folder, and there is nothing in it for you to fill in
-  or edit. Copy the whole block, paste it into the terminal window, and press Return.
+  or edit. Copy the whole block, paste it into window two, and press Return.
 - **Something a helper does.** If a Claude session is helping you through this page, it does the
   work and tells you what happened, asking before it changes anything. Where that is the case, the
   same block is written out too, so you can paste it yourself instead.
@@ -81,8 +98,8 @@ they are in the same block.
 than guessing. On Windows or Linux the shape is the same, but the exact messages are not ones
 anyone has checked.
 
-**Which copy you are holding.** This page lives at a fixed address, and that address always shows
-this exact version:
+**Which copy you are holding.** This page lives at a fixed address, the one the command at the top
+of the page uses, and that address always shows this exact version:
 
 ```
 https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v3/FIRST-LIGHT.md
