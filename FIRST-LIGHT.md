@@ -7,7 +7,7 @@ point of the rest.
 You do not need to be a programmer, and you do not need to be an administrator of this computer.
 
 Why this page says what it says, and everything that was tested to write it, is in
-[FIRST-LIGHT-NOTES.md](https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v5/FIRST-LIGHT-NOTES.md).
+[FIRST-LIGHT-NOTES.md](https://raw.githubusercontent.com/rdryfoos/specassay/main/FIRST-LIGHT-NOTES.md).
 You do not need it to follow along.
 
 ## You are already here
@@ -27,7 +27,7 @@ bar, type `terminal`, and press Return: that is Spotlight, and it opens Terminal
 paste this to bring the page up in that window:
 
 ```
-curl -fsSL https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v5/FIRST-LIGHT.md | less
+curl -fsSL https://specassay.com/FIRST-LIGHT | less
 ```
 
 These are Mac instructions. Nobody has run this page on Linux or Windows, so the steps may be
@@ -104,7 +104,7 @@ enough to do today, long enough to be worth doing. Five questions:
    hurt most to be wrong about.
 
 There is a template that walks you through the same questions with three more:
-https://raw.githubusercontent.com/rdryfoos/specassay/first-light-v5/CASE-TEMPLATE.md. It is a page
+https://raw.githubusercontent.com/rdryfoos/specassay/main/CASE-TEMPLATE.md. It is a page
 to read, not a block to paste.
 
 Nobody needs to see what you write. Nothing checks it. It is what everything afterward gets built
