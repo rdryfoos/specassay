@@ -63,6 +63,29 @@ Mint durable IDs at intent; refuse silent gaps; allow tracked debt to stay visib
     it. Added 2026-09-18, on a ruling that the lesson was worth more than either
     fix.
 
+13. **A rule proposed from a desk names three classes. A rule met by the
+    corpus needs five.** The doc-version check was designed carefully and then
+    pointed at the repository's own documents, and the corpus corrected it five
+    separate times, producing six changes to a design that had felt finished.
+    Two of those were whole categories nobody had imagined: a version that pins
+    somebody else's software, and a version that names when something changed
+    and therefore never goes stale. Not one correction came from thinking
+    harder about it. Every one came from running it on material that was
+    already there.
+
+    The sharpest thing it found makes the same point from the other side. A
+    submission checklist claimed the latest release was one version while
+    naming an artifact from a version sixteen releases older, two stale numbers
+    in a single table cell, and it had been read past twice that week by the
+    room sweeping that very file. Careful reading did not see it. A rule
+    reading the same line did.
+
+    So: design against the corpus, not against the imagination of it. Ship the
+    rule at the smallest honest scope, run it over real material, and treat
+    every class it turns out to need as a finding about how people actually
+    write rather than a nuisance to be exempted. A rule that never refuses
+    anything surprising has not met its corpus yet. Added 2026-09-18.
+
 ## What SpecAssay is not
 
 - Not a fork of Spec Kit, and not a replacement: a bundle that overlays the stock workflow.
