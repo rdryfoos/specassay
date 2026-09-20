@@ -115,6 +115,18 @@ where that same ID lands once it has.
   by `@covers` in `mint-id.sh` and by
   `extensions/specassay-check/tests/test_gate_110_nonstock_grammar.py`.
   - AC-GATE-130 — proven by `test_AC_GATE_130_mint_refuses_rather_than_emit_an_id_the_grammar_rejects`.
+- FR-GATE-140 — A task is one logical line to every scan, however many
+  physical lines it occupies: a soft-wrapped `**Carries**:` list carries what
+  it would carry unwrapped, and the mark counts wherever in the task it sits.
+  Ruled fold rather than refuse, because refusing would make an author break
+  their wrapping to satisfy the parser, the same defect already recorded in
+  `scripts/check-doc-versions.py`. Shipped 2026-09-20, proven by `@covers` in
+  `check-traceability.sh` and by
+  `extensions/specassay-check/tests/test_gate_140_wrapped_carries.py`.
+  - AC-GATE-140 — proven by `test_AC_GATE_140_wrapped_carries_reads_the_same_to_both_scans`,
+    `test_AC_GATE_140_wrapping_a_carries_list_changes_no_verdict`,
+    `test_AC_GATE_140_a_wrapped_task_is_not_a_silent_gap`, and
+    `test_AC_GATE_140_a_carries_mark_on_a_continuation_line_is_found`.
 - FR-THREAD-10 — The Thread Report's display contract: one verdict line with
   the non-zero counts, every moved row stated once in a family table carrying
   both the move and the state, unmoved rows footnoted by status rather than

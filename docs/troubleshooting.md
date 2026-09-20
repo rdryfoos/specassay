@@ -359,3 +359,37 @@ anything else.
 
 **Taught by:** the same Windows cold install, 2026-09-03. His box had
 `python` but no `python3`, and the script hardcoded `python3`.
+
+## A silent gap on an AC your task plainly carries
+
+**You'll see:** `FAIL: silent gap: AC-FOO-30 has no test and no open
+tracked-debt task`, naming an ID that appears in an open task's
+`**Carries**:` list where you can read it with your own eyes. Sibling IDs
+in the same list are fine; only the ones near the end of it fail.
+
+**What's happening:** in v0.5.1 and earlier <!-- specassay:provenance -->, the Gate read a task as a
+single physical line. The exact-set scan read every line of `tasks.md` and
+counted a wrapped ID as claimed, while the scan that finds open tracked
+debt matched the `- [ ]` checkbox line and saw nothing after it. So an ID
+that had wrapped onto a continuation line was claimed by one scan and
+invisible to the other, and the verdict it produced was not a gap at all:
+it was two parsers reading one file and disagreeing.
+
+The same defect sat one field over. A task whose `**Carries**:` mark began
+on the second line was reported as `missing-carries`, having no Carries
+field, while plainly having one.
+
+**Fix:** upgrade past v0.5.1 <!-- specassay:provenance -->. A task is then one logical line to every
+scan, however many physical lines it occupies, so wrapping is free. A
+continuation is an indented, non-blank line that is not itself a list item;
+a nested bullet, a blank line, a heading and any new top-level bullet all
+end the task. If you are pinned to an older version and cannot upgrade yet,
+put each task's `**Carries**:` list on the same physical line as its
+checkbox, which is what those versions can read.
+
+**Taught by:** the Bang rehearsal, 2026-09-20, where three acceptance
+criteria reported as silent gaps with nothing a reader could find to
+explain them. Folding rather than refusing was ruled deliberately: making
+an author break their line wrapping to satisfy a parser is a defect this
+repository had already recorded once, in `scripts/check-doc-versions.py`,
+and fixed there by reading the block instead.
