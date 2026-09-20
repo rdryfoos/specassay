@@ -202,6 +202,133 @@ earlier pinned entry wins.
 - `ONBOARD.md`'s receipts re-captured end to end by a cold operator
   (`docs/docs-gaps.md` item 11). Block 11's is current; the other eleven are not.
 
+### Re-run on Spec Kit 1.0.5, 2026-09-20, for the community catalog bump
+
+Run on Linux, `specify 1.0.5`, Python 3.11.15. The release under test is
+unchanged: this is v0.5.1's published bits meeting a CLI one version newer than
+the one the entry above was captured on, ahead of bumping the community catalog
+entry from v0.4.12 to v0.5.1.
+
+**Install, through a curated catalog, on a clean project.** `specify init .
+--here --force --non-interactive --integration claude`, then the three
+`catalog add` commands from the README, then:
+
+```
+$ specify bundle install specassay
+Updated execute permissions on 4 script(s) recursively
+✓ Installed 'specassay' (2 added, 0 already present).
+
+$ specify bundle list
+  specassay v0.5.1 (2 components, installed 2026-09-20T14:17:25Z)
+$ specify preset list
+  SpecAssay (specassay) v0.5.1 — enabled — priority 10
+$ specify extension list
+  ✓ SpecAssay Check (v0.5.1)
+```
+
+All three resolve 0.5.1 on 1.0.5. Nothing in the bundle needed changing for the
+newer CLI.
+
+**Gate, mint, refusal, green.** On that same project:
+
+```
+$ bash .specify/extensions/specassay-check/scripts/check-traceability.sh
+FAIL: registry not found: PRD.md
+  The config's registry: key names the file that holds your durable IDs...
+exit: 1
+
+$ touch PRD.md && bash .../check-traceability.sh
+  (the empty-registry on-ramp, exit 0, naming both mint routes)
+
+$ bash .../mint-id.sh AC LOGIN --append "Given a wrong password, ..."
+AC-LOGIN-10
+appended to PRD.md
+
+$ bash .../check-traceability.sh
+FAIL: registry ID missing from specs: AC-LOGIN-10
+FAIL: registry ID missing from tasks: AC-LOGIN-10
+FAIL: silent gap: AC-LOGIN-10 has no test and no open tracked-debt task
+SpecAssay Check (Gate 2): FAILED
+exit: 1
+```
+
+Then a spec line and one open task carrying the ID, which is the documented way
+to clear it:
+
+```
+SpecAssay Check (Gate 2): OK (1 registry IDs)
+exit: 0
+```
+
+`trace-manifest.json` reports `AC-LOGIN-10` as `tracked-debt`. That is the whole
+promised cycle on 1.0.5: refuse, mint, refuse honestly, clear to green.
+
+**Digests re-derived from the tag**, not from `main` and not from the earlier
+capture:
+
+```
+$ curl -fsSL -O https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-0.5.1.zip
+$ sha256sum *.zip
+962421be236991f5afa4a93f48bd16a9b2e61cd9221985b9f233b93407132246  specassay-0.5.1.zip
+874728251c850e84d71f7a94dbdc326073703a8b408690d87a62b68d43dc6eff  specassay-check-0.5.1.zip
+41e5b5e807bbb2b7d4d90253886122416109465af023d85a110cd522c16848fc  specassay-preset-0.5.1.zip
+```
+
+All three match what this entry recorded on 2026-09-17, which makes today a
+fourth independent verification rather than a re-reading of the third.
+
+**Two findings, neither a SpecAssay defect.**
+
+First, a CLI flag that moved. `specify init` on 1.0.5 has no `--ai`; the
+integration is selected with `--integration`, and a scripted init wants
+`--force --non-interactive`. The first attempt today died on `No such option:
+--ai`, which is the CLI skew `docs/docs-gaps.md` item 4 has been open about
+since 2026-08-20. Nothing SpecAssay documents uses `--ai`, so no install line in
+this repository was wrong; the lesson is only that a receipt naming a CLI
+version is naming a moving target.
+
+Second, and the one that shapes what the catalog bump can be worth: **the
+community catalog is discovery-only, and always was.** On a clean project with
+no curated sources, both 1.0.4 and 1.0.5 refuse:
+
+```
+$ specify bundle install specassay
+Error: Bundle 'specassay' resolves only from a discovery-only source
+('community'); it cannot be installed from there.
+```
+
+1.0.5 says the same thing at the component level, and says why: "Discovery-only
+catalogs are intentionally not installable so unvetted extensions can't be
+pulled in without review. Don't flip such a catalog to install_allowed."
+
+This was checked against 1.0.4 specifically to find out whether 1.0.5 had
+changed it. It had not; the behaviour is identical on both, so the earlier
+entries were never describing a path that has since closed. What the community
+entry provides is **discovery**, and that is where being three releases behind
+actually costs something:
+
+```
+$ specify bundle info specassay          # clean project, community only
+specassay v0.4.12 — SpecAssay
+  Source: community (discovery-only)
+      - specassay-check v0.4.12
+      - specassay v0.4.12 (priority=10, strategy=append)
+  This source is discovery-only; the bundle cannot be installed from here.
+```
+
+So the bump fixes what a stranger is told the current version is, and the
+download URL they would copy. It does not, and cannot, make `specify bundle
+install specassay` work from the community catalog, because Spec Kit does not
+allow that from any discovery-only source by design.
+
+**One thing worth tightening in the entry above.** Its "Clean project, installed
+by bundle ID from the catalogs" block goes straight to `specify bundle install
+specassay` without naming the three `catalog add` commands that must precede it.
+The v0.5.0 entry does name them. A reader following the 0.5.1 block literally,
+on a clean machine, hits the discovery-only refusal and has no way to tell that a
+step was omitted rather than that the tool is broken. Today's block above names
+them.
+
 ## v0.5.0 — released 2026-09-16
 
 Everything here ran on Linux with the real Spec Kit CLI (`specify 1.0.4`),
