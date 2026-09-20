@@ -3,22 +3,21 @@
 Paste-ready answers for Spec Kit's **Extension Submission** form
 (<https://github.com/github/spec-kit/issues/new?template=extension_submission.yml>).
 Fields below appear in the form's exact order; copy each answer into the
-matching field. Title: `[Extension]: Add specassay-check`.
+matching field. Title: `[Extension]: Add SpecAssay Check (update to 0.5.1)`.
+<!-- specassay:current -->
 
-## Filing history, as of 2026-09-18 <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
+## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 
-**Update note:** this is a version-bump filing, not a first submission.
-The original (`v0.3.4`) merged as #4113, closed via #4057; the `v0.4.12`
-update merged as #4254, filed as #4252. Per
-`docs/submission/CHEATSHEET.md`, this must go out as a **new** issue, not
-an edit to a closed one. Say in the new issue that it updates #4252.
+**Filed 2026-09-20 as [github/spec-kit#4649](https://github.com/github/spec-kit/issues/4649).**
+A version-bump filing, not a first submission. The original (`v0.3.4`) merged as
+#4113, closed via #4057; the `v0.4.12` update merged as #4254, filed as #4252.
+Per the Extension Publishing Guide's "Updating an Existing Extension", an update
+goes out as a **new** issue, never an edit to a closed one, and #4649 says in its
+body that it updates #4252.
 
-**Skipped versions, stated plainly:** neither `v0.4.13` nor `v0.5.0` was ever filed
-on a submission form. v0.4.13 got only the catalog-pointer PR
-([github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448)); v0.5.0 was
-released and swept but its three issues were not filed either. This 0.5.1 filing
-therefore carries three versions' worth of change, and the issue it updates is the
-last one actually filed, named above — not a 0.4.13 or 0.5.0 issue, neither of
+**Two skipped versions, stated plainly.** Neither `v0.4.13` nor `v0.5.0` was ever
+filed on a submission form, so #4649 carries three releases of change and names
+the last issue actually filed rather than a 0.4.13 or 0.5.0 issue, neither of
 which exists.
 
 ---
@@ -28,37 +27,50 @@ which exists.
 **Extension Name:** SpecAssay Check
 
 **Version:** 0.5.1
-<!-- specassay:current -->
 
 **Description:**
+
+```
 Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).
+```
 
 **Author:** Rik Dryfoos
 
-**Repository URL:** https://github.com/rdryfoos/specassay
+**Repository URL:** <https://github.com/rdryfoos/specassay>
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-check-0.5.1.zip
-<!-- specassay:current -->
 
-**Digest (sha256):** `874728251c850e84d71f7a94dbdc326073703a8b408690d87a62b68d43dc6eff`
-*(read from the release asset itself — `gh api repos/rdryfoos/specassay/releases/tags/v0.5.1` — then independently re-verified by
-downloading the published zip and hashing it locally, and a third time by unzipping it and
-reading the version the manifest inside actually declares; see `docs/submission/test-evidence.md`.)*
-<!-- specassay:current -->
+```
+https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-check-0.5.1.zip
+```
 
 **License:** MIT
 
-**Homepage (optional):** https://www.specassay.com
+**Homepage (optional):** <https://www.specassay.com>
 
 **Documentation URL (optional):**
+
+```
 https://github.com/rdryfoos/specassay/blob/main/extensions/specassay-check/README.md
+```
 
 **Changelog URL (optional):**
-https://github.com/rdryfoos/specassay/blob/main/CHANGELOG.md
 
-**Required Spec Kit Version:** >=0.14.0
-<!-- specassay:current -->
+```
+https://github.com/rdryfoos/specassay/blob/main/CHANGELOG.md
+```
+
+**Required Spec Kit Version:** `>=0.14.0,<2.0.0`
+
+#### Declared range, as observed 2026-09-20
+
+The three manifests shipped inside the zips declare
+`>=0.14.0,<2.0.0`, while `catalogs/*.json` publish `>=0.14.0`, and the issues
+filed today inherited the catalogs' string. The upper bound is the honest one:
+a catalog that claims a wider range than the zip inside it is the exact failure
+the CHEATSHEET's sweep rule exists to prevent. Named here rather than quietly
+corrected, because fixing `catalogs/*.json` is a release artifact and is not
+this PR's to change.
 
 **Required Tools (optional):**
 
@@ -71,60 +83,83 @@ https://github.com/rdryfoos/specassay/blob/main/CHANGELOG.md
 
 **Number of Hooks (optional):** 1
 
-**Tags:** traceability, gate, ci, governance, sdd
+**Tags:**
+
+```
+traceability, gate, ci, governance, sdd
+```
 
 **Key Features:**
 
 ```
-- Refuses silent acceptance-criterion gaps, invented IDs, and registry/specs/tasks drift
-- Emits trace-manifest.json on every run — including refusals — so the evidence trail survives failure
-- Honest debt (tracked-debt) and planned work (backlog) pass and stay visible
-- Thread Report: one CI briefing per PR — what moved on the thread, the touched story end to end, and changed files that sit off the thread
-- Restated-intent detection with graded re-confirm hints
-- Optional human-tick gates (offthread_ack / intent_ack) enforced via a specassay/ack commit status
-- New in 0.4.13: green on an empty registry now prints the on-ramp to a first ID (greenfield and brownfield, runnable commands) instead of a bare OK; Python 3 is detected as python3 or python (Windows Git Bash works) with a one-line install hint when neither is usable; the Gate reports its own config state on its first lines every run
-- Since 0.4.12: --matrix (coverage.md + coverage.svg), --portfolio (portfolio-snapshot.md), a genuine `retired` status from dated Retires: records, parent edges derived from registry nesting with a composition rollup, and `dig` (archaeology mode: a no-LLM candidate registry from tests, routes, and docs, written only to dig-report.json)
-- New in 0.4.x: uncovered-proof (Rule 4a) catches a real, passing, named test whose ID never appears in an @covers line — report-only by default, with a documented per-project ratchet to make it blocking; orphan-covers/orphan-test are now domain-scoped so a doc quoting another project's real @covers line as an example doesn't misread as a local orphan; malformed src_globs/test_globs config now refuses loudly instead of silently matching nothing
+- Gate 2 refuses a silent gap: an acceptance criterion with no test and no open tracked-debt task fails the build rather than passing quietly
+- Emits trace-manifest.json (v4) and trace-manifest.v5beta.json, one row per registry ID with its status and the evidence behind it
+- Five statuses, including `retired` for an intent withdrawn on purpose, so a withdrawal is never mistaken for a gap
+- Mints durable IDs at intent and refuses an ID the project's own configured grammar would reject
+- Coverage matrix and portfolio snapshot for CI and for cold readers
 ```
-<!-- specassay:current -->
 
-**Testing Checklist:** tick all five — evidence for each is in
-[test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md).
+**Testing Checklist:** tick all 5.
 
-**Submission Requirements:** tick all six.
+**Submission Requirements:** tick all 6.
 
 **Testing Details:**
 
 ```
-**Tested on:**
-- macOS, Spec Kit CLI `specify 0.15.3.dev0`
-<!-- specassay:current -->
+This updates the existing catalog entry from 0.4.12 to 0.5.1. It supersedes
+issue #4252, filed at 0.4.12 and merged as catalog PR #4254. Neither v0.4.13
+nor v0.5.0 was ever filed, so this one carries three releases of change.
 
-**Test project:**
-- A clean `specify init` project (install-path evidence, including a
-  sha256 digest check against the published release asset:
-  https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md)
-- HomesFlow, a real example app (https://github.com/rdryfoos/HomesFlow) — real registry, ~81-row trace-manifest
+Tested on: Linux, Spec Kit 1.0.5, Python 3.11.15, on 2026-09-20.
+Previously captured on Spec Kit 1.0.4 at release time, 2026-09-17.
+The >=0.14.0 floor was exercised at v0.5.1 on 2026-09-17: the bundle installs
+and the Gate runs on 0.14.0, though that version does not scaffold the settings
+file, so the Gate reports `config: MISSING` and continues on defaults.
 
-**Test scenarios:**
-1. Added the hosted install-allowed catalogs and installed by ID in a clean project; verified the installed extension reports v0.4.13
-2. Verified the downloaded release zip's sha256 matches the digest GitHub's API reports for the same release asset
-3. Ran /speckit.specassay-check.gate on a green project (passes, emits manifest)
-4. Ran it on a broken thread (refuses, still emits manifest)
-5. Live CI demos on the repository: PR #1 (green Thread Report), PR #2 (refusal), PR #4 and #5 (restated intent)
+sha256 of the submitted archive, computed from the v0.5.1 tag on 2026-09-20:
+
+  $ curl -fsSL -O https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-check-0.5.1.zip
+  $ sha256sum specassay-check-0.5.1.zip
+  874728251c850e84d71f7a94dbdc326073703a8b408690d87a62b68d43dc6eff  specassay-check-0.5.1.zip
+
+Test scenarios, in a clean project (`specify init . --here --force
+--non-interactive --integration claude`):
+
+1. Installed direct from the download URL:
+     $ specify extension add specassay-check --from <download-url>
+     installed; `specify extension list` reports SpecAssay Check (v0.5.1)
+2. Ran the Gate on an empty project. It refuses and names the fix:
+     FAIL: registry not found: PRD.md
+3. Ran the Gate on an empty-but-present registry. Exit 0, and it prints the
+   on-ramp naming both mint routes.
+4. Minted a first ID:
+     $ bash .../mint-id.sh AC LOGIN --append "Given a wrong password, ..."
+     AC-LOGIN-10
+5. Ran the Gate again. It refuses honestly, which is the intended first red:
+     FAIL: registry ID missing from specs: AC-LOGIN-10
+     FAIL: registry ID missing from tasks: AC-LOGIN-10
+     FAIL: silent gap: AC-LOGIN-10 has no test and no open tracked-debt task
+     exit 1
+6. Added a spec line and one open task carrying the ID, the documented way to
+   clear it:
+     SpecAssay Check (Gate 2): OK (1 registry IDs)
+     exit 0, and trace-manifest.json reports AC-LOGIN-10 as tracked-debt.
+
+The extension is also run against its own repository on every pull request,
+where it currently reports OK on 71 registry IDs.
 ```
-<!-- specassay:current -->
 
 **Example Usage:**
 
 ```bash
-# Install extension
-specify extension add specassay-check --from https://github.com/rdryfoos/specassay/releases/latest/download/specassay-check.zip
-# (version-agnostic: redirects to the newest release; the CLI asks once to confirm a URL install)
+# Install from the release archive
+specify extension add specassay-check --from https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-check-0.5.1.zip
 
-# Use the command (in your integration, e.g. Claude)
+# Mint a durable ID at intent
+/speckit.specassay-check.mint AC LOGIN "Given a wrong password, when the user signs in, then the form shows an error and no session starts."
+
+# Run Gate 2; a silent gap fails the build
 /speckit.specassay-check.gate
-# → refuses silent gaps; writes trace-manifest.json either way
 ```
 
 **Proposed Catalog Entry:**
@@ -134,13 +169,14 @@ specify extension add specassay-check --from https://github.com/rdryfoos/specass
   "specassay-check": {
     "name": "SpecAssay Check",
     "id": "specassay-check",
-    "version": "0.4.13",
     "description": "Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).",
     "author": "Rik Dryfoos",
+    "version": "0.5.1",
     "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-check-0.5.1.zip",
     "repository": "https://github.com/rdryfoos/specassay",
     "homepage": "https://www.specassay.com",
     "documentation": "https://github.com/rdryfoos/specassay/blob/main/extensions/specassay-check/README.md",
+    "changelog": "https://github.com/rdryfoos/specassay/blob/main/CHANGELOG.md",
     "license": "MIT",
     "category": "visibility",
     "effect": "read-write",
@@ -156,17 +192,25 @@ specify extension add specassay-check --from https://github.com/rdryfoos/specass
       "hooks": 1
     },
     "tags": ["traceability", "gate", "ci", "governance", "sdd"],
-    "verified": false
+    "verified": false,
+    "downloads": 0,
+    "stars": 0,
+    "created_at": "2026-08-13T00:00:00Z",
+    "updated_at": "2026-09-20T00:00:00Z"
   }
 }
 ```
-<!-- specassay:current -->
-
-*(kept in sync with [`catalogs/extensions.json`](https://github.com/rdryfoos/specassay/blob/main/catalogs/extensions.json), which the catalogs point installers at — pasted verbatim from that file, not retyped)*
 
 **Additional Context:**
 
 ```
-Updates #4252 (closed, merged as #4254 at v0.4.12; the original #4057 merged as #4113 at v0.3.4). The emitted trace-manifest is deliberately vendor-neutral (`format` + `schemaVersion` are the contract); a v5 interop revision is in beta with a second emitter (docs/trace-manifest-schema.md). The walkthrough site (https://www.specassay.com) shows the Gate, the Thread Report, and the intent-PR behavior on live PRs in this repository. Pairs with the `specassay` preset, which installs the durable-ID contract the Gate enforces.
+Update to an existing entry, not a new extension.
+
+`provides.commands` moves from 2 to 5. It has been stale since v0.4.13: `dig`,
+`matrix` and `portfolio` shipped after the 0.4.12 entry was written. The five
+are speckit.specassay-check.gate, .mint, .dig, .matrix and .portfolio.
+
+Companion issues in this submission: the preset (updates #4253) and the bundle
+(updates #4255). The bundle pins both component versions, so all three need to
+land together or `specify bundle install` cannot resolve.
 ```
-<!-- specassay:current -->
