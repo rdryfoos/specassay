@@ -18,6 +18,7 @@ wrong you can name the block it went wrong in.
 > **Not into hand-holding and wanna dive right in?**
 > [https://github.com/rdryfoos/specassay](https://github.com/rdryfoos/specassay)
 
+> <!-- site:divider -->
 > **Starting from a machine with nothing on it?**
 > A companion page sets the machine up first, and it is read in the terminal
 > rather than in a browser. Paste
