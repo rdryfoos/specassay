@@ -2,25 +2,21 @@
 
 Paste-ready answers for Spec Kit's **Bundle Submission** form
 (<https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml>).
-Fields below appear in the form's exact order.
-Title: `[Bundle]: Add specassay`.
+Fields below appear in the form's exact order; copy each answer into the
+matching field. Title: `[Bundle]: Add SpecAssay (update to 0.5.1)`.
+<!-- specassay:current -->
 
-## Filing history, as of 2026-09-18 <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
+File this **third**, after the extension and preset issues, and name both in it.
 
-**Update note:** this is a version-bump filing, not a first submission.
-The original (`v0.3.4`) merged as #4125, closed via #4059; the `v0.4.12`
-update filed as #4255 merged as #4257. Per
-`docs/submission/CHEATSHEET.md`, file a **new** issue (say it updates
-#4255), after the extension and preset issues for this version exist, and
-reference both by number in Additional Context, below.
+## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 
-**Skipped versions, stated plainly:** neither `v0.4.13` nor `v0.5.0` was ever filed
-on a submission form. v0.4.13 got only the catalog-pointer PR
-([github/spec-kit#4448](https://github.com/github/spec-kit/pull/4448)); v0.5.0 was
-released and swept but its three issues were not filed either. This 0.5.1 filing
-therefore carries three versions' worth of change, and the issue it updates is the
-last one actually filed, named above — not a 0.4.13 or 0.5.0 issue, neither of
-which exists.
+**Filed 2026-09-20 as [github/spec-kit#4651](https://github.com/github/spec-kit/issues/4651),**
+after the extension (#4649) and the preset (#4650). A version-bump filing: the
+`v0.4.12` update was filed as #4255 and merged as catalog PR #4257, and #4651
+says in its body that it updates #4255.
+
+**Two skipped versions, stated plainly.** Neither `v0.4.13` nor `v0.5.0` was ever
+filed, so #4651 carries three releases of change.
 
 ---
 
@@ -29,113 +25,147 @@ which exists.
 **Bundle Name:** SpecAssay
 
 **Version:** 0.5.1
-<!-- specassay:current -->
 
 **Role or Team:** developer
 
 **Description:**
-Durable-ID promotion for stock Spec Kit: templates, Gate 2 refusal, and
-trace-manifest emission.
+
+```
+Durable-ID promotion for stock Spec Kit: templates, Gate 2 refusal, and trace-manifest emission.
+```
 
 **Author:** Rik Dryfoos
 
-**Repository URL:** https://github.com/rdryfoos/specassay
+**Repository URL:** <https://github.com/rdryfoos/specassay>
 
 **Download URL:**
-https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-0.5.1.zip
-<!-- specassay:current -->
 
-**Digest (sha256):** `962421be236991f5afa4a93f48bd16a9b2e61cd9221985b9f233b93407132246`
-*(read from the release asset itself — `gh api repos/rdryfoos/specassay/releases/tags/v0.5.1` — then independently re-verified by
-downloading the published zip and hashing it locally, and a third time by unzipping it and
-reading the version the manifest inside actually declares; see `docs/submission/test-evidence.md`.)*
-<!-- specassay:current -->
+```
+https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-0.5.1.zip
+```
 
 **Documentation URL:**
+
+```
 https://github.com/rdryfoos/specassay/blob/main/README.md
+```
 
 **License:** MIT
 
-**Required Spec Kit Version:** >=0.14.0
-<!-- specassay:current -->
+**Required Spec Kit Version:** `>=0.14.0,<2.0.0`
 
-**Integration Target (optional):** *(leave empty — integration-agnostic)*
+#### Declared range, as observed 2026-09-20
+
+The three manifests shipped inside the zips declare
+`>=0.14.0,<2.0.0`, while `catalogs/*.json` publish `>=0.14.0`, and the issues
+filed today inherited the catalogs' string. The upper bound is the honest one:
+a catalog that claims a wider range than the zip inside it is the exact failure
+the CHEATSHEET's sweep rule exists to prevent. Named here rather than quietly
+corrected, because fixing `catalogs/*.json` is a release artifact and is not
+this PR's to change.
+
+**Integration Target (optional):** leave empty. The bundle is
+integration-agnostic.
 
 **Components Provided:**
 
 ```
-- extensions: specassay-check@0.4.13
-- presets: specassay@0.4.13
+- extensions: specassay-check@0.5.1
+- presets: specassay@0.5.1
+- workflows: none
+- steps: none
 ```
-<!-- specassay:current -->
 
 **Required Component Catalogs:**
 
 ```
-- Extensions: https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/extensions.json
-- Presets: https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/presets.json
+The three SpecAssay catalogs, added as install-allowed, because the community
+catalog is discovery-only and cannot install:
+
+  specify preset catalog add https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/presets.json --name specassay --install-allowed
+  specify extension catalog add https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/extensions.json --name specassay --install-allowed
+  specify bundle catalog add https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/bundles.json --id specassay --policy install-allowed
+
+Both components can alternatively be installed directly with
+`specify extension add ... --from <url>` and `specify preset add ... --from <url>`,
+which was also tested on 2026-09-20.
 ```
 
-**Tags:** traceability, governance, durable-ids, gate, sdd
+**Tags:**
+
+```
+traceability, governance, durable-ids, gate, sdd
+```
 
 **Key Features:**
 
 ```
-- Installs the durable-ID contract (preset) and the Gate that enforces it (extension) as one stack
-- Gate 2 refuses silent acceptance-criterion gaps; every run emits trace-manifest.json, including refusals
-- Thread Report: one CI briefing per PR, with restated-intent detection and optional human-ack gates
-- Components pinned to release-tested versions; the artifact is built by `specify bundle build` in CI through these same catalogs
-- New in 0.4.13: the Gate talks a first-time installer through its own state (empty-registry on-ramp, Python detected as python3 or python, config state reported every run); since 0.4.12: --matrix, --portfolio, the retired status, derived parentage, and the dig archaeology command
-- New in 0.4.x: uncovered-proof (report-only, ratcheted to blocking per project), domain-scoped orphan checks, and loud refusal on malformed config instead of a silent no-op
+- One install provisions the whole thread: templates that mint durable IDs, and the Gate that refuses a silent gap
+- Registry, specs and tasks must agree as an exact set; drift fails rather than passing quietly
+- Emits a trace-manifest any viewer can read, so proof is a file rather than a claim
+- Components are pinned to matching versions, so a partial upgrade cannot leave the bundle half-resolved
 ```
-<!-- specassay:current -->
 
-**Testing Checklist:** tick all seven — the full transcript is
-[test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md)
-(digest check, validate, build, clean-project install by bundle ID
-through the install-allowed catalog stack, and a real Gate run).
+**Testing Checklist:** tick all 7.
 
-**Submission Requirements:** tick all six.
+**Submission Requirements:** tick all 5.
 
 **Testing Details:**
 
 ```
-**Tested on:**
-- macOS, Spec Kit CLI `specify 0.15.3.dev0`
-<!-- specassay:current -->
+This updates the existing catalog entry from 0.4.12 to 0.5.1, superseding
+issue #4255 (merged as catalog PR #4257). Neither v0.4.13 nor v0.5.0 was ever
+filed, so this carries three releases of change.
 
-**Test project:** clean `specify init` project; full transcript in
-https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md
+Tested on: Linux, Spec Kit 1.0.5, Python 3.11.15, on 2026-09-20.
+Previously captured on Spec Kit 1.0.4 at release time, 2026-09-17.
 
-**Test scenarios:**
-1. Downloaded the three release assets directly and verified their sha256 against the digests GitHub's API reports for the same release
-2. Added the three hosted catalogs (extensions, presets, bundles) as install-allowed
-3. `specify bundle validate --path <repo>` at the exact tagged commit (`git describe --tags --exact-match HEAD` → `v0.4.13`) — valid
-4. `specify bundle build --path <repo>` — produces the submitted artifact (same command CI runs for releases)
-5. `specify bundle install specassay` by ID from the catalog stack in the clean project — 2 components installed, both reporting v0.4.13
-6. Verified with `specify bundle list`, `specify extension list`, `specify preset list`
-7. Ran the installed Gate on the fresh project (real, loud FAIL — no registry minted yet — trace-manifest still written) and on a real project, HomesFlow (https://github.com/rdryfoos/HomesFlow) — ~81-row trace-manifest
+sha256 of the submitted artifact, computed from the v0.5.1 tag on 2026-09-20:
+
+  $ curl -fsSL -O https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-0.5.1.zip
+  $ sha256sum specassay-0.5.1.zip
+  962421be236991f5afa4a93f48bd16a9b2e61cd9221985b9f233b93407132246  specassay-0.5.1.zip
+
+Component digests, same run:
+  874728251c850e84d71f7a94dbdc326073703a8b408690d87a62b68d43dc6eff  specassay-check-0.5.1.zip
+  41e5b5e807bbb2b7d4d90253886122416109465af023d85a110cd522c16848fc  specassay-preset-0.5.1.zip
+
+All three match the digests this project recorded independently at release on
+2026-09-17.
+
+Test scenarios, clean project:
+
+  $ specify init . --here --force --non-interactive --integration claude
+  $ <the three catalog add commands above>
+  $ specify bundle install specassay
+  Installed 'specassay' (2 added, 0 already present).
+
+  $ specify bundle list
+  specassay v0.5.1 (2 components, installed 2026-09-20T14:17:25Z)
+  $ specify preset list
+  SpecAssay (specassay) v0.5.1 - enabled - priority 10
+  $ specify extension list
+  SpecAssay Check (v0.5.1)
+
+All three resolve 0.5.1 on the first try. A thread was then driven from an
+empty registry through mint, the Gate's honest refusal, and a clear to green as
+tracked debt.
 ```
-<!-- specassay:current -->
 
 **Example Usage:**
 
 ```bash
-# Add the component catalogs, then the bundle catalog (all install-allowed)
-specify extension catalog add --name specassay --install-allowed \
-  https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/extensions.json
-specify preset catalog add --name specassay --install-allowed \
-  https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/presets.json
-specify bundle catalog add --id specassay --policy install-allowed \
-  https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/bundles.json
+# Add the three SpecAssay catalogs as install-allowed (community is discovery-only)
+specify preset catalog add https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/presets.json --name specassay --install-allowed
+specify extension catalog add https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/extensions.json --name specassay --install-allowed
+specify bundle catalog add https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/bundles.json --id specassay --policy install-allowed
 
-# Install by bundle ID
+# Install the bundle
 specify bundle install specassay
 
-# Or install the downloaded artifact directly
-curl -L -o specassay.zip https://github.com/rdryfoos/specassay/releases/latest/download/specassay.zip
-specify bundle install ./specassay.zip
-# (version-agnostic: redirects to the newest release; needs the two component catalogs above, install-allowed, because a bundle resolves its components through them)
+# Mint an ID at intent, then let the Gate refuse anything unproven
+/speckit.specassay-check.mint AC LOGIN "Given a wrong password, when the user signs in, then the form shows an error."
+/speckit.specassay-check.gate
 ```
 
 **Proposed Catalog Entry:**
@@ -145,7 +175,7 @@ specify bundle install ./specassay.zip
   "specassay": {
     "name": "SpecAssay",
     "id": "specassay",
-    "version": "0.4.13",
+    "version": "0.5.1",
     "role": "developer",
     "description": "Durable-ID promotion for stock Spec Kit: templates, Gate 2 refusal, and trace-manifest emission.",
     "author": "Rik Dryfoos",
@@ -166,16 +196,17 @@ specify bundle install ./specassay.zip
   }
 }
 ```
-<!-- specassay:current -->
-
-*(kept in sync with [`catalogs/bundles.json`](https://github.com/rdryfoos/specassay/blob/main/catalogs/bundles.json);
-paste it verbatim under the top-level `bundles` object)*
 
 **Additional Context:**
 
 ```
-Updates #4255 (closed, merged as #4257 at v0.4.12; the original #4059 merged as #4125 at v0.3.4). Component submissions for the two bundled components at this version, each itself an update to its own closed 0.4.12 issue: the extension issue (updates #4252) and the preset issue (updates #4253), filed first and referenced here by number.
-<!-- specassay:current -->
+Update to an existing entry, not a new bundle.
 
-The emitted trace-manifest is deliberately vendor-neutral (`format` + `schemaVersion` are the contract); a v5 interop revision is in beta with a second emitter (docs/trace-manifest-schema.md). The walkthrough site (https://www.specassay.com) shows the Thread Report and intent-PR behavior on live PRs in this repository.
+File this after the two component issues, and reference them: the bundle pins
+specassay-check@0.5.1 and specassay@0.5.1, so a partial bump leaves
+`specify bundle install` unable to resolve.
+
+  extension - updates #4252 (merged as #4254), filed as #4649
+  preset    - updates #4253 (merged as #4256), filed as #4650
+  bundle    - updates #4255 (merged as #4257), filed as #4651
 ```

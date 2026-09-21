@@ -63,6 +63,29 @@ Mint durable IDs at intent; refuse silent gaps; allow tracked debt to stay visib
     it. Added 2026-09-18, on a ruling that the lesson was worth more than either
     fix.
 
+    **Three more instances, 2026-09-20, and each one passed before it failed.**
+    A curl reporting `000` for an address that was blocked by this session's own
+    egress proxy, which would have returned `000` whether or not the address
+    existed. A commit SHA written into a report from memory rather than read,
+    where the check result attached to it was real and the commit it named was
+    not. And an anchor check, `grep -c install-catalog-path` against a rendered
+    GitHub blob page, which returned a healthy 2 because GitHub emits the heading
+    slug as an HTML anchor id, and returns 0 against the raw markdown where the
+    slug does not exist at all. That third is the sharpest: the check was passing
+    for a reason unrelated to what it was checking, so it would have kept passing
+    through the failure it existed to catch.
+
+    The shared shape is not carelessness. It is a reading that **cannot come back
+    negative**, or that can come back positive for the wrong reason. So the test
+    of a receipt is not "did it return what I expected" but "could this method
+    have told me I was wrong?" A method that cannot fail is not evidence.
+
+    **A named case, so nobody re-measures it: a query string does not bust
+    Vercel's edge cache.** Measured by the sites room on 2026-09-20
+    (dryfoos-sites#7). A receipt against a Vercel-hosted page reads
+    `x-vercel-cache` and `age`, and a `HIT` with nonzero `age` is never a verdict
+    on a fresh deploy: it is a verdict on whatever was cached before it.
+
 13. **A rule proposed from a desk names three classes. A rule met by the
     corpus needs five.** The doc-version check was designed carefully and then
     pointed at the repository's own documents, and the corpus corrected it five

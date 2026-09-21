@@ -1,39 +1,139 @@
 # Filing cheat sheet: three issues, in this order
 
-Each row: open the **form**, then copy everything below the `---` rule in the
-**paste-from** doc into it. The forms are GitHub issue templates on the
-Spec Kit repo; the paste-from docs mirror their fields exactly, catalog JSON
-included, no other tabs needed.
+A copy-and-paste walk. Each issue is a GitHub issue form on the Spec Kit repo;
+open the form, then work down this page filling each field in the order the form
+asks for it. The values below are for **v0.5.1** and are what was actually filed
+on 2026-09-20.
+<!-- specassay:current -->
 
-| # | Issue | Form (opens the template) | Paste from |
-| --- | --- | --- | --- |
-| 1 | Extension | <https://github.com/github/spec-kit/issues/new?template=extension_submission.yml> | [extension-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md) |
-| 2 | Preset | <https://github.com/github/spec-kit/issues/new?template=preset_submission.yml> | [preset-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md) |
-| 3 | Bundle | <https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml> | [bundle-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/bundle-submission.md) |
+**The issue route is the only route.** A direct pull request against
+`presets/catalog.community.json` and its siblings is triaged out of scope and
+closed; that has now happened twice, to #4448 and #4648. File the issues and an
+automated workflow validates the release and generates the catalog PR itself.
 
-File 1 and 2 first, note their issue numbers, then reference both in the
-bundle issue (the bundle depends on both components being cataloged).
+**Order matters.** File the extension and the preset first, note their issue
+numbers, then name both in the bundle issue. The bundle pins its component
+versions, so a partial landing leaves `specify bundle install` unable to resolve.
 
-Tips:
+Full field-by-field values live in the three paste-from docs, which mirror each
+form exactly, catalog JSON included:
 
-- On each paste-from page, the **Copy raw file** button (two-squares icon,
-  top right of the file view) grabs the whole document in one click.
-- Every checkbox on the forms is honestly tickable; if a maintainer asks for
-  proof, point at
+| # | Issue | Form | Paste from | Filed 2026-09-20 |
+| --- | --- | --- | --- | --- |
+| 1 | Extension | <https://github.com/github/spec-kit/issues/new?template=extension_submission.yml> | [extension-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md) | [#4649](https://github.com/github/spec-kit/issues/4649) |
+| 2 | Preset | <https://github.com/github/spec-kit/issues/new?template=preset_submission.yml> | [preset-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md) | [#4650](https://github.com/github/spec-kit/issues/4650) |
+| 3 | Bundle | <https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml> | [bundle-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/bundle-submission.md) | [#4651](https://github.com/github/spec-kit/issues/4651) |
+
+## Issue 1: Extension
+
+Form: <https://github.com/github/spec-kit/issues/new?template=extension_submission.yml>
+
+Title:
+
+```
+[Extension]: Add SpecAssay Check (update to 0.5.1)
+```
+
+Then, in the form's own order:
+
+1. **Extension ID**: `specassay-check`
+2. **Extension Name**: `SpecAssay Check`
+3. **Version**: `0.5.1` <!-- specassay:current -->
+4. **Description**, **Author**, **Repository URL**, **Download URL**, **License**: paste-from doc
+5. **Homepage**, **Documentation URL**, **Changelog URL** (all optional): paste-from doc
+6. **Required Spec Kit Version**: paste-from doc
+7. **Required Tools** (optional), **Number of Commands** (`5`), **Number of Hooks** (`1`)
+8. **Tags**, **Key Features**: paste-from doc
+9. **Testing Checklist**: tick all 5
+10. **Submission Requirements**: tick all 6
+11. **Testing Details**, **Example Usage**, **Proposed Catalog Entry**: paste-from doc
+12. **Additional Context**: paste-from doc; say it updates **#4252**
+
+Note the issue number the form gives you. It is the extension number the bundle
+issue must name.
+
+## Issue 2: Preset
+
+Form: <https://github.com/github/spec-kit/issues/new?template=preset_submission.yml>
+
+Title:
+
+```
+[Preset]: Add SpecAssay (update to 0.5.1)
+```
+
+Then, in the form's own order:
+
+1. **Preset ID**: `specassay`
+2. **Preset Name**: `SpecAssay`
+3. **Version**: `0.5.1` <!-- specassay:current -->
+4. **Description**, **Author**, **Repository URL**, **Download URL**: paste-from doc
+5. **Documentation URL**, **License**, **Required Spec Kit Version**: paste-from doc
+6. **Required Extensions** (optional), **Templates Provided** (`3`), **Commands Provided** (`0`), **Number of Scripts** (optional, `0`)
+7. **Tags**, **Key Features**: paste-from doc; say it updates **#4253**
+8. **Testing Checklist**: tick all 4
+9. **Submission Requirements**: tick all 5
+
+This form has **no** Testing Details, Example Usage or Proposed Catalog Entry
+field, unlike the other two. The receipts go in Key Features, which is the only
+free-text field that will hold them.
+
+## Issue 3: Bundle
+
+File this **last**. Form:
+<https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml>
+
+Title:
+
+```
+[Bundle]: Add SpecAssay (update to 0.5.1)
+```
+
+Then, in the form's own order:
+
+1. **Bundle ID**: `specassay`
+2. **Bundle Name**: `SpecAssay`
+3. **Version**: `0.5.1` <!-- specassay:current -->
+4. **Role or Team**: `developer`
+5. **Description**, **Author**, **Repository URL**, **Download URL**: paste-from doc
+6. **Documentation URL**, **License**, **Required Spec Kit Version**: paste-from doc
+7. **Integration Target** (optional): leave empty; the bundle is integration-agnostic
+8. **Components Provided**: paste-from doc
+9. **Required Component Catalogs**: paste-from doc. This field is where the
+   discovery-only fact belongs: the community catalog cannot install, so the
+   three SpecAssay catalogs must be added as install-allowed first
+10. **Tags**, **Key Features**: paste-from doc
+11. **Testing Checklist**: tick all 7
+12. **Submission Requirements**: tick all 5
+13. **Testing Details**, **Example Usage**, **Proposed Catalog Entry**: paste-from doc
+14. **Additional Context**: paste-from doc; say it updates **#4255**, and name
+    the extension and preset issue numbers from steps 1 and 2
+
+## Tips
+
+- On each paste-from page, the **Copy raw file** button (two-squares icon, top
+  right of the file view) grabs the whole document in one click.
+- Every checkbox on all three forms is honestly tickable. If a maintainer asks
+  for proof, point at
   [test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md).
 - If the template picker misbehaves, the chooser is
   <https://github.com/github/spec-kit/issues/new/choose>.
+- Read the templates before filing a new version. They move: the bundle form
+  gained a **Required Component Catalogs** field, and its testing checklist now
+  names bundle-ID installation from an install-allowed catalog, neither of which
+  existed in August.
 
-Links the forms ask for (all live):
+Links the forms ask for, all live:
 
 - Repository: <https://github.com/rdryfoos/specassay>
-- Release with artifacts: <https://github.com/rdryfoos/specassay/releases/latest> (redirects to the newest tag; the submission forms want the versioned asset URL from `catalogs/*.json`, not this link)
+- Release with artifacts: <https://github.com/rdryfoos/specassay/releases/latest> (redirects to the newest tag; the forms want the versioned asset URL from `catalogs/*.json`, not this link)
 - Catalogs: <https://github.com/rdryfoos/specassay/tree/main/catalogs>
 - Extension README: <https://github.com/rdryfoos/specassay/blob/main/extensions/specassay-check/README.md>
 - Preset contract: <https://github.com/rdryfoos/specassay/blob/main/PROMOTION-CONTRACT.md>
 
-Expected turnaround: a maintainer validates catalog entry and URLs in 3–7
-business days (they do not audit code). For what happens at the next
+Expected turnaround: a maintainer applies the submission label at triage, which
+starts automated catalog validation, 3 to 7 business days. They validate the
+catalog entry and URLs; they do not audit code. For what happens at the next
 version bump, see **Updating to a new version** below.
 
 ## Updating to a new version
@@ -52,18 +152,18 @@ issue](https://github.com/github/spec-kit/issues/new?template=bundle_submission.
 new version and download URL, mention it updates #4059 (now closed).
 Source: `docs/community/bundles.md`, "Updating a Bundle."
 
-**Preset:** no documented issue-based update path.
-`presets/PUBLISHING.md`'s Release Workflow instead describes a **direct
-PR** against `presets/catalog.community.json` in `github/spec-kit`,
-bumping `version` and `download_url` for the `specassay` entry.
-`docs/community/presets.md` has no "Updating a Preset" section at all.
-Try the issue-based route first anyway (a new [Preset Submission
+**Preset:** same pattern as the other two. File a **new** [Preset Submission
 issue](https://github.com/github/spec-kit/issues/new?template=preset_submission.yml)
-noting it updates #4058): the same bot machinery that generated #4070
-and #4123 from issue edits worked three times this round and is the
-better-tested path. If a maintainer redirects to the PR route, that's
-the documented fallback, and it means forking `spec-kit` and opening a
-PR by hand rather than filing an issue and waiting.
+noting which issue it updates.
+
+**Hedge withdrawn, 2026-09-20.** This paragraph used to say the preset had no
+documented issue-based update path, that `presets/PUBLISHING.md` described a
+direct catalog PR instead, and that the PR route was "the documented fallback"
+if a maintainer redirected. That reading was wrong in the direction that costs
+time. The issue route has now carried the preset three filings running, and it is
+the direct catalog PR that gets closed: #4448 and #4648 both were, as triage out
+of scope. There is no PR fallback. Forking `spec-kit` to bump a catalog file by
+hand is not a slower path to the same place, it is a path to a closed PR.
 
 Either way: bump `bundle.yml` / `extension.yml` / `preset.yml` and the
 three `catalogs/*.json` first (`scripts/build-release.sh` refuses to
@@ -88,20 +188,32 @@ test-evidence entry names the `specify --version` it ran on, in its first
 paragraph; an entry that does not is not evidence of compatibility with
 anything.
 
-**Then the site, same day.** specassay.com's hero CTA ("Install in 20
-minutes") pins to the tagged README: one `href` in
-`sites/specassay/src/index.html` in `dryfoos-sites`, of the form
-`blob/v0.4.13/README.md#install-catalog-path`. Policy (dryfoos-sites
-`5a0d718`, reaffirmed 2026-09-04): the pin is a tag, never `main` and
-never the `latest` alias, so the page's install promise names the exact
-bits the cold install verified. Bump it once the tag is public and the
-wall has passed: confirm the anchor resolves at the new ref (`curl -sL
-https://github.com/rdryfoos/specassay/blob/v0.4.13/README.md | grep -c
-install-catalog-path`, nonzero), edit the one href, `python3
-press/press.py specassay`, `node tools/smoke.mjs specassay`, commit. The
-site's own CI runs its em-dash and US-English lints. Taught by: v0.4.13,
-when the site sat on the v0.4.12 README for the hours between the tag <!-- specassay:provenance -->
-going public and this step existing.
+**No site step, since 2026-09-16.** This used to carry a hero-pin bump:
+specassay.com's CTA pointed at a tagged README anchor, one `href` in
+`sites/specassay/src/index.html` in `dryfoos-sites`, and every cut had to move
+it. **That pin no longer exists.** The CTA moved to `/start` on 2026-09-16
+(dryfoos-sites `0b23272`) and names no tag, which the sites room's
+`check-version-pins.mjs` confirms. There is nothing to bump here at a cut, and
+the item this file carried as "still outstanding" for two releases is struck
+rather than closed: it stopped being true before it was ever done.
+
+If a tagged anchor is ever reintroduced, the old verification recipe should not
+come back with it. It read `curl -sL <blob URL> | grep -c install-catalog-path`,
+expecting nonzero. Measured 2026-09-20: against the rendered `blob/` page that
+returns **2**, because GitHub emits the heading slug as an anchor `id` and
+`href` in the HTML. Against the raw markdown it returns **0**, because the slug
+is generated at render time and appears nowhere in the source. So the recipe was
+passing on the rendered page for a reason unrelated to what it was checking, and
+would have gone silently to zero the moment anyone pointed it at raw. Check the
+heading itself instead, at the ref, in the source:
+
+```
+curl -fsSL https://raw.githubusercontent.com/rdryfoos/specassay/<tag>/README.md \
+  | grep -c 'Install (catalog path)'
+```
+
+Measured the same day, 2026-09-20: **1** at `v0.5.1`. A count of 1 means the heading the
+anchor is derived from exists at that ref, which is the thing worth knowing.
 
 **Not a step of the sweep: specassay.com/start.** That page renders
 `ONBOARD.md` at build time, and since 2026-09-15 a push to `main` that
@@ -174,9 +286,11 @@ intended.
 Two things were left for the cut rather than guessed at. The paste-from digests
 said "not yet known — fill at the cut", with the commands, because carrying the
 0.4.13 digests under 0.5.0 URLs would have been a false claim about a specific
-file; **they are now filled from the published assets.** The site pin names a
-tag, so it waited too, and **it is the one step of this sweep still
-outstanding**: the hero CTA is on the `v0.4.13` README anchor.
+file; **they are now filled from the published assets.** The site pin was
+recorded here as the one step still outstanding. **Struck 2026-09-20:** there is
+no pin. The CTA moved to `/start` on 2026-09-16 (dryfoos-sites `0b23272`) and
+names no tagged README, so the outstanding item had already ceased to exist when
+this paragraph was written.
 
 Verified before the tag, in this order: `python3 -m pytest
 extensions/specassay-check/tests/ -q` (92 passed) under both mawk and gawk;
