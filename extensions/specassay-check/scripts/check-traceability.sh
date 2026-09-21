@@ -445,6 +445,56 @@ strip_code_spans() {
   ' "$1" 2>/dev/null
 }
 
+# @covers FR-GATE-140, AC-GATE-140 -- a task is one logical line to every
+# scan, so a soft-wrapped Carries list reads the same to both of them.
+# A task is one logical line, however many physical lines it occupies.
+#
+# Taught by the Bang rehearsal, 2026-09-20, on v0.5.1. A tasks.md task whose
+# **Carries** list ran onto a second line produced three ACs that the
+# exact-set scan counted as claimed and the pending scan never saw: tasks.txt
+# is built by scanning every line of the file, while the pending scan read
+# `grep -nE '^- \[ \]'`, which sees the checkbox line and nothing after it.
+# One file, two parsers, two answers, and the Gate reported the difference as
+# a silent gap. The truth was not "gap"; it was "your parser and my parser
+# differ". That is PROMOTION-CONTRACT rule 12 in the tool's own throat.
+#
+# Ruled: fold, do not refuse. The alternative was to reject a wrapped Carries
+# list loudly, and it was rejected for three reasons. This estate has already
+# answered this exact question once, in check-doc-versions.py, where a mark
+# that covered only its own line was recorded as a bug because it made an
+# author break their line wrapping to satisfy the checker; the fix there was
+# to read the block, not to refuse the wrap. Refusing would also be an
+# upgrade-blocker for every adopter whose tasks.md already wraps, on a
+# formatting choice Markdown itself calls meaningless. And it would put the
+# parser's limitation on the author: this tool exists to refuse dishonesty,
+# not typography.
+#
+# A continuation is an indented, non-blank line that is not itself a list
+# item. A nested bullet is a child item rather than a soft wrap, so it ends
+# the fold, as do a blank line, a heading, and any new top-level bullet.
+# Checked against this repository's own tasks.md before it was written: of
+# 74 indented lines, the 4 that carry registry IDs all continue narrative
+# `- **...**` bullets rather than checkbox tasks, so none of them is swept
+# into a task by this rule.
+fold_tasks() {
+  awk '
+    function emit() { if (start) { print start ":" buf; start = 0; buf = "" } }
+    /^- \[[x ]\]/ { emit(); start = NR; buf = $0; next }
+    {
+      if (start) {
+        if ($0 ~ /^[[:space:]]+[^[:space:]]/ && $0 !~ /^[[:space:]]*([-*+]|[0-9]+\.)[[:space:]]/) {
+          cont = $0
+          sub(/^[[:space:]]+/, " ", cont)
+          buf = buf cont
+          next
+        }
+        emit()
+      }
+    }
+    END { emit() }
+  ' "$1" 2>/dev/null
+}
+
 : > "$tmp/spec.txt"
 while IFS= read -r f; do
   [[ -f "$f" ]] || continue
@@ -464,7 +514,7 @@ while IFS= read -r f; do
   # (e.g. an em dash) in half, corrupting the excerpt and crashing the
   # Python side downstream. Truncation happens in Python instead, where
   # string slicing is codepoint-safe.
-  grep -nE '^- \[ \]' "$f" 2>/dev/null | while IFS= read -r line; do
+  fold_tasks "$f" | grep -E '^[0-9]+:- \[ \]' | while IFS= read -r line; do
     lineno="${line%%:*}"
     rest="${line#*:}"
     excerpt="$(printf '%s' "$rest" | tr '\t' ' ' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
@@ -716,13 +766,17 @@ done < <(comm -23 "$tmp/registry.txt" "$tmp/tasks.txt")
 # it names and needs no separate Carries line alongside it.
 while IFS= read -r f; do
   [[ -f "$f" ]] || continue
-  while IFS= read -r line; do
+  # Folded, for the same reason the pending scan is: the mark can sit on the
+  # continuation line. Before this, a task whose Carries list began on line
+  # two was reported as having no Carries field while plainly having one.
+  while IFS= read -r folded; do
+    line="${folded#*:}"
     if [[ "$line" =~ ^-\ \[[x\ ]\]\ T ]]; then
       if ! grep -Eq "$CARRIES_RE" <<<"$line" && ! grep -Eq "$RETIRES_RE" <<<"$line"; then
         record_fail "missing-carries" "" "task missing Carries field: ${line:0:80}"
       fi
     fi
-  done < "$f"
+  done < <(fold_tasks "$f")
 done < <(expand_glob "$TASKS_GLOB")
 
 # 3) Untraced scope. Domain-scoped like spec-orphan/task-orphan (FR-GATE-40):
