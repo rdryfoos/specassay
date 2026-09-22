@@ -12,11 +12,9 @@ You do not need it to follow along.
 
 ## You are already here
 
-If you are reading this in a terminal window, you have already done the two things some pages
-start with: you opened a terminal, and you fetched this page. Nothing to do. Read on.
+Open a terminal beside this page; you will paste into it.
 
-While you are reading: the space bar moves a page, the down arrow moves a single line, and `q`
-leaves the page and gives you your prompt back.
+While you are reading: the space bar moves a page, and the down arrow moves a single line.
 
 **Open a second window now.** With Terminal in front of you, hold Command and press N. One window
 is for reading this page, the other for pasting the blocks. That way you never have to leave the
