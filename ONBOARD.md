@@ -20,9 +20,9 @@ wrong you can name the block it went wrong in.
 
 > <!-- site:divider -->
 > **Starting from a machine with nothing on it?**
-> A companion page sets the machine up first, and it is read in the terminal
-> rather than in a browser. Paste
-> `curl -fsSL https://specassay.com/FIRST-LIGHT | less` and it comes to you.
+> A companion page sets the machine up first:
+> [https://specassay.com/bang](https://specassay.com/bang). Open a terminal,
+> paste the blocks.
 > Three steps: it installs Claude Code, signs you in, and hands you a blank page
 > to write down what you are actually promising, in your own words, which is half
 > an hour and the part it exists for. Reading it changes nothing on your machine,
