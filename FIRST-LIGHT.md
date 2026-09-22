@@ -12,21 +12,13 @@ You do not need it to follow along.
 
 ## You are already here
 
-Open a terminal beside this page; you will paste into it.
+This page is the instructions. A terminal beside it is where the blocks below get pasted.
+Nothing to install yet. Read on.
 
 While you are reading: the space bar moves a page, and the down arrow moves a single line.
 
-**Open a second window now.** With Terminal in front of you, hold Command and press N. One window
-is for reading this page, the other for pasting the blocks. That way you never have to leave the
-instructions to run something and then find your place again.
-
-*Arrived some other way, or not in a terminal yet?* On a Mac, hold Command and press the space
-bar, type `terminal`, and press Return: that is Spotlight, and it opens Terminal for you. Then
-paste this to bring the page up in that window:
-
-```
-curl -fsSL https://specassay.com/FIRST-LIGHT | less
-```
+**Open a terminal window now.** With Terminal in front of you, hold Command and press N. That way
+you never have to leave the instructions to run something and then find your place again.
 
 These are Mac instructions. Nobody has run this page on Linux or Windows, so the steps may be
 right there and the keystrokes are not.
@@ -34,7 +26,7 @@ right there and the keystrokes are not.
 ## The desktop app
 
 **You will not use the desktop app here.** If you have it, leave it alone; if you do not, there is
-nothing to install. Everything on this page happens in the terminal window in front of you.
+nothing to install. Everything on this page is pasted into the terminal window beside it.
 
 ## What this page asks of you
 
