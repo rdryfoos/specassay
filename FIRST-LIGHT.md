@@ -17,8 +17,10 @@ Nothing to install yet. Read on.
 
 While you are reading: the space bar moves a page, and the down arrow moves a single line.
 
-**Open a terminal window now.** With Terminal in front of you, hold Command and press N. That way
-you never have to leave the instructions to run something and then find your place again.
+**Open a terminal window now.** On a Mac, hold Command and press the space bar, type `terminal`,
+and press Return: that is Spotlight, and it opens Terminal for you. If Terminal is already open,
+hold Command and press N for a fresh window. Keep it beside this page; that way you never have to
+leave the instructions to run something and then find your place again.
 
 These are Mac instructions. Nobody has run this page on Linux or Windows, so the steps may be
 right there and the keystrokes are not.
