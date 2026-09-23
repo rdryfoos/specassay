@@ -10,6 +10,8 @@ File this **third**, after the extension and preset issues, and name both in it.
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 
+**Refused 2026-09-23 on the default-branch manifest mismatch, and superseded.** The validator read `bundle.yml` on `main`, which v0.5.2 had moved to 0.5.2, against #4692 filed at 0.5.1, and asked for the 0.5.2 release with matching artifact and metadata. This is the issue that caught it; #4690 and #4691 were pre-empted. The filing moves to 0.5.2 with the catalogs.
+
 **Refiled 2026-09-23 as [github/spec-kit#4692](https://github.com/github/spec-kit/issues/4692), superseding #4651,** after the extension (#4690) and the preset (#4691).
 #4651 failed on the version-string mismatch and the validator's fetch; see the
 CHEATSHEET's **v0.5.1 refiled** section for the run IDs and what each one meant.
@@ -29,7 +31,7 @@ filed, so #4651 carries three releases of change.
 
 **Bundle Name:** SpecAssay
 
-**Version:** 0.5.1
+**Version:** 0.5.2
 
 **Role or Team:** developer
 
@@ -46,7 +48,7 @@ Durable-ID promotion for stock Spec Kit: templates, Gate 2 refusal, and trace-ma
 **Download URL:**
 
 ```
-https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-0.5.1.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.5.2/specassay-0.5.2.zip
 ```
 
 **Documentation URL:**
@@ -80,8 +82,8 @@ integration-agnostic.
 **Components Provided:**
 
 ```
-- extensions: specassay-check@0.5.1
-- presets: specassay@0.5.1
+- extensions: specassay-check@0.5.2
+- presets: specassay@0.5.2
 - workflows: none
 - steps: none
 ```
@@ -123,22 +125,22 @@ traceability, governance, durable-ids, gate, sdd
 **Testing Details:**
 
 ```
-This updates the existing catalog entry from 0.4.12 to 0.5.1, superseding
+This updates the existing catalog entry from 0.4.12 to 0.5.2, superseding
 issue #4255 (merged as catalog PR #4257). Neither v0.4.13 nor v0.5.0 was ever
 filed, so this carries three releases of change.
 
-Tested on: Linux, Spec Kit 1.0.5, Python 3.11.15, on 2026-09-20.
-Previously captured on Spec Kit 1.0.4 at release time, 2026-09-17.
+Tested on: Linux, Spec Kit 1.0.5, Python 3.11.15, on 2026-09-23, against the
+published v0.5.2 assets in a clean project.
 
-sha256 of the submitted artifact, computed from the v0.5.1 tag on 2026-09-20:
+sha256 of the submitted artifact, computed from the published v0.5.2 assets on 2026-09-23:
 
-  $ curl -fsSL -O https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-0.5.1.zip
-  $ sha256sum specassay-0.5.1.zip
-  962421be236991f5afa4a93f48bd16a9b2e61cd9221985b9f233b93407132246  specassay-0.5.1.zip
+  $ curl -fsSL -O https://github.com/rdryfoos/specassay/releases/download/v0.5.2/specassay-0.5.2.zip
+  $ sha256sum specassay-0.5.2.zip
+  a9acd0848132bee975be7ca6759a531ff02b736c99a98b1bc4e7d8da90da7c82  specassay-0.5.2.zip
 
 Component digests, same run:
-  874728251c850e84d71f7a94dbdc326073703a8b408690d87a62b68d43dc6eff  specassay-check-0.5.1.zip
-  41e5b5e807bbb2b7d4d90253886122416109465af023d85a110cd522c16848fc  specassay-preset-0.5.1.zip
+  f481c6794d0cffc6d532721c1acc378287ba291b3e74dbe1e54eef083d1e7a20  specassay-check-0.5.2.zip
+  9920daf8b7ebe2d5e0d5e723409719afeaaa7c59788a6f3ecda67e2f7543d0b9  specassay-preset-0.5.2.zip
 
 All three match the digests this project recorded independently at release on
 2026-09-17.
@@ -151,13 +153,13 @@ Test scenarios, clean project:
   Installed 'specassay' (2 added, 0 already present).
 
   $ specify bundle list
-  specassay v0.5.1 (2 components, installed 2026-09-20T14:17:25Z)
+  specassay v0.5.2 (2 components, installed 2026-09-23T17:41:00Z)
   $ specify preset list
-  SpecAssay (specassay) v0.5.1 - enabled - priority 10
+  SpecAssay (specassay) v0.5.2 - enabled - priority 10
   $ specify extension list
-  SpecAssay Check (v0.5.1)
+  SpecAssay Check (v0.5.2)
 
-All three resolve 0.5.1 on the first try. A thread was then driven from an
+All three resolve 0.5.2 on the first try. A thread was then driven from an
 empty registry through mint, the Gate's honest refusal, and a clear to green as
 tracked debt.
 ```
@@ -185,12 +187,12 @@ specify bundle install specassay
   "specassay": {
     "name": "SpecAssay",
     "id": "specassay",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "role": "developer",
     "description": "Durable-ID promotion for stock Spec Kit: templates, Gate 2 refusal, and trace-manifest emission.",
     "author": "Rik Dryfoos",
     "license": "MIT",
-    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-0.5.1.zip",
+    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.5.2/specassay-0.5.2.zip",
     "repository": "https://github.com/rdryfoos/specassay",
     "requires": {
       "speckit_version": ">=0.14.0,<2.0.0"
@@ -213,7 +215,7 @@ specify bundle install specassay
 Update to an existing entry, not a new bundle.
 
 File this after the two component issues, and reference them: the bundle pins
-specassay-check@0.5.1 and specassay@0.5.1, so a partial bump leaves
+specassay-check@0.5.2 and specassay@0.5.2, so a partial bump leaves
 `specify bundle install` unable to resolve.
 
   extension - updates #4252 (merged as #4254), filed as #4690 (supersedes #4649)

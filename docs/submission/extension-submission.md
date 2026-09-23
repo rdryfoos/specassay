@@ -8,6 +8,8 @@ matching field. Title: `[Extension]: Add SpecAssay Check (update to 0.5.1)`.
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 
+**Refused 2026-09-23 on the default-branch manifest mismatch, and superseded.** The validator read `bundle.yml` on `main`, which v0.5.2 had moved to 0.5.2, against a submission filed at 0.5.1, and asked for the 0.5.2 release with matching artifact and metadata. #4690 was pre-empted rather than left to fail the same way. The filing moves to 0.5.2 with the catalogs.
+
 **Refiled 2026-09-23 as [github/spec-kit#4690](https://github.com/github/spec-kit/issues/4690), superseding #4649.** #4649 failed on the validator's fetch alone, twice; see the CHEATSHEET's
 **v0.5.1 refiled** section for the run IDs and what each one meant. The fields
 below are what #4690 carries.
@@ -30,7 +32,7 @@ which exists.
 
 **Extension Name:** SpecAssay Check
 
-**Version:** 0.5.1
+**Version:** 0.5.2
 
 **Description:**
 
@@ -45,7 +47,7 @@ Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).
 **Download URL:**
 
 ```
-https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-check-0.5.1.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.5.2/specassay-check-0.5.2.zip
 ```
 
 **License:** MIT
@@ -115,28 +117,28 @@ traceability, gate, ci, governance, sdd
 **Testing Details:**
 
 ```
-This updates the existing catalog entry from 0.4.12 to 0.5.1. It supersedes
+This updates the existing catalog entry from 0.4.12 to 0.5.2. It supersedes
 issue #4252, filed at 0.4.12 and merged as catalog PR #4254. Neither v0.4.13
 nor v0.5.0 was ever filed, so this one carries three releases of change.
 
-Tested on: Linux, Spec Kit 1.0.5, Python 3.11.15, on 2026-09-20.
-Previously captured on Spec Kit 1.0.4 at release time, 2026-09-17.
+Tested on: Linux, Spec Kit 1.0.5, Python 3.11.15, on 2026-09-23, against the
+published v0.5.2 assets in a clean project.
 The >=0.14.0 floor was exercised at v0.5.1 on 2026-09-17: the bundle installs
 and the Gate runs on 0.14.0, though that version does not scaffold the settings
 file, so the Gate reports `config: MISSING` and continues on defaults.
 
-sha256 of the submitted archive, computed from the v0.5.1 tag on 2026-09-20:
+sha256 of the submitted archive, computed from the published v0.5.2 assets on 2026-09-23:
 
-  $ curl -fsSL -O https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-check-0.5.1.zip
-  $ sha256sum specassay-check-0.5.1.zip
-  874728251c850e84d71f7a94dbdc326073703a8b408690d87a62b68d43dc6eff  specassay-check-0.5.1.zip
+  $ curl -fsSL -O https://github.com/rdryfoos/specassay/releases/download/v0.5.2/specassay-check-0.5.2.zip
+  $ sha256sum specassay-check-0.5.2.zip
+  f481c6794d0cffc6d532721c1acc378287ba291b3e74dbe1e54eef083d1e7a20  specassay-check-0.5.2.zip
 
 Test scenarios, in a clean project (`specify init . --here --force
 --non-interactive --integration claude`):
 
 1. Installed direct from the download URL:
      $ specify extension add specassay-check --from <download-url>
-     installed; `specify extension list` reports SpecAssay Check (v0.5.1)
+     installed; `specify extension list` reports SpecAssay Check (v0.5.2)
 2. Ran the Gate on an empty project. It refuses and names the fix:
      FAIL: registry not found: PRD.md
 3. Ran the Gate on an empty-but-present registry. Exit 0, and it prints the
@@ -155,14 +157,14 @@ Test scenarios, in a clean project (`specify init . --here --force
      exit 0, and trace-manifest.json reports AC-LOGIN-10 as tracked-debt.
 
 The extension is also run against its own repository on every pull request,
-where it currently reports OK on 71 registry IDs.
+where it currently reports OK on 96 registry IDs.
 ```
 
 **Example Usage:**
 
 ```bash
 # Install from the release archive
-specify extension add specassay-check --from https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-check-0.5.1.zip
+specify extension add specassay-check --from https://github.com/rdryfoos/specassay/releases/download/v0.5.2/specassay-check-0.5.2.zip
 
 # Mint a durable ID at intent
 /speckit.specassay-check.mint AC LOGIN "Given a wrong password, when the user signs in, then the form shows an error and no session starts."
@@ -180,8 +182,8 @@ specify extension add specassay-check --from https://github.com/rdryfoos/specass
     "id": "specassay-check",
     "description": "Gate 2 refuses silent gaps and emits a trace-manifest (`trace-manifest.json`).",
     "author": "Rik Dryfoos",
-    "version": "0.5.1",
-    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-check-0.5.1.zip",
+    "version": "0.5.2",
+    "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.5.2/specassay-check-0.5.2.zip",
     "repository": "https://github.com/rdryfoos/specassay",
     "homepage": "https://www.specassay.com",
     "documentation": "https://github.com/rdryfoos/specassay/blob/main/extensions/specassay-check/README.md",
