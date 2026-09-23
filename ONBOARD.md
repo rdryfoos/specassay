@@ -45,7 +45,7 @@ wrong you can name the block it went wrong in.
 2026-09-17, against those exact versions, and the output quoted under each block
 is that run's real output, trimmed to the lines that carry the receipt, never a
 sketch of what it might say. All twelve were re-captured that day on v0.5.1. The
-previous capture was on v0.4.13, and every receipt reproduced unchanged, which is
+previous capture was on v0.4.13, and every receipt reproduced unchanged, which is <!-- specassay:stale-ok the record of what was true at v0.4.13; re-observing it would mean re-running on that release, which is not what the sentence claims -->
 worth knowing and is not the same as having assumed it. That run was on Linux,
 not a Mac.
 macOS and Linux are both first-class for these commands, and the only difference

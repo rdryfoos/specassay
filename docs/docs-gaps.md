@@ -82,7 +82,7 @@ still unresolved), and the commit that closed it.
 7. **Inputs for ONBOARD.md, from the 2026-09-03 and 2026-09-04
    commissions.** No onboarding doc exists yet; when its commission runs,
    these are the facts it inherits, each verified in a clean `specify init`
-   project and recorded in `docs/submission/test-evidence.md` (v0.4.13) or
+   project and recorded in `docs/submission/test-evidence.md` (v0.4.13) or <!-- specassay:stale-ok the record of what was true at v0.4.13; re-observing it would mean re-running on that release, which is not what the sentence claims -->
    `extensions/specassay-check/README.md`:
    - `specify bundle install specassay` (the README's catalog path) does
      **not** scaffold `specassay-check-config.yml`; `specify extension add`
@@ -125,7 +125,7 @@ still unresolved), and the commit that closed it.
    command (rung one installs cold, it never upgrades) and `dig` (still
    not the first instruction for a brownfield reader). The whole document
    was verified by extracting its own paste-blocks and running them in
-   order in a clean project, against SpecAssay v0.4.13 and Spec Kit v1.0.4.
+   order in a clean project, against SpecAssay v0.4.13 and Spec Kit v1.0.4. <!-- specassay:stale-ok the record of what was true at v0.4.13; re-observing it would mean re-running on that release, which is not what the sentence claims -->
    It quotes no duration: no cold operator has produced a measured one yet,
    and the document asks its first one for it.
 
@@ -204,11 +204,11 @@ still unresolved), and the commit that closed it.
     rather than of the cause. The second occurrence was in the design of
     the first repair.
 
-11. **`ONBOARD.md`'s receipts were pinned to v0.4.13 while the catalogs moved
+11. **`ONBOARD.md`'s receipts were pinned to v0.4.13 while the catalogs moved <!-- specassay:stale-ok the record of what was true at v0.4.13; re-observing it would mean re-running on that release, which is not what the sentence claims -->
     on.** **Closed 2026-09-17.** The quickstart's contract is that every block's
     quoted output is that block's real output from one run against the pinned
     versions, never a sketch. That run had happened on 2026-09-15 against
-    v0.4.13, and two releases landed after it, so a reader following the page
+    v0.4.13, and two releases landed after it, so a reader following the page <!-- specassay:stale-ok the record of what was true at v0.4.13; re-observing it would mean re-running on that release, which is not what the sentence claims -->
     installed a version the page was not captured on. For a week the divergence
     was named in a note under the pin table rather than papered over, because
     re-pinning the table without re-running the sitting would have broken
