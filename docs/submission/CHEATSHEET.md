@@ -18,11 +18,11 @@ versions, so a partial landing leaves `specify bundle install` unable to resolve
 Full field-by-field values live in the three paste-from docs, which mirror each
 form exactly, catalog JSON included:
 
-| # | Issue | Form | Paste from | Filed 2026-09-23 | Superseded |
+| # | Issue | Form | Paste from | Filed 2026-09-23 at 0.5.2 | Supersedes |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Extension | <https://github.com/github/spec-kit/issues/new?template=extension_submission.yml> | [extension-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md) | [#4690](https://github.com/github/spec-kit/issues/4690) | [#4649](https://github.com/github/spec-kit/issues/4649) |
-| 2 | Preset | <https://github.com/github/spec-kit/issues/new?template=preset_submission.yml> | [preset-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md) | [#4691](https://github.com/github/spec-kit/issues/4691) | [#4650](https://github.com/github/spec-kit/issues/4650) |
-| 3 | Bundle | <https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml> | [bundle-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/bundle-submission.md) | [#4692](https://github.com/github/spec-kit/issues/4692) | [#4651](https://github.com/github/spec-kit/issues/4651) |
+| 1 | Extension | <https://github.com/github/spec-kit/issues/new?template=extension_submission.yml> | [extension-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md) | [#4711](https://github.com/github/spec-kit/issues/4711) | [#4690](https://github.com/github/spec-kit/issues/4690), [#4649](https://github.com/github/spec-kit/issues/4649) |
+| 2 | Preset | <https://github.com/github/spec-kit/issues/new?template=preset_submission.yml> | [preset-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md) | [#4713](https://github.com/github/spec-kit/issues/4713) | [#4691](https://github.com/github/spec-kit/issues/4691), [#4650](https://github.com/github/spec-kit/issues/4650) |
+| 3 | Bundle | <https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml> | [bundle-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/bundle-submission.md) | [#4715](https://github.com/github/spec-kit/issues/4715) | [#4692](https://github.com/github/spec-kit/issues/4692), [#4651](https://github.com/github/spec-kit/issues/4651) |
 
 ## Issue 1: Extension
 
@@ -240,9 +240,12 @@ reads 0.5.2 at once.
 
 | Component | Filed 0.5.2 | Supersedes | Originally |
 | --- | --- | --- | --- |
-| Extension | see below | #4690 | #4649, #4252 |
-| Preset | see below | #4691 | #4650, #4253 |
-| Bundle | see below | #4692 | #4651, #4255 |
+| Extension | [#4711](https://github.com/github/spec-kit/issues/4711) | #4690 | #4649, #4252 |
+| Preset | [#4713](https://github.com/github/spec-kit/issues/4713) | #4691 | #4650, #4253 |
+| Bundle | [#4715](https://github.com/github/spec-kit/issues/4715) | #4692 | #4651, #4255 |
+
+Filed in that order on 2026-09-23, by Rik's hand, and #4715 names the other two
+in its Additional Context.
 
 **The catalogs now carry `sha256`.** The field is optional in Spec Kit's schema
 and **verified before install**, so an entry that carries it is checkable by the
