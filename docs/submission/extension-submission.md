@@ -4,7 +4,7 @@ Paste-ready answers for Spec Kit's **Extension Submission** form
 (<https://github.com/github/spec-kit/issues/new?template=extension_submission.yml>).
 Fields below appear in the form's exact order; copy each answer into the
 matching field. Title: `[Extension]: Add SpecAssay Check (update to 0.5.1)`.
-<!-- specassay:current -->
+<!-- specassay:stale-ok the values filed in github/spec-kit #4690, #4691 and #4692 against the v0.5.1 assets, frozen until the maintainers answer; bumping them would falsify what was filed, and the catalogs stay pinned to match (ruled 2026-09-23) -->
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 

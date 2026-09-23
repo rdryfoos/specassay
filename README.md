@@ -116,7 +116,7 @@ specify bundle catalog add \
 specify bundle install specassay
 ```
 
-`specify extension add` scaffolds `.specify/extensions/specassay-check/specassay-check-config.yml` from the bundled template. Whether `specify bundle install` (the path above) does depends on your Spec Kit: 0.14.0 does not and 1.0.4 does (both observed on SpecAssay v0.5.1, 2026-09-17), and 0.15.3.dev0 did not (observed on v0.4.13, 2026-09-04). The change landed in Spec Kit 1.0.3, github/spec-kit#4285. Either way you never have to check by hand: every Gate run prints its own state on its first lines, either
+`specify extension add` scaffolds `.specify/extensions/specassay-check/specassay-check-config.yml` from the bundled template. Whether `specify bundle install` (the path above) does depends on your Spec Kit: 0.14.0 does not and 1.0.4 does (both observed on SpecAssay v0.5.1, 2026-09-17), and 0.15.3.dev0 did not (observed on v0.4.13, 2026-09-04). The change landed in Spec Kit 1.0.3, github/spec-kit#4285. Either way you never have to check by hand: every Gate run prints its own state on its first lines, either <!-- specassay:stale-ok the record of what was true at v0.4.13; re-observing it would mean re-running on that release, which is not what the sentence claims -->
 
 ```text
   config: .specify/extensions/specassay-check/specassay-check-config.yml (from specassay-check-config.yml)
