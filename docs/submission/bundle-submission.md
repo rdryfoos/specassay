@@ -10,12 +10,14 @@ File this **third**, after the extension and preset issues, and name both in it.
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 
+**Filed 2026-09-23 at 0.5.2 as [github/spec-kit#4715](https://github.com/github/spec-kit/issues/4715), superseding #4692,** after the extension ([#4711](https://github.com/github/spec-kit/issues/4711)) and the preset ([#4713](https://github.com/github/spec-kit/issues/4713)). The fields below are what #4715 carries.
+
 **Refused 2026-09-23 on the default-branch manifest mismatch, and superseded.** The validator read `bundle.yml` on `main`, which v0.5.2 had moved to 0.5.2, against #4692 filed at 0.5.1, and asked for the 0.5.2 release with matching artifact and metadata. This is the issue that caught it; #4690 and #4691 were pre-empted. The filing moves to 0.5.2 with the catalogs.
 
 **Refiled 2026-09-23 as [github/spec-kit#4692](https://github.com/github/spec-kit/issues/4692), superseding #4651,** after the extension (#4690) and the preset (#4691).
 #4651 failed on the version-string mismatch and the validator's fetch; see the
 CHEATSHEET's **v0.5.1 refiled** section for the run IDs and what each one meant.
-The fields below are what #4692 carries.
+#4692 carried these fields at 0.5.1.
 
 **Filed 2026-09-20 as [github/spec-kit#4651](https://github.com/github/spec-kit/issues/4651),**
 after the extension (#4649) and the preset (#4650). A version-bump filing: the

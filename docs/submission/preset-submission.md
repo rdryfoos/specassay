@@ -8,11 +8,13 @@ matching field. Title: `[Preset]: Add SpecAssay (update to 0.5.2)`.
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 
+**Filed 2026-09-23 at 0.5.2 as [github/spec-kit#4713](https://github.com/github/spec-kit/issues/4713), superseding #4691.** The fields below are what #4713 carries.
+
 **Refused 2026-09-23 on the default-branch manifest mismatch, and superseded.** The validator read `bundle.yml` on `main`, which v0.5.2 had moved to 0.5.2, against a submission filed at 0.5.1, and asked for the 0.5.2 release with matching artifact and metadata. #4691 was pre-empted rather than left to fail the same way. The filing moves to 0.5.2 with the catalogs.
 
 **Refiled 2026-09-23 as [github/spec-kit#4691](https://github.com/github/spec-kit/issues/4691), superseding #4650.** #4650 failed on the Documentation URL and the validator's fetch; see the CHEATSHEET's
-**v0.5.1 refiled** section for the run IDs and what each one meant. The fields
-below are what #4691 carries.
+**v0.5.1 refiled** section for the run IDs and what each one meant. #4691
+carried these fields at 0.5.1.
 
 **Filed 2026-09-20 as [github/spec-kit#4650](https://github.com/github/spec-kit/issues/4650).**
 A version-bump filing. The `v0.4.12` update was filed as #4253 and merged as
