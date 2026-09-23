@@ -8,6 +8,10 @@ matching field. Title: `[Preset]: Add SpecAssay (update to 0.5.1)`.
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 
+**Refiled 2026-09-23 as [github/spec-kit#4691](https://github.com/github/spec-kit/issues/4691), superseding #4650.** #4650 failed on the Documentation URL and the validator's fetch; see the CHEATSHEET's
+**v0.5.1 refiled** section for the run IDs and what each one meant. The fields
+below are what #4691 carries.
+
 **Filed 2026-09-20 as [github/spec-kit#4650](https://github.com/github/spec-kit/issues/4650).**
 A version-bump filing. The `v0.4.12` update was filed as #4253 and merged as
 catalog PR #4256, and #4650 says in its body that it updates #4253.
@@ -48,7 +52,7 @@ https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-preset-
 **Documentation URL:**
 
 ```
-https://github.com/rdryfoos/specassay/blob/main/PROMOTION-CONTRACT.md
+https://github.com/rdryfoos/specassay/blob/main/presets/specassay/README.md
 ```
 
 **License:** MIT
@@ -64,6 +68,11 @@ a catalog that claims a wider range than the zip inside it is the exact failure
 the CHEATSHEET's sweep rule exists to prevent. Named here rather than quietly
 corrected, because fixing `catalogs/*.json` is a release artifact and is not
 this PR's to change.
+
+**Closed 2026-09-23 by Rik's ruling.** The catalogs align at v0.5.2; until that
+cut, an issue is written from the manifests and every declaration inside one
+issue must match. Recorded because a divergence inside a single issue is what
+failed #4651.
 
 **Required Extensions (optional):**
 

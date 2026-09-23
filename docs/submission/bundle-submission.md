@@ -10,6 +10,11 @@ File this **third**, after the extension and preset issues, and name both in it.
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 
+**Refiled 2026-09-23 as [github/spec-kit#4692](https://github.com/github/spec-kit/issues/4692), superseding #4651,** after the extension (#4690) and the preset (#4691).
+#4651 failed on the version-string mismatch and the validator's fetch; see the
+CHEATSHEET's **v0.5.1 refiled** section for the run IDs and what each one meant.
+The fields below are what #4692 carries.
+
 **Filed 2026-09-20 as [github/spec-kit#4651](https://github.com/github/spec-kit/issues/4651),**
 after the extension (#4649) and the preset (#4650). A version-bump filing: the
 `v0.4.12` update was filed as #4255 and merged as catalog PR #4257, and #4651
@@ -63,6 +68,11 @@ a catalog that claims a wider range than the zip inside it is the exact failure
 the CHEATSHEET's sweep rule exists to prevent. Named here rather than quietly
 corrected, because fixing `catalogs/*.json` is a release artifact and is not
 this PR's to change.
+
+**Closed 2026-09-23 by Rik's ruling.** The catalogs align at v0.5.2; until that
+cut, an issue is written from the manifests and every declaration inside one
+issue must match. Recorded because a divergence inside a single issue is what
+failed #4651.
 
 **Integration Target (optional):** leave empty. The bundle is
 integration-agnostic.
@@ -183,7 +193,7 @@ specify bundle install specassay
     "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-0.5.1.zip",
     "repository": "https://github.com/rdryfoos/specassay",
     "requires": {
-      "speckit_version": ">=0.14.0"
+      "speckit_version": ">=0.14.0,<2.0.0"
     },
     "provides": {
       "extensions": 1,
@@ -206,7 +216,7 @@ File this after the two component issues, and reference them: the bundle pins
 specassay-check@0.5.1 and specassay@0.5.1, so a partial bump leaves
 `specify bundle install` unable to resolve.
 
-  extension - updates #4252 (merged as #4254), filed as #4649
-  preset    - updates #4253 (merged as #4256), filed as #4650
-  bundle    - updates #4255 (merged as #4257), filed as #4651
+  extension - updates #4252 (merged as #4254), filed as #4690 (supersedes #4649)
+  preset    - updates #4253 (merged as #4256), filed as #4691 (supersedes #4650)
+  bundle    - updates #4255 (merged as #4257), filed as #4692 (supersedes #4651)
 ```
