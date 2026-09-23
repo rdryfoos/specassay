@@ -2,10 +2,9 @@
 
 A copy-and-paste walk. Each issue is a GitHub issue form on the Spec Kit repo;
 open the form, then work down this page filling each field in the order the form
-asks for it. The values below are for **v0.5.1** and are what was actually filed
-on 2026-09-23, refiling the 2026-09-20 round at a maintainer's request. See
-**v0.5.1 refiled**, below, for why.
-<!-- specassay:stale-ok the values filed in github/spec-kit #4690, #4691 and #4692 against the v0.5.1 assets, frozen until the maintainers answer; bumping them would falsify what was filed, and the catalogs stay pinned to match (ruled 2026-09-23) -->
+asks for it. The values below are for **v0.5.2**. See **v0.5.2 refiled**, below, for why the
+previous round had to be filed again.
+<!-- specassay:current -->
 
 **The issue route is the only route.** A direct pull request against
 `presets/catalog.community.json` and its siblings is triaged out of scope and
@@ -32,14 +31,14 @@ Form: <https://github.com/github/spec-kit/issues/new?template=extension_submissi
 Title:
 
 ```
-[Extension]: Add SpecAssay Check (update to 0.5.1)
+[Extension]: Add SpecAssay Check (update to 0.5.2)
 ```
 
 Then, in the form's own order:
 
 1. **Extension ID**: `specassay-check`
 2. **Extension Name**: `SpecAssay Check`
-3. **Version**: `0.5.1` <!-- specassay:stale-ok the values filed in github/spec-kit #4690, #4691 and #4692 against the v0.5.1 assets, frozen until the maintainers answer; bumping them would falsify what was filed, and the catalogs stay pinned to match (ruled 2026-09-23) -->
+3. **Version**: `0.5.2` <!-- specassay:current -->
 4. **Description**, **Author**, **Repository URL**, **Download URL**, **License**: paste-from doc
 5. **Homepage**, **Documentation URL**, **Changelog URL** (all optional): paste-from doc
 6. **Required Spec Kit Version**: paste-from doc
@@ -60,14 +59,14 @@ Form: <https://github.com/github/spec-kit/issues/new?template=preset_submission.
 Title:
 
 ```
-[Preset]: Add SpecAssay (update to 0.5.1)
+[Preset]: Add SpecAssay (update to 0.5.2)
 ```
 
 Then, in the form's own order:
 
 1. **Preset ID**: `specassay`
 2. **Preset Name**: `SpecAssay`
-3. **Version**: `0.5.1` <!-- specassay:stale-ok the values filed in github/spec-kit #4690, #4691 and #4692 against the v0.5.1 assets, frozen until the maintainers answer; bumping them would falsify what was filed, and the catalogs stay pinned to match (ruled 2026-09-23) -->
+3. **Version**: `0.5.2` <!-- specassay:current -->
 4. **Description**, **Author**, **Repository URL**, **Download URL**: paste-from doc
 5. **Documentation URL**, **License**, **Required Spec Kit Version**: paste-from doc
 6. **Required Extensions** (optional), **Templates Provided** (`3`), **Commands Provided** (`0`), **Number of Scripts** (optional, `0`)
@@ -87,14 +86,14 @@ File this **last**. Form:
 Title:
 
 ```
-[Bundle]: Add SpecAssay (update to 0.5.1)
+[Bundle]: Add SpecAssay (update to 0.5.2)
 ```
 
 Then, in the form's own order:
 
 1. **Bundle ID**: `specassay`
 2. **Bundle Name**: `SpecAssay`
-3. **Version**: `0.5.1` <!-- specassay:stale-ok the values filed in github/spec-kit #4690, #4691 and #4692 against the v0.5.1 assets, frozen until the maintainers answer; bumping them would falsify what was filed, and the catalogs stay pinned to match (ruled 2026-09-23) -->
+3. **Version**: `0.5.2` <!-- specassay:current -->
 4. **Role or Team**: `developer`
 5. **Description**, **Author**, **Repository URL**, **Download URL**: paste-from doc
 6. **Documentation URL**, **License**, **Required Spec Kit Version**: paste-from doc
@@ -225,6 +224,34 @@ that page ever looks stale, read that workflow's run for the release
 rather than rebuilding by hand and leaving the cause in place. The hero
 pin above stays manual on purpose: it names a tag, which only a human cut
 decides.
+
+## v0.5.2 refiled, 2026-09-23
+
+**A release makes an open submission stale.** v0.5.2 shipped while #4690, #4691
+and #4692 were open at 0.5.1. Spec Kit's validator reads `bundle.yml` on the
+repository's **default branch**, found 0.5.2 there against a submission filed at
+0.5.1, and refused #4692 asking for the 0.5.2 release with matching artifact and
+metadata. #4690 and #4691 were pre-empted rather than left to fail the same way.
+
+**The catalogs moved with it.** The earlier ruling pinned `catalogs/*.json` at
+v0.5.1 so nothing an open submission pointed at would change underfoot. That is
+reversed: the submission is what moves, so the catalogs move too and everything
+reads 0.5.2 at once.
+
+| Component | Filed 0.5.2 | Supersedes | Originally |
+| --- | --- | --- | --- |
+| Extension | see below | #4690 | #4649, #4252 |
+| Preset | see below | #4691 | #4650, #4253 |
+| Bundle | see below | #4692 | #4651, #4255 |
+
+**The catalogs now carry `sha256`.** The field is optional in Spec Kit's schema
+and **verified before install**, so an entry that carries it is checkable by the
+tool rather than only by a reader. Ours never carried one until this round.
+
+**The lesson, which is the reason this section exists:** do not cut a release
+while a submission is open at the previous version, or expect to refile. The
+validator's reference is the default branch, not the tag, so publishing v0.5.2
+invalidated three open issues the moment `main` carried the new manifest.
 
 ## v0.5.1 refiled, 2026-09-23
 

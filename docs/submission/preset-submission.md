@@ -3,10 +3,12 @@
 Paste-ready answers for Spec Kit's **Preset Submission** form
 (<https://github.com/github/spec-kit/issues/new?template=preset_submission.yml>).
 Fields below appear in the form's exact order; copy each answer into the
-matching field. Title: `[Preset]: Add SpecAssay (update to 0.5.1)`.
-<!-- specassay:stale-ok the values filed in github/spec-kit #4690, #4691 and #4692 against the v0.5.1 assets, frozen until the maintainers answer; bumping them would falsify what was filed, and the catalogs stay pinned to match (ruled 2026-09-23) -->
+matching field. Title: `[Preset]: Add SpecAssay (update to 0.5.2)`.
+<!-- specassay:current -->
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
+
+**Refused 2026-09-23 on the default-branch manifest mismatch, and superseded.** The validator read `bundle.yml` on `main`, which v0.5.2 had moved to 0.5.2, against a submission filed at 0.5.1, and asked for the 0.5.2 release with matching artifact and metadata. #4691 was pre-empted rather than left to fail the same way. The filing moves to 0.5.2 with the catalogs.
 
 **Refiled 2026-09-23 as [github/spec-kit#4691](https://github.com/github/spec-kit/issues/4691), superseding #4650.** #4650 failed on the Documentation URL and the validator's fetch; see the CHEATSHEET's
 **v0.5.1 refiled** section for the run IDs and what each one meant. The fields
@@ -31,7 +33,7 @@ filed, so #4650 carries three releases of change.
 
 **Preset Name:** SpecAssay
 
-**Version:** 0.5.1
+**Version:** 0.5.2
 
 **Description:**
 
@@ -46,7 +48,7 @@ Appends durable-ID, Carries, and SpecAssay vocabulary onto Spec Kit spec, tasks,
 **Download URL:**
 
 ```
-https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-preset-0.5.1.zip
+https://github.com/rdryfoos/specassay/releases/download/v0.5.2/specassay-preset-0.5.2.zip
 ```
 
 **Documentation URL:**
@@ -77,7 +79,7 @@ failed #4651.
 **Required Extensions (optional):**
 
 ```
-specassay-check (>=0.5.1) - optional. The preset writes the vocabulary; the
+specassay-check (>=0.5.2) - optional. The preset writes the vocabulary; the
 extension enforces it. The templates are useful without it, but nothing refuses
 a silent gap until the extension is installed.
 ```
@@ -106,23 +108,22 @@ traceability, durable-ids, governance, sdd
 - Constitution template carries the end-to-end traceability article as a non-negotiable
 - Append strategy at priority 10, so it layers onto stock Spec Kit templates rather than replacing them
 
-This updates the existing catalog entry from 0.4.12 to 0.5.1, superseding
-issue #4253 (merged as catalog PR #4256).
+Update to an existing entry. Replaces #4691 which was filed at 0.5.1 before v0.5.2 shipped.
 
-Tested on Spec Kit 1.0.5, Linux, 2026-09-20:
+Tested on Spec Kit 1.0.5, Linux, 2026-09-23, against the published v0.5.2 asset:
 
-  $ specify preset add specassay --from https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-preset-0.5.1.zip
-  Preset 'SpecAssay' v0.5.1 installed (priority 10)
+  $ specify preset add specassay --from https://github.com/rdryfoos/specassay/releases/download/v0.5.2/specassay-preset-0.5.2.zip
+  Preset 'SpecAssay' v0.5.2 installed (priority 10)
 
   $ specify preset list
-  SpecAssay (specassay) v0.5.1 - enabled - priority 10
+  SpecAssay (specassay) v0.5.2 - enabled - priority 10
     Templates: 3
 
 All three templates resolve, and the tasks template carries its `Carries`
 vocabulary intact after installation.
 
-sha256, computed from the v0.5.1 tag on 2026-09-20:
-  41e5b5e807bbb2b7d4d90253886122416109465af023d85a110cd522c16848fc  specassay-preset-0.5.1.zip
+sha256, computed from the published v0.5.2 assets on 2026-09-23:
+  9920daf8b7ebe2d5e0d5e723409719afeaaa7c59788a6f3ecda67e2f7543d0b9  specassay-preset-0.5.2.zip
 
 Companion issues: the extension (updates #4252) and the bundle (updates #4255).
 ```
