@@ -135,6 +135,20 @@ construction. Anyone relaxing single-parent to a DAG later must revisit
 rollup safety (a node reachable from two parents can't be summed once)
 before shipping it, not discover the bug in production.
 
+**The two files spell it differently, and that is deliberate.** v4 carries
+`parent`, a scalar ID or `null`. `trace-manifest.v5beta.json` carries
+`parents`, a list, which is the spelling `docs/trace-manifest-v5.md`
+declares; an empty list there means what `null` means here, absence rather
+than a guess. **In v5, the singular is retired**: `parent` is not written
+into that file at all, so no reader has two spellings to choose between.
+v4 keeps the scalar, because v4 is a frozen contract with strict
+validators and renaming a field there is not a spelling fix.
+
+Corrected 2026-09-22. Until then the v5beta rows were built from the v4
+rows and inherited v4's spelling, so every edge this Gate derived was
+absent under the name the v5 spec declares, and invisible to a reader
+keyed on it.
+
 ## The second file: `trace-manifest.v5beta.json`
 
 <!-- @covers FR-DOCS-20 -->

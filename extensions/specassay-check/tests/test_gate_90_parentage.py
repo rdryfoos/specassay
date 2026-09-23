@@ -152,4 +152,38 @@ def test_parent_and_rollup_are_additive_no_format_version_bump(project):
     v5 = json.loads((project.root / "trace-manifest.v5beta.json").read_text())
     assert v5["schemaVersion"] == 5
     row = next(r for r in v5["rows"] if r["id"] == "FR-WIDGET-10")
-    assert "parent" in row
+    # v5 declares `parents: [id]`. The singular is v4's and must not travel
+    # into this file: a reader that has to guess which spelling it got is the
+    # defect this pins, not a cosmetic difference.
+    assert "parents" in row
+    assert row["parents"] == []
+    assert "parent" not in row
+
+
+def test_v5_parents_is_the_list_the_v5_spec_declares(project):
+    """The edge reaches the v5 file under the name the v5 doc uses.
+
+    Before 2026-09-22 the v5 rows were built from the v4 rows and inherited
+    v4's scalar `parent`, so every derived edge was invisible to a reader
+    keyed on `parents`, which is the only spelling Loupe reads.
+    """
+    project.prd("\n".join([
+        "- FR-WIDGET-10 — parent row.",
+        "  - AC-WIDGET-10 — Given a child, when emitted, then it names its parent.",
+    ]))
+    project.write("specs/backlog/spec.md", "FR-WIDGET-10\nAC-WIDGET-10\n")
+    project.write(
+        "specs/backlog/tasks.md",
+        "- [ ] T1 — **Carries**: FR-WIDGET-10, AC-WIDGET-10\n",
+    )
+    project.config(parent_derivation="heading-nesting")
+    proc, manifest = project.run()
+    assert proc.returncode == 0, proc.stderr
+
+    # v4 keeps the scalar: it is a frozen contract, not a spelling to fix.
+    assert project.row(manifest, "AC-WIDGET-10")["parent"] == "FR-WIDGET-10"
+
+    v5 = json.loads((project.root / "trace-manifest.v5beta.json").read_text())
+    child = next(r for r in v5["rows"] if r["id"] == "AC-WIDGET-10")
+    assert child["parents"] == ["FR-WIDGET-10"]
+    assert "parent" not in child

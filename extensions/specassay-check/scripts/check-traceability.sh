@@ -1436,11 +1436,23 @@ if MATRIX_MODE_ON or PORTFOLIO_MODE_ON:
 # emitter, clew, having pushed on the field shapes), which hasn't happened.
 # This is v4's own already-known data reshaped, not new computation: tier
 # from the type prefix SpecAssay already parses, origin as registry's own
-# {path,line} under its new spelling. parents/rollup are left absent on
-# purpose -- SpecAssay has no real per-ID parent edge today (only a domain
-# grouping convention), and the v5 doc explicitly designs for that: absent
-# parents falls back to domain-grouping in any v5 reader, so this stays
-# honest about what the Gate actually knows rather than inventing edges.
+# {path,line} under its new spelling, and parents under the spelling the v5
+# doc declares.
+#
+# THE SPELLING (2026-09-22). v5 declares `parents: [id]`, a list; v4 declares
+# `parent`, a scalar. The v5 rows are built from the v4 rows, so the v4
+# spelling rode through into the v5 file and no reader keyed on the spec's
+# own field ever saw an edge. Loupe reads only the plural, so every edge this
+# Gate derived was invisible to the one viewer built to draw them. The v4
+# row keeps `parent`: v4 is a frozen contract with strict validators, and
+# renaming a field there is not a spelling fix.
+#
+# The comment this replaces said parents and rollup were left absent on
+# purpose, because SpecAssay had no per-ID parent edge. That was true when it
+# was written and stopped being true when FR-GATE-90 shipped heading-nesting
+# derivation: the rows have carried real edges since, under a name the spec
+# does not use. A comment that outlives its own subject is how a reader
+# concludes a field is missing when it is merely misspelled.
 tier_by_type = {"US": "intent", "FR": "requirement", "NFR": "requirement", "AC": "criterion"}
 v5_rows = []
 for row in rows:
@@ -1448,6 +1460,13 @@ for row in rows:
     v5_row["tier"] = tier_by_type.get(row["type"], row["type"])
     if row.get("registry"):
         v5_row["origin"] = {"kind": "registry-line", **row["registry"]}
+    # v4's scalar `parent` becomes v5's `parents` list. No edge is invented:
+    # a row with no parent gets [], which the v5 doc reads as "fall back to
+    # the domain-grouping convention", the same absence the scalar's null
+    # meant. The singular does not travel into the v5 file at all, so no
+    # reader has two spellings to choose between.
+    parent = v5_row.pop("parent", None)
+    v5_row["parents"] = [parent] if parent else []
     v5_rows.append(v5_row)
 
 ext_version = os.environ.get("EXT_VERSION", "0.0.0")
