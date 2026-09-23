@@ -124,8 +124,6 @@ vocabulary intact after installation.
 
 sha256, computed from the published v0.5.2 assets on 2026-09-23:
   9920daf8b7ebe2d5e0d5e723409719afeaaa7c59788a6f3ecda67e2f7543d0b9  specassay-preset-0.5.2.zip
-
-Companion issues: the extension (updates #4252) and the bundle (updates #4255).
 ```
 
 **Testing Checklist:** tick all 4.
