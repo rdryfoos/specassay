@@ -3,7 +3,82 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
-## Unreleased
+## 0.5.2 (2026-09-23)
+
+Components: bundle 0.5.2, extension 0.5.2, preset 0.5.2.
+
+**The catalogs still point at v0.5.1 assets, on purpose.** `catalogs/*.json` pin
+the v0.5.1 release zips because Spec Kit issues #4690, #4691 and #4692 were
+filed against exactly those artifacts and are under review. v0.5.2 publishes its
+assets beside them; a later change bumps the catalogs once the maintainer
+answers. So this release's manifests read 0.5.2 while its catalogs read 0.5.1,
+which is a divergence with a reason and a date rather than a slip.
+
+### A task is one logical line, however many lines it occupies
+
+`FR-GATE-140`. A `**Carries**:` list that soft-wraps onto a continuation line now
+carries the same IDs it would carry unwrapped, and the mark counts wherever in
+the task it sits. Before this, two scans read one `tasks.md` and disagreed one
+line apart: the exact-set scan read every line and counted a wrapped ID as
+claimed, while the pending scan matched only the physical `- [ ]` line and never
+saw it. The Gate reported a silent gap where the truth was that two parsers
+differed, which is rule 12 inside the tool that exists to refuse it.
+
+**Ruled fold rather than refuse.** Refusing a wrapped list would make an author
+break their wrapping to satisfy the parser, red every adopter whose `tasks.md`
+already wraps, and put the parser's limitation on the author. Found in the Bang
+rehearsal on v0.5.1, where three acceptance criteria reported as gaps for no
+reason a reader could find.
+
+**Upgrade note:** if a wrapped `Carries` list has been reporting phantom gaps,
+they disappear on upgrade. No registry change is needed and no status is
+reclassified: this repository's own manifest was diffed row by row and nothing
+moved.
+
+### `trace-manifest.v5beta.json` writes `parents[]`, the spelling its spec declares
+
+The v5 rows are built from the v4 rows, so v4's scalar `parent` rode through and
+`parents` was never written. Every edge the Gate has derived since `FR-GATE-90`
+was present under a name no v5 reader looks for, and invisible to the one viewer
+built to draw it. On this repository's own manifest: 35 rows carried the
+singular and none carried the plural; now 35 carry the plural and none the
+singular.
+
+**v4 is unchanged and keeps `parent`.** It is a frozen contract with strict
+validators, and renaming a field there is not a spelling fix. A row with no
+parent gets `[]`, which the v5 doc already reads as the domain-grouping
+fallback, so no edge is invented.
+
+**Consumers of `trace-manifest.v5beta.json` that read `parent` must read
+`parents` instead.** Nothing reading v4 alone changes.
+
+### The objective tier, minted as intent only
+
+No code. `PRD.md` gains an `OBJ-` tier above story, in the practice's own order:
+the promise first, the build later. `CASE.md` holds bets, scored by measures in
+the world; `PRD.md` holds promises, proven by named tests; a green objective
+means its promises were kept, not that the bet paid. Objective IDs are assigned
+by the Gate and written back into `CASE.md`, never typed by a person, and the
+Gate never renumbers. Objectives are read by heading, so any numbering on the
+CASE template's questions is decoration.
+
+Release cut lines (`Release: <name>`, a declared short list, an exact-set check)
+are minted in the same pass and sequenced behind the tier.
+
+Twenty-five rows, every one anointed backlog. **Nothing in this section changes
+the Gate's behaviour in 0.5.2.**
+
+### Also in this release
+
+- The preset README carries a pinned release install line beside the
+  version-agnostic one, because a catalog entry's documentation has to show the
+  exact download URL the entry declares.
+- `docs/submission/` records the 0.5.1 catalog resubmission: #4690 extension,
+  #4691 preset, #4692 bundle, superseding #4649, #4650 and #4651, with the
+  validator run IDs and what each earlier issue failed on.
+- `FIRST-LIGHT.md` is served as a page at `specassay.com/bang` rather than piped
+  into a pager, and its prose no longer assumes a terminal. `ONBOARD.md` carries
+  the marker that page's build anchors on.
 
 ### A stale version number is now refused, not noticed
 
