@@ -19,15 +19,7 @@ wrong you can name the block it went wrong in.
 > [https://github.com/rdryfoos/specassay](https://github.com/rdryfoos/specassay)
 
 > <!-- site:divider -->
-> **Starting from a machine with nothing on it?**
-> A companion page sets the machine up first:
-> [https://specassay.com/bang](https://specassay.com/bang). Open a terminal,
-> paste the blocks.
-> Three steps: it installs Claude Code, signs you in, and hands you a blank page
-> to write down what you are actually promising, in your own words, which is half
-> an hour and the part it exists for. Reading it changes nothing on your machine,
-> and you can come back here at any point: block 1 checks what you have rather
-> than assuming it.
+> [https://specassay.com/bang](https://specassay.com/bang)
 
 ---
 
