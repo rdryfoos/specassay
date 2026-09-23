@@ -8,6 +8,12 @@ Install from the latest released pack (the URL is version-agnostic: GitHub redir
 specify preset add --from https://github.com/rdryfoos/specassay/releases/latest/download/specassay-preset.zip
 ```
 
+Or pin the exact release, which is the form a catalog entry carries:
+
+```bash
+specify preset add --from https://github.com/rdryfoos/specassay/releases/download/v0.5.1/specassay-preset-0.5.1.zip
+```
+
 Or from a checkout, for development:
 
 ```bash
