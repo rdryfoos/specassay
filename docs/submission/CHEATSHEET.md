@@ -3,7 +3,8 @@
 A copy-and-paste walk. Each issue is a GitHub issue form on the Spec Kit repo;
 open the form, then work down this page filling each field in the order the form
 asks for it. The values below are for **v0.5.1** and are what was actually filed
-on 2026-09-20.
+on 2026-09-23, refiling the 2026-09-20 round at a maintainer's request. See
+**v0.5.1 refiled**, below, for why.
 <!-- specassay:current -->
 
 **The issue route is the only route.** A direct pull request against
@@ -18,11 +19,11 @@ versions, so a partial landing leaves `specify bundle install` unable to resolve
 Full field-by-field values live in the three paste-from docs, which mirror each
 form exactly, catalog JSON included:
 
-| # | Issue | Form | Paste from | Filed 2026-09-20 |
-| --- | --- | --- | --- | --- |
-| 1 | Extension | <https://github.com/github/spec-kit/issues/new?template=extension_submission.yml> | [extension-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md) | [#4649](https://github.com/github/spec-kit/issues/4649) |
-| 2 | Preset | <https://github.com/github/spec-kit/issues/new?template=preset_submission.yml> | [preset-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md) | [#4650](https://github.com/github/spec-kit/issues/4650) |
-| 3 | Bundle | <https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml> | [bundle-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/bundle-submission.md) | [#4651](https://github.com/github/spec-kit/issues/4651) |
+| # | Issue | Form | Paste from | Filed 2026-09-23 | Superseded |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Extension | <https://github.com/github/spec-kit/issues/new?template=extension_submission.yml> | [extension-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md) | [#4690](https://github.com/github/spec-kit/issues/4690) | [#4649](https://github.com/github/spec-kit/issues/4649) |
+| 2 | Preset | <https://github.com/github/spec-kit/issues/new?template=preset_submission.yml> | [preset-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md) | [#4691](https://github.com/github/spec-kit/issues/4691) | [#4650](https://github.com/github/spec-kit/issues/4650) |
+| 3 | Bundle | <https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml> | [bundle-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/bundle-submission.md) | [#4692](https://github.com/github/spec-kit/issues/4692) | [#4651](https://github.com/github/spec-kit/issues/4651) |
 
 ## Issue 1: Extension
 
@@ -225,7 +226,49 @@ rather than rebuilding by hand and leaving the cause in place. The hero
 pin above stays manual on purpose: it names a tag, which only a human cut
 decides.
 
-## v0.5.1 cut, 2026-09-17; filing not yet done
+## v0.5.1 refiled, 2026-09-23
+
+The 2026-09-20 round was closed and refiled. **#4650 and #4651 were closed by a
+maintainer asking for new clean issues; #4649 was still open and was superseded
+rather than left, so there would not be two open issues for one extension.**
+
+| Component | Filed 2026-09-23 | Supersedes |
+| --- | --- | --- |
+| Extension | #4690 | #4649 |
+| Preset | #4691 | #4650 |
+| Bundle | #4692 | #4651 |
+
+**What each of the old three actually failed on**, from the validator's own
+comments:
+
+| Issue | Failure | Fixed by |
+| --- | --- | --- |
+| #4649 | the validator's fetch, twice: runs [35620079292](https://github.com/github/spec-kit/actions/runs/35620079292) and [35732690224](https://github.com/github/spec-kit/actions/runs/35732690224) | nothing to fix; refiled clean |
+| #4650 | Documentation URL, and the fetch: run [35612050208](https://github.com/github/spec-kit/actions/runs/35612050208) | the URL now points at the preset README, which carries the pinned install line |
+| #4651 | version-string mismatch, and the fetch: run [35645864929](https://github.com/github/spec-kit/actions/runs/35645864929) | every declaration in the issue now reads `>=0.14.0,<2.0.0` |
+
+**All four fetch failures read "permission denied" or "blocked by the validation
+environment", not 404.** That matters for the next round: it is not a bad URL
+and there is nothing in this repository to fix. Measured independently on
+2026-09-22, all three assets fetch anonymously at HTTP 200 with byte counts and
+sha256 digests matching GitHub's own recorded asset digests, from a container
+holding no credentials for that repository.
+
+**Two lessons, both cheap to lose.**
+
+*Every declaration inside one issue must agree.* #4651 failed because the form
+field said `>=0.14.0,<2.0.0` while its own Proposed Catalog Entry said
+`>=0.14.0`. The manifests and `catalogs/*.json` still diverge the same way; that
+is ruled closed, with the catalogs aligning at v0.5.2. Until then, the issue is
+written from the manifests, and both places in one issue are checked before
+filing.
+
+*The preset's Documentation URL has to carry the install line the entry
+declares.* `releases/latest` is the right line for a reader and the wrong one
+for a validator comparing it against a pinned catalog entry, so the preset
+README now carries both.
+
+## v0.5.1 cut, 2026-09-17; filed 2026-09-20, refiled 2026-09-23
 
 Tag `v0.5.1` at `0f5976e52bccd374471f615fca37da0e8c6c76ee`, release
 <https://github.com/rdryfoos/specassay/releases/tag/v0.5.1>.

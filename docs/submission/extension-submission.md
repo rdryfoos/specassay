@@ -8,6 +8,10 @@ matching field. Title: `[Extension]: Add SpecAssay Check (update to 0.5.1)`.
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 
+**Refiled 2026-09-23 as [github/spec-kit#4690](https://github.com/github/spec-kit/issues/4690), superseding #4649.** #4649 failed on the validator's fetch alone, twice; see the CHEATSHEET's
+**v0.5.1 refiled** section for the run IDs and what each one meant. The fields
+below are what #4690 carries.
+
 **Filed 2026-09-20 as [github/spec-kit#4649](https://github.com/github/spec-kit/issues/4649).**
 A version-bump filing, not a first submission. The original (`v0.3.4`) merged as
 #4113, closed via #4057; the `v0.4.12` update merged as #4254, filed as #4252.
@@ -71,6 +75,11 @@ a catalog that claims a wider range than the zip inside it is the exact failure
 the CHEATSHEET's sweep rule exists to prevent. Named here rather than quietly
 corrected, because fixing `catalogs/*.json` is a release artifact and is not
 this PR's to change.
+
+**Closed 2026-09-23 by Rik's ruling.** The catalogs align at v0.5.2; until that
+cut, an issue is written from the manifests and every declaration inside one
+issue must match. Recorded because a divergence inside a single issue is what
+failed #4651.
 
 **Required Tools (optional):**
 
@@ -181,7 +190,7 @@ specify extension add specassay-check --from https://github.com/rdryfoos/specass
     "category": "visibility",
     "effect": "read-write",
     "requires": {
-      "speckit_version": ">=0.14.0",
+      "speckit_version": ">=0.14.0,<2.0.0",
       "tools": [
         { "name": "bash", "required": true },
         { "name": "python3", "version": ">=3.8", "required": true }
