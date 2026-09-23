@@ -3,8 +3,8 @@
 Paste-ready answers for Spec Kit's **Bundle Submission** form
 (<https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml>).
 Fields below appear in the form's exact order; copy each answer into the
-matching field. Title: `[Bundle]: Add SpecAssay (update to 0.5.1)`.
-<!-- specassay:stale-ok the values filed in github/spec-kit #4690, #4691 and #4692 against the v0.5.1 assets, frozen until the maintainers answer; bumping them would falsify what was filed, and the catalogs stay pinned to match (ruled 2026-09-23) -->
+matching field. Title: `[Bundle]: Add SpecAssay (update to 0.5.2)`.
+<!-- specassay:current -->
 
 File this **third**, after the extension and preset issues, and name both in it.
 
@@ -212,13 +212,5 @@ specify bundle install specassay
 **Additional Context:**
 
 ```
-Update to an existing entry, not a new bundle.
-
-File this after the two component issues, and reference them: the bundle pins
-specassay-check@0.5.2 and specassay@0.5.2, so a partial bump leaves
-`specify bundle install` unable to resolve.
-
-  extension - updates #4252 (merged as #4254), filed as #4690 (supersedes #4649)
-  preset    - updates #4253 (merged as #4256), filed as #4691 (supersedes #4650)
-  bundle    - updates #4255 (merged as #4257), filed as #4692 (supersedes #4651)
+Update to an existing entry. Replaces #4692 which was filed at 0.5.1 before v0.5.2 shipped.
 ```

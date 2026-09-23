@@ -3,8 +3,8 @@
 Paste-ready answers for Spec Kit's **Preset Submission** form
 (<https://github.com/github/spec-kit/issues/new?template=preset_submission.yml>).
 Fields below appear in the form's exact order; copy each answer into the
-matching field. Title: `[Preset]: Add SpecAssay (update to 0.5.1)`.
-<!-- specassay:stale-ok the values filed in github/spec-kit #4690, #4691 and #4692 against the v0.5.1 assets, frozen until the maintainers answer; bumping them would falsify what was filed, and the catalogs stay pinned to match (ruled 2026-09-23) -->
+matching field. Title: `[Preset]: Add SpecAssay (update to 0.5.2)`.
+<!-- specassay:current -->
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 
@@ -108,8 +108,7 @@ traceability, durable-ids, governance, sdd
 - Constitution template carries the end-to-end traceability article as a non-negotiable
 - Append strategy at priority 10, so it layers onto stock Spec Kit templates rather than replacing them
 
-This updates the existing catalog entry from 0.4.12 to 0.5.2, superseding
-issue #4253 (merged as catalog PR #4256).
+Update to an existing entry. Replaces #4691 which was filed at 0.5.1 before v0.5.2 shipped.
 
 Tested on Spec Kit 1.0.5, Linux, 2026-09-23, against the published v0.5.2 asset:
 

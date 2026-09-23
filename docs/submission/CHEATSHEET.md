@@ -3,8 +3,8 @@
 A copy-and-paste walk. Each issue is a GitHub issue form on the Spec Kit repo;
 open the form, then work down this page filling each field in the order the form
 asks for it. The values below are for **v0.5.2**. See **v0.5.2 refiled**, below, for why the
-0.5.1 round had to be filed again.
-<!-- specassay:stale-ok the values filed in github/spec-kit #4690, #4691 and #4692 against the v0.5.1 assets, frozen until the maintainers answer; bumping them would falsify what was filed, and the catalogs stay pinned to match (ruled 2026-09-23) -->
+previous round had to be filed again.
+<!-- specassay:current -->
 
 **The issue route is the only route.** A direct pull request against
 `presets/catalog.community.json` and its siblings is triaged out of scope and
@@ -31,14 +31,14 @@ Form: <https://github.com/github/spec-kit/issues/new?template=extension_submissi
 Title:
 
 ```
-[Extension]: Add SpecAssay Check (update to 0.5.1)
+[Extension]: Add SpecAssay Check (update to 0.5.2)
 ```
 
 Then, in the form's own order:
 
 1. **Extension ID**: `specassay-check`
 2. **Extension Name**: `SpecAssay Check`
-3. **Version**: `0.5.2` <!-- specassay:stale-ok the values filed in github/spec-kit #4690, #4691 and #4692 against the v0.5.1 assets, frozen until the maintainers answer; bumping them would falsify what was filed, and the catalogs stay pinned to match (ruled 2026-09-23) -->
+3. **Version**: `0.5.2` <!-- specassay:current -->
 4. **Description**, **Author**, **Repository URL**, **Download URL**, **License**: paste-from doc
 5. **Homepage**, **Documentation URL**, **Changelog URL** (all optional): paste-from doc
 6. **Required Spec Kit Version**: paste-from doc
@@ -59,14 +59,14 @@ Form: <https://github.com/github/spec-kit/issues/new?template=preset_submission.
 Title:
 
 ```
-[Preset]: Add SpecAssay (update to 0.5.1)
+[Preset]: Add SpecAssay (update to 0.5.2)
 ```
 
 Then, in the form's own order:
 
 1. **Preset ID**: `specassay`
 2. **Preset Name**: `SpecAssay`
-3. **Version**: `0.5.2` <!-- specassay:stale-ok the values filed in github/spec-kit #4690, #4691 and #4692 against the v0.5.1 assets, frozen until the maintainers answer; bumping them would falsify what was filed, and the catalogs stay pinned to match (ruled 2026-09-23) -->
+3. **Version**: `0.5.2` <!-- specassay:current -->
 4. **Description**, **Author**, **Repository URL**, **Download URL**: paste-from doc
 5. **Documentation URL**, **License**, **Required Spec Kit Version**: paste-from doc
 6. **Required Extensions** (optional), **Templates Provided** (`3`), **Commands Provided** (`0`), **Number of Scripts** (optional, `0`)
@@ -86,14 +86,14 @@ File this **last**. Form:
 Title:
 
 ```
-[Bundle]: Add SpecAssay (update to 0.5.1)
+[Bundle]: Add SpecAssay (update to 0.5.2)
 ```
 
 Then, in the form's own order:
 
 1. **Bundle ID**: `specassay`
 2. **Bundle Name**: `SpecAssay`
-3. **Version**: `0.5.2` <!-- specassay:stale-ok the values filed in github/spec-kit #4690, #4691 and #4692 against the v0.5.1 assets, frozen until the maintainers answer; bumping them would falsify what was filed, and the catalogs stay pinned to match (ruled 2026-09-23) -->
+3. **Version**: `0.5.2` <!-- specassay:current -->
 4. **Role or Team**: `developer`
 5. **Description**, **Author**, **Repository URL**, **Download URL**: paste-from doc
 6. **Documentation URL**, **License**, **Required Spec Kit Version**: paste-from doc

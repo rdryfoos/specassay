@@ -3,8 +3,8 @@
 Paste-ready answers for Spec Kit's **Extension Submission** form
 (<https://github.com/github/spec-kit/issues/new?template=extension_submission.yml>).
 Fields below appear in the form's exact order; copy each answer into the
-matching field. Title: `[Extension]: Add SpecAssay Check (update to 0.5.1)`.
-<!-- specassay:stale-ok the values filed in github/spec-kit #4690, #4691 and #4692 against the v0.5.1 assets, frozen until the maintainers answer; bumping them would falsify what was filed, and the catalogs stay pinned to match (ruled 2026-09-23) -->
+matching field. Title: `[Extension]: Add SpecAssay Check (update to 0.5.2)`.
+<!-- specassay:current -->
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 
@@ -215,13 +215,5 @@ specify extension add specassay-check --from https://github.com/rdryfoos/specass
 **Additional Context:**
 
 ```
-Update to an existing entry, not a new extension.
-
-`provides.commands` moves from 2 to 5. It has been stale since v0.4.13: `dig`,
-`matrix` and `portfolio` shipped after the 0.4.12 entry was written. The five
-are speckit.specassay-check.gate, .mint, .dig, .matrix and .portfolio.
-
-Companion issues in this submission: the preset (updates #4253) and the bundle
-(updates #4255). The bundle pins both component versions, so all three need to
-land together or `specify bundle install` cannot resolve.
+Update to an existing entry. Replaces #4690 which was filed at 0.5.1 before v0.5.2 shipped.
 ```
