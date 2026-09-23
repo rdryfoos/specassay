@@ -216,4 +216,5 @@ specify extension add specassay-check --from https://github.com/rdryfoos/specass
 
 ```
 Update to an existing entry. Replaces #4690 which was filed at 0.5.1 before v0.5.2 shipped.
+provides.commands moves from 2 to 5; dig, matrix and portfolio shipped after the 0.4.12 entry.
 ```

@@ -213,4 +213,5 @@ specify bundle install specassay
 
 ```
 Update to an existing entry. Replaces #4692 which was filed at 0.5.1 before v0.5.2 shipped.
+Companion issues: the extension and the preset filed just before this one; the bundle pins both component versions, so all three land together.
 ```
