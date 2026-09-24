@@ -18,11 +18,11 @@ versions, so a partial landing leaves `specify bundle install` unable to resolve
 Full field-by-field values live in the three paste-from docs, which mirror each
 form exactly, catalog JSON included:
 
-| # | Issue | Form | Paste from | Filed 2026-09-23 at 0.5.2 | Supersedes |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Extension | <https://github.com/github/spec-kit/issues/new?template=extension_submission.yml> | [extension-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md) | [#4711](https://github.com/github/spec-kit/issues/4711) | [#4690](https://github.com/github/spec-kit/issues/4690), [#4649](https://github.com/github/spec-kit/issues/4649) |
-| 2 | Preset | <https://github.com/github/spec-kit/issues/new?template=preset_submission.yml> | [preset-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md) | [#4713](https://github.com/github/spec-kit/issues/4713) | [#4691](https://github.com/github/spec-kit/issues/4691), [#4650](https://github.com/github/spec-kit/issues/4650) |
-| 3 | Bundle | <https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml> | [bundle-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/bundle-submission.md) | [#4715](https://github.com/github/spec-kit/issues/4715) | [#4692](https://github.com/github/spec-kit/issues/4692), [#4651](https://github.com/github/spec-kit/issues/4651) |
+| # | Issue | Form | Paste from | Filed 2026-09-23 at 0.5.2 | Landed by | Supersedes |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Extension | <https://github.com/github/spec-kit/issues/new?template=extension_submission.yml> | [extension-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md) | [#4711](https://github.com/github/spec-kit/issues/4711) | [#4735](https://github.com/github/spec-kit/pull/4735) | [#4690](https://github.com/github/spec-kit/issues/4690), [#4649](https://github.com/github/spec-kit/issues/4649) |
+| 2 | Preset | <https://github.com/github/spec-kit/issues/new?template=preset_submission.yml> | [preset-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md) | [#4713](https://github.com/github/spec-kit/issues/4713) | [#4717](https://github.com/github/spec-kit/pull/4717) | [#4691](https://github.com/github/spec-kit/issues/4691), [#4650](https://github.com/github/spec-kit/issues/4650) |
+| 3 | Bundle | <https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml> | [bundle-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/bundle-submission.md) | [#4715](https://github.com/github/spec-kit/issues/4715) | [#4737](https://github.com/github/spec-kit/pull/4737) | [#4692](https://github.com/github/spec-kit/issues/4692), [#4651](https://github.com/github/spec-kit/issues/4651) |
 
 ## Issue 1: Extension
 
@@ -224,6 +224,105 @@ that page ever looks stale, read that workflow's run for the release
 rather than rebuilding by hand and leaving the cause in place. The hero
 pin above stays manual on purpose: it names a tag, which only a human cut
 decides.
+
+## v0.5.2 landed, 2026-09-24
+
+**All three merged, in one day, by one maintainer.** Every verdict arrived as a
+label and a generated pull request. **Not one comment was ever posted on any of
+the three issues**, by the validator or by anyone else, so a reader watching for
+a reply would have seen nothing happen while the whole round completed.
+
+| Component | Issue | Generated PR | Merged |
+| --- | --- | --- | --- |
+| Preset | [#4713](https://github.com/github/spec-kit/issues/4713) | [#4717](https://github.com/github/spec-kit/pull/4717) | 2026-09-24, KSchlobohm |
+| Extension | [#4711](https://github.com/github/spec-kit/issues/4711) | [#4735](https://github.com/github/spec-kit/pull/4735) | 2026-09-24, KSchlobohm |
+| Bundle | [#4715](https://github.com/github/spec-kit/issues/4715) | [#4737](https://github.com/github/spec-kit/pull/4737) | 2026-09-24, KSchlobohm, merge commit `ac53c9f` |
+
+**The shape of a verdict.** Each issue went `enhancement, needs-triage` to a
+submission label plus `triage-must-have` plus `validation-passed`, then a bot
+opened the catalog PR as a draft, a review approved it, and a maintainer merged.
+The bundle was last at every step: it carried `triage-can-wait` alongside
+`triage-must-have` for about an hour before the pair resolved, and it got its
+`validation-passed` after both components already had theirs.
+
+**The manifest-freeze rule, which is what this round cost and taught.** The
+validator reads the catalogs and `bundle.yml` on **the default branch**, not on
+the tag an issue names. So while a submission is open, `main` is load-bearing:
+
+- Do not cut a release while a submission is open at the previous version.
+- Do not move `catalogs/*.json` or `bundle.yml` on `main` while a submission is
+  open, except to move them **with** a refiling.
+- Freeze the manifest for the duration, or expect to refile all three.
+
+The reverse of this rule was tried first, pinning the catalogs while the
+submissions were open, and it is what made the round fail: it protected the
+artifacts the issue pointed at and left the manifest the validator actually
+reads free to move underneath them.
+
+## The bundle install receipt, taken 2026-09-24 after the merges
+
+Not takeable before them: `specify bundle install specassay` resolves through
+the community catalog, which read 0.4.12 until #4737 merged.
+<!-- specassay:provenance -->
+Taken in a clean `specify init` project outside this repository, on Spec Kit
+1.0.5, Python 3.11.15, Linux.
+
+**The community catalog resolves both components at 0.5.2, and will not install
+them.** `policy=discovery-only` is Spec Kit's setting, not ours:
+
+```text
+$ specify bundle info specassay
+specassay v0.5.2 — SpecAssay
+  Source: community (discovery-only)
+  Requires Spec Kit: >=0.14.0,<2.0.0
+  Components (added on install):
+    extensions:
+      - specassay-check v0.5.2
+    presets:
+      - specassay v0.5.2 (priority=10, strategy=append)
+  This source is discovery-only; the bundle cannot be installed from here.
+
+$ specify bundle install specassay
+Error: Bundle 'specassay' resolves only from a discovery-only source
+('community'); it cannot be installed from there.
+```
+
+**So the install runs the README's catalog path**, which adds our three
+catalogs `--install-allowed` and then installs:
+
+```text
+$ specify bundle install specassay
+Updated execute permissions on 4 script(s) recursively
+✓ Installed 'specassay' (2 added, 0 already present).
+
+$ specify bundle list
+  specassay v0.5.2 (2 components, installed 2026-09-24T17:21:31Z)
+
+$ specify preset list
+  SpecAssay (specassay) v0.5.2 — enabled — priority 10 / Templates: 3
+
+$ specify extension list
+  ✓ SpecAssay Check (v0.5.2)
+     Commands: 5 | Hooks: 1 | Priority: 10 | Status: Enabled
+```
+
+**Confirmed on disk, not only in the listings.** `.specify/bundle-records.json`
+records `specassay` 0.5.2 with both contributed components at 0.5.2, and the
+installed manifests agree: `.specify/extensions/specassay-check/extension.yml`
+reads `version: "0.5.2"` and `.specify/presets/specassay/preset.yml` reads
+`version: "0.5.2"`. Nothing resolved to either of the versions these entries
+carried before, 0.5.1 and 0.4.12, anywhere in the project.
+<!-- specassay:provenance -->
+
+**And the Gate runs.** On the fresh project it refuses for the documented
+reason, no registry file, and after one `touch PRD.md` it is green and says why
+it is green rather than implying the project is proved:
+
+```text
+  config: .specify/extensions/specassay-check/specassay-check-config.yml (from specassay-check-config.yml)
+Wrote trace-manifest.json (0 rows) gate.ok=True
+SpecAssay Check (Gate 2): OK, registry empty (0 IDs in PRD.md)
+```
 
 ## v0.5.2 refiled, 2026-09-23
 
