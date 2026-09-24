@@ -10,6 +10,8 @@ File this **third**, after the extension and preset issues, and name both in it.
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 
+**Landed 2026-09-24, last of the three.** #4715 was closed by [github/spec-kit#4737](https://github.com/github/spec-kit/pull/4737), "[bundle] Update SpecAssay bundle to v0.5.2", opened by the submission workflow and merged the same day by KSchlobohm at commit `ac53c9f`, with all 17 checks passing. It went last in both directions: filed third, validated third, merged third. With `bundles/catalog.community.json` on `main` at 0.5.2, the bundle install receipt that PR #48 could only rehearse became takeable, and was taken; it is in the CHEATSHEET under **The bundle install receipt**. No comment was ever posted on the issue; the verdict arrived as labels and a generated pull request.
+
 **Filed 2026-09-23 at 0.5.2 as [github/spec-kit#4715](https://github.com/github/spec-kit/issues/4715), superseding #4692,** after the extension ([#4711](https://github.com/github/spec-kit/issues/4711)) and the preset ([#4713](https://github.com/github/spec-kit/issues/4713)). The fields below are what #4715 carries.
 
 **Refused 2026-09-23 on the default-branch manifest mismatch, and superseded.** The validator read `bundle.yml` on `main`, which v0.5.2 had moved to 0.5.2, against #4692 filed at 0.5.1, and asked for the 0.5.2 release with matching artifact and metadata. This is the issue that caught it; #4690 and #4691 were pre-empted. The filing moves to 0.5.2 with the catalogs.

@@ -8,6 +8,8 @@ matching field. Title: `[Extension]: Add SpecAssay Check (update to 0.5.2)`.
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 
+**Landed 2026-09-24.** #4711 was closed by [github/spec-kit#4735](https://github.com/github/spec-kit/pull/4735), "[extension] Update SpecAssay Check extension to v0.5.2", opened by the submission workflow and merged the same day by KSchlobohm with all 17 checks passing. `extensions/catalog.community.json` on `main` now reads 0.5.2. No comment was ever posted on the issue; the verdict arrived as labels and a generated pull request.
+
 **Filed 2026-09-23 at 0.5.2 as [github/spec-kit#4711](https://github.com/github/spec-kit/issues/4711), superseding #4690.** The fields below are what #4711 carries.
 
 **Refused 2026-09-23 on the default-branch manifest mismatch, and superseded.** The validator read `bundle.yml` on `main`, which v0.5.2 had moved to 0.5.2, against a submission filed at 0.5.1, and asked for the 0.5.2 release with matching artifact and metadata. #4690 was pre-empted rather than left to fail the same way. The filing moves to 0.5.2 with the catalogs.
