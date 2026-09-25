@@ -12,6 +12,7 @@
       "author": "Rik Dryfoos",
       "license": "MIT",
       "download_url": "https://github.com/rdryfoos/specassay/releases/download/v0.5.3/specassay-0.5.3.zip",
+      "sha256": "a8d90cb47f8319c76b903882f46d4c97fbac2935e7037ac1f5f2d727327826fd",
       "repository": "https://github.com/rdryfoos/specassay",
       "requires": {
         "speckit_version": ">=0.14.0,<2.0.0"
