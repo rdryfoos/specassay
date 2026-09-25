@@ -4,7 +4,7 @@ Paste-ready answers for Spec Kit's **Preset Submission** form
 (<https://github.com/github/spec-kit/issues/new?template=preset_submission.yml>).
 Fields below appear in the form's exact order; copy each answer into the
 matching field. Title: `[Preset]: Add SpecAssay (update to 0.5.2)`.
-<!-- specassay:current -->
+<!-- specassay:stale-ok the 0.5.2 round these forms served landed 2026-09-24 (#4717, #4735, #4737); these values are the record of what was filed and merged, not a claim about the version being cut -->
 
 ## Filing history <!-- specassay:stale-ok which issue numbers the past filings got; the numbers are the point and do not move -->
 

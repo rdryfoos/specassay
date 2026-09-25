@@ -3,16 +3,84 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.5.3 (2026-09-25)
+
+Components: bundle 0.5.3, extension 0.5.3, preset 0.5.3.
+
+A single-defect patch. No behaviour changes for input that was already
+correct; nothing new is minted beyond the IDs that carry the fix.
+
+### A line ending is not a verdict
+
+`FR-GATE-150`, `AC-GATE-150`, `AC-GATE-150b`. Found on the first Windows run
+of the Bang walk, 2026-09-24, Git Bash with Python 3.12.10: the Gate returned
+`"ok": false` with eleven failures, every one of the form
+
+```text
+untraced scope (test name): AC-UI-10\r not in registry
+```
+
+beside `proven` rows for those same IDs and `GAP: 0`. Nothing was wrong with
+the code under test. The Gate was failing on its own plumbing.
+
+The junit filter rewrote `test_acs.txt` with `open(path, "w")`, whose text
+mode emits `\r\n` on Windows, and the three Bash comparisons downstream
+compare byte for byte: `grep -qx` against the registry at the orphan-test
+check, `grep -qx` again at the silent-gap check, and `comm -23` against the
+covers set at uncovered-proof. `AC-UI-10\r` matches none of them. What made
+it read as a data problem rather than a line ending one is that the
+manifest's own reader strips each line, so the statuses stayed right while
+the failures beside them were impossible. That is the capture-method failure
+`PROMOTION-CONTRACT.md` rule 12 names, one platform over: two readers of one
+file disagreeing, and the tool reporting the disagreement as a fault in the
+work.
+
+**Fixed at both ends, deliberately.** The writer takes `newline="\n"`; the
+Bash normalizes the file with `tr -d '\r'` after the filter runs. Either
+alone closes the reported bug, and neither alone survives the other end being
+replaced by an older extension left in a project, a shim, or an editor.
+
+**The config readers strip too**, found while surveying for others of the
+same kind. `yaml_scalar` and `yaml_list` took the rest of the line verbatim,
+so a `specassay-check-config.yml` checked out under Git for Windows' default
+`core.autocrlf=true` would parse `registry: "PRD.md"` as a filename carrying
+a carriage return and refuse with `registry not found: PRD.md`, naming a file
+that is right there. The Windows run that found the first defect never hit
+this one, because the installer writes the config with LF.
+
+Reproduced on Linux before anything was changed, by injecting a
+`SPECASSAY_PYTHON` shim that rewrites the handoff files the way Windows text
+mode does, and the four tests in
+`extensions/specassay-check/tests/test_gate_150_crlf_handoff.py` were
+confirmed red on the pre-fix script first. They are permanent.
+
+### Housekeeping
+
+- The two `0.5.0` mentions in `PRD.md` were re-read and marked provenance:
+  each names *when* a decision was taken, not a number observed on a release,
+  and they had been ageing as observations on the strength of the dates
+  around them.
+- The 0.5.2 submission drafts are marked as the record of a landed round
+  rather than a current claim, now that #4711, #4713 and #4715 have merged.
+
 ## 0.5.2 (2026-09-23)
 
 Components: bundle 0.5.2, extension 0.5.2, preset 0.5.2.
 
-**The catalogs still point at v0.5.1 assets, on purpose.** `catalogs/*.json` pin
-the v0.5.1 release zips because Spec Kit issues #4690, #4691 and #4692 were
-filed against exactly those artifacts and are under review. v0.5.2 publishes its
-assets beside them; a later change bumps the catalogs once the maintainer
-answers. So this release's manifests read 0.5.2 while its catalogs read 0.5.1,
-which is a divergence with a reason and a date rather than a slip.
+**Corrected 2026-09-25: the catalogs moved to v0.5.2 and the round landed.**
+This entry shipped saying the catalogs would stay pinned at v0.5.1 while
+#4690, #4691 and #4692 were under review. That ruling was reversed two days
+later and the sentence stopped being true; it is corrected here rather than
+deleted, because the reversal is the lesson. Spec Kit's validator reads
+`bundle.yml` on the **default branch**, not the tag an issue names, so
+publishing v0.5.2 while those three were open invalidated them the moment
+`main` carried the new manifest: #4692 was refused on exactly that mismatch
+and the other two were pre-empted. The catalogs then moved with the refiling,
+and `catalogs/*.json` have read 0.5.2 since. The refiled #4711, #4713 and
+#4715 landed on 2026-09-24 as merged catalog PRs #4735, #4717 and #4737,
+with the three community catalogs now carrying 0.5.2. The rule this bought
+is written up in `docs/submission/CHEATSHEET.md`: **freeze the manifest while
+a submission is open.**
 
 ### A task is one logical line, however many lines it occupies
 
