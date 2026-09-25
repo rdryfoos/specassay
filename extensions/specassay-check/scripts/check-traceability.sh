@@ -106,11 +106,19 @@ else
   exit 2
 fi
 
+# @covers FR-GATE-150, AC-GATE-150b -- sub(/\r$/, "") in both readers: a config checked out with CRLF (the Git
+# for Windows default is core.autocrlf=true) would otherwise parse
+# registry: "PRD.md" as PRD.md-with-a-carriage-return, and the Gate would
+# refuse with "registry not found: PRD.md", naming a file that is right
+# there. Same family as the handoff defect above, found while fixing it;
+# the reported Windows run did not hit it only because the installer
+# writes the config with LF.
 yaml_scalar() {
   local key="$1"
   awk -v k="$key" '
     $0 ~ "^"k":[[:space:]]*" {
       sub("^[^:]+:[[:space:]]*", "")
+      sub(/\r$/, "")
       gsub(/^"/, ""); gsub(/"$/, "")
       print
       exit
@@ -125,6 +133,7 @@ yaml_list() {
     inlist && /^[^[:space:]-]/ { exit }
     inlist && /^[[:space:]]*-[[:space:]]*/ {
       sub(/^[[:space:]]*-[[:space:]]*/, "")
+      sub(/\r$/, "")
       gsub(/^"/, ""); gsub(/"$/, "")
       print
     }
@@ -677,7 +686,14 @@ with open(proof_hits_path, encoding="utf-8", errors="replace") as f:
         if any(bounded(form, label) for form in forms for label in passing_names):
             verified.add(id_)
 
-with open(test_acs_path, "w") as f:
+# @covers FR-GATE-150, AC-GATE-150 -- newline="\n" is load-bearing, not a style choice. Text mode translates
+# "\n" to the platform's line ending, which on Windows is "\r\n", and the
+# Bash reads that follow compare the lines byte for byte: "AC-UI-10\r"
+# does not match a registry holding "AC-UI-10". Found on the first Windows
+# run of the Bang walk, 2026-09-24, Git Bash and Python 3.12.10, as eleven
+# "untraced scope (test name): ... not in registry" failures on IDs that
+# were registered, tested and proven in the same manifest.
+with open(test_acs_path, "w", encoding="utf-8", newline="\n") as f:
     for id_ in sorted(verified):
         f.write(id_ + "\n")
 PY
@@ -686,6 +702,16 @@ PY
   # unusable input, not a verdict on the thread, so it takes the same exit 2
   # as a missing config or interpreter: nothing is claimed and no manifest is
   # written, rather than a green run asserting every criterion is unproven.
+  # @covers FR-GATE-150, AC-GATE-150 -- belt as well as braces: the writer above now emits LF, and this strips
+  # a carriage return back off whatever arrives, so a handoff file that
+  # picks one up anywhere (an older extension left in a project, a shim, an
+  # editor, a filter in between) still matches the registry. The two sides
+  # are fixed separately on purpose: either alone would close the reported
+  # bug, and neither alone would survive the other end being replaced.
+  if [[ -f "$tmp/test_acs.txt" ]]; then
+    tr -d '\r' < "$tmp/test_acs.txt" > "$tmp/test_acs.lf" && mv "$tmp/test_acs.lf" "$tmp/test_acs.txt"
+  fi
+
   if (( junit_rc == 3 )); then
     echo "SpecAssay Check (Gate 2): could not run (test_results has no test cases)" >&2
     exit 2

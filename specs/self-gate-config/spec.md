@@ -127,6 +127,15 @@ where that same ID lands once it has.
     `test_AC_GATE_140_wrapping_a_carries_list_changes_no_verdict`,
     `test_AC_GATE_140_a_wrapped_task_is_not_a_silent_gap`, and
     `test_AC_GATE_140_a_carries_mark_on_a_continuation_line_is_found`.
+- FR-GATE-150 — A line ending is not a verdict. Files the Gate writes and reads
+  again are written with `\n` and read with `\r` stripped, at both ends, so a
+  project reaches the same verdict on Windows as on Linux. Shipped 2026-09-24,
+  proven by `@covers` in `check-traceability.sh` and by
+  `extensions/specassay-check/tests/test_gate_150_crlf_handoff.py`.
+  - AC-GATE-150 — proven by `test_AC_GATE_150_crlf_handoff_does_not_invent_untraced_scope`,
+    `test_AC_GATE_150_crlf_handoff_keeps_the_row_proven`, and
+    `test_AC_GATE_150_crlf_does_not_fabricate_uncovered_proof`.
+  - AC-GATE-150b — proven by `test_AC_GATE_150b_a_config_checked_out_with_crlf_reads_the_same`.
 - FR-THREAD-10 — The Thread Report's display contract: one verdict line with
   the non-zero counts, every moved row stated once in a family table carrying
   both the move and the state, unmoved rows footnoted by status rather than
