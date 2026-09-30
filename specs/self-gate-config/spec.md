@@ -136,6 +136,18 @@ where that same ID lands once it has.
     `test_AC_GATE_150_crlf_handoff_keeps_the_row_proven`, and
     `test_AC_GATE_150_crlf_does_not_fabricate_uncovered_proof`.
   - AC-GATE-150b — proven by `test_AC_GATE_150b_a_config_checked_out_with_crlf_reads_the_same`.
+- FR-GATE-160 — A registry row can name who authored it: `authorship`, one of
+  `case`, `design`, `retrospective`, `constitution`, declared on the registry
+  line as `**Authorship**: <value>` and carried on the v5 row beside `origin`,
+  which keeps its own meaning (where the row lives). Shipped 2026-09-30, proven
+  by `@covers` in `check-traceability.sh` and `thread-report.py` and by
+  `extensions/specassay-check/tests/test_gate_160_authorship.py`.
+  - AC-GATE-160 — proven by `test_AC_GATE_160_declared_authorship_reaches_the_v5_row`
+    and `test_AC_GATE_160_origin_is_unchanged_on_every_row`.
+  - AC-GATE-160b — proven by `test_AC_GATE_160b_a_value_outside_the_four_fails_naming_it`.
+  - AC-GATE-160c — proven by `test_AC_GATE_160c_an_unassigned_row_warns_and_does_not_fail`.
+  - AC-GATE-160d — proven by `test_AC_GATE_160d_the_report_sentence_counts_by_authorship`
+    and `test_AC_GATE_160d_the_report_sentence_says_how_many_are_unassigned`.
 - FR-THREAD-10 — The Thread Report's display contract: one verdict line with
   the non-zero counts, every moved row stated once in a family table carrying
   both the move and the state, unmoved rows footnoted by status rather than
