@@ -71,7 +71,8 @@ drive the rev:
 | `tier`            | **NEW.** Portable altitude, decoupled from prefix: `"intent" \| "requirement" \| "criterion"`. SpecAssay maps `US→intent`, `FR/NFR→requirement`, `AC→criterion`; clew maps its own kinds. Viewers order the descent by `tier`, falling back to `type` prefix when absent. | ＋ |
 | `statement`       | Best-effort prose from the source                            |   |
 | `parents`         | **NEW.** `[id]`: the upward edges (a criterion's requirement, a requirement's intent), declared not inferred. Empty/absent ⇒ fall back to the domain-grouping convention. | ＋ |
-| `origin`          | **NEW.** Where the ID comes from (see below). Generalizes `registry`. | ＋ |
+| `origin`          | **NEW.** Where the ID comes from (see below). Generalizes `registry`. **Where the row lives, never who wrote it** — see `authorship`. | ＋ |
+| `authorship`      | **NEW.** `"case" \| "design" \| "retrospective" \| "constitution"`: **who authored the row** (see below). Absent when undeclared. | ＋ |
 | `registry`        | `{ path, line }`: retained. Equivalent to `origin` with `kind: "registry-line"`; readers alias one to the other. |   |
 | `status`          | One of the four core statuses                                |   |
 | `nativeStatus`    | **NEW.** Optional emitter-native coverage term, when it differs from the core. Informational; color keys on `status`. | ＋ |
@@ -80,6 +81,60 @@ drive the rev:
 | `carryingTasks`   | Open `Carries:` tasks that excuse `tracked-debt` / anointed `backlog` |   |
 | `rollup`          | **NEW, courtesy.** Precomputed coverage over children (see below). | ＋ |
 | `attestedBy`      | Optional operator stamp                                      |   |
+
+### `authorship`: who authored the row
+
+```jsonc
+"authorship": "case" | "design" | "retrospective" | "constitution"
+```
+
+**Authorship names who authored the row, not where the row lives.** Where it lives is
+`origin`, directly above. The two were nearly one field and must not be: a reader asking
+"did the business ask for this, or did we decide it?" is asking something a file path
+cannot answer.
+
+One value per row, set when the row is minted, by a hand. Four values, and no fifth:
+
+| Value | The row exists because |
+| --- | --- |
+| `case` | it states a promise from the project's CASE, in the reader's words or on their behalf |
+| `design` | a design decision: a screen rule, a control, an order, something the reader assumed rather than promised |
+| `retrospective` | it was minted from a retrospective or a defect |
+| `constitution` | a principle demanded it — not that the row sits in `CONSTITUTION.md` |
+
+**A sentence carrying two authors.** The row takes the authorship of **the clause that
+caused it to be minted**. The other clause is a finding for the registry's owner, not a
+second value. There is no list value, and no fifth value: a row that none of the four will
+take is a finding to report, not a reason to invent one.
+
+**How a registry line declares it.** On the definition line itself, after the statement, in
+the shape every other line-level declaration in this tool uses (`**Carries**:` on a task,
+`**Retires**:` on a task):
+
+```markdown
+- AC-PAY-10 — Given a declined card, when checkout submits, then the reason is shown. **Authorship**: case
+```
+
+The declaration is stripped out of the row's `statement`, so it never appears as prose in
+the coverage matrix, the portfolio snapshot or the Thread Report. The value is matched
+without regard to case and stored lowercase: the field is filled by a hand, one row at a
+time, and spending a refusal on a capital letter would teach nothing. Anything that is not
+one of the four is still refused.
+
+**What the check does.** A row with **no** authorship is a diagnostic naming the ID and does
+not fail the Gate: every registry predates this field, and refusing an unfilled row would
+red every adopter on upgrade for work nobody has asked them to do. A row with a value
+**outside the four** fails, naming both the ID and the value it declined, because a row
+claiming an author that does not exist reads as answered.
+
+**What the Thread Report says.** One sentence above the table, this shape and no other:
+
+> 10 promises from the case, 21 from the project (design 19, retrospective 2, constitution 0).
+
+While any row is unassigned the sentence says how many instead of presenting part of the
+registry as the whole:
+
+> Authorship unassigned on 99 of 104 rows; of the rest, 0 promises from the case, 5 from the project (design 0, retrospective 5, constitution 0).
 
 ### `origin`: generalized ID provenance
 

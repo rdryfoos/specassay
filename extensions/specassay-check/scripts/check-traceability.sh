@@ -877,7 +877,7 @@ export MANIFEST_TMP="$tmp"
 export MANIFEST_FAIL="$fail"
 export EXT_VERSION="$(awk '/^  version:/{gsub(/"/,""); print $2; exit}' "$EXT_DIR/extension.yml" 2>/dev/null || echo 0.0.0)"
 "$PYTHON" - <<'PY'
-import json, os, re, datetime
+import json, os, re, sys, datetime
 from pathlib import Path
 
 tmp = Path(os.environ["MANIFEST_TMP"])
@@ -978,13 +978,74 @@ if def_hits_path.exists():
             except ValueError:
                 pass
 
+# AUTHORSHIP (FR-GATE-160): who authored the row, declared on the registry
+# line itself in the same shape every other line-level declaration in this
+# tool uses -- `**Carries**:` on a task, `**Retires**:` on a task, so
+# `**Authorship**:` on a registry line. One value, from the four.
+#
+# It is deliberately NOT the v5 `origin` field, which already ships on every
+# row and already means something else: `{kind: "registry-line", path, line}`,
+# where the row LIVES. Authorship is who wrote it. One word must not carry
+# both, so the locator keeps `origin` and this is its own field.
+#
+# The value is matched case-insensitively and stored lowercase: the field is
+# filled by a hand, one row at a time, and refusing `Case` would spend a
+# refusal on a capital letter rather than on a wrong author. Anything that is
+# not one of the four is still a refusal, which is the check that matters.
+AUTHORSHIP_VALUES = ("case", "design", "retrospective", "constitution")
+AUTHORSHIP_RE = re.compile(r"\*\*Authorship\*\*:\s*([A-Za-z-]+)\s*\.?\s*$")
+authorship = {}
+authorship_bad = {}
+
 for id_ in ids:
     statements[id_] = id_
     n = def_line_by_id.get(id_)
     if n and 1 <= n <= len(reg_text):
         s = re.sub(r"^[\s#\-*\[\]xX]+", "", reg_text[n - 1]).strip()
+        m = AUTHORSHIP_RE.search(s)
+        if m:
+            # Strip the declaration out of the statement: it is metadata about
+            # the row, not part of the promise, and every consumer that prints
+            # a statement (the matrix, the portfolio, the Thread Report) would
+            # otherwise show it as prose.
+            s = AUTHORSHIP_RE.sub("", s).strip().rstrip(".").strip()
+            raw = m.group(1)
+            if raw.lower() in AUTHORSHIP_VALUES:
+                authorship[id_] = raw.lower()
+            else:
+                authorship_bad[id_] = raw
         statements[id_] = s or id_
         registry_refs[id_] = {"path": registry_rel, "line": n}
+
+# AUTHORSHIP VALIDATION (FR-GATE-160). Two different findings on purpose:
+#
+#   missing -> a DIAGNOSTIC naming the ID. Every project's registry predates
+#     this field, so refusing an unfilled row would red every adopter on the
+#     upgrade for work they have not been asked to do yet. The finding is
+#     real and named; it does not block.
+#   outside the four -> a FAILURE naming the ID and the value. A row claiming
+#     an author that does not exist is worse than one claiming none: it reads
+#     as answered. There is no fifth value and no list value, so there is
+#     nothing to interpret.
+for id_ in sorted(ids):
+    if id_ in authorship_bad:
+        bad = authorship_bad[id_]
+        detail = (
+            f"authorship not one of the four: {id_} declares \"{bad}\"; "
+            f"expected one of {', '.join(AUTHORSHIP_VALUES)}"
+        )
+        failures.append({"kind": "authorship-invalid", "id": id_, "detail": detail})
+        sys.stderr.write(f"FAIL: {detail}\n")
+    elif id_ not in authorship:
+        detail = f"authorship unassigned: {id_} declares no **Authorship** on its registry line"
+        diagnostics.append({"kind": "authorship-unassigned", "id": id_, "detail": detail})
+        sys.stderr.write(f"DIAGNOSTIC: {detail}\n")
+
+# The exit code lives in bash, and this block is the only parser of the field,
+# so the verdict crosses back the same way execution_verified does: a marker
+# file, not a second parse.
+if authorship_bad:
+    (tmp / "authorship_fail.txt").write_text("1\n", encoding="utf-8", newline="\n")
 
 impl_by = {i: [] for i in ids}
 seen_impl = set()
@@ -1486,6 +1547,11 @@ for row in rows:
     v5_row["tier"] = tier_by_type.get(row["type"], row["type"])
     if row.get("registry"):
         v5_row["origin"] = {"kind": "registry-line", **row["registry"]}
+    # Beside origin, never inside it: origin says where the row lives, this
+    # says who authored it. Absent when undeclared, so "unassigned" is a fact
+    # a reader can count rather than a value that has to be invented.
+    if row["id"] in authorship:
+        v5_row["authorship"] = authorship[row["id"]]
     # v4's scalar `parent` becomes v5's `parents` list. No edge is invented:
     # a row with no parent gets [], which the v5 doc reads as "fall back to
     # the domain-grouping convention", the same absence the scalar's null
@@ -1523,6 +1589,12 @@ if retired_list:
     names = ", ".join(r["id"] for r in retired_list)
     print(f"Retired: {len(retired_list)} ({names})", flush=True)
 PY
+
+# @covers FR-GATE-160, AC-GATE-160b -- an authorship value outside the four is
+# a refusal, and the refusal is raised by the one block that parses the field.
+if [[ -f "$tmp/authorship_fail.txt" ]]; then
+  fail=1
+fi
 
 if [[ "$fail" -ne 0 ]]; then
   echo "SpecAssay Check (Gate 2): FAILED" >&2

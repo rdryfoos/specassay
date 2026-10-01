@@ -66,6 +66,71 @@ def load_manifest(path: str) -> dict:
         return {"rows": [], "gate": {"ok": True}}
 
 
+AUTHORSHIP_VALUES = ("case", "design", "retrospective", "constitution")
+
+
+def authorship_sentence(rows: list) -> str:
+    """@covers FR-GATE-160, AC-GATE-160d -- one sentence, this shape and no other.
+
+    Who authored the registry the thread runs through: how much of it the
+    project's CASE asked for, and how much the project decided for itself.
+    The shape is fixed because the sentence is read at a glance across
+    reports, and a sentence whose wording moves cannot be compared.
+
+    A row with no `authorship` is not silently dropped into "the project".
+    While any row is unassigned the sentence says how many, because a
+    breakdown of 5 rows presented as the whole of 104 is a lie of omission
+    dressed as a count.
+    """
+    if not rows:
+        # No rows to count is not "none from the case": it is not knowing.
+        # Printing zeros here would read as a measured answer.
+        return "Authorship not reported: no v5 manifest was found beside the head manifest."
+    counts = {v: 0 for v in AUTHORSHIP_VALUES}
+    unassigned = 0
+    for r in rows:
+        a = r.get("authorship")
+        if a in counts:
+            counts[a] += 1
+        else:
+            unassigned += 1
+    case = counts["case"]
+    project = counts["design"] + counts["retrospective"] + counts["constitution"]
+    breakdown = (f"{case} promises from the case, {project} from the project "
+                 f"(design {counts['design']}, retrospective {counts['retrospective']}, "
+                 f"constitution {counts['constitution']})")
+    if unassigned:
+        total = len(rows)
+        return (f"Authorship unassigned on {unassigned} of {total} rows; "
+                f"of the rest, {breakdown}.")
+    return breakdown[0].upper() + breakdown[1:] + "."
+
+
+def authorship_rows(head_path: str, override: str | None) -> list:
+    """The rows to count authorship from.
+
+    `authorship` lives on the v5 row, beside `origin`; this report is handed
+    the v4 manifest. Rather than make every caller pass a second path, the
+    v5 sibling of --head is read when it is there, which is where the Gate
+    writes it. An explicit --head-v5 wins, and a missing file is not an
+    error: the sentence then reports every row as unassigned, which is true.
+    """
+    if override:
+        candidate = Path(override)
+    else:
+        p = Path(head_path)
+        candidate = p.with_name(p.name.replace(".json", ".v5beta.json"))
+    if not candidate.is_file():
+        return []
+    try:
+        return load_manifest(str(candidate)).get("rows", []) or []
+    except (OSError, json.JSONDecodeError):
+        # Illuminate, never refuse: a bad v5 file loses the sentence's numbers,
+        # not the report.
+        print(f"warning: could not read {candidate} for authorship", file=sys.stderr)
+        return []
+
+
 def rows_by_id(manifest: dict) -> dict:
     return {r["id"]: r for r in manifest.get("rows", [])}
 
@@ -308,7 +373,8 @@ def fold(summary: str, body: list) -> list:
 
 def render(base: dict, head: dict, near: list, far: list, ack: str,
            link: Linker | None = None, project_root: str = "",
-           intent_ack: str = "off", receipts: str = "") -> str:
+           intent_ack: str = "off", receipts: str = "",
+           authorship: list | None = None) -> str:
     moved = what_moved(base, head)
     h = rows_by_id(head)
     gate_ok = head.get("gate", {}).get("ok", True)
@@ -377,6 +443,11 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     tally.append(f"**{len(far)}** files off thread" if far else "**nothing** off thread")
     out.append(" · ".join([verdict] + tally))
     out.append("")
+    # @covers FR-GATE-160, AC-GATE-160d -- above the table, unfolded, so who
+    # authored the registry is read without opening anything.
+    if authorship is not None:
+        out.append(authorship_sentence(authorship))
+        out.append("")
 
     def fmt_id(id_: str) -> str:
         row = h.get(id_)
@@ -620,6 +691,9 @@ def main() -> int:
     ap.add_argument("--head", required=True, help="PR-head trace-manifest.json")
     ap.add_argument("--changed-files", required=True, help="file with one changed path per line, or - for stdin")
     ap.add_argument("--config", default=None, help="specassay-check-config.yml (registry/specs/tasks/offthread_ack)")
+    ap.add_argument("--head-v5", default=None,
+                    help="PR-head trace-manifest.v5beta.json, which carries authorship; "
+                         "defaults to the v5 sibling of --head")
     ap.add_argument("--project-root", default=None,
                     help="project dir within the repo (e.g. examples/example-app); "
                          "defaults to the --config file's directory. Bridges repo-relative "
@@ -661,7 +735,8 @@ def main() -> int:
             print(f"warning: --receipts {args.receipts}: {exc}", file=sys.stderr)
     near, far = classify_changed(changed, head, cfg, project_root)
     report = render(base, head, near, far, ack, link, project_root,
-                    intent_ack=intent_ack, receipts=receipts)
+                    intent_ack=intent_ack, receipts=receipts,
+                    authorship=authorship_rows(args.head, args.head_v5))
 
     if args.out == "-":
         sys.stdout.write(report)

@@ -73,7 +73,14 @@ def test_uncovered_proof_clears_once_covers_added(project):
 
     assert proc.returncode == 0, proc.stderr
     assert manifest["gate"]["ok"] is True
-    assert manifest["gate"]["diagnostics"] == []
+    # Narrowed to this test's own subject when authorship landed (FR-GATE-160,
+    # 2026-09-30): a bare `diagnostics == []` asserted that no finding of ANY
+    # kind exists, which made this test the gatekeeper of every future
+    # diagnostic. It is about uncovered proof, so it asserts about uncovered
+    # proof; the fixture's row declares no authorship, and that diagnostic is
+    # correct and none of this test's business.
+    assert [d for d in manifest["gate"]["diagnostics"]
+            if d["kind"] == "uncovered-proof"] == []
 
 
 def test_spec_unclaimed_id_fails_exact_set(project):
