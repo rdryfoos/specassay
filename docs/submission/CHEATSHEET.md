@@ -213,6 +213,7 @@ curl -fsSL https://raw.githubusercontent.com/rdryfoos/specassay/<tag>/README.md 
 ```
 
 Measured the same day, 2026-09-20: **1** at `v0.5.1`. A count of 1 means the heading the
+<!-- specassay:stale-ok a measurement taken at v0.5.1 on 2026-09-20; the ref is half the fact -->
 anchor is derived from exists at that ref, which is the thing worth knowing.
 
 **Not a step of the sweep: specassay.com/start.** That page renders

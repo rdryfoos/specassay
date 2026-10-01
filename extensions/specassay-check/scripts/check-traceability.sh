@@ -800,6 +800,58 @@ while IFS= read -r f; do
     if [[ "$line" =~ ^-\ \[[x\ ]\]\ T ]]; then
       if ! grep -Eq "$CARRIES_RE" <<<"$line" && ! grep -Eq "$RETIRES_RE" <<<"$line"; then
         record_fail "missing-carries" "" "task missing Carries field: ${line:0:80}"
+      elif grep -Eq "$CARRIES_RE" <<<"$line"; then
+        # @covers FR-GATE-170, AC-GATE-170, AC-GATE-170b, AC-GATE-170c -- the
+        # mark being PRESENT was the whole check until today, so
+        # "**Carries**: TBD" satisfied it: a task could declare that it
+        # carries something and name nothing, which is the shape of debt this
+        # tool exists to refuse, inside the field that exists to declare it.
+        #
+        # The value is the run of tokens straight after the mark, read while
+        # they are registry-shaped IDs and stopped at the first that is not.
+        # Stopping rather than refusing is what lets a real task line carry
+        # its IDs and then say why in prose on the same line, which every
+        # task in this repository's own tasks.md does.
+        carries_verdict="$(
+          CARRIES_LINE="$line" CARRIES_MARK="$CARRIES_RE" CARRIES_ID_RE="$ID_RE" "$PYTHON" - <<'CARRIESPY'
+import os, re, sys
+
+line = os.environ["CARRIES_LINE"]
+mark = re.compile(os.environ["CARRIES_MARK"])
+id_re = re.compile(r"^(?:%s)$" % os.environ["CARRIES_ID_RE"])
+
+m = mark.search(line)
+rest = line[m.end():] if m else ""
+tokens = [t for t in re.split(r"[\s,;]+", rest) if t]
+ids, first_bad = [], None
+for tok in tokens:
+    bare = tok.strip("`*.()[]").strip()
+    if id_re.match(bare):
+        ids.append(bare)
+        continue
+    first_bad = bare
+    break
+
+if ids:
+    print("ok")
+elif first_bad is not None and first_bad.lower() == "none":
+    # An explicit, hand-written "this line carries no promise". A hand says it
+    # at promotion time; the Gate counts it and never writes it.
+    print("none")
+elif first_bad is None:
+    print("bad\t(empty)")
+else:
+    print("bad\t%s" % first_bad)
+CARRIESPY
+        )"
+        case "$carries_verdict" in
+          ok) ;;
+          none) echo 1 >> "$tmp/carries_none.txt" ;;
+          bad*)
+            bad_value="${carries_verdict#bad$(printf '\t')}"
+            record_fail "carries-not-an-id" "" "Carries names no registry ID and is not \"none\": ${line:0:70} -- value: $bad_value"
+            ;;
+        esac
       fi
     fi
   done < <(fold_tasks "$f")
@@ -936,6 +988,16 @@ if diagnostics_path.exists():
     for ln in diagnostics_path.read_text().splitlines():
         if ln.strip():
             diagnostics.append(json.loads(ln))
+
+# @covers FR-GATE-170, AC-GATE-170d -- how many task lines said, in a hand's
+# own words, that they carry no promise. A number, not a status: the Thread
+# Report says it beside the authorship sentence so a reader sees both facts
+# about the registry's edges in one place.
+carries_none_path = tmp / "carries_none.txt"
+carries_none = (
+    len([ln for ln in carries_none_path.read_text().splitlines() if ln.strip()])
+    if carries_none_path.exists() else 0
+)
 
 execution_verified_path = tmp / "execution_verified.txt"
 execution_verified = (
@@ -1294,6 +1356,7 @@ doc = {
         "executionVerified": execution_verified,
     },
     "totals": {
+        "carriesNoneCount": carries_none,
         "registryIdCount": len(ids),
         "acCount": ac_count,
         "coveredCount": covered_count,

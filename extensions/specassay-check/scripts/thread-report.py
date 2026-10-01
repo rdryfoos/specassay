@@ -106,6 +106,27 @@ def authorship_sentence(rows: list) -> str:
     return breakdown[0].upper() + breakdown[1:] + "."
 
 
+NUMBER_WORDS = ("no", "one", "two", "three", "four", "five", "six", "seven",
+                "eight", "nine", "ten", "eleven", "twelve")
+
+
+def carries_none_sentence(head: dict) -> str | None:
+    """@covers FR-GATE-170, AC-GATE-170d -- how many task lines carry no promise.
+
+    In words, not digits, and only when there are any: a count of zero said
+    out loud every time would be noise, and the number is small by nature --
+    a registry where many task lines carry nothing is a finding a reader
+    should meet as a sentence, not as a metric to watch.
+    """
+    n = (head.get("totals") or {}).get("carriesNoneCount")
+    if not n:
+        return None
+    word = NUMBER_WORDS[n] if n < len(NUMBER_WORDS) else str(n)
+    lines = "line" if n == 1 else "lines"
+    carries = "carries" if n == 1 else "carry"
+    return f"{word.capitalize()} task {lines} {carries} no promise, declared as `none`."
+
+
 def authorship_rows(head_path: str, override: str | None) -> list:
     """The rows to count authorship from.
 
@@ -447,6 +468,10 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     # authored the registry is read without opening anything.
     if authorship is not None:
         out.append(authorship_sentence(authorship))
+        out.append("")
+    carries_none = carries_none_sentence(head)
+    if carries_none:
+        out.append(carries_none)
         out.append("")
 
     def fmt_id(id_: str) -> str:

@@ -32,6 +32,7 @@ wrong you can name the block it went wrong in.
 | uv | 0.8.17 |
 | Python | 3.11.15 |
 | git | 2.43.0 |
+<!-- specassay:stale-ok the table names the release every receipt below was captured on, not the newest release; moving the pin without replaying the twelve blocks would make it a lie. Replaying them on 0.5.4 is open work, named in the 0.5.4 release PR. -->
 
 **Where the receipts come from.** Every block below was run in order, on
 2026-09-17, against those exact versions, and the output quoted under each block
