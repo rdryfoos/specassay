@@ -3,6 +3,90 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.5.4 (2026-10-01)
+
+Components: bundle 0.5.4, extension 0.5.4, preset 0.5.4.
+
+Two things a registry could not say before, and one consequence of the clock.
+
+### A registry row can say who asked for it
+
+`FR-GATE-160`. Every row can now name **who authored it**, in a field of its own
+called `authorship`, declared on the registry line and carried on the v5 row:
+
+```markdown
+- AC-PAY-10 — Given a declined card, when checkout submits, then the reason is shown. **Authorship**: case
+```
+
+Four values and no fifth. **`case`**: the row states a promise from the project's
+CASE, in the reader's words or on their behalf. **`design`**: a design decision,
+a screen rule, a control, an order, something the reader assumed rather than
+promised. **`retrospective`**: minted from a retrospective or a defect.
+**`constitution`**: a principle demanded the row, not that the row sits in
+`CONSTITUTION.md`.
+
+**A sentence carrying two authors** takes the authorship of the clause that
+caused the row to be minted. The other clause is a finding for the registry's
+owner, not a second value. There is no list value: a row none of the four will
+take is a finding to report, not a reason to invent one.
+
+**The Thread Report says it in one sentence above the table**, so the question
+"did the business ask for this, or did we decide it?" is answered without
+opening anything:
+
+> 10 promises from the case, 21 from the project (design 19, retrospective 2, constitution 0).
+
+**What a project with an unfilled registry sees.** A row with no authorship is a
+**diagnostic naming the ID**, not a failure: every registry predates this field,
+and refusing an unfilled row would red an adopter on upgrade for work nobody has
+asked them to do. A row whose value is **outside the four fails**, naming the ID
+and the value, because a row claiming an author that does not exist reads as
+answered. While any row is unassigned the report says how many rather than
+presenting part of the registry as the whole.
+
+**It is deliberately not the `origin` field**, which already shipped on every v5
+row meaning where the row lives (`{kind: "registry-line", path, line}`) and whose
+`ledger` kind belongs to another emitter. One word must not carry both.
+
+### A Carries mark must name what it carries
+
+`FR-GATE-170`. Reported by the Bang room: the check tested only that the mark was
+**present**, so `**Carries**: TBD` satisfied it. A task could declare that it
+carried something and name nothing, which is the undeclared debt this tool exists
+to refuse, sitting inside the field that exists to declare it.
+
+The value is now read as the run of registry-shaped IDs after the mark and is
+valid in two forms: **one or more registry IDs**, optionally followed by prose on
+the same line, or **exactly the word `none`**, meaning this line carries no
+promise. `none` is a hand's declaration at promotion time; the Gate never writes
+it and never infers it from silence. Anything else fails, naming the task and the
+value: `TBD`, an empty value, and the near misses `nothing`, `n/a` and `later`.
+
+Reading stops at the first token that is not an ID rather than refusing the rest
+of the line, because a task that names its IDs and then says why on the same line
+is the normal shape, not an error.
+
+**`none` lines are counted, never hidden.** `totals.carriesNoneCount` carries the
+number and the Thread Report says it in words beside the authorship sentence, so
+a registry whose edges are thinning is met as a sentence.
+
+### What a project still on 0.5.1 observations will now see
+
+`check-doc-versions.py` refuses an observation three releases behind the version
+being cut. **At 0.5.4, a doc line dated against 0.5.1 crosses that line:** a
+project whose docs still quote 0.5.1 numbers will see those lines refuse where
+0.5.3 only warned, naming the file and line. The fix is the one the message
+names: re-observe the number on the release being cut, or write the reason for
+keeping the old one into the page with `<!-- specassay:stale-ok why -->`. This
+repository's own eight such lines were re-read as part of this cut.
+
+### Everything else since v0.5.3
+
+Read from the log rather than recalled: `58f0802..main` carries exactly two
+commits, `1492853` (the 0.5.3 digests, restoring `sha256` to the three catalogs
+once the v0.5.3 assets existed) and `60b7e27` (authorship, above). There is
+nothing else in this cut.
+
 ## 0.5.3 (2026-09-25)
 
 Components: bundle 0.5.3, extension 0.5.3, preset 0.5.3.

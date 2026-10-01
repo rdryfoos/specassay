@@ -22,7 +22,7 @@ Portable, vendor-neutral **trace-manifest** (matrix artifact). SpecAssay's Gate 
 | `repoPath`      | Absolute path scanned                                        |
 | `generatedAt`   | ISO-8601 UTC                                                 |
 | `gate`          | `{ ok: boolean, failures: GateFailure[], diagnostics: GateFailure[], executionVerified: boolean }`: the full Gate refuse set, including non-row failures, plus named findings that do not (yet) affect `ok`, plus whether `proven` on this run was derived from a passing test-results report or from name-matching alone |
-| `totals`        | `registryIdCount`, `acCount`, `coveredCount`, `retiredCount` |
+| `totals`        | `registryIdCount`, `acCount`, `coveredCount`, `retiredCount`, `carriesNoneCount` |
 | `statusCounts`  | Counts for `proven`, `tracked-debt`, `GAP`, `backlog` — exactly these four keys, frozen; see **`retired`**, below |
 | `rows`          | Matrix rows. Never includes retired IDs — see **`retired`** |
 | `retired`       | `{ id, date, reason }[]`. IDs withdrawn on purpose; absent or `[]` if none. See **`retired`**, below |
@@ -37,6 +37,7 @@ Each failure: `{ kind, detail, id? }`.
 | `orphan-covers`                     | `@covers` ID not in registry                             |
 | `orphan-test`                       | Test-encoded ID not in registry                          |
 | `missing-carries`                   | Checkbox task line without `Carries:`                    |
+| `carries-not-an-id`                 | `Carries:` value names no registry ID and is not `none`  |
 | `spec-orphan` / `task-orphan`       | Spec or tasks reference an ID not in the registry        |
 | `spec-unclaimed` / `task-unclaimed` | Registry ID absent from specs or tasks (exact-set drift) |
 | `registry-missing`                  | Configured registry file absent                          |
@@ -89,6 +90,38 @@ Same shape as a failure (`{ kind, detail, id? }`), but never sets `gate.ok` to `
 Backlog rows are "covered" in the promotion-contract sense when their child ACs are proven or debt, not by requiring `@covers` on the US/FR/NFR ID itself.
 
 Older manifest files may omit `carryingTasks` / `registry` or still carry unused `blocked` / `blockedCount` fields. Gate emits `carryingTasks` (possibly empty) and `registry` (possibly `null`); Loupe treats missing fields as `[]` / absent. (Schema v3 carried this field under its former name; readers alias it on load, see **Version history**.)
+
+### What a `Carries:` mark must name
+
+A checkbox task declares the registry IDs it serves with a `Carries:` mark, and
+that declaration is what excuses `tracked-debt` and anointed `backlog`: the debt
+is on the books because a task said so. The mark is therefore only worth as much
+as its value, and from v0.5.4 the value is checked rather than merely counted as
+present.
+<!-- specassay:current -->
+
+The value is the run of registry-shaped IDs immediately after the mark, read
+until the first token that is not one. It is valid in exactly two forms:
+
+- **one or more registry IDs**, optionally followed by prose on the same line.
+  Reading stops at the prose rather than refusing it, because a task line that
+  names its IDs and then says why is the normal shape, not an error.
+- **exactly the word `none`**, meaning this line carries no promise. A hand
+  writes that at promotion time; the Gate never writes it, and never infers it
+  from silence.
+
+Anything else is a `carries-not-an-id` failure naming the task and the value it
+declined. `**Carries**: TBD` is the case this rule exists for: before it, the
+check tested only that the mark was there, so a task could declare that it
+carried something and name nothing, which is the undeclared debt this tool
+exists to refuse, inside the field that exists to declare it. Near misses are
+refused too: `nothing`, `n/a` and `later` are the same silence under other
+words, and `none` is the one declaration.
+
+`none` lines are counted, never hidden: `totals.carriesNoneCount` carries the
+number, and the Thread Report says it in words beside the authorship sentence,
+so a registry whose edges are thinning is met as a sentence rather than buried
+in a field.
 
 ### `retired`
 

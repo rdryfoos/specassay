@@ -181,7 +181,8 @@ specify preset add \
   --from https://github.com/rdryfoos/specassay/releases/latest/download/specassay-preset.zip
 ```
 
-The CLI asks once to confirm each URL install. These URLs are version-agnostic, so they follow the newest release. Verified 2026-09-17 in a clean project against the published v0.5.1: both report v0.5.1, the extension install scaffolds the config, and the unversioned assets are byte-identical to their versioned twins (`docs/submission/test-evidence.md`).
+The CLI asks once to confirm each URL install. These URLs are version-agnostic, so they follow the newest release. <!-- specassay:stale-ok a dated verification against the v0.5.1 assets, which is the release it was run on; the claim is about the URLs being version-agnostic, and re-running it is a receipt task, not a wording fix -->
+Verified 2026-09-17 in a clean project against the published v0.5.1: both report v0.5.1, the extension install scaffolds the config, and the unversioned assets are byte-identical to their versioned twins (`docs/submission/test-evidence.md`).
 
 **Dev path:**
 

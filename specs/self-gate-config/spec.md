@@ -148,6 +148,18 @@ where that same ID lands once it has.
   - AC-GATE-160c — proven by `test_AC_GATE_160c_an_unassigned_row_warns_and_does_not_fail`.
   - AC-GATE-160d — proven by `test_AC_GATE_160d_the_report_sentence_counts_by_authorship`
     and `test_AC_GATE_160d_the_report_sentence_says_how_many_are_unassigned`.
+- FR-GATE-170 — A Carries mark must name what it carries: one or more registry
+  IDs, or exactly `none` for a line that carries no promise. Any other non-ID
+  value fails, naming the task and the value. `none` lines are counted and
+  reported. Shipped 2026-10-01, proven by `@covers` in `check-traceability.sh`
+  and `thread-report.py` and by
+  `extensions/specassay-check/tests/test_gate_170_carries_value.py`.
+  - AC-GATE-170 — proven by `test_AC_GATE_170_an_id_list_passes_even_with_prose_after_it`.
+  - AC-GATE-170b — proven by `test_AC_GATE_170b_the_word_none_passes_and_is_counted`.
+  - AC-GATE-170c — proven by `test_AC_GATE_170c_tbd_fails_naming_the_task_and_the_value`
+    and `test_AC_GATE_170c_an_empty_carries_value_fails`.
+  - AC-GATE-170d — proven by `test_AC_GATE_170d_the_report_says_how_many_carry_no_promise`
+    and `test_AC_GATE_170d_the_report_says_nothing_when_none_carry_nothing`.
 - FR-THREAD-10 — The Thread Report's display contract: one verdict line with
   the non-zero counts, every moved row stated once in a family table carrying
   both the move and the state, unmoved rows footnoted by status rather than

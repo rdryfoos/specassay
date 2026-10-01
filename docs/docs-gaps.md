@@ -214,6 +214,7 @@ still unresolved), and the commit that closed it.
     re-pinning the table without re-running the sitting would have broken
     requirement one of the commission that wrote the page.
 
+    <!-- specassay:stale-ok the log of a replay that happened on v0.5.1 on 2026-09-17; the dates and the release are the record, and a record that moves with each cut is not a record -->
     Resolved the way the entry always said it had to be: by re-running it. All
     twelve blocks were replayed in order on v0.5.1 on 2026-09-17, installing
     through the documented catalog path, and **every receipt reproduced
