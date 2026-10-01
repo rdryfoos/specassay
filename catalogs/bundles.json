@@ -30,7 +30,7 @@
         "sdd"
       ],
       "verified": false,
-      "sha256_pending": "PENDING-RELEASE: filled by the digest PR once the v0.5.4 assets exist"
+      "sha256": "7a8f340c4edba296039d063cfd9da13bd25bb89f12e6b098c6bdf9f68a1c82b1"
     }
   }
 }
