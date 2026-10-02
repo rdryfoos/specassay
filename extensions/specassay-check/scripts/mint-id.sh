@@ -67,12 +67,46 @@ yaml_scalar() {
 
 REGISTRY="$(yaml_scalar registry)"
 [[ -n "$REGISTRY" ]] || { echo "FAIL: config missing registry" >&2; exit 2; }
-[[ -f "$REGISTRY" ]] || { echo "FAIL: registry not found: $REGISTRY" >&2; exit 2; }
 
 usage() {
   echo "Usage:" >&2
-  echo "  mint-id.sh <PREFIX> <AREA> [--append \"statement text\"]" >&2
+  echo "  mint-id.sh --init" >&2
+  echo "  mint-id.sh <PREFIX> <AREA> [--authorship <case|design|retrospective|constitution>] [--append \"statement text\"]" >&2
   echo "  mint-id.sh --resolve <DUPLICATE_ID>" >&2
+  exit 2
+}
+
+# @covers FR-COLD-20, AC-COLD-20a -- the registry a project starts from.
+#
+# Until today the first mint in a new project refused with "registry not found"
+# and the mint command told the agent to `touch` the file, which left a stranger
+# holding an empty document and no account of what a row looks like. The seed
+# carries the grammar, one fenced example of each kind of row, and what the
+# Authorship mark means, where a person is standing when they need it.
+SEED="$EXT_DIR/templates/registry-seed.md"
+
+init_registry() {
+  if [[ -f "$REGISTRY" ]]; then
+    echo "FAIL: $REGISTRY already exists ($(grep -c "" "$REGISTRY") lines); --init never overwrites a registry" >&2
+    echo "  Mint into it instead: mint-id.sh <PREFIX> <AREA> --authorship <value> --append \"statement\"" >&2
+    exit 2
+  fi
+  if [[ ! -f "$SEED" ]]; then
+    echo "FAIL: registry seed not found at $SEED" >&2
+    exit 2
+  fi
+  cp "$SEED" "$REGISTRY"
+  echo "wrote $REGISTRY from the registry seed ($(grep -c "" "$REGISTRY") lines)" >&2
+  echo "  It holds the ID grammar, one fenced example of each kind of row, and no promises: the Gate reads a fenced line as a quotation, so a first run on it is green and says the green proves nothing." >&2
+  echo "  Mint your first row: mint-id.sh <PREFIX> <AREA> --authorship <case|design|retrospective|constitution> --append \"statement\"" >&2
+}
+
+require_registry() {
+  [[ -f "$REGISTRY" ]] && return 0
+  echo "FAIL: registry not found: $REGISTRY" >&2
+  echo "  Create it from the seed, which carries the grammar and an example of each kind of row:" >&2
+  echo "    bash $0 --init" >&2
+  echo "  Or point the config's registry: key at the document that already holds your requirements." >&2
   exit 2
 }
 
@@ -87,19 +121,48 @@ ID_RE="$(yaml_scalar id_regex)"
 [[ -n "$ID_RE" ]] || ID_RE='(FR|NFR|AC|US)-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?'
 DEF_LINE_RE="$(def_line_regex "$ID_RE")"
 
+# @covers FR-GATE-180, AC-GATE-180b -- one rule for every reader of the registry.
+# A fenced line is a quotation, so it cannot lend its style to a mint, cannot
+# raise the next number, and cannot be mistaken for a collision.
 style_template() {
-  grep -Em1 "$DEF_LINE_RE" "$REGISTRY" || true
+  strip_fenced_lines "$REGISTRY" | grep -Em1 "$DEF_LINE_RE" || true
 }
 
 # Split a style-template line into (prefix-up-to-and-including-bold-open,
 # id, bold-close-and-separator) using its own ID as the split point.
+# @covers FR-COLD-20, AC-COLD-20b -- the Authorship mark rides on the minted
+# line. Every row this helper wrote before today came out unassigned, so a
+# project that used the documented command got a diagnostic on every row it
+# minted and no hint that a word was missing. The value is validated here
+# against the same four the Gate accepts, because a mint that writes a value
+# the Gate refuses is worse than a mint that writes none.
+AUTHORSHIP_VALUES="case design retrospective constitution"
+
+validate_authorship() {
+  local v="$1"
+  local lower
+  lower="$(printf '%s' "$v" | tr '[:upper:]' '[:lower:]')"
+  for known in $AUTHORSHIP_VALUES; do
+    [[ "$lower" == "$known" ]] && { printf '%s' "$lower"; return 0; }
+  done
+  echo "FAIL: --authorship $v is not one of the four: $AUTHORSHIP_VALUES" >&2
+  echo "  case: the row states a promise from the project's case. design: a decision you made rather than one you were asked for. retrospective: minted from a defect or a review. constitution: a principle demanded it." >&2
+  exit 2
+}
+
 render_line() {
-  local new_id="$1" statement="$2" sample
+  local new_id="$1" statement="$2" authorship="${3:-}" sample mark=""
+  if [[ -n "$authorship" ]]; then
+    # The statement keeps its own full stop and the mark follows it, which is the
+    # shape the Gate's AUTHORSHIP_RE reads and the shape every row in this
+    # repository's own registry is written in.
+    mark=" **Authorship**: ${authorship}"
+  fi
   sample="$(style_template)"
   if [[ -z "$sample" ]]; then
     # No existing definition line to imitate -- fall back to a plain,
     # unambiguous style.
-    echo "- ${new_id} — ${statement}"
+    echo "- ${new_id} — ${statement}${mark}"
     return
   fi
   local sample_id before after
@@ -114,7 +177,7 @@ render_line() {
   if [[ -z "$sep" ]]; then
     sep=' — '
   fi
-  echo "${before}${new_id}${sep}${statement}"
+  echo "${before}${new_id}${sep}${statement}${mark}"
 }
 
 highest_number() {
@@ -126,13 +189,13 @@ highest_number() {
   # grammar allows an optional [a-z] suffix, and a mint that ignored it
   # handed back AC-GATE-90 while AC-GATE-90a/b/c already existed (found
   # 2026-09-03 running the documented command as a receipt).
-  { grep -Eo "\\b${prefix}-${area}-[0-9]+[a-z]?\\b" "$REGISTRY" 2>/dev/null || true; } \
+  { strip_fenced_lines "$REGISTRY" | grep -Eo "\\b${prefix}-${area}-[0-9]+[a-z]?\\b" 2>/dev/null || true; } \
     | sed -E "s/^${prefix}-${area}-//; s/[a-z]$//" \
     | sort -n | tail -1
 }
 
 mint_primary() {
-  local prefix="$1" area="$2" append_text="${3:-}"
+  local prefix="$1" area="$2" append_text="${3:-}" authorship="${4:-}"
   local highest next
   highest="$(highest_number "$prefix" "$area")"
   if [[ -z "$highest" ]]; then
@@ -155,12 +218,30 @@ mint_primary() {
     exit 2
   fi
   echo "$new_id"
+
+  # @covers FR-COLD-20, AC-COLD-20c -- print the whole line, not only the ID, so
+  # nobody composes a registry line by hand. The ID stays alone on stdout, which
+  # is what a caller captures; everything advisory goes to stderr, where this
+  # script already puts the config warning and the coverage-basis reminder.
+  local statement="${append_text:-<your statement: given ..., when ..., then ...>}"
+  local line
+  line="$(render_line "$new_id" "$statement" "$authorship")"
+
   if [[ -n "$append_text" ]]; then
-    render_line "$new_id" "$append_text" >> "$REGISTRY"
-    echo "appended to $REGISTRY" >&2
+    printf '%s\n' "$line" >> "$REGISTRY"
+    echo "appended to $REGISTRY:" >&2
+    echo "  $line" >&2
     echo "REMINDER: state the coverage basis plainly in the mint commit." >&2
     echo "  Already-built work this mint is only now registering: \"coverage registered, not newly attributed.\"" >&2
     echo "  New work this mint is starting: say that instead. Either is honest; silence about which is not." >&2
+  else
+    echo "nothing written. The line to paste into $REGISTRY, in the file's own style:" >&2
+    echo "  $line" >&2
+  fi
+
+  if [[ -z "$authorship" ]]; then
+    echo "NOTE: no --authorship, so this row will read as unassigned until a hand adds one." >&2
+    echo "  One of: $AUTHORSHIP_VALUES. The Gate reports an unassigned row; it does not refuse it." >&2
   fi
 }
 
@@ -186,7 +267,7 @@ resolve_duplicate() {
   # e.g. decade=20: offsets are 21..29, i.e. "2" + [1-9], not "20" + [1-9].
   local decade_tens=$((decade / 10))
   local used offset=1
-  used="$({ grep -Eo "\\b${prefix}-${area}-${decade_tens}[1-9]\\b" "$REGISTRY" 2>/dev/null || true; } \
+  used="$({ strip_fenced_lines "$REGISTRY" | grep -Eo "\\b${prefix}-${area}-${decade_tens}[1-9]\\b" 2>/dev/null || true; } \
     | sed -E "s/^${prefix}-${area}-${decade_tens}//" | sort -n)"
   while grep -qx "$offset" <<<"$used"; do
     offset=$((offset + 1))
@@ -200,19 +281,33 @@ resolve_duplicate() {
 
 [[ $# -ge 1 ]] || usage
 
-if [[ "$1" == "--resolve" ]]; then
+if [[ "$1" == "--init" ]]; then
+  [[ $# -eq 1 ]] || usage
+  init_registry
+elif [[ "$1" == "--resolve" ]]; then
   [[ $# -eq 2 ]] || usage
+  require_registry
   resolve_duplicate "$2"
 elif [[ $# -ge 2 ]]; then
+  require_registry
   prefix="$1"; area="$2"; shift 2
   append_text=""
-  if [[ "${1:-}" == "--append" ]]; then
-    [[ $# -eq 2 ]] || usage
-    append_text="$2"
-  elif [[ $# -ne 0 ]]; then
-    usage
-  fi
-  mint_primary "$prefix" "$area" "$append_text"
+  authorship=""
+  # --append and --authorship in either order, each at most once: the two were
+  # added a release apart and a user should not have to remember which came
+  # first.
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --append)
+        [[ $# -ge 2 && -z "$append_text" ]] || usage
+        append_text="$2"; shift 2 ;;
+      --authorship)
+        [[ $# -ge 2 && -z "$authorship" ]] || usage
+        authorship="$(validate_authorship "$2")"; shift 2 ;;
+      *) usage ;;
+    esac
+  done
+  mint_primary "$prefix" "$area" "$append_text" "$authorship"
 else
   usage
 fi
