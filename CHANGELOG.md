@@ -156,6 +156,57 @@ thread, because it happens whether or not the author has the tool installed.
 own workflow by a relative path that resolved to nothing in an adopter's checkout,
 which was the only account of this plumbing anybody had.
 
+### The cold path is proved by walking it
+
+`FR-COLD-40`, and `US-COLD-10` with it. One test builds a throwaway repository, puts
+the bundle's files where an install puts them, and walks a stranger's whole path to
+the text of a Thread Report comment: the registry from the seed, a green run on no
+promises, one minted row with its author named, the first honest red, the spec and
+the task, the CI installed, the build and its proof, and the report the pull request
+would carry.
+
+**It fails if any step is not a shipped command.** Every command is declared before
+it runs, and the test refuses one that is neither a shipped script nor a plain `git`
+call, so hand-built plumbing cannot be slipped in to make the path pass. That guard
+is itself held to a test, because without it the test could be made green by adding
+whatever the path turned out to need.
+
+It runs as a named step in `self-gate.yml`, on every pull request and every push to
+main: this is the one test whose failure means a stranger cannot get started, so a
+reviewer should meet it by name rather than as one dot among a hundred and seventy.
+
+**Writing it changed the design, which is why it was worth writing.** The four data
+steps of the pull-request run were shell inside the workflow YAML, where no test
+could reach them without re-typing them and letting the two drift. They now live in
+`ci-thread-report.sh`, which the workflow calls and the test drives, so what CI runs
+is what the proof runs. The workflow keeps only the two steps that need GitHub.
+
+**What it does not cover**, said in the test rather than implied: GitHub posting the
+comment. The comment's body is the marker line plus the report the test reads, so the
+untested part is one API call in a step whose script is asserted separately. Covering
+it would need a real repository and a real pull request.
+
+This is the test the 2026-09-26 ledger lacked, which is why every one of that
+ledger's five findings had to be re-derived by hand before any of this could be
+fixed, and why one of them turned out to have been wrong.
+
+### Before the next tag, two things this stack deliberately left alone
+
+Neither is cold-path work, and both were ruled to wait rather than ride along here.
+
+- **`docs/submission/CHEATSHEET.md` has two dated 0.5.2 observations**, at lines 21
+  and 271. They warn at two releases behind and **refuse at three**, which is the
+  next cut: the doc-version check goes red until they are re-observed on the release
+  being cut, or given a stated reason to keep (`<!-- specassay:stale-ok why -->`).
+  Re-observe them rather than marking them: they are receipts of a real run, and the
+  honest fix is another real run.
+- **ONBOARD's receipts span two dates now.** Blocks 5, 6 and 12 were captured on
+  2026-10-02 against this unreleased change; the other ten are the 2026-09-17 run on
+  v0.5.1, <!-- specassay:stale-ok the record of which run each block came from; re-observing it is the replay this very line asks for -->
+  and the pin table still names that release. Replaying every block on the release
+  being cut is what lets the pin move, and it is the open item the 0.5.4 release
+  pull request already named.
+
 ## 0.5.4 (2026-10-01)
 
 Components: bundle 0.5.4, extension 0.5.4, preset 0.5.4.
