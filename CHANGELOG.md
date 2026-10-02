@@ -190,6 +190,23 @@ This is the test the 2026-09-26 ledger lacked, which is why every one of that
 ledger's five findings had to be re-derived by hand before any of this could be
 fixed, and why one of them turned out to have been wrong.
 
+### Before the next tag, two things this stack deliberately left alone
+
+Neither is cold-path work, and both were ruled to wait rather than ride along here.
+
+- **`docs/submission/CHEATSHEET.md` has two dated 0.5.2 observations**, at lines 21
+  and 271. They warn at two releases behind and **refuse at three**, which is the
+  next cut: the doc-version check goes red until they are re-observed on the release
+  being cut, or given a stated reason to keep (`<!-- specassay:stale-ok why -->`).
+  Re-observe them rather than marking them: they are receipts of a real run, and the
+  honest fix is another real run.
+- **ONBOARD's receipts span two dates now.** Blocks 5, 6 and 12 were captured on
+  2026-10-02 against this unreleased change; the other ten are the 2026-09-17 run on
+  v0.5.1, <!-- specassay:stale-ok the record of which run each block came from; re-observing it is the replay this very line asks for -->
+  and the pin table still names that release. Replaying every block on the release
+  being cut is what lets the pin move, and it is the open item the 0.5.4 release
+  pull request already named.
+
 ## 0.5.4 (2026-10-01)
 
 Components: bundle 0.5.4, extension 0.5.4, preset 0.5.4.
