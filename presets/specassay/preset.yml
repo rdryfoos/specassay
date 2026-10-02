@@ -13,6 +13,17 @@ preset:
 requires:
   speckit_version: ">=0.14.0,<2.0.0"
 
+  # The templates below name `speckit.specassay-check.gate`, and only the
+  # specassay-check extension provides it. Declared so that installing this
+  # preset on its own says what is missing instead of reading as complete:
+  # Spec Kit prints the unmet dependency and the command that fixes it after
+  # the install, and never fails the install over it. Spec Kit 1.0.4 and later
+  # read this key; earlier releases, 1.0.3 and 0.14.0 among them, validate only
+  # requires.speckit_version and ignore it, so declaring it costs them nothing.
+  # @covers FR-COLD-10, AC-COLD-10a
+  extensions:
+    - id: "specassay-check"
+
 provides:
   templates:
     - type: "template"

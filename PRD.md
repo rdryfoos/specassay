@@ -197,3 +197,17 @@ has settled.
   - AC-REL-10a — Given a registry declaring its release names, when a row carries a `Release:` naming one of them, then the manifest's row for that ID carries that release name.
   - AC-REL-10b — Given a row carrying a `Release:` naming a release the registry does not declare, when the Gate runs, then it fails with a finding naming the row and the undeclared name.
   - AC-REL-10c — Given a row carrying no `Release:` at all, when the Gate runs, then the run does not fail on account of it and the row is reported as unscheduled.
+
+## COLD
+
+The cold path: a blank repository, plus Spec Kit, plus SpecAssay, reaching a
+Thread Report on a pull request with nobody hand building plumbing. Minted
+2026-10-02 from a reproduction of the 2026-09-26 cold-path ledger against 0.5.4,
+which found all five standing, one of them narrower than written and one of them
+already half closed in the documents. Each row in this family is one gap, and each
+ships in its own pull request.
+
+- US-COLD-10 — As a stranger with an empty repository, I want the standard Spec Kit workflow to carry me to a Thread Report on my first pull request, so that nothing in the path asks me to build plumbing or to learn a word before I can use the tool. **Authorship**: case.
+- FR-COLD-10 — The install path never leaves a reader holding half the tool. The preset is templates that name a check, so the preset declares `specassay-check` as a required extension and Spec Kit itself names the missing piece after a preset-only install; and the three documents a stranger reads first (the start page, the project README, the preset's own README) each say which single line brings the Gate rather than leaving the reader to infer it from the order of four commands. Reproduced before fixing, 2026-10-02 on 0.5.4: `specify preset add specassay` prints `✓ Preset 'SpecAssay' v0.5.4 installed (priority 10)`, `specify extension list` then reads `No extensions installed.`, and nothing in between says a word. The declaration is deliberately a warning and not a refusal, because that is the only shape Spec Kit offers: its own code records a missing dependency as a report rather than an install failure. **Authorship**: retrospective.
+  - AC-COLD-10a — Given the preset manifest, when it is read, then it declares `specassay-check` under `requires.extensions`, so that a preset-only install prints the unmet dependency and the command that resolves it. **Authorship**: retrospective.
+  - AC-COLD-10b — Given the start page, the project README and the preset README, when each is read at its install section, then each names `specify bundle install specassay` as the line that brings the Gate and says plainly that a preset-only install does not. **Authorship**: retrospective.

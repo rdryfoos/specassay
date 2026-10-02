@@ -206,6 +206,15 @@ SpecAssay installs as a Spec Kit **bundle**, a named set of components Spec Kit
 installs in one operation. These three `catalog add` commands tell Spec Kit where
 to find it; the fourth installs it.
 
+<!-- @covers FR-COLD-10, AC-COLD-10b -->
+
+**Install the bundle, not the preset.** `specify preset add specassay` succeeds on
+its own and gives you the templates with no Gate behind them, which reads like a
+finished install and is not one. The last line below is the one that brings both
+pieces. If you install the preset alone anyway, Spec Kit says so and names the
+command that fixes it (1.0.4 and later <!-- specassay:pinned Spec Kit --> read the
+dependency the preset declares).
+
 ```bash
 specify preset catalog add \
   https://raw.githubusercontent.com/rdryfoos/specassay/main/catalogs/presets.json \

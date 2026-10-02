@@ -3,6 +3,54 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## Unreleased
+
+The cold path: a blank repository, plus Spec Kit, plus SpecAssay, reaching a
+Thread Report on a pull request with nobody hand building plumbing. One gap per
+pull request, closed in order, from a reproduction of the 2026-09-26 cold-path
+ledger run again on 0.5.4 on 2026-10-02.
+
+### The preset no longer looks like a finished install
+
+`FR-COLD-10`. `specify preset add specassay` installs the templates and no Gate.
+It printed `Preset 'SpecAssay' v0.5.4 installed`, `specify extension list` then
+read `No extensions installed.`, and nothing between those two lines said the
+check the templates name was absent (observed 2026-10-02, Spec Kit 1.0.5).
+
+The preset manifest now declares the extension it depends on:
+
+```yaml
+requires:
+  speckit_version: ">=0.14.0,<2.0.0"
+  extensions:
+    - id: "specassay-check"
+```
+
+so Spec Kit itself ends a preset-only install with the missing piece and the
+command that resolves it:
+
+```text
+!  This preset depends on extensions that are not satisfied:
+    specassay-check is not installed
+      Install with: specify extension add specassay-check
+```
+
+A warning and not a refusal, because that is the only shape Spec Kit offers: its
+own code records a missing dependency as a report rather than an install failure.
+Spec Kit reads the key from 1.0.4 on <!-- specassay:pinned Spec Kit --> and older
+releases ignore it, validating only `requires.speckit_version`, so the declaration
+costs the floor the bundle still accepts nothing.
+
+**And the three documents a stranger meets first now say which single line brings
+the Gate**: the start page, this project's README, and the README that ships
+inside the preset, which was the one teaching the preset-only install.
+
+**What the 2026-09-26 ledger had half wrong.** It read as though the start page
+pointed a stranger at the preset. It never did: both it and the README already
+gave `specify bundle install specassay`. The defect was the silent install, not
+the instructions, and saying so is cheaper than carrying a correction nobody
+made.
+
 ## 0.5.4 (2026-10-01)
 
 Components: bundle 0.5.4, extension 0.5.4, preset 0.5.4.
