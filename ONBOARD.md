@@ -830,7 +830,9 @@ have already read what it will say.
 happens on GitHub rather than in your terminal, and quoting a screenshot of
 somebody else's pull request would be a sketch rather than a receipt. What stands
 in its place is a test that performs this whole page end to end, from `git init` to
-the comment's text, and fails if any step needs a hand.
+the comment's text, and fails if any step needs a hand: it ships with the bundle, at
+`.specify/extensions/specassay-check/tests/test_cold_path_end_to_end.py`, and it runs
+on every pull request to SpecAssay itself.
 
 **What just happened:** the thing a stranger used to have to build is now a file
 the bundle ships and one command that places it. Before today, getting that comment

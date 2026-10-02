@@ -38,6 +38,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: The cold path, performed end to end
+        # Named as its own step, not because the suite below would miss it, but
+        # because this is the one test whose failure means a stranger cannot get
+        # started. A reviewer should see that by name in the run rather than as one
+        # dot among a hundred and seventy. FR-COLD-40.
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet pytest
+          python3 -m pytest extensions/specassay-check/tests/test_cold_path_end_to_end.py -q
+
       - name: Extension test suite — check-traceability.sh
         run: |
           set -euo pipefail

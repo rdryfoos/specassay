@@ -111,37 +111,49 @@ def test_AC_COLD_30b_a_differing_workflow_is_refused_not_overwritten(tmp_path):
     assert installed.read_text() == WORKFLOW.read_text()
 
 
-def test_AC_COLD_30c_the_shipped_workflow_is_not_this_repository_s_own(tmp_path):
+def test_AC_COLD_30c_the_shipped_workflow_is_not_this_repository_s_own():
     """@covers AC-COLD-30c
 
     The workflow this repository runs on itself names `examples/example-app` and
     `extensions/specassay-check/scripts/...`, paths that exist nowhere else. A
     shipped workflow carrying any of them would run on nobody's project but ours.
+
+    The four data steps live in `ci-thread-report.sh` rather than in the YAML, so
+    that the end-to-end proof drives the same sequence CI drives; the workflow
+    holds the two steps that need GitHub. Both halves are read here.
     """
     text = WORKFLOW.read_text()
+    driver = (EXT / "scripts" / "ci-thread-report.sh").read_text()
 
-    assert "examples/example-app" not in text
-    # A path rooted at the repository rather than at the project: ours is
-    # `extensions/specassay-check/...`, an adopter's is
-    # `.specify/extensions/specassay-check/...`, so the test has to tell the two
-    # apart rather than search for the shorter string inside the longer one.
-    assert not re.search(r"(?<!\.specify/)extensions/specassay-check", text), (
-        "the shipped workflow names a path rooted at this repository"
-    )
+    for body, label in ((text, "workflow"), (driver, "CI driver")):
+        assert "examples/example-app" not in body, f"the {label} names our example app"
+        # A path rooted at the repository rather than at the project: ours is
+        # `extensions/specassay-check/...`, an adopter's is
+        # `.specify/extensions/specassay-check/...`, so the test has to tell the
+        # two apart rather than search for the shorter string inside the longer.
+        assert not re.search(r"(?<!\.specify/)extensions/specassay-check", body), (
+            f"the {label} names a path rooted at this repository"
+        )
 
-    # Every path derives from the project root it is given.
+    # Every path derives from the project root the workflow is given.
     assert "SPECASSAY_PROJECT" in text
-    assert ".specify/extensions/specassay-check" in text
+    assert "ci-thread-report.sh" in text
+    assert "--project" in text
 
-    # The whole sequence a comment needs, step by step.
+    # The four data steps, in the driver the proof runs.
     for piece in (
-        "check-traceability.sh",          # the Gate, on the head
-        "git worktree add",               # and on the base
-        "git diff --name-only",           # the changed files
-        "thread-report.py",               # the report
-        "specassay-thread-report",        # the sticky comment's marker
-        "updateComment",                  # updated in place, not piled up
-        "gate",                           # the verdict, read from the manifest
+        "check-traceability.sh",   # the Gate, on the head
+        "git worktree add",        # and on the base
+        "git diff --name-only",    # the changed files
+        "thread-report.py",        # the report
+    ):
+        assert piece in driver, f"the CI driver has no {piece} step"
+
+    # The two steps that need GitHub, in the workflow.
+    for piece in (
+        "specassay-thread-report",  # the sticky comment's marker
+        "updateComment",            # updated in place, not piled up
+        "Golden Thread broken",     # the verdict, read from the manifest
     ):
         assert piece in text, f"the shipped workflow has no {piece} step"
 

@@ -50,78 +50,31 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Resolve the project paths
-        id: paths
+      - name: Gate on the head and the base, and build the Thread Report
         run: |
           set -euo pipefail
-          root="$GITHUB_WORKSPACE/${SPECASSAY_PROJECT#./}"
-          root="${root%/}"
-          ext="$root/.specify/extensions/specassay-check"
-          if [ ! -x "$ext/scripts/check-traceability.sh" ] && [ ! -f "$ext/scripts/check-traceability.sh" ]; then
-            echo "::error::No SpecAssay extension at $ext. Install it (specify bundle install specassay) and commit .specify/, or point SPECASSAY_PROJECT at the project root."
+          EXT="${SPECASSAY_PROJECT%/}/.specify/extensions/specassay-check"
+          EXT="${EXT#./}"
+          if [ ! -f "$EXT/scripts/ci-thread-report.sh" ]; then
+            echo "::error::No SpecAssay extension at $EXT. Install it (specify bundle install specassay) and commit .specify/, or set SPECASSAY_PROJECT to the project root."
             exit 1
           fi
-          echo "root=$root" >> "$GITHUB_OUTPUT"
-          echo "ext=$ext" >> "$GITHUB_OUTPUT"
-
-      - name: Gate 2 on the PR head
-        run: |
-          set -uo pipefail
-          # The Gate always writes the manifest and then exits non-zero if the
-          # thread is broken. Keep the manifest here and carry the refusal in the
-          # last step, so a broken thread still gets a report instead of a silent
-          # failed step.
-          SPECASSAY_PROJECT_ROOT="${{ steps.paths.outputs.root }}" \
-          SPECASSAY_CONFIG="${{ steps.paths.outputs.ext }}/specassay-check-config.yml" \
-            bash "${{ steps.paths.outputs.ext }}/scripts/check-traceability.sh" || true
-          cp "${{ steps.paths.outputs.root }}/trace-manifest.json" /tmp/head.json
-          if [ -f "${{ steps.paths.outputs.root }}/trace-manifest.v5beta.json" ]; then
-            cp "${{ steps.paths.outputs.root }}/trace-manifest.v5beta.json" /tmp/head.v5beta.json
-          fi
-
-      - name: Gate 2 on the base commit
-        run: |
-          set -uo pipefail
-          BASE_SHA="${{ github.event.pull_request.base.sha }}"
-          git worktree add --quiet /tmp/base "$BASE_SHA"
-          BROOT="/tmp/base/${SPECASSAY_PROJECT#./}"
-          BROOT="${BROOT%/}"
-          BEXT="$BROOT/.specify/extensions/specassay-check"
-          if [ -f "$BEXT/scripts/check-traceability.sh" ]; then
-            SPECASSAY_PROJECT_ROOT="$BROOT" \
-            SPECASSAY_CONFIG="$BEXT/specassay-check-config.yml" \
-              bash "$BEXT/scripts/check-traceability.sh" || true
-            cp "$BROOT/trace-manifest.json" /tmp/base.json
-          else
-            # The base predates the install: every row is new, which is what the
-            # report says when it is given no base at all.
-            echo "No SpecAssay on the base commit; reporting every row as new."
-          fi
-          git worktree remove --force /tmp/base
-
-      - name: Changed files in this pull request
-        run: |
-          set -euo pipefail
-          git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" > /tmp/changed.txt
-          echo "Changed:"; cat /tmp/changed.txt
-
-      - name: Build the Thread Report
-        run: |
-          set -euo pipefail
-          python3 "${{ steps.paths.outputs.ext }}/scripts/thread-report.py" \
-            --base /tmp/base.json --head /tmp/head.json \
-            --changed-files /tmp/changed.txt \
-            --config "${{ steps.paths.outputs.ext }}/specassay-check-config.yml" \
-            --project-root "${SPECASSAY_PROJECT}" \
+          # One script, so that what runs here is what the bundle's own
+          # end-to-end test runs. It writes head.json, base.json, changed.txt and
+          # report.md, and does not fail on a broken thread: the refusal is in
+          # head.json, and the last step below is what turns it into a red check.
+          bash "$EXT/scripts/ci-thread-report.sh" \
+            --base-sha "${{ github.event.pull_request.base.sha }}" \
+            --out-dir /tmp/specassay \
+            --project "$SPECASSAY_PROJECT" \
             --pr-url "${{ github.event.pull_request.html_url }}" \
-            --head-sha "${{ github.event.pull_request.head.sha }}" \
-            --out /tmp/report.md
-          echo "----- report -----"; cat /tmp/report.md
+            --head-sha "${{ github.event.pull_request.head.sha }}"
+          echo "----- report -----"; cat /tmp/specassay/report.md
 
       - name: Post or update the Thread Report comment
         uses: actions/github-script@v7
         env:
-          REPORT_PATH: /tmp/report.md
+          REPORT_PATH: /tmp/specassay/report.md
         with:
           script: |
             const fs = require('fs');
@@ -140,7 +93,7 @@ jobs:
       - name: Ack status, when your config asks for a human tick
         uses: actions/github-script@v7
         env:
-          REPORT_PATH: /tmp/report.md
+          REPORT_PATH: /tmp/specassay/report.md
         with:
           script: |
             // Required ack boxes render as task-list items whose suffix names the
@@ -166,10 +119,10 @@ jobs:
       - name: Gate verdict, posted separately from the report
         run: |
           set -euo pipefail
-          ok=$(python3 -c "import json; print(json.load(open('/tmp/head.json')).get('gate',{}).get('ok', True))")
+          ok=$(python3 -c "import json; print(json.load(open('/tmp/specassay/head.json')).get('gate',{}).get('ok', True))")
           if [ "$ok" != "True" ]; then
             echo "::error::Golden Thread broken — the Gate refuses. See the Thread Report comment on the pull request."
-            python3 -c "import json; [print(' -', f.get('kind'), f.get('detail','')) for f in json.load(open('/tmp/head.json')).get('gate',{}).get('failures',[])]"
+            python3 -c "import json; [print(' -', f.get('kind'), f.get('detail','')) for f in json.load(open('/tmp/specassay/head.json')).get('gate',{}).get('failures',[])]"
             exit 1
           fi
           echo "Golden Thread intact."

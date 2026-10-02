@@ -5,9 +5,10 @@ using the standard Spec Kit workflow and nothing else. This spec claims the COLD
 rows as each one ships; the family was minted 2026-10-02 from a reproduction of
 the 2026-09-26 cold-path ledger, one gap per row and one pull request per gap.
 
-- US-COLD-10 — The outcome this family serves. It is claimed here because every
-  row below is a step of it, and it moves from started to answered only when the
-  end-to-end proof in the family's last row passes.
+- US-COLD-10 — The outcome this family serves. Claimed here because every row below
+  is a step of it, and answered by the end-to-end proof in `FR-COLD-40`: it is
+  `proven` by `test_the_cold_path_needs_no_plumbing`, which performs the whole path
+  rather than asserting that it is possible.
 - FR-COLD-10 — The install path never leaves a reader holding half the tool.
   Shipped: `presets/specassay/preset.yml` declares `specassay-check` under
   `requires.extensions`, and the three documents a stranger reads first name the
@@ -34,3 +35,11 @@ the 2026-09-26 cold-path ledger, one gap per row and one pull request per gap.
     and `test_AC_COLD_30a_a_project_in_a_subdirectory_gets_its_own_root`.
   - AC-COLD-30b — proven by `test_AC_COLD_30b_a_differing_workflow_is_refused_not_overwritten`.
   - AC-COLD-30c — proven by `test_AC_COLD_30c_the_shipped_workflow_is_not_this_repository_s_own`.
+- FR-COLD-40 — The cold path is proved by performing it. Shipped:
+  `extensions/specassay-check/tests/test_cold_path_end_to_end.py`, run by
+  `self-gate.yml` on every pull request and every push to main, and the sequence it
+  drives is `ci-thread-report.sh`, the same one the shipped workflow drives.
+  - AC-COLD-40a — proven by `test_AC_COLD_40a_the_cold_path_needs_no_plumbing`.
+  - AC-COLD-40b — proven by
+    `test_AC_COLD_40b_a_step_outside_the_shipped_tools_fails_the_proof`, which holds
+    the path's own guard to a test rather than trusting it.
