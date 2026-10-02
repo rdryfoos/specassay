@@ -13,6 +13,31 @@ it ship. The rest of this release is the cold path, which reached a Thread Repor
 on a pull request with nobody building plumbing, and the Thread Report's plain-words
 pass.
 
+### The digests, and the pin table moves to 0.5.5
+
+The three catalog digests, computed from the published assets rather than from a
+local build, and agreeing with the digest GitHub reports for each asset:
+
+```text
+specassay-0.5.5.zip         2acb33dfa5ccf4b3e61de762355aba9d28b0f3396d44a4a4b7a40a484501d6e2
+specassay-check-0.5.5.zip   c1c1ead275fd638960debc3c80a3da4af759f044612f72417e41aaea1f54cb8e
+specassay-preset-0.5.5.zip  9bc17b8b8aeb58bc1c0c61099df398496794d3c40fcf8cd028a80077023376e7
+```
+
+Proved load-bearing rather than merely present: with one hex character changed and
+the catalog served over localhost, `specify bundle install` refuses with
+`Integrity check failed`, names both digests, and installs nothing.
+
+**ONBOARD's pin table now reads v0.5.5**, because all thirteen blocks were replayed
+on the released bundle, installed from these catalogs, with Spec Kit pinned at 1.0.4
+from its own tag as block 2 says. Ten blocks reproduced unchanged. Block 4 reports
+seven shipped scripts where it reported four, since the Gate became a launcher and an
+implementation. And block 11's list of changed files no requirement claims is back to
+**two**, correcting a capture taken earlier the same day: that one showed seven,
+because it was taken in a project built by hand instead of by block 3, and block 3
+writes a `.gitignore` that keeps the manifests and `__pycache__` out of the diff. The
+page was right and the capture was wrong. Only replaying from block 1 finds that.
+
 ### 0.5.4 did not run on macOS, and reported success
 
 `FR-GATE-200`. `check-traceability.sh` 0.5.4 does not parse under **bash 3.2.57**,

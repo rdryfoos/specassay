@@ -24,37 +24,36 @@ wrong you can name the block it went wrong in.
 
 ---
 
-## Pinned, as of 2026-09-17
+## Pinned, as of 2026-10-02
 
 | Thing | Pinned to |
 | --- | --- |
-| SpecAssay | **v0.5.1**, released 2026-09-17. This is what `specify bundle install` gives you, and it is what every receipt below was captured on. |
-| GitHub Spec Kit | **v1.0.4**. SpecAssay's manifests accept `>=0.14.0,<2.0.0`, and the floor was checked at v0.5.1 on 2026-09-17: the bundle installs and the Gate runs on Spec Kit 0.14.0, though that version does not scaffold the settings file, so the Gate there reports `config: MISSING` and continues on defaults. v1.0.5 and v1.0.6 exist and the manifests accept them; they are not what this page was captured on. |
+| SpecAssay | **v0.5.5**, released 2026-10-02. <!-- specassay:current --> This is what `specify bundle install` gives you, and it is what every receipt below was captured on. |
+| GitHub Spec Kit | **v1.0.4**. SpecAssay's manifests accept `>=0.14.0,<2.0.0`, and the floor was checked at v0.5.1 on 2026-09-17: the bundle installs and the Gate runs on Spec Kit 0.14.0, though that version does not scaffold the settings file, so the Gate there reports `config: MISSING` and continues on defaults. <!-- specassay:stale-ok the 0.14.0 floor claim records a run on v0.5.1 and cannot be re-observed without re-running on that release; the floor itself is re-checked each release in CI --> Newer Spec Kit releases exist and the manifests accept them; 1.0.4 is what this page was captured on, and block 2 pins it. |
 | uv | 0.8.17 |
 | Python | 3.11.15 |
 | git | 2.43.0 |
-<!-- specassay:stale-ok the table names the release every receipt below was captured on, not the newest release; moving the pin without replaying every block would make it a lie. Replaying them on a cut release is open work, named in the 0.5.4 release PR. -->
 
-**Where the receipts come from.** Every block below was run in order, on
-2026-09-17, against those exact versions, and the output quoted under each block
-is that run's real output, trimmed to the lines that carry the receipt, never a
-sketch of what it might say. Twelve blocks were re-captured that day on v0.5.1.
-**Four have moved since, and say so here rather than quietly:** blocks 5, 6 and 11
-were re-captured on 2026-10-02, because what they print changed. The registry is now
-written from a seed that carries the ID grammar instead of being created empty, a
-mint now names who wrote the requirement, and the report speaks in requirements,
-tests and pull requests rather than in this project's own vocabulary. Their quoted
-output is that day's real run. Block 12 is new on the same date and says in the block
-itself which of its steps this page cannot quote, and what stands in place of that
-receipt. The other nine are untouched, and a replay of every block on a cut release
-is still open work. The
-previous capture was on v0.4.13, and every receipt reproduced unchanged, which is <!-- specassay:stale-ok the record of what was true at v0.4.13; re-observing it would mean re-running on that release, which is not what the sentence claims -->
-worth knowing and is not the same as having assumed it. That run was on Linux,
-not a Mac.
-macOS and Linux are both first-class for these commands, and the only difference
-we expect is the `python:` version string and your own paths. **If your Mac shows
-anything else different, that difference is a finding: report it** (see *When
-you stumble*, at the end).
+**Where the receipts come from.** Every block below was run in order on
+2026-10-02, against those exact versions, and the output quoted under each block is
+that run's real output, trimmed to the lines that carry the receipt, never a sketch
+of what it might say. All thirteen were replayed that day on **v0.5.5**, installed
+the way block 4 installs it: from the catalogs, carrying the release's sha256, so
+the archive was verified before it was unpacked.
+
+**What the replay changed, and what it corrected.** Ten blocks reproduced
+unchanged from the v0.5.1 capture. <!-- specassay:stale-ok the sentence records which capture the replay was compared against, which is a fact about that run and not a claim about the current release --> Block 4 now reports seven shipped
+scripts where it reported four, because the Gate was split into a launcher and an
+implementation and two more scripts ship beside them. Block 11's list of changed
+files no requirement claims is back to two, which is what this page said before
+2026-10-02: a capture taken that morning showed seven, because it was taken in a
+project built by hand rather than by block 3, and block 3 writes a `.gitignore`
+that keeps the manifests and Python's `__pycache__` out of the diff. The page was
+right and the capture was wrong, which is the sort of thing only replaying from
+block 1 finds.
+
+Spec Kit 1.0.4 was installed from its own tag for the replay, as block 2 does, so
+the page and the run agree on every version in the table.
 
 An unpinned quickstart rots silently, so this one carries its versions and its
 date. If you are reading it long after 2026-09-17, the versions above are what it
@@ -244,7 +243,7 @@ specify bundle install specassay
 **You should now see**, as the last two lines:
 
 ```text
-Updated execute permissions on 4 script(s) recursively
+Updated execute permissions on 7 script(s) recursively
 ✓ Installed 'specassay' (2 added, 0 already present).
 ```
 
@@ -710,12 +709,12 @@ git diff --name-only thread-base | python3 .specify/extensions/specassay-check/s
 cat thread-report.md
 ```
 
-**You should now see** the changed files, then the report:
+**You should now see** the five changed files, then the report:
 
 ```text
 ## 🧵 Thread Report
 
-🟢 **Ready to review** · **1** now has a test · **7** changed files no requirement claims
+🟢 **Ready to review** · **1** now has a test · **2** changed files no requirement claims
 
 1 requirement came from the case, 0 from the project (design 0, retrospective 0, constitution 0).
 
@@ -731,31 +730,18 @@ cat thread-report.md
 </details>
 
 <details>
-<summary><b>Changed files no requirement claims</b> — 7 files</summary>
+<summary><b>Changed files no requirement claims</b> — 2 files</summary>
 
 Changed, but nothing in them names a requirement this pull request moved. Not a defect: a refactor and unwanted scope look the same here. Worth a glance:
 
-- `src/__pycache__/greet.cpython-311.pyc`
 - `src/banner.py`
 - `tests/__init__.py`
-- `tests/__pycache__/__init__.cpython-311.pyc`
-- `tests/__pycache__/test_greet.cpython-311.pyc`
-- `trace-manifest.json`
-- `trace-manifest.v5beta.json`
 
 </details>
 
 ---
 <sub>This comment reports; it never blocks. A changed file no requirement claims is a note, not a failure. <b>Words used here:</b> <b>Golden Thread</b>, the chain from a requirement to the code and test that answer for it. <b>Off thread</b>, a changed file no requirement claims. <b>Mint</b>, to write a new requirement into the registry. Set `offthread_ack: record|required` in the SpecAssay config to add a human tick.</sub>
 ```
-
-**On the list of files no requirement claims.** Seven, on a project with two
-source files, because the list is the truth about the diff and not a curated
-version of it: `src/banner.py`, which you wrote, the two manifests the Gate just
-rewrote, and Python's own `__pycache__`. A real project puts those last five in
-`.gitignore` and the list shortens to the one file that matters. The tool will not
-decide for you which changes are noise, which is the same refusal it makes
-everywhere else.
 
 **What just happened:** you got the paragraph a reviewer would get, generated
 from the same file the Gate wrote, with nobody writing a summary by hand.
@@ -765,7 +751,7 @@ click open. Here in your terminal you are seeing the raw Markdown, tags and all,
 which is the same text GitHub turns into that.
 
 Read it as a reviewer would, starting with the one line at the top. That line
-says what to do next: **ready to review**, one requirement now has a test, seven
+says what to do next: **ready to review**, one requirement now has a test, two
 changed files no requirement claims. If nothing there surprises you, you are done
 reading. The same line has two other readings: **needs a person**, when the check
 passes but a requirement was reworded or a tick is waiting, and **do not merge
@@ -840,7 +826,7 @@ Open the pull request on GitHub. The check appears as **SpecAssay**, and the
 comment it posts is the report from block 11 with one marker line above it, so you
 have already read what it will say.
 
-**This is the one block on this page whose output is not quoted here**, because it
+**This is the one step on this page whose output is not quoted here**, because it
 happens on GitHub rather than in your terminal, and quoting a screenshot of
 somebody else's pull request would be a sketch rather than a receipt. What stands
 in its place is a test that performs this whole page end to end, from `git init` to
