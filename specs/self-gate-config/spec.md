@@ -188,3 +188,9 @@ where that same ID lands once it has.
     `test_AC_DOCS_20_a_stated_reason_keeps_an_old_observation`, and
     `test_AC_DOCS_20_a_quoted_range_must_match_the_bundle` — one per clause, so
     a break names the clause it broke.
+- FR-GATE-180 — A fenced registry line is a quotation, not a mint, in every
+  reader of the registry. Shipped 2026-10-02, proven by `@covers` in
+  `lib-def-line.sh`, `check-traceability.sh` and `mint-id.sh`, and by
+  `extensions/specassay-check/tests/test_gate_180_fenced_registry_line.py`.
+  - AC-GATE-180 — proven by `test_AC_GATE_180_a_fenced_row_is_not_a_promise`.
+  - AC-GATE-180b — proven by `test_AC_GATE_180b_a_fenced_row_does_not_move_the_next_mint`.

@@ -320,7 +320,9 @@ print(json.dumps(row, ensure_ascii=False))
 
 if [[ ! -f "$REGISTRY" ]]; then
   record_fail "registry-missing" "" "registry not found: $REGISTRY"
-  echo "  The config's registry: key names the file that holds your durable IDs. Either create it (touch $REGISTRY) and mint a first ID into it, or point registry: at the doc that already holds your requirements. Then rerun." >&2
+  echo "  The config's registry: key names the file that holds your durable IDs. Either create it from the seed, which carries the grammar and an example of each kind of row:" >&2
+  echo "    bash $EXT_REL/scripts/mint-id.sh --init" >&2
+  echo "  or point registry: at the doc that already holds your requirements. Then rerun." >&2
   # Still try to emit an empty-ish manifest below if possible; exit after emit.
 fi
 
@@ -334,8 +336,11 @@ fi
 source "$EXT_DIR/scripts/lib-def-line.sh"
 DEF_LINE_RE="$(def_line_regex "$ID_RE")"
 : > "$tmp/def_line_hits.txt"
+# @covers FR-GATE-180, AC-GATE-180 -- a fenced registry line is a quotation, not
+# a mint. strip_fenced_lines blanks fenced lines and keeps the line count, so the
+# numbers grep reports below are still the real file's numbers.
 if [[ -f "$REGISTRY" ]]; then
-  grep -nE "$DEF_LINE_RE" "$REGISTRY" 2>/dev/null | while IFS= read -r line; do
+  strip_fenced_lines "$REGISTRY" | grep -nE "$DEF_LINE_RE" 2>/dev/null | while IFS= read -r line; do
     lineno="${line%%:*}"
     rest="${line#*:}"
     id="$(grep -Eo "$ID_RE" <<<"$rest" | head -1 || true)"
@@ -1678,9 +1683,10 @@ SpecAssay Check (Gate 2): OK, registry empty (0 IDs in $REGISTRY)
   Nothing is promised yet, so there is nothing to check. The Gate stays green until a first ID exists; this green proves nothing.
   Mint a first ID, either way:
     greenfield (new work): mint the IDs for a story before writing its spec; the SpecAssay preset makes each Spec Kit spec inherit IDs from $REGISTRY rather than invent them.
-      bash $EXT_REL/scripts/mint-id.sh AC LOGIN --append "Given a wrong password, when the user signs in, then the form shows an error and no session starts."
+      bash $EXT_REL/scripts/mint-id.sh AC LOGIN --authorship case --append "Given a wrong password, when the user signs in, then the form shows an error and no session starts."
     brownfield (existing docs, no IDs yet): pick one requirement from a doc you already have and mint it with the same command, naming the doc in the statement. One is enough to start; do not backfill.
-      bash $EXT_REL/scripts/mint-id.sh AC LOGIN --append "Given a wrong password (docs/auth.md, Sign-in), when the user signs in, then the form shows an error."
+      bash $EXT_REL/scripts/mint-id.sh AC LOGIN --authorship case --append "Given a wrong password (docs/auth.md, Sign-in), when the user signs in, then the form shows an error."
+  --authorship names who authored the row, one of case, design, retrospective or constitution, and it is the one field the tool will not fill for you. Leave it off and the row reads as unassigned, which is reported and not refused.
   Then rerun this check. Expect a refusal: the new ID has no spec, task, or test yet, so the Gate reports it as drift and a silent gap. That first honest red is the tool working.
   Clear it either way. An open task line carrying "**Carries**: AC-LOGIN-10", and nothing else yet, is anointed backlog: green and honest.
   Or name the ID in a specs/*/spec.md and on a task line with **Carries**, then write a test named test_AC_LOGIN_10_...: proven. Spec and task without the test is tracked-debt, also green.

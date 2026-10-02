@@ -37,7 +37,7 @@ One YAML file, in this directory. Paths and globs are relative to your project r
 
 | Key | What it controls | Default |
 | --- | --- | --- |
-| `registry` | The file that holds your durable IDs. The Gate reads IDs only from definition-shaped lines (a bullet, the ID, a separator, a statement). | `PRD.md` |
+| `registry` | The file that holds your durable IDs. The Gate reads IDs only from definition-shaped lines (a bullet, the ID, a separator, a statement), and never from inside a fenced code block: a quoted row is an example, not a promise. | `PRD.md` |
 | `target_name` | Display name written into the manifest | project directory name |
 | `manifest_path` | Where `trace-manifest.json` is written | `trace-manifest.json` |
 | `specs`, `tasks` | Globs for Spec Kit's spec and task files | `specs/**/spec.md`, `specs/**/tasks.md` |
@@ -134,28 +134,41 @@ The manifest is still written on red, with `gate.ok: false` and every refusal un
 
 ## First run on a fresh project
 
-Nothing is minted yet, so the registry is empty and the Gate is green with nothing behind it. It says so:
+<!-- @covers FR-COLD-20, AC-COLD-20d -->
+
+**Start with a registry.** Nothing in the install creates one, so the first command on a new project writes it from the seed this extension ships:
+
+```bash
+bash .specify/extensions/specassay-check/scripts/mint-id.sh --init
+```
+
+That writes the file your config's `registry:` key names, from [`templates/registry-seed.md`](./templates/registry-seed.md). The seed states the ID grammar in full, carries one example row of each of the four types with the `**Authorship**:` mark on it, and says what the four authorship words mean. It is the file a person reads to learn what a row looks like, so the grammar lives there rather than only inside a Gate refusal. Every example row sits inside a fenced block, which the Gate reads as a quotation, so the seed promises nothing and a first run on it is green with zero rows. `--init` never overwrites an existing registry; it refuses and names the file.
+
+Brownfield repos usually want the other door: point `registry:` at the document that already holds your requirements, and mint one ID against a requirement in it.
+
+Then, nothing being minted yet, the registry is empty and the Gate is green with nothing behind it. It says so:
 
 ```text
 SpecAssay Check (Gate 2): OK, registry empty (0 IDs in PRD.md)
   Nothing is promised yet, so there is nothing to check. The Gate stays green until a first ID exists; this green proves nothing.
   Mint a first ID, either way:
     greenfield (new work): mint the IDs for a story before writing its spec; the SpecAssay preset makes each Spec Kit spec inherit IDs from PRD.md rather than invent them.
-      bash .specify/extensions/specassay-check/scripts/mint-id.sh AC LOGIN --append "Given a wrong password, when the user signs in, then the form shows an error and no session starts."
+      bash .specify/extensions/specassay-check/scripts/mint-id.sh AC LOGIN --authorship case --append "Given a wrong password, when the user signs in, then the form shows an error and no session starts."
     brownfield (existing docs, no IDs yet): pick one requirement from a doc you already have and mint it with the same command, naming the doc in the statement. One is enough to start; do not backfill.
-      bash .specify/extensions/specassay-check/scripts/mint-id.sh AC LOGIN --append "Given a wrong password (docs/auth.md, Sign-in), when the user signs in, then the form shows an error."
+      bash .specify/extensions/specassay-check/scripts/mint-id.sh AC LOGIN --authorship case --append "Given a wrong password (docs/auth.md, Sign-in), when the user signs in, then the form shows an error."
   Then rerun this check. Expect a refusal: the new ID has no spec, task, or test yet, so the Gate reports it as drift and a silent gap. That first honest red is the tool working.
   Clear it either way. An open task line carrying "**Carries**: AC-LOGIN-10", and nothing else yet, is anointed backlog: green and honest.
   Or name the ID in a specs/*/spec.md and on a task line with **Carries**, then write a test named test_AC_LOGIN_10_...: proven. Spec and task without the test is tracked-debt, also green.
 ```
 
-If the registry file itself does not exist, the run is red with `registry not found` and tells you to either create it (`touch PRD.md`) or point `registry:` at the doc that already holds your requirements. Brownfield repos usually want the second.
+If the registry file itself does not exist, the run is red with `registry not found` and names both doors: `mint-id.sh --init`, or `registry:` pointed at the doc that already holds your requirements.
 
 ## The other commands
 
 | Command | Does |
 | --- | --- |
-| `scripts/mint-id.sh <PREFIX> <AREA> [--append "statement"]` or `speckit.specassay-check.mint` | Mints the next ID for a prefix and area, always a multiple of ten; `--append` also writes the registry line in the file's own style. `--resolve <ID>` resolves a duplicate. |
+| `scripts/mint-id.sh --init` | Writes the registry from the shipped seed, which carries the grammar and one fenced example row of each type. Refuses rather than overwrite an existing registry. |
+| `scripts/mint-id.sh <PREFIX> <AREA> [--authorship <value>] [--append "statement"]` or `speckit.specassay-check.mint` | Mints the next ID for a prefix and area, always a multiple of ten, and prints the whole line to paste in the file's own style; `--append` also writes it. `--authorship` takes one of `case`, `design`, `retrospective`, `constitution` and puts the mark on the line; omitted, the row reads as unassigned, which is reported and not refused. `--resolve <ID>` resolves a duplicate. |
 | `scripts/dig.py` or `speckit.specassay-check.dig` | Archaeology mode for an unfamiliar repo: proposes a candidate registry from tests, routes, and README tables, written only to `dig-report.json`. Deterministic, no LLM. |
 | `check-traceability.sh --matrix` or `speckit.specassay-check.matrix` | `coverage.md` and `coverage.svg` for a PR or README. |
 | `check-traceability.sh --portfolio` or `speckit.specassay-check.portfolio` | `portfolio-snapshot.md`, a plain-prose snapshot for a reader with no context. |

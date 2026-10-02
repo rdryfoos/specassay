@@ -37,7 +37,13 @@ wrong you can name the block it went wrong in.
 **Where the receipts come from.** Every block below was run in order, on
 2026-09-17, against those exact versions, and the output quoted under each block
 is that run's real output, trimmed to the lines that carry the receipt, never a
-sketch of what it might say. All twelve were re-captured that day on v0.5.1. The
+sketch of what it might say. All twelve were re-captured that day on v0.5.1.
+**Two of them have moved since, and say so here rather than quietly:** blocks 5
+and 6 were re-captured on 2026-10-02, because the commands in them changed. The
+registry is now written from a seed that carries the ID grammar instead of being
+created empty, and a mint now names who authored the row. Their quoted output is
+that day's real run, on the change those blocks describe; the other ten are
+untouched, and a replay of all twelve on a cut release is still open work. The
 previous capture was on v0.4.13, and every receipt reproduced unchanged, which is <!-- specassay:stale-ok the record of what was true at v0.4.13; re-observing it would mean re-running on that release, which is not what the sentence claims -->
 worth knowing and is not the same as having assumed it. That run was on Linux,
 not a Mac.
@@ -274,19 +280,31 @@ like `AC-GREET-10` that you give it once, when you decide to promise the thing,
 and never renumber afterwards. The name is what lets the Gate match a promise to
 the test that answers for it, so the name has to hold still.
 
-You have not promised anything yet, and that is deliberate. Running the Gate on
-an empty registry first is the clearest way to see what it means when it says
-yes. So make the empty file and run it.
+<!-- @covers FR-COLD-20, AC-COLD-20a -->
+
+Nothing in the install created that file, so the first command makes it. It does
+not make an empty one: it writes a **seed** that states the ID grammar in full,
+carries one example row of each kind, and says what the `**Authorship**:` mark
+means. You will be reading that file for the next few blocks, so it is worth
+opening once it exists.
+
+You have not promised anything yet, and that is deliberate. Running the Gate on a
+registry with no promises in it is the clearest way to see what it means when it
+says yes. So write the seed and run it.
 
 ```bash
-touch PRD.md
+bash .specify/extensions/specassay-check/scripts/mint-id.sh --init
 bash .specify/extensions/specassay-check/scripts/check-traceability.sh
 echo "exit: $?"
 ```
 
-**You should now see** a green run that refuses to take credit for being green:
+**You should now see** the seed written, and then a green run that refuses to take
+credit for being green:
 
 ```text
+wrote PRD.md from the registry seed (64 lines)
+  It holds the ID grammar, one fenced example of each kind of row, and no promises: the Gate reads a fenced line as a quotation, so a first run on it is green and says the green proves nothing.
+  Mint your first row: mint-id.sh <PREFIX> <AREA> --authorship <case|design|retrospective|constitution> --append "statement"
 SpecAssay Check (Gate 2) starting
   python: python3 (3.11.15)
   config: .specify/extensions/specassay-check/specassay-check-config.yml (from specassay-check-config.yml)
@@ -343,29 +361,41 @@ behind it is precisely what it is looking for.
 
 **Minting** is the word for writing a promise into the registry at the moment you
 decide on it, rather than working out afterwards what the code seems to have
-promised. `mint-id.sh` picks the next free number (always a multiple of ten) and
-appends the line in the file's own style.
+promised. `mint-id.sh` picks the next free number (always a multiple of ten),
+composes the whole line in the file's own style, and appends it. You never compose
+an ID by hand.
+
+`--authorship` is the one field it will not fill in for you: it names **who
+authored the row**, in one of four words, and only you know which. `case` means the
+promise comes from the project's case, in the reader's words or on their behalf,
+which is what this one is. The other three are `design` (a decision you made
+rather than one you were asked for), `retrospective` (minted from a defect or a
+review) and `constitution` (a principle demanded it). Leave it off and the row
+reads as unassigned, which the Gate reports and does not refuse.
+
+<!-- @covers FR-COLD-20, AC-COLD-20b -->
 
 ```bash
 bash .specify/extensions/specassay-check/scripts/mint-id.sh AC GREET \
+  --authorship case \
   --append 'Given a name, when the greeter runs, then it returns "Hello, <name>!".'
-cat PRD.md
 bash .specify/extensions/specassay-check/scripts/check-traceability.sh
 echo "exit: $?"
 ```
 
-**You should now see** the ID, the registry line, and then your first honest red:
+**You should now see** the ID, the line it wrote, and then your first honest red:
 
 ```text
 AC-GREET-10
-appended to PRD.md
+appended to PRD.md:
+  - AC-GREET-10 — Given a name, when the greeter runs, then it returns "Hello, <name>!". **Authorship**: case
 REMINDER: state the coverage basis plainly in the mint commit.
   Already-built work this mint is only now registering: "coverage registered, not newly attributed."
   New work this mint is starting: say that instead. Either is honest; silence about which is not.
-- AC-GREET-10 — Given a name, when the greeter runs, then it returns "Hello, <name>!".
 FAIL: registry ID missing from specs: AC-GREET-10
 FAIL: registry ID missing from tasks: AC-GREET-10
 FAIL: silent gap: AC-GREET-10 has no test and no open tracked-debt task
+Wrote trace-manifest.v5beta.json (1 rows, schemaVersion 5, beta)
 Wrote trace-manifest.json (1 rows) gate.ok=False
 SpecAssay Check (Gate 2): FAILED
 exit: 1
@@ -705,6 +735,18 @@ Changed, but nothing in them carries a mark tying them to an intent this PR move
 
 </details>
 ```
+
+**One line not in that capture.** Since block 6 now mints with `--authorship`, the
+report carries one more sentence under the verdict line, naming who authored the
+promises it is reporting on. Observed 2026-10-02 on the run that re-captured
+blocks 5 and 6:
+
+```text
+1 promises from the case, 0 from the project (design 0, retrospective 0, constitution 0).
+```
+
+The rest of this block's capture is the 2026-09-17 run on v0.5.1, unchanged, and a
+replay of all twelve blocks on a cut release remains open work. <!-- specassay:stale-ok the sentence records which run this block's capture came from; re-observing it would mean replaying all twelve blocks, which is the open work the pin table already names -->
 
 **What just happened:** you got the paragraph a reviewer would get, generated
 from the same file the Gate wrote, with nobody writing a summary by hand.

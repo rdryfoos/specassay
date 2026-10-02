@@ -51,6 +51,67 @@ gave `specify bundle install specassay`. The defect was the silent install, not
 the instructions, and saying so is cheaper than carrying a correction nobody
 made.
 
+### A registry to start from, and the grammar beside it
+
+`FR-COLD-20`. Nothing in the install created a registry. The composed spec template
+forbade minting where the user was standing (*"do not mint new IDs here"*),
+`mint-id.sh` refused with `registry not found`, and the mint command's own
+instructions told an agent to create the file empty. So the first thing a stranger
+had to do after installing was invent a file nobody had described.
+
+```bash
+bash .specify/extensions/specassay-check/scripts/mint-id.sh --init
+```
+
+writes the registry from a seed the extension now ships. The seed states the ID
+grammar in full, which was previously spread between a spec template, a
+constitution template and a Gate refusal: the four types, a domain of 2 to 6
+uppercase characters, two or more digits, the optional sibling letter, the decade
+scheme and the reserved collision lane. It carries one example row of each of the
+four types with the `**Authorship**:` mark on it, and says what the four
+authorship words mean. `--init` never overwrites an existing registry.
+
+**A mint now prints the whole line, not just the ID**, so no registry line is
+composed by hand, and it takes the one field the tool will not fill in:
+
+```bash
+mint-id.sh AC LOGIN --authorship case --append "Given a wrong password, ..."
+```
+
+```text
+AC-LOGIN-10
+appended to PRD.md:
+  - AC-LOGIN-10 — Given a wrong password, ... **Authorship**: case
+```
+
+`--authorship` is validated against the same four values the Gate accepts, so a
+mint cannot write a value the Gate would refuse. Omitted, the row reads as
+unassigned and the mint says so in one line. **Every row the documented command had
+ever written came out unassigned**, which nothing in the command hinted at; that
+was found reproducing the cold path rather than reasoning about it.
+
+### A fenced registry line is a quotation, not a mint
+
+`FR-GATE-180`. `FR-GATE-40` settled this in v0.4.x for `@covers` marks and test
+names: <!-- specassay:provenance --> a mark inside a fenced code block is a
+teaching example, and counting it as a live claim makes a document that explains
+the tool refuse the project that reads it. The registry's own reader was left out
+of that fix.
+
+Found writing the seed above, which could not carry an example of the thing it
+exists to explain: four fenced example rows produced three refusals each on a
+project's first Gate run. Now the Gate's definition-line scan, its duplicate-id
+detection, and `mint-id.sh`'s next-number, style and collision scans all read the
+registry through one shared fence filter, so no two readers of the file can
+disagree about what is minted. Lines are blanked rather than deleted, so every line
+number the Gate reports still points at the real line.
+
+**One upgrade hazard, stated rather than left to be discovered:** a project that
+today has a fenced row which a spec or a task references will see that reference
+turn into drift, named plainly, because the row it pointed at has stopped existing.
+This repository's own registry was unaffected: 109 rows before the change and 109
+after.
+
 ## 0.5.4 (2026-10-01)
 
 Components: bundle 0.5.4, extension 0.5.4, preset 0.5.4.

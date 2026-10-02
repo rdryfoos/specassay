@@ -45,7 +45,12 @@ def test_AC_GATE_100a_empty_registry_stays_green_and_names_the_on_ramp(project):
     assert "Nothing is promised yet" in out
     assert "stays green until a first ID exists" in out
     assert "greenfield" in out and "brownfield" in out
-    assert "mint-id.sh AC LOGIN --append" in out
+    # The on-ramp command gained --authorship with FR-COLD-20: the row the tool
+    # tells a stranger to mint is now a complete one, so this is the shape asserted
+    # here. AC-GATE-100a promises that the green names an on-ramp, not which words
+    # the on-ramp uses.
+    assert "mint-id.sh AC LOGIN --authorship case --append" in out
+    assert "--authorship names who authored the row" in out
     assert "Expect a refusal" in out
     assert "**Carries**: AC-LOGIN-10" in out
     assert "anointed backlog" in out and "proven" in out and "tracked-debt" in out
@@ -78,7 +83,9 @@ def test_AC_GATE_100a_missing_registry_file_points_at_the_on_ramp(project):
 
     assert proc.returncode == 1
     assert "registry not found: PRD.md" in proc.stderr
-    assert "touch PRD.md" in proc.stderr
+    # FR-COLD-20 replaced `touch PRD.md` here: an empty file was never the right
+    # first registry, and the seed the bundle ships carries the grammar.
+    assert "mint-id.sh --init" in proc.stderr
     assert "point registry: at the doc that already holds your requirements" in proc.stderr
     assert manifest is not None and manifest["gate"]["ok"] is False
 
