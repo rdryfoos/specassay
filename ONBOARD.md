@@ -5,11 +5,12 @@
 <!-- @covers FR-DOCS-60 -->
 
 This page takes you from a blank Claude Code session to a **Thread Report**, the
-one-comment briefing SpecAssay posts on a change, saying what moved on the thread
-and what rode along untraced, on a tiny sample project you build here. You will
-mint one promise, build it, prove it, break it on purpose, watch the **Gate** (the
-deterministic check that refuses work with a hidden hole in it) refuse, fix it,
-and read the result. Target: one short sitting, unassisted.
+one comment SpecAssay posts on a pull request saying what the change did to your
+requirements and which changed files no requirement claims, on a tiny sample
+project you build here. You will write one requirement down, build it, give it a
+test, break it on purpose, watch the **Gate** (the deterministic check that
+refuses work with a hidden hole in it) refuse, fix it, and read the result.
+Target: one short sitting, unassisted.
 
 You do not need to know Spec Kit or SpecAssay to follow it. Every block is a
 paste-block that ends with a **You should now see** receipt, so if something goes
@@ -38,14 +39,15 @@ wrong you can name the block it went wrong in.
 2026-09-17, against those exact versions, and the output quoted under each block
 is that run's real output, trimmed to the lines that carry the receipt, never a
 sketch of what it might say. Twelve blocks were re-captured that day on v0.5.1.
-**Three have moved since, and say so here rather than quietly:** blocks 5 and 6
-were re-captured on 2026-10-02, because the commands in them changed. The registry
-is now written from a seed that carries the ID grammar instead of being created
-empty, and a mint now names who authored the row. Their quoted output is that day's
-real run, on the change those blocks describe. Block 12 is new on the same date and
-says in the block itself which of its steps this page cannot quote, and what stands
-in place of that receipt. The other ten are untouched, and a replay of every block
-on a cut release is still open work. The
+**Four have moved since, and say so here rather than quietly:** blocks 5, 6 and 11
+were re-captured on 2026-10-02, because what they print changed. The registry is now
+written from a seed that carries the ID grammar instead of being created empty, a
+mint now names who wrote the requirement, and the report speaks in requirements,
+tests and pull requests rather than in this project's own vocabulary. Their quoted
+output is that day's real run. Block 12 is new on the same date and says in the block
+itself which of its steps this page cannot quote, and what stands in place of that
+receipt. The other nine are untouched, and a replay of every block on a cut release
+is still open work. The
 previous capture was on v0.4.13, and every receipt reproduced unchanged, which is <!-- specassay:stale-ok the record of what was true at v0.4.13; re-observing it would mean re-running on that release, which is not what the sentence claims -->
 worth knowing and is not the same as having assumed it. That run was on Linux,
 not a Mac.
@@ -686,15 +688,14 @@ it. That is a yes or a no, and it is the half that can stop a build. This block 
 the other half, the half that talks to a person.
 
 The **Thread Report** is a short briefing posted on a change, saying what that
-change did to the promises: which ones moved, and which files were edited that no
-promise claims. It never refuses anything. It just tells the reviewer what to
+change did to your requirements: which ones changed, and which changed files no
+requirement claims. It never refuses anything. It just tells the reviewer what to
 look at.
 
-One line saying what this change did, and under it what moved and which changed
-files sit **off the thread**, changed but carrying no mark tying them to an intent
-this change moved. It illuminates; it never refuses. In CI it runs on every
-pull request and posts one comment; here you run it by hand, comparing the
-snapshot you saved in block 7 against the thread as it stands now.
+One line saying what to do next, and under it what changed and which changed files
+no requirement claims. In CI it runs on every pull request and posts one comment;
+here you run it by hand, comparing the snapshot you saved in block 7 against the
+state as it stands now.
 
 ```bash
 git add -A && git commit -qm "Build and prove AC-GREET-10"
@@ -709,46 +710,52 @@ git diff --name-only thread-base | python3 .specify/extensions/specassay-check/s
 cat thread-report.md
 ```
 
-**You should now see** the five changed files, then the report:
+**You should now see** the changed files, then the report:
 
 ```text
 ## 🧵 Thread Report
 
-🟢 **Golden Thread intact** · **1** proved · **2** files off thread
+🟢 **Ready to review** · **1** now has a test · **7** changed files no requirement claims
+
+1 requirement came from the case, 0 from the project (design 0, retrospective 0, constitution 0).
 
 <details>
-<summary><b>What moved</b> — 1 row in 1 family</summary>
+<summary><b>What changed</b> — 1 requirement in 1 area</summary>
 
 **GREET**
 
-| ID | Moved | Changed in |
-|----|-------|------------|
+| ID | What changed | Where |
+|----|--------------|-------|
 | `AC-GREET-10` | `tracked-debt` → 🟢 **`proven`** | `test_greet.py` `greet.py` |
 
 </details>
 
 <details>
-<summary><b>Off thread</b> — 2 changed files sit off the thread</summary>
+<summary><b>Changed files no requirement claims</b> — 7 files</summary>
 
-Changed, but nothing in them carries a mark tying them to an intent this PR moved. Not a defect (a refactor and unwanted scope look identical here); just worth a glance:
+Changed, but nothing in them names a requirement this pull request moved. Not a defect: a refactor and unwanted scope look the same here. Worth a glance:
 
+- `src/__pycache__/greet.cpython-311.pyc`
 - `src/banner.py`
 - `tests/__init__.py`
+- `tests/__pycache__/__init__.cpython-311.pyc`
+- `tests/__pycache__/test_greet.cpython-311.pyc`
+- `trace-manifest.json`
+- `trace-manifest.v5beta.json`
 
 </details>
+
+---
+<sub>This comment reports; it never blocks. A changed file no requirement claims is a note, not a failure. <b>Words used here:</b> <b>Golden Thread</b>, the chain from a requirement to the code and test that answer for it. <b>Off thread</b>, a changed file no requirement claims. <b>Mint</b>, to write a new requirement into the registry. Set `offthread_ack: record|required` in the SpecAssay config to add a human tick.</sub>
 ```
 
-**One line not in that capture.** Since block 6 now mints with `--authorship`, the
-report carries one more sentence under the verdict line, naming who authored the
-promises it is reporting on. Observed 2026-10-02 on the run that re-captured
-blocks 5 and 6:
-
-```text
-1 promises from the case, 0 from the project (design 0, retrospective 0, constitution 0).
-```
-
-The rest of this block's capture is the 2026-09-17 run on v0.5.1, unchanged, and a
-replay of every block on a cut release remains open work. <!-- specassay:stale-ok the sentence records which run this block's capture came from; re-observing it would mean replaying every block, which is the open work the pin table already names -->
+**On the list of files no requirement claims.** Seven, on a project with two
+source files, because the list is the truth about the diff and not a curated
+version of it: `src/banner.py`, which you wrote, the two manifests the Gate just
+rewrote, and Python's own `__pycache__`. A real project puts those last five in
+`.gitignore` and the list shortens to the one file that matters. The tool will not
+decide for you which changes are noise, which is the same refusal it makes
+everywhere else.
 
 **What just happened:** you got the paragraph a reviewer would get, generated
 from the same file the Gate wrote, with nobody writing a summary by hand.
@@ -757,22 +764,29 @@ On a pull request those `<details>` blocks render as two collapsed lines you can
 click open. Here in your terminal you are seeing the raw Markdown, tags and all,
 which is the same text GitHub turns into that.
 
-Read it as a reviewer would, starting with the one line at the top. That line is
-the whole verdict: the thread is intact, one promise proved on this change, two
-changed files sit off the thread. If nothing there surprises you, you are done
-reading.
+Read it as a reviewer would, starting with the one line at the top. That line
+says what to do next: **ready to review**, one requirement now has a test, seven
+changed files no requirement claims. If nothing there surprises you, you are done
+reading. The same line has two other readings: **needs a person**, when the check
+passes but a requirement was reworded or a tick is waiting, and **do not merge
+yet**, when the check refuses.
 
-Click down when it does. *What moved* names the promise, the move it made
-(`tracked-debt` → `proven`) and the two files that did it. *Off thread* names
+Click down when it does. *What changed* names the requirement, what it did
+(`tracked-debt` → `proven`) and the two files that did it. The list under it names
 `src/banner.py`, which you wrote, which is harmless, and which nothing in the
-repository ties to any stated intent. The tool refuses to guess whether that is a
+repository ties to any requirement. The tool refuses to guess whether that is a
 tidy-up or scope nobody asked for, because from here those look identical; it
 hands you a spotlight, not a verdict.
 
-The report shows what *moved*, and footnotes the rest. On a toy project with one
-promise there is no rest; on a real one, a family's unchanged rows are summarised
-under its table by status rather than listed, so the report stays about this
-change without losing the state around it.
+The report shows what changed, and footnotes the rest. On a toy project with one
+requirement there is no rest; on a real one, an area's unchanged requirements are
+summarised under its table by state rather than listed, so the report stays about
+this change without losing the state around it.
+
+Three words in that comment are ours and not plain English, so it defines them
+itself, in the one line at the bottom: **Golden Thread**, **off thread**, and
+**mint**. Nothing above that line asks you to know a word before you can act on
+it.
 
 `--project-root .` is not optional: without it the tool measures paths from the
 config file's own directory and reads every changed file as off-thread.

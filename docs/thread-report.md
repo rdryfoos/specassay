@@ -10,17 +10,23 @@
 > and the designed walkthrough lives at
 > [specassay.com/thread-report](https://specassay.com/thread-report).
 
-A passing Gate proves the Golden Thread holds: every intent you wrote down is
-built and proven, with nothing *hidden* at acceptance-criterion altitude. But a
-green check quietly borrows credibility for **everything** in the diff, including
-the changes that touch no intent at all. A reviewer still has to read the whole
-diff to find them.
+A passing Gate means every requirement you wrote down has code and a test, or an
+openly declared debt, with nothing unfinished hidden at acceptance-criterion
+altitude. But a green check quietly borrows credibility for **everything** in the
+diff, including the changes that answer for no requirement at all. A reviewer still
+has to read the whole diff to find them.
 
 The Thread Report closes that gap without adding a gate. On every pull request,
-SpecAssay posts **one comment**: a briefing of what moved on the thread, the
-touched story walked end to end, and the changed files that sit *off the
-thread*. It **illuminates; it never refuses**. It posts **beside** your PR and
-changes nothing about it: not the title, not the description, not the diff.
+SpecAssay posts **one comment**: what the change did to your requirements, the
+reworded ones with the code and tests that need checking, and the changed files no
+requirement claims. It **reports; it never blocks**. It posts **beside** your pull
+request and changes nothing about it: not the title, not the description, not the
+diff.
+
+**The words it uses are ordinary ones**, ruled 2026-10-02: requirements, tests and
+pull requests. Three house words survive because the comment needs them, and the
+comment defines all three in its own last line (*Golden Thread*, *off thread*,
+*mint*). Nothing above that line asks a reader to learn a word first.
 
 ## What it posts
 
@@ -42,179 +48,229 @@ below are display, not truth. Nothing was dropped, only collapsed.
 ```
 ## 🧵 Thread Report
 
-🟢 **Golden Thread intact** · **1** proved · **1** files off thread
+🟢 **Ready to review** · **1** now has a test · **1** changed file no requirement claims
 ```
 
-One line, and it is meant to be the whole read for most PRs: does the thread
-hold, how many rows proved on this change, how many moved to admitted debt, how
-many changed files sit off the thread. `🟢 Golden Thread intact` when `gate.ok`
-is true; `🔴 Golden Thread broken` when it isn't (see *The broken path* below).
-No colour on the word; the dot carries it, so it reads the same in a comment
-(where GitHub strips inline colour) and on the page. A passing Gate does **not**
-mean "everything is done"; it means nothing *unfinished* is *hidden* at AC
+One line, and it is meant to be the whole read for most pull requests: **what to do
+next**, then the counts that say what the change did. Three states, and no more:
+
+| State | When | What it tells the reviewer |
+| --- | --- | --- |
+| `🟢 **Ready to review**` | the Gate passes, nothing was reworded, no required tick is waiting | read the diff as you normally would |
+| `🟡 **Needs a person**` | the Gate passes, but a requirement was reworded or a required tick is waiting | something here cannot be settled by a machine |
+| `🔴 **Do not merge yet**` | the Gate refuses | the separate check is red and says why |
+
+The amber state exists because the two facts behind it were known and never said. A
+reworded requirement has code and tests written against the old wording, and a
+`required` tick is unticked the moment the report renders, since a tick attests to
+one head and the report reposts on every push. A green line in either case would
+have been true about the Gate and misleading about the merge.
+
+No colour on the words; the dot carries it, so the line reads the same in a comment
+(where GitHub strips inline colour) and on a page. A passing Gate does **not** mean
+"everything is done"; it means nothing unfinished is hidden at acceptance-criterion
 altitude.
 
-The counts name only what happened: a term appears when its count is non-zero,
-so a PR that minted nothing never says "0 minted". Rows moving to `GAP`, rows
-minted, retired or restated, and carriers added with the status held each get
-their own term when they occur. When no row moved at all the line says so
-(`**no rows moved**`) rather than going quiet.
+The counts name only what happened: a term appears when its count is non-zero, so a
+pull request that added no requirement never says "0 new requirements". Every count
+agrees in number with itself, down to one changed file reading `file`. The terms:
 
-### 1. Intent Changed
+| Count | Means |
+| --- | --- |
+| `**2** now have a test` | requirements that reached `proven` on this change |
+| `**1** now has a declared debt` | requirements that reached `tracked-debt` |
+| `**1** has neither` | requirements that reached `GAP` |
+| `**1** back to not started` | requirements that reached `backlog` |
+| `**1** new requirement` | minted in this change |
+| `**1** retired` | retired in this change |
+| `**1** reworded` | the wording of the requirement itself moved |
+| `**1** gained code or a test, state unchanged` | a carrier was added without a state change |
+| `**no requirements changed**` | said out loud rather than going quiet |
+| `**2** changed files no requirement claims` / `**every changed file is claimed**` | one or the other, always |
 
-The one section that's about the intent itself, not the code. When a PR
-**restates** an existing registry ID (changes its *wording*), the report
-surfaces it, because the **build and proof** written against the old wording may
-now be subtly wrong while still passing:
+The four state names in the tables (`proven`, `tracked-debt`, `backlog`, `GAP`) and
+their badges are **manifest values**, not display words: a viewer renders them and
+[`trace-manifest-schema.md`](trace-manifest-schema.md) defines them, so the
+plain-words pass left them exactly as they were.
+
+### 1. Reworded requirements
+
+The one section that is about the requirement itself, not the code. When a pull
+request **rewords** an existing registry ID, the report surfaces it, because the code
+and test written against the old wording may now be subtly wrong while still
+passing:
 
 ```
-### Intent Changed
-⚠️ 1 intent was restated — its wording moved under the code and tests written
-against the old text. Re-confirm each still satisfies the new statement.
+### Reworded requirements
+⚠️ 1 requirement was reworded. Its code and tests were written against the old
+wording, so check that each still satisfies the new one.
 
-- **AC-SYNC-01** — restated
+- **AC-SYNC-01** — reworded
   - was: _A change made offline appears on a second device within 5s of reconnect._
   - now: _A change made offline appears on a second device within 3s of reconnect._
-  - re-confirm:
+  - check:
     - `sync.py:51`
     - `test_sync.py:37` — ⚠ still contains the old `5s`
 ```
 
-(The report says *code and tests*; here in the reference we use the vocabulary:
-the **build** and its **proof**.)
-
-Detection is whitespace-insensitive (a reflow or typo-in-spacing is not a
-restatement); *any* substantive wording change flags. The **re-confirm** list is
-the row's build + proof (`implementations` + `proofs`), linked to their
-**current code** (`blob@head`); the reviewer clicks each and checks it still
-satisfies the new statement.
+Detection is whitespace-insensitive (a reflow or a typo in spacing is not a
+rewording); any substantive wording change flags. The **check** list is the
+requirement's code and tests (`implementations` + `proofs`), linked to their current
+state (`blob@head`); the reviewer clicks each and confirms it still satisfies the new
+wording.
 
 **How hard the report leans depends on what it can prove.** Three tiers, in
 decreasing confidence:
 
-1. **Pinpointed.** The reword changed a *concrete token* (a number-with-unit like
-   `5s`, a quoted literal, an ALL-CAPS identifier) **and** that old value still
-   appears in the build or proof. The report flags the exact line: *"still
-   contains the old `5s`."* In the example the proof still asserts *5s* while the
-   criterion now says *3s*: green and wrong, caught mechanically.
-2. **Value changed, not located.** A concrete token changed, but it isn't found
-   verbatim in the code or tests: *"Value `200ms` → `100ms` changed, but not
-   found verbatim… re-confirm by reading."* Honest that it can't point at a line.
-3. **Prose.** No concrete token changed (a sentence was tightened): *"Prose
-   change — no literal value to pin down; re-confirm the build and its proof by
-   reading them against the new wording."* The default: it admits the machine
-   can't judge and hands the human the list.
+1. **Pinpointed.** The rewording changed a *concrete token* (a number with a unit
+   like `5s`, a quoted literal, an ALL-CAPS identifier) **and** that old value still
+   appears in the code or a test. The report flags the exact line: *"still contains
+   the old `5s`."* In the example the test still asserts *5s* while the requirement
+   now says *3s*: green and wrong, caught mechanically.
+2. **Value changed, not located.** A concrete token changed, but it is not found
+   literally in the code or tests: *"The value changed from `200ms` to `100ms`, and
+   neither appears literally in the code or tests. Check by reading."* Honest that it
+   cannot point at a line.
+3. **Wording only.** No concrete token changed, because a sentence was tightened:
+   *"Wording only, with no value to search for. Read the code and its test against
+   the new wording."* The default: it admits the machine cannot judge and hands the
+   person the list.
 
-The line holds throughout: the machine may **illuminate** richer detail (tier 1),
-but it only ever asks a human to look; it never *refuses* on a restatement. This
-is the blast-radius integrity property argued in
-[`scope-and-pull-requests.md` §5](scope-and-pull-requests.md), made mechanical
-and surfaced on the PR that moves the intent (`intent_ack` escalates it to a
-human tick; see *Configuration*). A restated intent also appears in *What
-moved*, marked `✍️ restated`, pointing at the registry hunk that reworded it.
+The line holds throughout: the machine may show richer detail (tier 1), but it only
+ever asks a person to look; it never refuses on a rewording. This is the
+blast-radius integrity property argued in
+[`scope-and-pull-requests.md` §5](scope-and-pull-requests.md), made mechanical and
+surfaced on the pull request that moves the requirement (`intent_ack` escalates it to
+a human tick; see *Configuration*). A reworded requirement also appears in *What
+changed*, marked `✍️ reworded`, pointing at the registry hunk that reworded it.
 
-**The two shapes, told apart by the carriers.** A restatement arrives either as
-a **PR from Intent** (the wording moves alone: live
-[PR #4](https://github.com/rdryfoos/specassay/pull/4)) or a **PR from the
-Field**, the discovery PR (the carriers move in the same PR: live
-[PR #5](https://github.com/rdryfoos/specassay/pull/5)). The re-confirm list
-annotates each carrier that was touched in this PR (*`◀ updated in this PR`*,
-linked to its diff), so the shapes read differently at a glance: untouched
-carriers owe a re-confirm; updated ones carry their re-confirmation in the same
-diff. The partial case renders both marks at once: *updated in this PR* yet
-*still contains the old value*.
+**A reworded requirement always reads `🟡 Needs a person`** on the verdict line, even
+with the Gate green and the tick off, because nothing but a person can say whether
+the old code still answers the new wording.
 
-With minted / retired (in *What moved*) and restated here, the report now covers
-all three legible-intent-diff types.
+**The two shapes, told apart by the carriers.** A rewording arrives either as a
+**pull request from intent** (the wording moves alone: live
+[PR #4](https://github.com/rdryfoos/specassay/pull/4)) or a **pull request from the
+field**, the discovery one (the code and tests move in the same pull request: live
+[PR #5](https://github.com/rdryfoos/specassay/pull/5)). The check list annotates each
+file that was touched here (*`◀ changed in this pull request`*, linked to its diff),
+so the shapes read differently at a glance: untouched files owe a check; changed ones
+carry their answer in the same diff. The partial case renders both marks at once:
+*changed in this pull request* yet *still contains the old value*.
 
-### 2. What moved
+With new and retired requirements (in *What changed*) and reworded ones here, the
+report covers all three legible kinds of intent diff.
 
-Folded. One section, not two: the table carries the move *and* the state, so no
-fact is stated twice. For each **domain** the PR touched (the middle ID token:
-`US-SYNC-01` → `SYNC`), the rows this PR moved, walked top-down
+### 2. What changed
+
+Folded. One section, not two: the table carries the move *and* the state, so no fact
+is stated twice. For each **area** the pull request touched (the middle ID token:
+`US-SYNC-01` → `SYNC`), the requirements this change moved, walked top down
 (`US → FR → NFR → AC`):
 
 ```
 <details>
-<summary><b>What moved</b> — 1 row in 1 family</summary>
+<summary><b>What changed</b> — 1 requirement in 1 area</summary>
 
 **SYNC**
 
-| ID | Moved | Changed in |
-|----|-------|------------|
+| ID | What changed | Where |
+|----|--------------|-------|
 | `AC-SYNC-02` | `tracked-debt` → 🟢 **`proven`** | `test_sync.py` `sync.py` |
 
-<sub>+3 unchanged rows in this family, not listed: 2 🔵 backlog, 1 🟢 proven.</sub>
+<sub>+3 requirements in this area did not change, not listed: 2 🔵 backlog, 1 🟢 proven.</sub>
 
 </details>
 ```
 
-The **Moved** cell says what the row did: a status transition, `🆕 minted`,
-`🪦 retired`, `✍️ restated`, or a carrier added with the status held. A row that
-did more than one of those (minted *and* restated) carries both, separated by
-`·`, on its one line.
+The **What changed** cell says what the requirement did: a state transition,
+`🆕 new`, `🪦 retired (the ID is never reused)`, `✍️ reworded`, or code or a test
+added with the state held. A requirement that did more than one of those (new *and*
+reworded) carries both, separated by `·`, on its one line.
 
-**Changed in** names the **on-thread** files *this PR changed* that carry the
-moved ID (its proof and `@covers`), so the reviewer can click straight to the
-change that did the moving. For a mint or a restatement the move lives in the
-registry, so it points there instead. When the move came from a file carrying no
-mark of its own — a task line gaining a `**Carries**`, say — the cell is an em
-dash: absence renders as absence, never as an invented link.
+**Where** names the files *this pull request changed* that answer for the moved ID
+(its test and `@covers` line), so the reviewer can click straight to the change that
+did the moving. For a new or reworded requirement the move lives in the registry, so
+it points there instead. When the move came from a file that answers for nothing of
+its own, a task line gaining a `**Carries**` say, the cell is an em dash: absence
+renders as absence, never as an invented link.
 
-**Rows this PR did not move are footnoted, not listed**, with their statuses
-counted so the state is still there without the reading. A report about this
-change should show what moved; the family around it is context, one summarised
-line of it. A family where everything moved carries no footnote at all.
+**Requirements this change did not move are footnoted, not listed**, with their
+states counted so the state is still there without the reading. A report about this
+change should show what changed; the area around it is context, one summarised line
+of it. An area where everything moved carries no footnote at all.
 
-### 3. Off thread
+### 3. Changed files no requirement claims
 
-The whole point, and also folded. Changed files that carry **no mark** tying
-them to an intent this PR moved:
+The whole point, and also folded. Changed files that answer for **no requirement**
+this change moved:
 
 ```
 <details>
-<summary><b>Off thread</b> — 1 changed file sits off the thread</summary>
+<summary><b>Changed files no requirement claims</b> — 1 file</summary>
 
-Changed, but nothing in it carries a mark tying it to an intent this PR moved. …
+Changed, but nothing in it names a requirement this pull request moved. Not a
+defect: a refactor and unwanted scope look the same here. Worth a glance:
 
 - src/metrics.py
 
 </details>
 ```
 
-`metrics.py` changed, but nothing in it carries an `@covers`, is a named proof,
-or edits the registry / a spec / a tasks file. A legitimate refactor and
-unwanted scope look **identical** from here, so the machine refuses to guess. It
-hands the reviewer a spotlight, not a verdict. If every changed file carries a
-mark, the report says so in one unfolded line.
+`metrics.py` changed, but nothing in it carries an `@covers` line, is a test named
+for a requirement, or edits the registry, a spec or a tasks file. A legitimate
+refactor and unwanted scope look **identical** from here, so the machine refuses to
+guess. It hands the reviewer a spotlight, not a verdict. If every changed file
+answers for a requirement, the report says so in one unfolded line: *Every changed
+file names a requirement. Nothing is unclaimed.*
 
-**The human tick never folds.** When `offthread_ack` is `record` or `required`,
-the checkbox renders *outside* the `<details>`, because a `required` tick holds
-a merge and a checkbox nobody can see is not a ceremony. The same goes for
-*Intent Changed*, which is never folded at all: it asks the reader to go and
-re-confirm something.
+The section's own house word, *off thread*, now appears only in the footer, with its
+definition beside it. The section itself says what it means.
 
-### 4. Receipts
+**The human tick never folds.** When `offthread_ack` is `record` or `required`, the
+checkbox renders *outside* the `<details>`, because a `required` tick holds a merge
+and a checkbox nobody can see is not a ceremony. The same goes for *Reworded
+requirements*, which is never folded at all: it asks the reader to go and check
+something.
 
-Optional, folded, and never written by the report itself. `--receipts FILE`
-renders that file's Markdown at the end of the report under one click. It exists
-because the run that produced a report — a gate log, a toolchain line — is a
-**receipt, not a headline**: worth keeping, not worth leading with. The report
-never reads, parses or reformats what it is given; the caller owns that text.
+### 4. The run behind this report
+
+Optional, folded, and never written by the report itself. `--receipts FILE` renders
+that file's Markdown at the end of the report under one click. It exists because the
+run that produced a report, a gate log or a toolchain line, is a receipt rather than
+a headline: worth keeping, not worth leading with. The report never reads, parses or
+reformats what it is given; the caller owns that text.
+
+### 5. The footer, and the three words it defines
+
+One line, last, and the only place the comment uses a word a stranger would have to
+be taught:
+
+```
+This comment reports; it never blocks. A changed file no requirement claims is a
+note, not a failure. Words used here: Golden Thread, the chain from a requirement
+to the code and test that answer for it. Off thread, a changed file no requirement
+claims. Mint, to write a new requirement into the registry. Set `offthread_ack:
+record|required` in the SpecAssay config to add a human tick.
+```
+
+Ruled 2026-10-02: the words belong here, with the teaching attached, and not in the
+line a stranger reads first.
 
 ## Clickable: a spotlight you can click
 
 Given `--pr-url` (and `--head-sha`), the report renders live links, so the
 reviewer moves from briefing to exact line in one click:
 
-- **Changed files** (the off-thread list, and the **Changed in** column of
-  *What moved*) → their **diff hunk in this PR**: `…/pull/N/files#diff-<sha256(path)>`.
-  For a restatement or a mint that column points at the **registry file's** hunk
-  instead, because the change *is* the wording.
+- **Changed files** (the unclaimed list, and the **Where** column of *What
+  changed*) → their **diff hunk in this pull request**:
+  `…/pull/N/files#diff-<sha256(path)>`. For a rewording or a new requirement that
+  column points at the **registry file's** hunk instead, because the change *is* the
+  wording.
 - **IDs** → their **registry line**: `…/blob/<head-sha>/<registry>#L<line>`.
-- **Re-confirm build and proof** (in *Intent Changed*) → their **current code**
-  (`blob@head`), not a diff: the build and proof usually didn't change; you're
-  being sent *to* them to re-check against the new wording.
+- **The check list** (in *Reworded requirements*) → the **current code and tests**
+  (`blob@head`), not a diff: they usually did not change, and you are being sent *to*
+  them to read against the new wording.
 
 The `#diff-<sha256>` anchor is GitHub's stable (if undocumented) convention; the
 blob link is the fully-documented form. Without `--pr-url` the report degrades
@@ -246,8 +302,8 @@ it*.
 ## The broken path: post the report, then block
 
 When the head Gate refuses (a silent AC gap, an invented ID, exact-set drift),
-the Thread Report **still posts**, headed `🔴 Golden Thread broken`, with the
-offending row shown moving *into* `GAP`. That is the most illuminating moment the
+the Thread Report **still posts**, headed `🔴 Do not merge yet`, with the
+offending requirement shown moving *into* `GAP`. That is the most illuminating moment the
 feature has, so it is not silent. The report tool **always exits 0**; refusing
 is not its job.
 
@@ -263,10 +319,11 @@ is posted *and* the check is failed.
 
 Three postures, in increasing intervention and decreasing frequency:
 
-- **Illuminate: always on.** The briefing. It surfaces what's decision-relevant
-  and renders no verdict. "Off thread" lives here. The tool never fails
+- **Illuminate: always on.** The briefing. It surfaces what is decision-relevant
+  and renders no verdict of its own; the amber verdict says a person is needed, not
+  that anything is wrong. The unclaimed-files list lives here. The tool never fails
   a build.
-- **Affirm: opt-in.** A team can escalate the off-thread list to a one-click
+- **Affirm: opt-in.** A team can escalate the unclaimed-files list to a one-click
   human tick (`offthread_ack`, below). That is a *person's* verdict behind a
   lightweight config, never the machine's.
 - **Refuse: rare, provable.** The Gate blocks only on what it can **prove** is a
@@ -281,18 +338,19 @@ Three postures, in increasing intervention and decreasing frequency:
 `offthread_ack` is a real key in the SpecAssay config, read by the tool
 (`--offthread-ack` overrides it):
 
-- **`off`** (default). Pure illuminate: the off-thread list is shown, no tick.
-- **`record`**. Adds a *"these untraced changes are incidental"* tick to
-  record, informational only.
+- **`off`** (default). Pure illuminate: the unclaimed-files list is shown, no tick.
+- **`record`**. Adds a *"these unclaimed changes are incidental"* tick to record,
+  informational only. It asks for nothing, so it leaves the verdict green.
 - **`required`**. The **affirm** rung: a human must tick before merge. The
   report tool itself still exits 0; enforcement is separate wiring, and it
   ships (below).
 
-`intent_ack` is the twin key for the **Intent Changed** section (`--intent-ack`
-overrides it), with the same three settings: `off` illuminates, `record` adds
-an informational tick, `required` makes a human confirm each restated intent
-still holds before merge. The tick only appears on a PR that actually restates
-an intent. Same doctrine as `offthread_ack`: the report illuminates and records
+`intent_ack` is the twin key for the **Reworded requirements** section
+(`--intent-ack` overrides it), with the same three settings: `off` illuminates,
+`record` adds an informational tick, `required` makes a person confirm each reworded
+requirement still holds before merge. The tick only appears on a pull request that
+actually rewords one. A `required` tick of either kind reads `🟡 Needs a person` on
+the verdict line, because it is unticked the moment the report renders. Same doctrine as `offthread_ack`: the report illuminates and records
 the human's verdict; it never renders the verdict itself.
 
 **How `required` blocks (shipped).** The ticks are real GitHub task-list

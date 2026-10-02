@@ -153,10 +153,10 @@ def test_AC_COLD_30c_the_shipped_workflow_is_not_this_repository_s_own():
     for piece in (
         "specassay-thread-report",  # the sticky comment's marker
         "updateComment",            # updated in place, not piled up
-        "Golden Thread broken",     # the verdict, read from the manifest
+        "Requirements check failed", # the verdict, read from the manifest
     ):
         assert piece in text, f"the shipped workflow has no {piece} step"
 
     # The verdict is a separate step from the comment: the red tick is the block,
     # the comment never is.
-    assert text.index("createComment") < text.index("Golden Thread broken")
+    assert text.index("createComment") < text.index("Requirements check failed")

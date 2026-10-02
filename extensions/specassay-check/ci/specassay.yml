@@ -111,8 +111,8 @@ jobs:
               context: 'specassay/ack',
               state: unticked ? 'failure' : 'success',
               description: unticked
-                ? `${unticked} human tick(s) required — tick the box in the Thread Report`
-                : 'All required ticks given',
+                ? `${unticked} tick(s) needed: tick the box in the comment on this pull request`
+                : 'All ticks given',
               target_url: context.payload.pull_request.html_url,
             });
 
@@ -121,11 +121,11 @@ jobs:
           set -euo pipefail
           ok=$(python3 -c "import json; print(json.load(open('/tmp/specassay/head.json')).get('gate',{}).get('ok', True))")
           if [ "$ok" != "True" ]; then
-            echo "::error::Golden Thread broken — the Gate refuses. See the Thread Report comment on the pull request."
+            echo "::error::Requirements check failed. See the comment on this pull request."
             python3 -c "import json; [print(' -', f.get('kind'), f.get('detail','')) for f in json.load(open('/tmp/specassay/head.json')).get('gate',{}).get('failures',[])]"
             exit 1
           fi
-          echo "Golden Thread intact."
+          echo "Requirements check passed."
 
   ack-gate:
     if: github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, 'specassay-thread-report')
@@ -151,7 +151,7 @@ jobs:
               context: 'specassay/ack',
               state: unticked ? 'failure' : 'success',
               description: unticked
-                ? `${unticked} human tick(s) required — tick the box in the Thread Report`
-                : 'All required ticks given',
+                ? `${unticked} tick(s) needed: tick the box in the comment on this pull request`
+                : 'All ticks given',
               target_url: pr.html_url,
             });

@@ -70,22 +70,24 @@ AUTHORSHIP_VALUES = ("case", "design", "retrospective", "constitution")
 
 
 def authorship_sentence(rows: list) -> str:
-    """@covers FR-GATE-160, AC-GATE-160d -- one sentence, this shape and no other.
+    """@covers FR-GATE-160, AC-GATE-160d, FR-THREAD-20, AC-THREAD-20c
 
-    Who authored the registry the thread runs through: how much of it the
-    project's CASE asked for, and how much the project decided for itself.
-    The shape is fixed because the sentence is read at a glance across
-    reports, and a sentence whose wording moves cannot be compared.
+    Who wrote the requirements this change runs through: how many the project's
+    CASE asked for, and how many the project decided for itself. The shape is
+    fixed because the sentence is read at a glance across reports, and a
+    sentence whose wording moves cannot be compared. Ruled 2026-10-02 in plain
+    words with number agreement; `case` stays, because it names the project's
+    CASE document rather than a metaphor.
 
-    A row with no `authorship` is not silently dropped into "the project".
-    While any row is unassigned the sentence says how many, because a
-    breakdown of 5 rows presented as the whole of 104 is a lie of omission
-    dressed as a count.
+    A row with no `authorship` is not silently dropped into "the project". While
+    any row is unassigned the sentence says how many, because a breakdown of 5
+    requirements presented as the whole of 104 is a lie of omission dressed as a
+    count.
     """
     if not rows:
         # No rows to count is not "none from the case": it is not knowing.
         # Printing zeros here would read as a measured answer.
-        return "Authorship not reported: no v5 manifest was found beside the head manifest."
+        return "No author counts: the v5 manifest was not found beside the head manifest."
     counts = {v: 0 for v in AUTHORSHIP_VALUES}
     unassigned = 0
     for r in rows:
@@ -96,14 +98,17 @@ def authorship_sentence(rows: list) -> str:
             unassigned += 1
     case = counts["case"]
     project = counts["design"] + counts["retrospective"] + counts["constitution"]
-    breakdown = (f"{case} promises from the case, {project} from the project "
-                 f"(design {counts['design']}, retrospective {counts['retrospective']}, "
-                 f"constitution {counts['constitution']})")
+    tail = (f"from the project (design {counts['design']}, "
+            f"retrospective {counts['retrospective']}, "
+            f"constitution {counts['constitution']})")
     if unassigned:
         total = len(rows)
-        return (f"Authorship unassigned on {unassigned} of {total} rows; "
-                f"of the rest, {breakdown}.")
-    return breakdown[0].upper() + breakdown[1:] + "."
+        return (f"No author named on {unassigned} of {total} requirements; of the rest, "
+                f"{case} came from the case, {project} {tail}.")
+    if case == 0:
+        return f"No requirements came from the case; {project} came {tail}."
+    noun = "requirement" if case == 1 else "requirements"
+    return f"{case} {noun} came from the case, {project} {tail}."
 
 
 NUMBER_WORDS = ("no", "one", "two", "three", "four", "five", "six", "seven",
@@ -123,8 +128,8 @@ def carries_none_sentence(head: dict) -> str | None:
         return None
     word = NUMBER_WORDS[n] if n < len(NUMBER_WORDS) else str(n)
     lines = "line" if n == 1 else "lines"
-    carries = "carries" if n == 1 else "carry"
-    return f"{word.capitalize()} task {lines} {carries} no promise, declared as `none`."
+    names = "names" if n == 1 else "name"
+    return f"{word.capitalize()} task {lines} {names} no requirement, declared as `none`."
 
 
 def authorship_rows(head_path: str, override: str | None) -> list:
@@ -423,45 +428,72 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             carrier_only += 1
             got = []
             if c.get("covers", 0) > 0:
-                got.append(f"+{c['covers']} `@covers`")
+                got.append(f"+{c['covers']} `@covers` line")
             if c.get("proofs", 0) > 0:
-                got.append(f"+{c['proofs']} proof")
+                got.append(f"+{c['proofs']} test")
             held = h.get(c["id"], {}).get("status", "")
-            note(c["id"], f"{', '.join(got)} · status held at {BADGE.get(held,'')} `{held}`")
+            note(c["id"], f"{', '.join(got)} · state unchanged: {BADGE.get(held,'')} `{held}`")
     for i in moved["minted"]:
         st = h.get(i, {}).get("status", "backlog")
-        move_note.setdefault(i, []).insert(0, f"🆕 minted ({BADGE.get(st,'')} `{st}`)")
+        move_note.setdefault(i, []).insert(0, f"🆕 new ({BADGE.get(st,'')} `{st}`)")
     for r in moved["restated"]:
-        note(r["id"], "✍️ restated")
+        note(r["id"], "✍️ reworded")
     for i in moved["retired"]:
-        note(i, "🪦 retired (tombstoned)")
+        note(i, "🪦 retired (the ID is never reused)")
 
-    # Header — the name, then one line a reader can take in whole: the thread's
-    # verdict and the counts that say what this card did. Everything else folds.
+    # Header — the name, then one line a reader can take in whole: what to do
+    # next, and the counts that say what this change did. Everything else folds.
+    #
+    # @covers FR-THREAD-20, AC-THREAD-20a, AC-THREAD-20c -- ruled 2026-10-02:
+    # the first line a stranger reads says the next action in plain words, and
+    # every count agrees in number with itself. The house words moved to the
+    # footer's "Words used here", where a reader meets each one with its
+    # definition beside it rather than in the line they read first.
     out.append("## 🧵 Thread Report")
     out.append("")
-    verdict = "🟢 **Golden Thread intact**" if gate_ok else "🔴 **Golden Thread broken**"
+    # A required tick is unticked the moment this report renders: a tick attests
+    # to a specific head, and the report reposts on every push. So a required
+    # ceremony with anything to acknowledge is, here, always waiting on a person.
+    required_box = bool(
+        (ack == "required" and far) or (intent_ack == "required" and moved["restated"])
+    )
+    needs_person = bool(moved["restated"]) or required_box
+    if not gate_ok:
+        verdict = "🔴 **Do not merge yet**"
+    elif needs_person:
+        verdict = "🟡 **Needs a person**"
+    else:
+        verdict = "🟢 **Ready to review**"
     tally = []
     if landed.get("proven"):
-        tally.append(f"**{landed['proven']}** proved")
+        n = landed["proven"]
+        tally.append(f"**{n}** now {'has' if n == 1 else 'have'} a test")
     if landed.get("tracked-debt"):
-        tally.append(f"**{landed['tracked-debt']}** to admitted debt")
+        n = landed["tracked-debt"]
+        tally.append(f"**{n}** now {'has' if n == 1 else 'have'} a declared debt")
     if landed.get("GAP"):
-        tally.append(f"**{landed['GAP']}** now GAP")
+        n = landed["GAP"]
+        tally.append(f"**{n}** {'has' if n == 1 else 'have'} neither")
     if landed.get("backlog"):
-        tally.append(f"**{landed['backlog']}** back to backlog")
+        tally.append(f"**{landed['backlog']}** back to not started")
     if moved["minted"]:
-        tally.append(f"**{len(moved['minted'])}** minted")
+        n = len(moved["minted"])
+        tally.append(f"**{n}** new {'requirement' if n == 1 else 'requirements'}")
     if moved["retired"]:
         tally.append(f"**{len(moved['retired'])}** retired")
     if moved["restated"]:
-        tally.append(f"**{len(moved['restated'])}** restated")
+        tally.append(f"**{len(moved['restated'])}** reworded")
     if carrier_only:
-        noun = "carrier" if carrier_only == 1 else "carriers"
-        tally.append(f"**{carrier_only}** {noun} added, status held")
+        tally.append(f"**{carrier_only}** gained code or a test, state unchanged")
     if not tally:
-        tally.append("**no rows moved**")
-    tally.append(f"**{len(far)}** files off thread" if far else "**nothing** off thread")
+        tally.append("**no requirements changed**")
+    if far:
+        n = len(far)
+        # The plural bug this pass fixes: a count of one printed "files".
+        noun = "file" if n == 1 else "files"
+        tally.append(f"**{n}** changed {noun} no requirement claims")
+    else:
+        tally.append("**every changed file is claimed**")
     out.append(" · ".join([verdict] + tally))
     out.append("")
     # @covers FR-GATE-160, AC-GATE-160d -- above the table, unfolded, so who
@@ -541,22 +573,22 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
         def updated_mark(p: str, inline: bool = False) -> str:
             if p not in changed_set:
                 return ""
-            label = "updated here" if inline else "◀ updated in this PR"
+            label = "changed here" if inline else "◀ changed in this pull request"
             body = f"[{label}]({link.file_hunk(p)})" if (link and link.ok) else label
             return f" ({body})" if inline else f" — {body}"
 
-        out.append("### Intent Changed")
+        out.append("### Reworded requirements")
         n = len(moved["restated"])
-        lead = "statement of intent was" if n == 1 else "statements of intent were"
-        poss = "its" if n == 1 else "their"
+        noun = "requirement was" if n == 1 else "requirements were"
+        poss = "Its" if n == 1 else "Their"
         out.append(
-            f"⚠️ {n} {lead} restated — {poss} wording moved under the code and tests "
-            "written against the old text. Re-confirm each still satisfies the new statement."
+            f"⚠️ {n} {noun} reworded. {poss} code and tests were written against the "
+            "old wording, so check that each still satisfies the new one."
         )
         out.append("")
         for r in moved["restated"]:
             id_ = r["id"]
-            out.append(f"- **{fmt_id(id_)}** — restated")
+            out.append(f"- **{fmt_id(id_)}** — reworded")
             out.append(f"  - was: _{strip_id_prefix(id_, r['was'])}_")
             out.append(f"  - now: _{strip_id_prefix(id_, r['now'])}_")
             row = h.get(id_) or {}
@@ -567,7 +599,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             arrived = concrete_tokens(r["now"]) - concrete_tokens(r["was"])
 
             if not carriers:
-                out.append("  - _no code or tests to re-confirm (backlog intent)._")
+                out.append("  - _no code or tests to check yet; this requirement is not started._")
                 continue
 
             # Look for an old concrete value still living in a carrier (Tier 1).
@@ -582,7 +614,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                             break
 
             if hits:  # Tier 1 — pinpointed
-                out.append("  - re-confirm:")
+                out.append("  - check:")
                 for (p, ln) in carriers:
                     if (p, ln) in hits:
                         matched, mline = hits[(p, ln)]
@@ -591,25 +623,25 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                         out.append(f"    - {clink(p, ln)}{updated_mark(p)}")
             elif left:  # Tier 2 — value changed, not found verbatim
                 chg = "`" + "`, `".join(sorted(left)) + "`"
-                to = (" → `" + "`, `".join(sorted(arrived)) + "`") if arrived else ""
+                to = (" to `" + "`, `".join(sorted(arrived)) + "`") if arrived else ""
                 out.append(
-                    f"  - _Value {chg}{to} changed, but not found verbatim in the "
-                    "code or tests — re-confirm by reading._"
+                    f"  - _The value changed from {chg}{to}, and neither appears "
+                    "literally in the code or tests. Check by reading._"
                 )
-                out.append("  - re-confirm: " + " · ".join(f"{clink(p, ln)}{updated_mark(p, inline=True)}" for (p, ln) in carriers))
+                out.append("  - check: " + " · ".join(f"{clink(p, ln)}{updated_mark(p, inline=True)}" for (p, ln) in carriers))
             else:  # Tier 3 — prose / semantic, the default
                 out.append(
-                    "  - _Prose change — no literal value to pin down; re-confirm the "
-                    "code and its test by reading them against the new wording._"
+                    "  - _Wording only, with no value to search for. Read the code "
+                    "and its test against the new wording._"
                 )
-                out.append("  - re-confirm: " + " · ".join(f"{clink(p, ln)}{updated_mark(p, inline=True)}" for (p, ln) in carriers))
+                out.append("  - check: " + " · ".join(f"{clink(p, ln)}{updated_mark(p, inline=True)}" for (p, ln) in carriers))
         # Affirm rung: escalate re-confirmation to a human tick via `intent_ack`.
         if intent_ack == "record":
             out.append("")
-            out.append("- [ ] **Each restated intent still holds — its code and tests re-confirmed.** _(tick to record — informational)_")
+            out.append("- [ ] **Every reworded requirement still holds: its code and tests checked.** _(tick to record; informational)_")
         elif intent_ack == "required":
             out.append("")
-            out.append("- [ ] **Each restated intent still holds — its code and tests re-confirmed.** _(a human must tick this before merge — `intent_ack: required`)_")
+            out.append("- [ ] **Every reworded requirement still holds: its code and tests checked.** _(a human must tick this before merge — `intent_ack: required`)_")
         out.append("")
 
     # 2. What moved — the family tables. One section, not two: the table carries
@@ -623,15 +655,15 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
         for id_ in moved_ids:
             families.setdefault(domain_of(id_), []).append(id_)
         fam_count = len(families)
-        row_noun = "row" if len(moved_ids) == 1 else "rows"
-        fam_noun = "family" if fam_count == 1 else "families"
+        row_noun = "requirement" if len(moved_ids) == 1 else "requirements"
+        fam_noun = "area" if fam_count == 1 else "areas"
         body = []
         for dom in sorted(families):
             ids = sorted(families[dom], key=lambda i: (type_rank.get(i.split("-")[0], 9), i))
             body.append(f"**{dom}**")
             body.append("")
-            body.append("| ID | Moved | Changed in |")
-            body.append("|----|-------|------------|")
+            body.append("| ID | What changed | Where |")
+            body.append("|----|--------------|-------|")
             for id_ in ids:
                 body.append(
                     f"| {fmt_id(id_)} | {' · '.join(move_note[id_])} | {changed_in(id_)} |"
@@ -642,18 +674,18 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                     rest[r["status"]] = rest.get(r["status"], 0) + 1
             if rest:
                 total = sum(rest.values())
-                noun = "row" if total == 1 else "rows"
+                noun = "requirement" if total == 1 else "requirements"
                 breakdown = ", ".join(
                     f"{rest[st]} {BADGE.get(st,'')} {st}"
                     for st in sorted(rest, key=lambda k: (-rest[k], k))
                 )
                 body.append(
-                    f"\n<sub>+{total} unchanged {noun} in this family, not listed: "
+                    f"\n<sub>+{total} {noun} in this area did not change, not listed: "
                     f"{breakdown}.</sub>"
                 )
             body.append("")
         out.extend(fold(
-            f"<b>What moved</b> — {len(moved_ids)} {row_noun} in {fam_count} {fam_noun}",
+            f"<b>What changed</b> — {len(moved_ids)} {row_noun} in {fam_count} {fam_noun}",
             body,
         ))
 
@@ -661,43 +693,51 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     # can see is not a ceremony, and `offthread_ack: required` holds a merge on it.
     if far:
         n = len(far)
-        verb = "sits" if n == 1 else "sit"
         noun = "file" if n == 1 else "files"
         pron = "it" if n == 1 else "them"
         body = [
-            f"Changed, but nothing in {pron} carries a mark tying {pron} to an intent "
-            "this PR moved. Not a defect (a refactor and unwanted scope look identical "
-            "here); just worth a glance:",
+            f"Changed, but nothing in {pron} names a requirement this pull request "
+            "moved. Not a defect: a refactor and unwanted scope look the same here. "
+            "Worth a glance:",
             "",
         ]
         for f in far:
             fp = f["path"]
             body.append(f"- [`{fp}`]({link.file_hunk(fp)})" if (link and link.ok) else f"- `{fp}`")
-        out.extend(fold(f"<b>Off thread</b> — {n} changed {noun} {verb} off the thread", body))
+        out.extend(fold(
+            f"<b>Changed files no requirement claims</b> — {n} {noun}", body))
         if ack == "record":
-            out.append("- [ ] **These untraced changes are incidental.** _(tick to record — informational)_")
+            out.append("- [ ] **These unclaimed changes are incidental.** _(tick to record; informational)_")
             out.append("")
         elif ack == "required":
-            out.append("- [ ] **These untraced changes are incidental.** _(a human must tick this before merge — `offthread_ack: required`)_")
+            out.append("- [ ] **These unclaimed changes are incidental.** _(a human must tick this before merge — `offthread_ack: required`)_")
             out.append("")
     else:
-        out.append("_Every changed file carries a mark tying it to an intent. Nothing sits off the thread._")
+        out.append("_Every changed file names a requirement. Nothing is unclaimed._")
         out.append("")
 
     # 4. Receipts — the run behind the report. A receipt, not a headline.
     if receipts.strip():
-        out.extend(fold("<b>Receipts</b> — the run behind this report",
+        out.extend(fold("<b>The run behind this report</b>",
                         receipts.rstrip().split("\n")))
 
     out.append("---")
+    # @covers FR-THREAD-20, AC-THREAD-20b -- the house words live here, each with
+    # its definition beside it, and nowhere above. Ruled 2026-10-02: SpecAssay
+    # speaks in requirements, tests and pull requests, and a word a stranger has
+    # to be taught belongs under the fold with the teaching attached.
     ack_note = (
         "Set `offthread_ack: record|required` in the SpecAssay config to add a human tick."
         if ack == "off"
-        else f"Off-thread acknowledgement: **{ack}**."
+        else f"Acknowledgement of unclaimed files: **{ack}**."
     )
     out.append(
-        "<sub>Thread Report **illuminates; it does not refuse.** "
-        f"\"Off thread\" is a visibility call, not a gate. {ack_note}</sub>"
+        "<sub>This comment reports; it never blocks. A changed file no requirement "
+        "claims is a note, not a failure. <b>Words used here:</b> "
+        "<b>Golden Thread</b>, the chain from a requirement to the code and test "
+        "that answer for it. <b>Off thread</b>, a changed file no requirement "
+        "claims. <b>Mint</b>, to write a new requirement into the registry. "
+        f"{ack_note}</sub>"
     )
     return "\n".join(out).rstrip() + "\n"
 

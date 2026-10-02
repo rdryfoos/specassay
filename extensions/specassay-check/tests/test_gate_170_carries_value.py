@@ -130,17 +130,19 @@ def _report(tmp_path, carries_none):
 
 def test_AC_GATE_170d_the_report_says_how_many_carry_no_promise(tmp_path):
     report = _report(tmp_path, 3)
-    assert "Three task lines carry no promise, declared as `none`." in report
+    assert "Three task lines name no requirement, declared as `none`." in report
     # Beside the authorship sentence, both above the table.
-    assert report.index("carry no promise") < report.index("What moved")
-    assert "Authorship" in report
+    assert report.index("name no requirement") < report.index("What changed")
+    # Beside the authorship sentence, which after the plain-words pass says
+    # "author" rather than "Authorship" when it has no v5 manifest to count.
+    assert "author" in report
 
 
 def test_AC_GATE_170d_one_line_reads_in_the_singular(tmp_path):
-    assert "One task line carries no promise, declared as `none`." in _report(tmp_path, 1)
+    assert "One task line names no requirement, declared as `none`." in _report(tmp_path, 1)
 
 
 def test_AC_GATE_170d_the_report_says_nothing_when_none_carry_nothing(tmp_path):
     # A zero said out loud every time is noise; the sentence earns its place
     # only when there is something to report.
-    assert "carry no promise" not in _report(tmp_path, 0)
+    assert "no requirement, declared as" not in _report(tmp_path, 0)
