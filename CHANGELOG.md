@@ -3,12 +3,126 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
-## Unreleased
+## 0.5.5 (2026-10-02)
 
-The cold path: a blank repository, plus Spec Kit, plus SpecAssay, reaching a
-Thread Report on a pull request with nobody hand building plumbing. One gap per
-pull request, closed in order, from a reproduction of the 2026-09-26 cold-path
-ledger run again on 0.5.4 on 2026-10-02.
+Components: bundle 0.5.5, extension 0.5.5, preset 0.5.5.
+
+**A hotfix, and the release it carries.** 0.5.4 could not run on a Mac at all, and
+said nothing about it. That is fixed here, along with the two blind spots that let
+it ship. The rest of this release is the cold path, which reached a Thread Report
+on a pull request with nobody building plumbing, and the Thread Report's plain-words
+pass.
+
+### 0.5.4 did not run on macOS, and reported success
+
+`FR-GATE-200`. `check-traceability.sh` 0.5.4 does not parse under **bash 3.2.57**,
+which is macOS's system bash and the only bash on a stock Mac. Found by the Spudnik
+room on a Mac Mini, 2026-10-02, installing 0.5.4 the cold way from the catalogs.
+The Gate ran nothing: no manifest, no verdict, no registry count.
+
+One construct, introduced in 0.5.4 with the Carries value rule:
+
+```bash
+carries_verdict="$(
+  CARRIES_LINE="$line" ... "$PYTHON" - <<'CARRIESPY'
+  ...
+CARRIESPY
+)"
+```
+
+A here-document inside a command substitution. bash 4 and newer parse it; 3.2 scans
+for the closing paren without honouring the here-document, reads the Python body as
+shell, and the file then fails hundreds of lines later with an error naming neither
+the line nor the cause, which is why the reported line numbers pointed into an
+unrelated heredoc. The fix is to redirect the here-document to a file and read the
+file.
+
+**Which releases are affected: 0.5.4 only.** Established by scanning the script at
+every tag from v0.5.0 to v0.5.4 for that shape, not by bisecting a symptom. 0.5.0,
+0.5.1, 0.5.2 and 0.5.3 are clean.
+
+### A check that cannot run is now red
+
+`FR-GATE-190`, and the worse of the two defects. bash exits 2 on a parse failure,
+which is honest, and two ordinary ways of calling a checker throw that status away:
+a pipeline reports its last element's status, so `check | tail` is 0, and
+`2>/dev/null` discards the message. Both measured on 2026-10-02. That is how a
+Gate that ran nothing read as green.
+
+`check-traceability.sh` is now a small launcher, deliberately plain enough for bash
+3.2 to parse and run, around `check-traceability.impl.sh`, which is the Gate. The
+launcher refuses three things the Gate cannot refuse from inside itself:
+
+```text
+SpecAssay Check (Gate 2): FAILED to run -- this bash cannot parse the check (bash 3.2.57(1)-release)
+SpecAssay Check (Gate 2): FAILED to run -- the check exited 0 without writing a manifest, so there is no run to trust
+SpecAssay Check (Gate 2): FAILED to run -- the check itself is missing at <path>
+```
+
+Each one is non-zero, each one names the bash that could not parse it, and each one
+is printed on **both** stdout and stderr: a pipeline's status belongs to the filter
+and no checker can change that, so the refusal goes where a piping caller reads it
+instead of a verdict. The implementation touches a sentinel the moment the manifest
+lands, and no exit 0 is allowed through without it. Tested with a deliberately
+broken copy, three ways.
+
+**Callers do not change.** `check-traceability.sh` is still the entry point every
+document, command and workflow names.
+
+### CI now runs on the platform its users are on
+
+`FR-GATE-200`. `self-gate.yml` ran on Linux bash 5 only, so neither it nor the
+cold-path end-to-end test could have caught this; both of that day's cold runs were
+Linux too. The workflow is now a matrix over `ubuntu-latest` and `macos-latest`,
+with every step on both, plus one the Linux job cannot have: the system bash's own
+parse of every shipped script, named `/bin/bash` by absolute path, because `bash` in
+PATH on a GitHub macOS runner is Homebrew's 5.x and an adopter's Mac is not.
+
+A cheap guard runs on both runners as well: no shipped script may open a
+here-document inside a command substitution, refused by shape. And `extension.yml`
+now declares the floor it is tested against, `bash >= 3.2`, where it said `bash` and
+meant whichever bash the author happened to have.
+
+### The catalogs are checked against the release they claim
+
+`FR-GATE-210`, from the 0.5.5 checklist. `catalogs/*.json` is what
+`specify bundle install specassay` reads, and nothing checked it. The drift it was
+written for: the extension and preset catalogs each carried a per-entry
+`updated_at` of 2026-09-23 beside an entry describing 0.5.4, released 2026-10-01.
+Now every entry's version and download URL must name the version `bundle.yml`
+declares, a per-entry stamp may not disagree with its own file, the three files must
+agree with each other, no stamp may be in the future, and the bash floor must be
+repeated in the catalog, which is the copy an installer reads before anything is
+downloaded. The digest stays outside the check, because the release pull request
+removes it and the digests pull request restores it from assets that do not exist
+until the tag.
+
+### Two checklist items done, one deferred, and why
+
+- **`docs/submission/CHEATSHEET.md` lines 21 and 271: done**, and the fix was a
+  classification rather than a re-dating. Line 21 reads *"Filed 2026-09-23 at
+  0.5.2"*, which names when something happened and can never be re-observed: it is
+  provenance, and is now marked so. Line 271 says the community catalog resolves
+  both components at 0.5.2, which is a version belonging to **another subject**, the
+  class this checker grew for Spec Kit's own pins. Re-observed on 2026-10-02 against
+  `catalog.community.json` for all three component types: still 0.5.2, because 0.5.3
+  and 0.5.4 were deliberately not submitted and go in with the next filing. The page
+  now says that.
+- **`docs/trace-manifest-schema.md` line 99: done.** *"from v0.5.4 the value is
+  checked"* was marked as a current claim, so it demanded an edit at every release
+  while being a statement about history. Marked provenance.
+- **ONBOARD's pin table: deferred, and it cannot be done here.** Moving the pin means
+  replaying every block on the release being cut, and a faithful replay installs the
+  released bundle from the catalogs, which do not exist until the tag. So the pin can
+  only move after a tag, never inside the release pull request that precedes it. It
+  stays at v0.5.1 with the reason it already carries, and the replay is a post-tag
+  pull request against 0.5.5, beside the digests one.
+
+### The cold path, and the report in plain words
+
+Everything already on main for this release: #58 to #61 closed the five cold-path
+gaps, and #62 rewrote every string the Thread Report prints. Their entries follow
+below, unchanged from when they landed.
 
 ### The preset no longer looks like a finished install
 

@@ -98,7 +98,7 @@ that declaration is what excuses `tracked-debt` and anointed `backlog`: the debt
 is on the books because a task said so. The mark is therefore only worth as much
 as its value, and from v0.5.4 the value is checked rather than merely counted as
 present.
-<!-- specassay:current -->
+<!-- specassay:provenance -->
 
 The value is the run of registry-shaped IDs immediately after the mark, read
 until the first token that is not one. It is valid in exactly two forms:

@@ -18,7 +18,7 @@ versions, so a partial landing leaves `specify bundle install` unable to resolve
 Full field-by-field values live in the three paste-from docs, which mirror each
 form exactly, catalog JSON included:
 
-| # | Issue | Form | Paste from | Filed 2026-09-23 at 0.5.2 | Landed by | Supersedes |
+| # | Issue | Form | Paste from | Filed 2026-09-23 at 0.5.2 <!-- specassay:provenance --> | Landed by | Supersedes |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Extension | <https://github.com/github/spec-kit/issues/new?template=extension_submission.yml> | [extension-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/extension-submission.md) | [#4711](https://github.com/github/spec-kit/issues/4711) | [#4735](https://github.com/github/spec-kit/pull/4735) | [#4690](https://github.com/github/spec-kit/issues/4690), [#4649](https://github.com/github/spec-kit/issues/4649) |
 | 2 | Preset | <https://github.com/github/spec-kit/issues/new?template=preset_submission.yml> | [preset-submission.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/preset-submission.md) | [#4713](https://github.com/github/spec-kit/issues/4713) | [#4717](https://github.com/github/spec-kit/pull/4717) | [#4691](https://github.com/github/spec-kit/issues/4691), [#4650](https://github.com/github/spec-kit/issues/4650) |
@@ -269,7 +269,12 @@ Taken in a clean `specify init` project outside this repository, on Spec Kit
 1.0.5, Python 3.11.15, Linux.
 
 **The community catalog resolves both components at 0.5.2, and will not install
-them.** `policy=discovery-only` is Spec Kit's setting, not ours:
+them.** <!-- specassay:pinned the community catalog's own entry, not this bundle -->
+Re-observed 2026-10-02 against
+`raw.githubusercontent.com/github/spec-kit/main/{extensions,presets,bundles}/catalog.community.json`:
+all three still read 0.5.2, because 0.5.3 and 0.5.4 were deliberately not submitted
+and go in with the next filing. `policy=discovery-only` is Spec Kit's setting, not
+ours:
 
 ```text
 $ specify bundle info specassay
