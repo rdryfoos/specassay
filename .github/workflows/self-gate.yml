@@ -77,7 +77,7 @@ jobs:
           # macOS runners ship a PEP 668 "externally managed" Python, which
           # refuses a plain install; the fallback is for that runner only and is
           # harmless on Linux, where the first command succeeds.
-          python3 -m pip install --quiet pytest \
+          python3 -m pip install --quiet pytest 2>/dev/null \
             || python3 -m pip install --quiet --break-system-packages pytest
           python3 -m pytest extensions/specassay-check/tests/test_cold_path_end_to_end.py -q
 
@@ -87,7 +87,7 @@ jobs:
           # macOS runners ship a PEP 668 "externally managed" Python, which
           # refuses a plain install; the fallback is for that runner only and is
           # harmless on Linux, where the first command succeeds.
-          python3 -m pip install --quiet pytest \
+          python3 -m pip install --quiet pytest 2>/dev/null \
             || python3 -m pip install --quiet --break-system-packages pytest
           python3 -m pytest extensions/specassay-check/tests/ tests/ -q
       - name: Docs state which kind of claim each version number is
