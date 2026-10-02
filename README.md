@@ -96,9 +96,15 @@ The manifests require `>=0.14.0,<2.0.0`.
 ## Install (catalog path)
 
 <!-- @covers FR-DOCS-10 -->
+<!-- @covers FR-COLD-10, AC-COLD-10b -->
 
 
-From a Spec Kit project (`specify init` already done):
+From a Spec Kit project (`specify init` already done). The last of the four lines
+is the one that brings the Gate: `specify preset add specassay` on its own installs
+the templates only, and leaves them naming a check the project does not have. A
+preset-only install says so from Spec Kit 1.0.4 on, <!-- specassay:pinned Spec Kit -->
+which reads the extension dependency the preset declares, and names the command that
+fixes it.
 
 ```bash
 specify preset catalog add \
