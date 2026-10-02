@@ -207,3 +207,24 @@ where that same ID lands once it has.
     and `test_AC_THREAD_20b_the_footer_defines_the_three_words_it_uses`.
   - AC-THREAD-20c — proven by `test_AC_THREAD_20c_every_count_of_one_agrees_in_number`.
   - AC-THREAD-20d — proven by `test_AC_THREAD_20d_a_required_tick_keeps_the_shape_the_workflows_match`.
+- FR-GATE-190 — A check that cannot run is red: the entry point refuses an
+  unparseable implementation, an exit 0 with no manifest, and silence on either
+  stream. Shipped 2026-10-02, proven by `@covers` in
+  `scripts/check-traceability.sh` and `scripts/check-traceability.impl.sh` and by
+  `extensions/specassay-check/tests/test_gate_190_fail_closed.py`.
+  - AC-GATE-190a — proven by `test_AC_GATE_190a_an_unparseable_check_is_refused_not_passed`.
+  - AC-GATE-190b — proven by `test_AC_GATE_190b_an_exit_zero_without_a_manifest_is_refused`.
+  - AC-GATE-190c — proven by `test_AC_GATE_190c_the_refusal_reaches_both_streams_and_is_one_line`.
+- FR-GATE-200 — The bash floor is 3.2, declared in the manifest and run in CI on a
+  macOS runner. Shipped 2026-10-02, proven by
+  `extensions/specassay-check/tests/test_gate_200_bash_floor.py` and by the macOS
+  job in `.github/workflows/self-gate.yml`.
+  - AC-GATE-200a — proven by
+    `test_AC_GATE_200a_no_shipped_script_hides_a_heredoc_in_a_command_substitution`
+    and `test_AC_GATE_200a_every_shipped_script_parses`.
+  - AC-GATE-200b — proven by `test_AC_GATE_200b_the_manifest_names_the_bash_floor`.
+  - AC-GATE-200c — proven by `test_AC_GATE_200c_ci_runs_the_suite_on_a_mac_with_its_system_bash`.
+- FR-GATE-210 — The hosted catalogs are checked against the release they claim.
+  Shipped 2026-10-02, proven by `tests/test_catalogs.py`.
+  - AC-GATE-210a — proven by `test_AC_GATE_210a_the_catalogs_name_the_release_they_claim`.
+  - AC-GATE-210b — proven by `test_AC_GATE_210b_the_catalog_repeats_the_bash_floor`.

@@ -6,7 +6,8 @@ Notes for someone changing this extension, as opposed to using it. The user-faci
 
 | Path | Role |
 | --- | --- |
-| `scripts/check-traceability.sh` | The Gate. Bash, with Python 3 (standard library) for the JSON and SVG emit. |
+| `scripts/check-traceability.sh` | The entry point: a launcher that parses the Gate, runs it, and refuses any exit 0 that wrote no manifest. Keep it inside what bash 3.2 can parse and run. |
+| `scripts/check-traceability.impl.sh` | The Gate itself. Bash, with Python 3 (standard library) for the JSON and SVG emit. Never open a here-document inside a command substitution here: bash 3.2 cannot parse it, and a test refuses the shape. |
 | `scripts/mint-id.sh` | Mints the next ID for a prefix and area; resolves duplicates. |
 | `scripts/lib-def-line.sh` | The one definition-line pattern both scripts above share, so they agree on what a real registry entry looks like. |
 | `scripts/dig.py` | Archaeology mode. Pure Python, no dependencies. |

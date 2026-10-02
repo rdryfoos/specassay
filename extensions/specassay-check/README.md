@@ -27,7 +27,9 @@ You just installed this extension into a Spec Kit project. This page says what i
 
 ## What this extension is
 
-SpecAssay Check is Gate 2 of the SpecAssay workflow: one bash script, `scripts/check-traceability.sh`, that reads four things in your repo and refuses to pass work with a silent gap between them.
+SpecAssay Check is Gate 2 of the SpecAssay workflow: `scripts/check-traceability.sh`, which reads four things in your repo and refuses to pass work with a silent gap between them.
+
+Two files, since 0.5.5, and you still only ever call the first: `scripts/check-traceability.sh` is a small launcher, and `scripts/check-traceability.impl.sh` is the Gate. The launcher parses the Gate before running it and refuses to let an exit 0 through unless a manifest was written, because 0.5.4 shipped a construct macOS's system bash cannot parse, and a checker that ran nothing read as green through a pipeline. The floor is **bash 3.2**, which is what a stock Mac has, and CI runs the suite on a macOS runner against `/bin/bash` as well as on Linux.
 
 | It reads | Looking for |
 | --- | --- |

@@ -35,9 +35,38 @@ on:
 
 jobs:
   self-gate:
-    runs-on: ubuntu-latest
+    # Two runners, because one was not enough. 0.5.4 shipped a construct macOS's
+    # system bash (3.2.57, the only bash on a stock Mac) cannot parse: the Gate ran
+    # nothing on every Mac for a release, and this workflow was green throughout,
+    # because it only ever ran on Linux bash 5. A checker whose own CI cannot see
+    # the platform its users are on is a checker with a blind spot the size of
+    # macOS. FR-GATE-200.
+    #
+    # The macOS job runs every step the Linux job runs, so a failure is read the
+    # same way on either, plus one step the Linux job cannot have: the system
+    # bash's own parse of every shipped script, named by absolute path, since
+    # `bash` in PATH on a GitHub macOS runner is Homebrew's 5.x and an adopter's
+    # Mac has 3.2 at /bin/bash.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Which bash this runner has, and whether the scripts parse under it
+        # First, because everything after it is worthless if the answer is no, and
+        # because the version belongs in the log of every run: the Mac Mini report
+        # had to work out by hand which bash it was.
+        run: |
+          set -euo pipefail
+          /bin/bash --version | head -1
+          echo "---"
+          for f in extensions/specassay-check/scripts/*.sh; do
+            /bin/bash -n "$f" && echo "ok   $f" || { echo "FAIL $f"; exit 1; }
+          done
+
       - name: The cold path, performed end to end
         # Named as its own step, not because the suite below would miss it, but
         # because this is the one test whose failure means a stranger cannot get
@@ -45,13 +74,21 @@ jobs:
         # dot among a hundred and seventy. FR-COLD-40.
         run: |
           set -euo pipefail
-          python3 -m pip install --quiet pytest
+          # macOS runners ship a PEP 668 "externally managed" Python, which
+          # refuses a plain install; the fallback is for that runner only and is
+          # harmless on Linux, where the first command succeeds.
+          python3 -m pip install --quiet pytest \
+            || python3 -m pip install --quiet --break-system-packages pytest
           python3 -m pytest extensions/specassay-check/tests/test_cold_path_end_to_end.py -q
 
       - name: Extension test suite — check-traceability.sh
         run: |
           set -euo pipefail
-          python3 -m pip install --quiet pytest
+          # macOS runners ship a PEP 668 "externally managed" Python, which
+          # refuses a plain install; the fallback is for that runner only and is
+          # harmless on Linux, where the first command succeeds.
+          python3 -m pip install --quiet pytest \
+            || python3 -m pip install --quiet --break-system-packages pytest
           python3 -m pytest extensions/specassay-check/tests/ tests/ -q
       - name: Docs state which kind of claim each version number is
         run: |

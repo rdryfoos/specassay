@@ -29,7 +29,7 @@ specify preset add --from https://github.com/rdryfoos/specassay/releases/latest/
 Or pin the exact release, which is the form a catalog entry carries:
 
 ```bash
-specify preset add --from https://github.com/rdryfoos/specassay/releases/download/v0.5.4/specassay-preset-0.5.4.zip
+specify preset add --from https://github.com/rdryfoos/specassay/releases/download/v0.5.5/specassay-preset-0.5.5.zip
 ```
 
 Or from a checkout, for development:
