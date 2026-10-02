@@ -1,3 +1,26 @@
+## CI is the property line
+
+<!-- @covers FR-COLD-30, AC-COLD-30a -->
+
+A local run is hygiene. The run that protects the thread is the one on the pull request, because the person who pushes unmarked work is the person who did not run it locally. One command installs it:
+
+```bash
+bash .specify/extensions/specassay-check/scripts/install-ci.sh
+```
+
+That copies [`ci/specassay.yml`](./ci/specassay.yml) to `.github/workflows/specassay.yml` at your repository root, and writes your project's own root into it if the project sits in a subdirectory. It refuses rather than overwrite a workflow that differs from the one your project should have, printing the `diff` command to look at first and the `--force` that replaces it.
+
+The workflow is one file with two jobs, and needs no secrets:
+
+- **On every pull request:** runs the Gate on the head and again on the base commit, works out which files changed, builds the Thread Report, and posts it as one comment that it updates in place rather than piling new ones up. Then, as a separate step, it fails the check if the Gate refused. The comment always posts, even on a broken thread, so a reviewer reads what broke in thread terms; the red check is the block and the comment never is.
+- **When that comment is edited:** re-reads the tick boxes and updates the `specassay/ack` commit status. Inert unless your config sets `offthread_ack` or `intent_ack` to `required`. To make that status block a merge, add `specassay/ack` to the branch's required checks.
+
+There is no path filter on the pull-request trigger, deliberately: a filter is a list somebody has to remember, and a pull request that produces no checks at all reads to a reviewer as "none required" rather than "none ran". Gating pushes to your protected branch as well means naming that branch in the `push:` trigger, which the workflow carries commented out rather than guessing what your branch is called.
+
+**Why a command rather than the install doing it.** Spec Kit cannot place a file outside `.specify/extensions/<id>/`: its extension manifest provides commands, templates, scripts and config and deploys each of them under that directory, the only `.github` paths the CLI writes are Copilot prompts and `.github/hooks/speckit.json`, and hooks are agent-side events rather than install-time ones (read from Spec Kit 1.0.5's source, 2026-10-02). So the bundle ships the workflow and this command places it.
+
+This repository runs a workflow of its own shape against its own registry, because it gates a bundle rather than a project: see [`.github/workflows/self-gate.yml`](https://github.com/rdryfoos/specassay/blob/main/.github/workflows/self-gate.yml) and [`.github/workflows/thread-report.yml`](https://github.com/rdryfoos/specassay/blob/main/.github/workflows/thread-report.yml). Those are ours, not a template: until today the only account of the plumbing a Thread Report needs was those files, named here by a relative link that resolved to nothing in anybody else's checkout.
+
 # SpecAssay Check
 
 You just installed this extension into a Spec Kit project. This page says what it is, what its config controls, what a run produces, and what green and red mean. Developer notes (running the test suite, building a release) live in [`DEVELOPING.md`](./DEVELOPING.md).
@@ -168,6 +191,7 @@ If the registry file itself does not exist, the run is red with `registry not fo
 | Command | Does |
 | --- | --- |
 | `scripts/mint-id.sh --init` | Writes the registry from the shipped seed, which carries the grammar and one fenced example row of each type. Refuses rather than overwrite an existing registry. |
+| `scripts/install-ci.sh` | Puts the shipped workflow at `.github/workflows/specassay.yml`, so every pull request runs the Gate and gets one Thread Report comment. Refuses rather than overwrite a workflow that differs; `--force` replaces it. |
 | `scripts/mint-id.sh <PREFIX> <AREA> [--authorship <value>] [--append "statement"]` or `speckit.specassay-check.mint` | Mints the next ID for a prefix and area, always a multiple of ten, and prints the whole line to paste in the file's own style; `--append` also writes it. `--authorship` takes one of `case`, `design`, `retrospective`, `constitution` and puts the mark on the line; omitted, the row reads as unassigned, which is reported and not refused. `--resolve <ID>` resolves a duplicate. |
 | `scripts/dig.py` or `speckit.specassay-check.dig` | Archaeology mode for an unfamiliar repo: proposes a candidate registry from tests, routes, and README tables, written only to `dig-report.json`. Deterministic, no LLM. |
 | `check-traceability.sh --matrix` or `speckit.specassay-check.matrix` | `coverage.md` and `coverage.svg` for a PR or README. |

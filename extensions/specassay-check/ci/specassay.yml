@@ -1,0 +1,204 @@
+name: SpecAssay
+
+# Installed by `bash .specify/extensions/specassay-check/scripts/install-ci.sh`.
+# One file, two jobs, and nothing for you to wire up:
+#
+#   thread-report  on every pull request: runs the Gate on the PR head and on the
+#                  base commit, posts one sticky Thread Report comment saying what
+#                  the change did to your promises, sets the ack status when your
+#                  config asks for a human tick, and then fails the job if the
+#                  Gate refused. The comment always posts, even when the Gate is
+#                  broken, so a reviewer reads what broke in thread terms; the
+#                  red check is the block, never the comment.
+#
+#   ack-gate       when that comment is edited: re-reads the tick boxes and
+#                  updates the specassay/ack commit status. Inert unless your
+#                  config sets offthread_ack or intent_ack to `required`.
+#
+# A local Gate run is still worth having (`check-traceability.sh` before you
+# push, or the after_implement hook), but local runs are hygiene: this workflow
+# is the one that protects the thread, because it runs whether or not the author
+# has the tool installed.
+
+on:
+  pull_request:
+  # Also gate pushes to your protected branch by naming it here. Left commented
+  # out rather than guessed, because only you know what your branch is called:
+  # push:
+  #   branches: [main]
+  issue_comment:
+    types: [edited]
+
+permissions:
+  contents: read
+  pull-requests: write
+  statuses: write
+
+env:
+  # The project root, relative to the repository root. "." for the usual case:
+  # one project, at the top of the repo. Point it at a subdirectory if your
+  # registry and config live in one.
+  SPECASSAY_PROJECT: "."
+
+jobs:
+  thread-report:
+    if: github.event_name != 'issue_comment'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the PR head, with history for the base
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve the project paths
+        id: paths
+        run: |
+          set -euo pipefail
+          root="$GITHUB_WORKSPACE/${SPECASSAY_PROJECT#./}"
+          root="${root%/}"
+          ext="$root/.specify/extensions/specassay-check"
+          if [ ! -x "$ext/scripts/check-traceability.sh" ] && [ ! -f "$ext/scripts/check-traceability.sh" ]; then
+            echo "::error::No SpecAssay extension at $ext. Install it (specify bundle install specassay) and commit .specify/, or point SPECASSAY_PROJECT at the project root."
+            exit 1
+          fi
+          echo "root=$root" >> "$GITHUB_OUTPUT"
+          echo "ext=$ext" >> "$GITHUB_OUTPUT"
+
+      - name: Gate 2 on the PR head
+        run: |
+          set -uo pipefail
+          # The Gate always writes the manifest and then exits non-zero if the
+          # thread is broken. Keep the manifest here and carry the refusal in the
+          # last step, so a broken thread still gets a report instead of a silent
+          # failed step.
+          SPECASSAY_PROJECT_ROOT="${{ steps.paths.outputs.root }}" \
+          SPECASSAY_CONFIG="${{ steps.paths.outputs.ext }}/specassay-check-config.yml" \
+            bash "${{ steps.paths.outputs.ext }}/scripts/check-traceability.sh" || true
+          cp "${{ steps.paths.outputs.root }}/trace-manifest.json" /tmp/head.json
+          if [ -f "${{ steps.paths.outputs.root }}/trace-manifest.v5beta.json" ]; then
+            cp "${{ steps.paths.outputs.root }}/trace-manifest.v5beta.json" /tmp/head.v5beta.json
+          fi
+
+      - name: Gate 2 on the base commit
+        run: |
+          set -uo pipefail
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          git worktree add --quiet /tmp/base "$BASE_SHA"
+          BROOT="/tmp/base/${SPECASSAY_PROJECT#./}"
+          BROOT="${BROOT%/}"
+          BEXT="$BROOT/.specify/extensions/specassay-check"
+          if [ -f "$BEXT/scripts/check-traceability.sh" ]; then
+            SPECASSAY_PROJECT_ROOT="$BROOT" \
+            SPECASSAY_CONFIG="$BEXT/specassay-check-config.yml" \
+              bash "$BEXT/scripts/check-traceability.sh" || true
+            cp "$BROOT/trace-manifest.json" /tmp/base.json
+          else
+            # The base predates the install: every row is new, which is what the
+            # report says when it is given no base at all.
+            echo "No SpecAssay on the base commit; reporting every row as new."
+          fi
+          git worktree remove --force /tmp/base
+
+      - name: Changed files in this pull request
+        run: |
+          set -euo pipefail
+          git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" > /tmp/changed.txt
+          echo "Changed:"; cat /tmp/changed.txt
+
+      - name: Build the Thread Report
+        run: |
+          set -euo pipefail
+          python3 "${{ steps.paths.outputs.ext }}/scripts/thread-report.py" \
+            --base /tmp/base.json --head /tmp/head.json \
+            --changed-files /tmp/changed.txt \
+            --config "${{ steps.paths.outputs.ext }}/specassay-check-config.yml" \
+            --project-root "${SPECASSAY_PROJECT}" \
+            --pr-url "${{ github.event.pull_request.html_url }}" \
+            --head-sha "${{ github.event.pull_request.head.sha }}" \
+            --out /tmp/report.md
+          echo "----- report -----"; cat /tmp/report.md
+
+      - name: Post or update the Thread Report comment
+        uses: actions/github-script@v7
+        env:
+          REPORT_PATH: /tmp/report.md
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- specassay-thread-report -->';
+            const body = marker + '\n' + fs.readFileSync(process.env.REPORT_PATH, 'utf8');
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const { data: comments } = await github.rest.issues.listComments({ owner, repo, issue_number });
+            const existing = comments.find(c => c.body && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
+
+      - name: Ack status, when your config asks for a human tick
+        uses: actions/github-script@v7
+        env:
+          REPORT_PATH: /tmp/report.md
+        with:
+          script: |
+            // Required ack boxes render as task-list items whose suffix names the
+            // `..._ack: required` key. A fresh post is always unticked, so the
+            // status starts red; the ack-gate job below flips it when a human
+            // ticks. No required boxes means no status at all.
+            const fs = require('fs');
+            const body = fs.readFileSync(process.env.REPORT_PATH, 'utf8');
+            const required = body.match(/^- \[[ x]\] .*required`\)_\s*$/gm) || [];
+            if (required.length === 0) return;
+            const unticked = required.filter(l => l.startsWith('- [ ]')).length;
+            await github.rest.repos.createCommitStatus({
+              ...context.repo,
+              sha: context.payload.pull_request.head.sha,
+              context: 'specassay/ack',
+              state: unticked ? 'failure' : 'success',
+              description: unticked
+                ? `${unticked} human tick(s) required — tick the box in the Thread Report`
+                : 'All required ticks given',
+              target_url: context.payload.pull_request.html_url,
+            });
+
+      - name: Gate verdict, posted separately from the report
+        run: |
+          set -euo pipefail
+          ok=$(python3 -c "import json; print(json.load(open('/tmp/head.json')).get('gate',{}).get('ok', True))")
+          if [ "$ok" != "True" ]; then
+            echo "::error::Golden Thread broken — the Gate refuses. See the Thread Report comment on the pull request."
+            python3 -c "import json; [print(' -', f.get('kind'), f.get('detail','')) for f in json.load(open('/tmp/head.json')).get('gate',{}).get('failures',[])]"
+            exit 1
+          fi
+          echo "Golden Thread intact."
+
+  ack-gate:
+    if: github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, 'specassay-thread-report')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Re-read the ticks, update the status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // A tick attests to a specific head, not to the pull request forever:
+            // the report reposts on every push, which resets the boxes.
+            const body = context.payload.comment.body || '';
+            const required = body.match(/^- \[[ x]\] .*required`\)_\s*$/gm) || [];
+            if (required.length === 0) return;
+            const { data: pr } = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: context.payload.issue.number,
+            });
+            const unticked = required.filter(l => l.startsWith('- [ ]')).length;
+            await github.rest.repos.createCommitStatus({
+              ...context.repo,
+              sha: pr.head.sha,
+              context: 'specassay/ack',
+              state: unticked ? 'failure' : 'success',
+              description: unticked
+                ? `${unticked} human tick(s) required — tick the box in the Thread Report`
+                : 'All required ticks given',
+              target_url: pr.html_url,
+            });
