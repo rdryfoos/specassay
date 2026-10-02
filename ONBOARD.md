@@ -32,18 +32,20 @@ wrong you can name the block it went wrong in.
 | uv | 0.8.17 |
 | Python | 3.11.15 |
 | git | 2.43.0 |
-<!-- specassay:stale-ok the table names the release every receipt below was captured on, not the newest release; moving the pin without replaying the twelve blocks would make it a lie. Replaying them on 0.5.4 is open work, named in the 0.5.4 release PR. -->
+<!-- specassay:stale-ok the table names the release every receipt below was captured on, not the newest release; moving the pin without replaying every block would make it a lie. Replaying them on a cut release is open work, named in the 0.5.4 release PR. -->
 
 **Where the receipts come from.** Every block below was run in order, on
 2026-09-17, against those exact versions, and the output quoted under each block
 is that run's real output, trimmed to the lines that carry the receipt, never a
-sketch of what it might say. All twelve were re-captured that day on v0.5.1.
-**Two of them have moved since, and say so here rather than quietly:** blocks 5
-and 6 were re-captured on 2026-10-02, because the commands in them changed. The
-registry is now written from a seed that carries the ID grammar instead of being
-created empty, and a mint now names who authored the row. Their quoted output is
-that day's real run, on the change those blocks describe; the other ten are
-untouched, and a replay of all twelve on a cut release is still open work. The
+sketch of what it might say. Twelve blocks were re-captured that day on v0.5.1.
+**Three have moved since, and say so here rather than quietly:** blocks 5 and 6
+were re-captured on 2026-10-02, because the commands in them changed. The registry
+is now written from a seed that carries the ID grammar instead of being created
+empty, and a mint now names who authored the row. Their quoted output is that day's
+real run, on the change those blocks describe. Block 12 is new on the same date and
+says in the block itself which of its steps this page cannot quote, and what stands
+in place of that receipt. The other ten are untouched, and a replay of every block
+on a cut release is still open work. The
 previous capture was on v0.4.13, and every receipt reproduced unchanged, which is <!-- specassay:stale-ok the record of what was true at v0.4.13; re-observing it would mean re-running on that release, which is not what the sentence claims -->
 worth knowing and is not the same as having assumed it. That run was on Linux,
 not a Mac.
@@ -339,7 +341,7 @@ Two smaller things from that output, which you can take on trust for now.
 The Gate wrote a file called `trace-manifest.json`. That is its record of what it
 found: every promise, what state each one is in, what carries it, what proves it,
 and whether the Gate passed. It is a small plain file, and it is the thing other
-tools read later in this tour, in blocks 11 and 12, instead of scanning your
+tools read later in this tour, in blocks 11 and 13, instead of scanning your
 repository again. A second file with `v5beta` in the name is a draft of the next
 version of that format; ignore it here.
 
@@ -746,7 +748,7 @@ blocks 5 and 6:
 ```
 
 The rest of this block's capture is the 2026-09-17 run on v0.5.1, unchanged, and a
-replay of all twelve blocks on a cut release remains open work. <!-- specassay:stale-ok the sentence records which run this block's capture came from; re-observing it would mean replaying all twelve blocks, which is the open work the pin table already names -->
+replay of every block on a cut release remains open work. <!-- specassay:stale-ok the sentence records which run this block's capture came from; re-observing it would mean replaying every block, which is the open work the pin table already names -->
 
 **What just happened:** you got the paragraph a reviewer would get, generated
 from the same file the Gate wrote, with nobody writing a summary by hand.
@@ -777,7 +779,68 @@ config file's own directory and reads every changed file as off-thread.
 
 ---
 
-## 12. Open Loupe and look at what you made
+## 12. Put it where it protects the thread
+
+<!-- @covers FR-COLD-30, AC-COLD-30a -->
+
+Block 11 ran the report by hand, which is the right way to see what it says and
+the wrong way to rely on it. A check that runs on a compliant laptop protects
+nothing: the person who pushes unmarked work is, by definition, the person who did
+not run it. The run that protects the thread is the one on the pull request, which
+happens whether or not the author has the tool installed.
+
+One command installs it:
+
+```bash
+bash .specify/extensions/specassay-check/scripts/install-ci.sh
+```
+
+**You should now see:**
+
+```text
+wrote .github/workflows/specassay.yml (project root: .)
+  On every pull request it runs the Gate on the head and on the base, posts one Thread Report comment saying what the change did to your promises, and fails the check if the Gate refuses. A local run before you push is still worth having; this is the run that protects the thread.
+  Commit it along with .specify/, then open a pull request.
+```
+
+That is the whole of it. The workflow is one file, it needs no secrets, and it
+needs nothing else wired up: it runs the Gate on your pull request's head and
+again on the commit it branched from, works out which files changed, builds the
+same report you read in block 11, and posts it as one comment that it updates in
+place on every push rather than piling up new ones. Then, separately, it fails the
+check if the Gate refused, so the red tick is the block and the comment is never
+the block.
+
+If your project lives in a subdirectory of its repository, the command notices and
+writes the right path into the workflow; there is nothing to edit.
+
+To see it, commit what you have built and push it as a branch:
+
+```bash
+git add -A
+git commit -m "Greeter, under the thread"
+git push -u origin HEAD
+```
+
+Open the pull request on GitHub. The check appears as **SpecAssay**, and the
+comment it posts is the report from block 11 with one marker line above it, so you
+have already read what it will say.
+
+**This is the one block on this page whose output is not quoted here**, because it
+happens on GitHub rather than in your terminal, and quoting a screenshot of
+somebody else's pull request would be a sketch rather than a receipt. What stands
+in its place is a test that performs this whole page end to end, from `git init` to
+the comment's text, and fails if any step needs a hand.
+
+**What just happened:** the thing a stranger used to have to build is now a file
+the bundle ships and one command that places it. Before today, getting that comment
+onto a pull request meant writing a workflow that checks out the base commit, runs
+the Gate twice, collects the changed files, calls the report, and posts a comment
+through the API: about 120 lines of plumbing that nothing told you to write.
+
+---
+
+## 13. Open Loupe and look at what you made
 
 One last look, at the file rather than the tools. Everything you have seen since
 block 5 came out of one small file the Gate writes. This block opens that file in

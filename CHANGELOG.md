@@ -112,6 +112,50 @@ turn into drift, named plainly, because the row it pointed at has stopped existi
 This repository's own registry was unaffected: 109 rows before the change and 109
 after.
 
+### The CI that posts the report now ships, and one command places it
+
+`FR-COLD-30`. After a full install, `find .github -type f` returned nothing, so a
+pull request ran nothing and no comment appeared. The plumbing a stranger had to
+write for themselves was the 124-line workflow this repository had written for its
+own example app: check out the base, run the Gate twice, collect the changed files,
+call the report, post a comment through the API. Nothing in the installed tree so
+much as used the words "Thread Report".
+
+```bash
+bash .specify/extensions/specassay-check/scripts/install-ci.sh
+```
+
+```text
+wrote .github/workflows/specassay.yml (project root: .)
+  On every pull request it runs the Gate on the head and on the base, posts one Thread Report comment saying what the change did to your promises, and fails the check if the Gate refuses. A local run before you push is still worth having; this is the run that protects the thread.
+  Commit it along with .specify/, then open a pull request.
+```
+
+The extension carries `ci/specassay.yml`: one file, two jobs, no secrets. On every
+pull request it runs the Gate on the head and on the base, builds the report, posts
+one comment and updates it in place on later pushes, sets the `specassay/ack` status
+when the config asks for a human tick, and then fails the check in a separate step,
+so the red tick is the block and the comment never is. On an edit to that comment it
+re-reads the ticks. A project in a subdirectory gets its own root written into the
+workflow; nothing has to be edited by hand. `install-ci.sh` refuses rather than
+overwrite a workflow that differs, printing the `diff` to look at first.
+
+**Why a command and not the installer.** Spec Kit cannot place a file outside
+`.specify/extensions/<id>/`. Its extension manifest provides commands, templates,
+scripts and config and deploys every one of them under that directory; the only
+`.github` paths the CLI writes are Copilot prompts and `.github/hooks/speckit.json`;
+and hooks are agent-side events rather than install-time ones. Read from Spec Kit
+1.0.5's own source <!-- specassay:pinned Spec Kit --> rather than assumed. So the
+bundle ships the workflow and one documented command places it.
+
+**A local run is still worth having** before you push, or through the
+`after_implement` hook. It is hygiene; the pull-request run is what protects the
+thread, because it happens whether or not the author has the tool installed.
+
+**And the broken link is gone.** The extension README pointed at this repository's
+own workflow by a relative path that resolved to nothing in an adopter's checkout,
+which was the only account of this plumbing anybody had.
+
 ## 0.5.4 (2026-10-01)
 
 Components: bundle 0.5.4, extension 0.5.4, preset 0.5.4.

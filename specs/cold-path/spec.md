@@ -26,3 +26,11 @@ the 2026-09-26 cold-path ledger, one gap per row and one pull request per gap.
     and `test_AC_COLD_20b_a_fifth_authorship_value_is_refused`.
   - AC-COLD-20c — proven by `test_AC_COLD_20c_the_line_to_paste_is_printed_and_the_id_stands_alone`.
   - AC-COLD-20d — proven by `test_AC_COLD_20d_the_seed_states_the_grammar_and_gates_green`.
+- FR-COLD-30 — The bundle ships the CI that posts the Thread Report, and one
+  command places it. Shipped: `extensions/specassay-check/ci/specassay.yml` and
+  `extensions/specassay-check/scripts/install-ci.sh`. Proven by
+  `extensions/specassay-check/tests/test_cold_30_ci_workflow.py`.
+  - AC-COLD-30a — proven by `test_AC_COLD_30a_install_ci_writes_the_workflow_and_is_idempotent`
+    and `test_AC_COLD_30a_a_project_in_a_subdirectory_gets_its_own_root`.
+  - AC-COLD-30b — proven by `test_AC_COLD_30b_a_differing_workflow_is_refused_not_overwritten`.
+  - AC-COLD-30c — proven by `test_AC_COLD_30c_the_shipped_workflow_is_not_this_repository_s_own`.
