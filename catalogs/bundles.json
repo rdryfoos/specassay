@@ -29,7 +29,8 @@
         "gate",
         "sdd"
       ],
-      "verified": false
+      "verified": false,
+      "sha256": "2acb33dfa5ccf4b3e61de762355aba9d28b0f3396d44a4a4b7a40a484501d6e2"
     }
   }
 }
