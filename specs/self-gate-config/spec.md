@@ -194,3 +194,16 @@ where that same ID lands once it has.
   `extensions/specassay-check/tests/test_gate_180_fenced_registry_line.py`.
   - AC-GATE-180 — proven by `test_AC_GATE_180_a_fenced_row_is_not_a_promise`.
   - AC-GATE-180b — proven by `test_AC_GATE_180b_a_fenced_row_does_not_move_the_next_mint`.
+- FR-THREAD-20 — The comment speaks in requirements, tests and pull requests, and
+  the verdict line says the next action in three states. Shipped 2026-10-02,
+  proven by `@covers` in `thread-report.py` and by
+  `extensions/specassay-check/tests/test_thread_report_display.py`.
+  - AC-THREAD-20a — proven by `test_AC_THREAD_20a_a_clean_pass_reads_ready_to_review`,
+    `test_AC_THREAD_20a_a_reworded_requirement_needs_a_person`,
+    `test_AC_THREAD_20a_a_required_tick_needs_a_person`, and
+    `test_AC_THREAD_20a_a_refusing_gate_says_do_not_merge_yet` — one per state,
+    plus the one that proves a refusal outranks the amber state.
+  - AC-THREAD-20b — proven by `test_AC_THREAD_20b_no_house_word_appears_above_the_footer`
+    and `test_AC_THREAD_20b_the_footer_defines_the_three_words_it_uses`.
+  - AC-THREAD-20c — proven by `test_AC_THREAD_20c_every_count_of_one_agrees_in_number`.
+  - AC-THREAD-20d — proven by `test_AC_THREAD_20d_a_required_tick_keeps_the_shape_the_workflows_match`.

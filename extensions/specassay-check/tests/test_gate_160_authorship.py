@@ -182,10 +182,10 @@ def test_AC_GATE_160d_the_report_sentence_counts_by_authorship(tmp_path):
     ]
     report = _report(tmp_path, _v4_rows(ids), v5)
     # The shape is fixed, so it is asserted whole rather than by keywords.
-    assert ("2 promises from the case, 3 from the project "
+    assert ("2 requirements came from the case, 3 from the project "
             "(design 1, retrospective 1, constitution 1).") in report
-    # Above the table, and unfolded: before the What moved section.
-    assert report.index("promises from the case") < report.index("What moved")
+    # Above the table, and unfolded: before the section that folds.
+    assert report.index("came from the case") < report.index("What changed")
 
 
 def test_AC_GATE_160d_the_report_sentence_says_how_many_are_unassigned(tmp_path):
@@ -197,7 +197,9 @@ def test_AC_GATE_160d_the_report_sentence_says_how_many_are_unassigned(tmp_path)
     ]
     report = _report(tmp_path, _v4_rows(ids), v5)
     # It says how many, instead of presenting one row's breakdown as the whole.
-    assert "Authorship unassigned on 2 of 3 rows; of the rest, 1 promises from the case, 0 from the project (design 0, retrospective 0, constitution 0)." in report
+    assert ("No author named on 2 of 3 requirements; of the rest, 1 came from the "
+            "case, 0 from the project (design 0, retrospective 0, constitution 0)."
+            ) in report
 
 
 def test_AC_GATE_160d_a_missing_v5_file_loses_the_numbers_not_the_report(tmp_path):
@@ -219,6 +221,6 @@ def test_AC_GATE_160d_a_missing_v5_file_loses_the_numbers_not_the_report(tmp_pat
     )
     assert proc.returncode == 0, proc.stderr
     report = out.read_text()
-    assert "Authorship not reported: no v5 manifest was found beside the head manifest." in report
+    assert "No author counts: the v5 manifest was not found beside the head manifest." in report
     # Specifically NOT a confident breakdown of nothing.
-    assert "0 promises from the case" not in report
+    assert "came from the case" not in report

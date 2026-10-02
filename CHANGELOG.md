@@ -190,6 +190,58 @@ This is the test the 2026-09-26 ledger lacked, which is why every one of that
 ledger's five findings had to be re-derived by hand before any of this could be
 fixed, and why one of them turned out to have been wrong.
 
+### The Thread Report says what to do next, in plain words
+
+`FR-THREAD-20`. The comment a reviewer reads now speaks in requirements, tests and
+pull requests. The verdict line says the next action rather than the state of a
+metaphor, in three states:
+
+```text
+🟢 **Ready to review** · **1** now has a test · **1** changed file no requirement claims
+🟡 **Needs a person** · **1** reworded · **every changed file is claimed**
+🔴 **Do not merge yet** · **1** has neither · **2** changed files no requirement claims
+```
+
+**Amber is the state the comment could not say before.** The Gate passes, and either
+a requirement was reworded (its code and tests were written against the old wording)
+or a `required` tick is waiting, which it always is the moment the report renders,
+since a tick attests to one head and the report reposts on every push. A green line
+in either case was true about the Gate and misleading about the merge.
+
+Everywhere else: *Intent Changed* is **Reworded requirements**; *What moved* is
+**What changed**, with `| ID | What changed | Where |`; *Off thread* is **Changed
+files no requirement claims**; `re-confirm` is `check`; `🆕 minted` is `🆕 new`;
+`✍️ restated` is `✍️ reworded`; `+1 proof` is `+1 test`. The authorship sentence
+reads `1 requirement came from the case, 3 from the project (design 1, retrospective
+1, constitution 1).`, and a count of one now agrees with itself: the verdict line
+printed `1 files off thread` until today, while the fold summary under it said
+`1 changed file` correctly, which is two readers of one count disagreeing inside one
+comment.
+
+**Three house words survive, in the comment's own last line, each with its
+definition beside it**: Golden Thread, off thread, and mint. Nothing above that line
+asks a reader to learn a word before acting.
+
+**What deliberately did not change.** The four manifest states and their badges
+(`proven`, `tracked-debt`, `backlog`, `GAP`), because a viewer renders them and
+[`docs/trace-manifest-schema.md`](docs/trace-manifest-schema.md) defines them. Every
+tick line's `- [ ] ` prefix and backticked `..._ack: required`)_ suffix, which three
+workflows match by regex to hold a merge; a test now pins that shape so the words
+inside can move again without the mechanism breaking. And the dated receipts in
+`docs/submission/test-evidence.md` (lines 55, 151 and 184) and on demo pull requests
+#1 to #5, which record what a past run printed and would be falsified by a rewrite.
+
+The inventory behind the pass was taken by running the real script over twelve
+fixture states rather than reading its source, with each of the strings paired to the
+test, document or page that reads it. That is why the pass is one change rather than
+a trail of small ones: twenty-three strings had a test reading them.
+
+**Queued, not here:** Loupe prints `Golden Thread intact` and `Golden Thread broken`
+itself, from the manifest rather than from this report, so one manifest is currently
+described two ways; the Sites pages and the two baked hero images carry the old words
+in their copy and alt text; the README inside the released zips regenerates at the
+next cut.
+
 ### Before the next tag, two things this stack deliberately left alone
 
 Neither is cold-path work, and both were ruled to wait rather than ride along here.

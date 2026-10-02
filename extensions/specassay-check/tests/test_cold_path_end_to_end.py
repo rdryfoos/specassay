@@ -205,9 +205,9 @@ def test_AC_COLD_40a_the_cold_path_needs_no_plumbing(cold_repo):
     # The comment's text: the verdict line, the row that moved, who authored it,
     # and the file that changed alongside with nothing tying it to the thread.
     assert "🧵 Thread Report" in report
-    assert "Golden Thread intact" in report
+    assert "🟢 **Ready to review**" in report
     assert re.search(r"`AC-GREET-10` \| `tracked-debt` → .*`proven`", report), report
-    assert "from the case" in report, "the authorship sentence is missing"
+    assert "came from the case" in report, "the authorship sentence is missing"
     assert "src/banner.py" in report, "the off-thread file is missing"
 
     head = json.loads((out / "head.json").read_text())

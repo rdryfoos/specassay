@@ -44,7 +44,7 @@ jobs:
               context: 'specassay/ack',
               state: unticked ? 'failure' : 'success',
               description: unticked
-                ? `${unticked} human tick(s) required — tick the box in the Thread Report`
-                : 'All required ticks given',
+                ? `${unticked} tick(s) needed: tick the box in the comment on this pull request`
+                : 'All ticks given',
               target_url: pr.html_url,
             });
