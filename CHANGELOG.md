@@ -37,6 +37,17 @@ on upgrade without a word.
 Narrowing `test_ac_regex` was never a workaround for this: every vitest, jest and
 `node:test` project writes its names as strings, and has no shape to narrow to.
 
+**A second law about awk, found writing this one.** The rule reads structure, and
+structure only: the project's own ID grammar is matched by `grep`, never by awk.
+awk's `match()` is not longest-match everywhere. Against the stock grammar,
+mawk 1.3.4 returns `AC_GATE_10` for `AC_GATE_100a`, where gawk and grep both
+return the whole ID, so the first cut of this change silently truncated every
+three-digit ID on a mawk machine and left the Gate refusing a project over IDs it
+had invented. Measured 2026-10-05. The existing guard against `awk -v` was about
+escape processing and said to use the environment instead, which does not help:
+the defect is the engine, not the channel. A second guard now reads every shipped
+script for a configured pattern anywhere near an awk call.
+
 ## 0.5.5 (2026-10-02)
 
 Components: bundle 0.5.5, extension 0.5.5, preset 0.5.5.
