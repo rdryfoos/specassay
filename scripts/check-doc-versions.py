@@ -87,6 +87,10 @@ PINNED = re.compile(r"<!--\s*specassay:pinned\s+(.+?)\s*-->")
 # than from thinking harder about it.
 PROVENANCE = re.compile(r"<!--\s*specassay:provenance\s*-->")
 
+# A Markdown table row. One row is one claim: a mark on the row beside it
+# classifies that row and nothing else.
+TABLE_ROW = re.compile(r"^\s*\|")
+
 # A token sitting inside a range expression is a declared constraint, not a
 # claim about what was observed. `>=0.14.0,<2.0.0` says what the manifests
 # accept; it is checked against the manifests instead of against the tag.
@@ -204,6 +208,14 @@ def scan(path: Path, current: str, order: list[str], root: Path):
     # mark in its last is one claim, not two. Requiring the mark on the exact
     # line meant an author had to break their own line wrapping to satisfy the
     # checker, which is the checker serving itself.
+    #
+    # A table row is its own block, though, because a row is a whole claim and
+    # not a wrap. @covers FR-DOCS-80, AC-DOCS-30. Found cutting 0.5.6, on
+    # 2026-10-05: ONBOARD's pin table carries a stale-ok on its Spec Kit row,
+    # and a stale-ok anywhere in a block exempts the block, so the SpecAssay
+    # row's own `<!-- specassay:current -->` saying v0.5.5 was never compared
+    # to the version being cut. The release step named "Docs must not lie
+    # about the version being cut" passed on a document that did.
     block_marks: dict = {}
     start = 0
     for idx in range(len(lines) + 1):
@@ -212,6 +224,9 @@ def scan(path: Path, current: str, order: list[str], root: Path):
             for n in range(start, idx):
                 block_marks[n + 1] = block
             start = idx + 1
+    for n, line in enumerate(lines, 1):
+        if TABLE_ROW.match(line):
+            block_marks[n] = line
 
     in_fence = False
     # A date on a heading classifies everything under it, and a sub-heading does

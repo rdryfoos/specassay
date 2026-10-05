@@ -3,7 +3,18 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
-## Unreleased
+## 0.5.6 (2026-10-05)
+
+Components: bundle 0.5.6, extension 0.5.6, preset 0.5.6.
+
+**One rule about what proves a criterion, and two found while shipping it.** A
+criterion is proven by a test whose name is the ID, and until this release a
+string anywhere in a test file read as a name: found in Loupe, where six fixture
+rows read as six passing tests. Writing the fix turned up a second rule, about
+which engine may match a project's own grammar. Cutting the release turned up a
+third, in the release's own doc-version gate, which had been passing silently over
+two stale claims since 0.5.1. No command, config key or output line changes shape,
+and the third fix is to this repository's own tooling rather than to the bundle.
 
 ### A test's name, not every string in the file (FR-GATE-220)
 
@@ -47,6 +58,53 @@ had invented. Measured 2026-10-05. The existing guard against `awk -v` was about
 escape processing and said to use the environment instead, which does not help:
 the defect is the engine, not the channel. A second guard now reads every shipped
 script for a configured pattern anywhere near an awk call.
+
+### A mark classifies one claim, and a table row is one claim (FR-DOCS-80)
+
+Found cutting this release, and it had been hiding since 0.5.1. A doc-version mark
+covers the block it sits in, which is right for wrapped prose and wrong for a
+table, because a Markdown table is one block. A reason written beside one row
+exempted every other row of the same table, so the release step named "Docs must
+not lie about the version being cut" passed on two documents that did:
+
+- `ONBOARD.md`'s pin table said **v0.5.5** with a current mark while 0.5.6 was
+  being cut, beside a Spec Kit row carrying `stale-ok`.
+- `docs/submission/README.md`'s own "What's done" table had said **v0.5.1** with a
+  current mark since 0.5.1, four releases, beside a row citing a CHANGELOG section
+  with `stale-ok`.
+
+Neither was ever reported, by any release. A checker that is silent is worse than
+one that is absent, because the release trusts it.
+
+Each row is now classified by its own mark alone. Both claims above are corrected
+rather than re-marked: ONBOARD's pin carries the reason it cannot move before the
+tag, and the submission row names the last release actually published instead of
+the one being cut.
+
+### What this release defers, and why
+
+**The community catalog submission.** The three forms ask for each asset's sha256,
+which is read from the release page rather than computed locally, so the three
+issues can only be prepared once the assets exist. Re-observed 2026-10-05: all
+three community entries still read 0.5.2, filed 2026-09-23 and landed 2026-09-24,
+so the next filing carries 0.5.3, 0.5.4, 0.5.5 and 0.5.6 in one round, one issue
+per component. `docs/submission/README.md` names every field the forms want and
+where each comes from.
+
+**ONBOARD's pin table.** It reads v0.5.5 and stays there until the replay, which
+installs the published 0.5.6 from the hosted catalogs and so cannot run before the
+tag. The same was true at 0.5.5, where replaying from block 1 caught a bad capture
+the page itself had been right about.
+
+### Verified before the tag
+
+`specify bundle validate` at 1.0.5: well-formed and valid. The suite at 211
+passing and the self-gate `OK (152 registry IDs)`. The doc-version check clean
+against `v0.5.6` with zero warnings, which is the same check the Release workflow
+runs before it builds anything, and it was not clean to begin with: cutting 0.5.6
+aged five dated 0.5.4 observations in `PRD.md` into six warnings, and each is now
+marked as provenance, because each records when something was reproduced rather
+than what is true now.
 
 ## 0.5.5 (2026-10-02)
 

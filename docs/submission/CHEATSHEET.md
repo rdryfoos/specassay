@@ -270,11 +270,12 @@ Taken in a clean `specify init` project outside this repository, on Spec Kit
 
 **The community catalog resolves both components at 0.5.2, and will not install
 them.** <!-- specassay:pinned the community catalog's own entry, not this bundle -->
-Re-observed 2026-10-02 against
+Re-observed 2026-10-05 against
 `raw.githubusercontent.com/github/spec-kit/main/{extensions,presets,bundles}/catalog.community.json`:
-all three still read 0.5.2, because 0.5.3 and 0.5.4 were deliberately not submitted
-and go in with the next filing. `policy=discovery-only` is Spec Kit's setting, not
-ours:
+all three still read 0.5.2, with 0.5.2 download URLs. The arrears are now 0.5.3,
+0.5.4, 0.5.5 and 0.5.6, and they go in as one filing per component, because the
+bundle pins its own components and a filing that moved one would describe a bundle
+that does not exist. `policy=discovery-only` is Spec Kit's setting, not ours:
 
 ```text
 $ specify bundle info specassay
