@@ -1,5 +1,39 @@
 # Submission package — status and checklist
 
+## v0.5.6, cut 2026-10-05: one filing, four releases of arrears
+
+Where the community catalog actually stands, re-observed 2026-10-05 against
+`raw.githubusercontent.com/github/spec-kit/main/{extensions,presets,bundles}/catalog.community.json`:
+**all three entries read 0.5.2**, with 0.5.2 download URLs. That round was filed
+2026-09-23 and landed 2026-09-24 as
+[#4717](https://github.com/github/spec-kit/issues/4717),
+[#4735](https://github.com/github/spec-kit/issues/4735) and
+[#4737](https://github.com/github/spec-kit/issues/4737). The sections below this
+one are the record of the rounds before it and are not re-written.
+
+So 0.5.3, 0.5.4, 0.5.5 and 0.5.6 are all unfiled, and the next filing carries the
+four of them at once. One issue per component, three in all, because the bundle
+pins its own components: a filing that moved one of them would describe a bundle
+that does not exist.
+
+**What the filing needs that does not exist yet.** Each form asks for the asset's
+download URL and its sha256. Those are read from the published release, not
+computed locally, so the three issues can only be prepared after the tag, from the
+release page. The values the forms want, and where each comes from:
+
+| Field | Source | Available |
+| --- | --- | --- |
+| version `0.5.6` | `bundle.yml`, `extension.yml`, `preset.yml` | now |
+| download URL | `catalogs/*.json`, which name the v0.5.6 assets | now |
+| sha256 | the release page's own digest for each asset | after the tag |
+| catalog URL | `catalogs/*.json` on `main` | now |
+
+The digests PR that follows the tag restores `sha256` to the three catalogs from
+the published assets, and the same three values fill the three forms. Nothing in
+this release changes what the forms ask for, so
+[CHEATSHEET.md](CHEATSHEET.md)'s paste-ready blocks need the version and the three
+digests and nothing else.
+
 ## v0.5.1, released 2026-09-17: filing not yet done
 
 Tag `v0.5.1`, release
@@ -48,7 +82,7 @@ catalog entry and URLs (3–7 business days; they do not audit code).
 | Item | Where | Verified |
 | --- | --- | --- |
 | `bundle.yml` / `extension.yml` / `preset.yml` manifests | repo root, `extensions/specassay-check/`, `presets/specassay/` | `specify bundle validate` ✓ |
-| Versioned release with the `specify bundle build` artifact | [latest release](https://github.com/rdryfoos/specassay/releases/latest) (v0.5.1 as of 2026-09-17): `specassay-0.5.1.zip` + component packs <!-- specassay:current --> | built in CI by the real CLI |
+| Versioned release with the `specify bundle build` artifact | [latest release](https://github.com/rdryfoos/specassay/releases/latest): v0.5.5's three assets, observed 2026-10-05. v0.5.6's are built and published by the Release workflow at the tag, which is why this row names the last one published rather than the one being cut. | built in CI by the real CLI |
 | Hosted catalogs with live download URLs | [`catalogs/*.json`](https://github.com/rdryfoos/specassay/tree/main/catalogs) | assets download and install ✓ |
 | Clean-project install, end to end, by bundle ID | — | [test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md) |
 | LICENSE (MIT) · README · CHANGELOG | repo root | — |

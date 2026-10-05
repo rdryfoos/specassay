@@ -237,3 +237,7 @@ where that same ID lands once it has.
   - AC-GATE-220c — proven by `test_AC_GATE_220c_any_delimiter_after_the_id`.
   - AC-GATE-220d — proven by `test_AC_GATE_220d_a_row_proven_only_by_data_is_named`.
   - AC-GATE-220e — proven by `test_AC_GATE_220e_a_function_named_suite_is_unchanged`.
+- FR-DOCS-80 — A mark classifies one claim, and a table row is one claim. Shipped
+  2026-10-05, proven by `tests/test_doc_versions.py`.
+  - AC-DOCS-30 — proven by `test_AC_DOCS_30_a_table_row_is_its_own_claim` and
+    `test_AC_DOCS_30_a_row_with_its_own_mark_is_still_accepted`.

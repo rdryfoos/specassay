@@ -151,6 +151,43 @@ def test_a_mark_covers_the_block_it_sits_in_not_only_its_line(tmp_path):
     assert proc.returncode == 0, proc.stderr
 
 
+def test_AC_DOCS_30_a_table_row_is_its_own_claim(tmp_path):
+    """@covers AC-DOCS-30
+
+    Bug five, and the most expensive of them, because it made the checker
+    silent rather than wrong. A mark covers its block, a Markdown table is one
+    block, so a stale-ok on one row exempted every other row of the table.
+
+    Found cutting 0.5.6 on 2026-10-05: ONBOARD's pin table carries a stale-ok
+    on its Spec Kit row, and its SpecAssay row said `v0.5.5` with a current
+    mark while 0.5.6 was being cut. The release step named "Docs must not lie
+    about the version being cut" passed on a document that did, and had since
+    0.5.1, where the submission page's own table hid the same shape.
+    """
+    proc = run(build(tmp_path,
+        "# T\n\n| Thing | Pinned to |\n| --- | --- |\n"
+        "| Ours | 0.5.0 <!-- specassay:current --> |\n"
+        "| Theirs | 1.0.4 <!-- specassay:stale-ok a neighbour -->  |\n"))
+    out = proc.stdout + proc.stderr
+    assert proc.returncode != 0, (
+        "a stale-ok on one row still exempts the row beside it:\n" + out
+    )
+    assert "current claim says 0.5.0" in out, out
+
+
+def test_AC_DOCS_30_a_row_with_its_own_mark_is_still_accepted(tmp_path):
+    """@covers AC-DOCS-30
+
+    The other half: narrowing the block must not cost a row the mark it
+    carries itself. Both rows here are marked, and both are lawful.
+    """
+    proc = run(build(tmp_path,
+        "# T\n\n| Thing | Pinned to |\n| --- | --- |\n"
+        "| Ours | 0.5.1 <!-- specassay:current --> |\n"
+        "| Theirs | 1.0.4 <!-- specassay:pinned Spec Kit --> |\n"))
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
 def test_a_pinned_dependency_is_not_measured_against_our_own_version(tmp_path):
     """Bug four. Marking Spec Kit's pinned 1.0.4 as a current claim made the
     checker demand it equal SpecAssay's version."""
