@@ -412,3 +412,34 @@ def test_no_configured_pattern_reaches_awk_through_a_v_assignment():
         "escape-processed; pass it through the environment and read it with "
         "ENVIRON[] instead:\n  " + "\n  ".join(offenders)
     )
+
+
+def test_no_configured_pattern_is_matched_by_awk():
+    """A config value must not be matched by awk's own regex engine either.
+
+    The sibling test above says to pass a pattern through the environment
+    instead of `-v`, which is right about escape processing and not enough.
+    awk's `match()` is not longest-match everywhere: against the stock
+    grammar's `AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?`, mawk 1.3.4 returns
+    `AC_GATE_10` for `AC_GATE_100a` where gawk and grep both return the whole
+    ID. Measured 2026-10-05, writing FR-GATE-220, which first read the
+    project's grammar in awk and silently truncated every three-digit ID on a
+    mawk machine.
+
+    So the rule is about the engine, not the channel: a configured pattern is
+    matched by grep. awk may read structure the grammar knows nothing about.
+    """
+    offenders = []
+    names = re.compile(
+        r"\b(ID_RE|COVERS_RE|CARRIES_RE|RETIRES_RE|TEST_AC_RE|DEF_LINE_RE)\b"
+    )
+    for script in sorted(SCRIPTS.glob("*.sh")):
+        for lineno, line in enumerate(script.read_text().splitlines(), 1):
+            if "awk" in line and names.search(line):
+                offenders.append(f"{script.name}:{lineno}: {line.strip()}")
+
+    assert not offenders, (
+        "a configured pattern reaches awk, whose regex engine is not "
+        "longest-match everywhere; match it with grep and let awk read only "
+        "structure:\n  " + "\n  ".join(offenders)
+    )

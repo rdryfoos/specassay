@@ -60,6 +60,13 @@ class Project:
             "tasks": "specs/**/tasks.md",
             "src_globs": ["src/**"],
             "test_globs": ["tests/**"],
+            # The four grammars live in the same dict as everything else so a
+            # fixture can override one. They used to be appended after it,
+            # which silently ignored an override of any of them.
+            "id_regex": DEFAULT_ID_RE,
+            "covers_regex": DEFAULT_COVERS_RE,
+            "carries_regex": DEFAULT_CARRIES_RE,
+            "test_ac_regex": DEFAULT_TEST_AC_RE,
         }
         defaults.update(overrides)
         lines = []
@@ -71,10 +78,6 @@ class Project:
                 lines.append(f"{key}: {'true' if value else 'false'}")
             else:
                 lines.append(f'{key}: "{value}"')
-        lines.append(f'id_regex: "{DEFAULT_ID_RE}"')
-        lines.append(f'covers_regex: "{DEFAULT_COVERS_RE}"')
-        lines.append(f'carries_regex: "{DEFAULT_CARRIES_RE}"')
-        lines.append(f'test_ac_regex: "{DEFAULT_TEST_AC_RE}"')
         self._config = self.write("config.yml", "\n".join(lines) + "\n")
         return self._config
 

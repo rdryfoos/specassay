@@ -464,6 +464,112 @@ strip_code_spans() {
   ' "$1" 2>/dev/null
 }
 
+# @covers FR-GATE-220, AC-GATE-220a, AC-GATE-220b, AC-GATE-220c, AC-GATE-220e
+# Name position. A test's name is what a runner prints when the test runs.
+# A string somewhere else in the file is an argument the test was handed, and
+# a row is not proven by being mentioned in one. Two conventions, told apart
+# by the file itself:
+#
+#   def test_AC_SYNC_04(...)           the ID is in the function's name
+#   it("AC-SYNC-04: ...", () => {})    the ID is in the title string
+#
+# A function-named file is read exactly as before: a match anywhere in it is
+# a name, because data cannot look like a function name. A file that declares
+# even one string-titled test is read strictly: only the start of the first
+# string argument to it, test or describe counts, with any delimiter after
+# the ID, and an ID anywhere else in that file is data.
+#
+# Taught by Loupe, 2026-10-02, on 0.5.5: six fixture rows handed to a forest
+# builder, written `row({ id: "AC-UI-40", type: "AC" })`, read as six passing
+# tests and produced seven of that run's eight findings, because a per-line
+# grep cannot tell a test's name from a test's argument. Loupe's own titles,
+# `it("AC-BUILD-10: ...")` and three in the shape
+# `it("AC-MAP-20 (AMENDED 2026-08-28): ...")`, were right all along; the Gate
+# was reading the whole file as though every string in it were a name.
+#
+# This reads structure only, and never the project's own ID grammar: that
+# stays with grep, which matches longest. awk does not, portably -- mawk 1.3.4
+# returns AC_GATE_10 for the stock grammar against AC_GATE_100a, where gawk
+# and grep both return the whole ID. Measured 2026-10-05, writing this.
+#
+# Emits one line naming the convention, then one record per title position:
+#   MODE  strung|plain
+#   T  lineno  the title's text from the ID onward
+test_name_classify() {
+  awk '
+    # Is the character at position p inside a quoted run on this line? The
+    # sniff needs it, because a file may contain test code as data: this
+    # engine own suite writes `it("AC-X-10: ...")` inside a Python string to
+    # hand the Gate a fixture, and that file is a function-named pytest file,
+    # not a string-named one. Line-local on purpose; a sniff that needs to
+    # track a multi-line string to decide is a sniff that should decline, and
+    # declining means the plain reading, which is the old one.
+    function quoted_at(s, p,   i, c, q, esc) {
+      q = ""; esc = 0
+      for (i = 1; i < p; i++) {
+        c = substr(s, i, 1)
+        if (esc) { esc = 0; continue }
+        if (c == "\\") { esc = 1; continue }
+        if (q != "") { if (c == q) q = "" }
+        else if (c == "\042" || c == "\047") q = c
+      }
+      return (q != "")
+    }
+    # Where the keyword itself starts: the declaration patterns open with the
+    # character before it, except at the start of a line.
+    function kw_start(s,   r) {
+      r = RSTART
+      if (substr(s, r, 2) == "it") return r
+      if (substr(s, r, 4) == "test") return r
+      if (substr(s, r, 8) == "describe") return r
+      return r + 1
+    }
+    function comment_line(s) {
+      return (s ~ /^[ \t]*(#|\/\/|\*|--)/)
+    }
+    function declares(s) {
+      return (!comment_line(s) && match(s, declre) && !quoted_at(s, kw_start(s)))
+    }
+    function opens(s) {
+      return (!comment_line(s) && match(s, openre) && !quoted_at(s, kw_start(s)))
+    }
+    function emit_title(no, body,   t) {
+      t = body
+      sub(/^[ \t]+/, "", t)
+      gsub(/\t/, " ", t)
+      printf "T\t%d\t%s\n", no, t
+    }
+    BEGIN {
+      qc = "[\042\047]"
+      head = "(^|[^A-Za-z0-9_.$])(it|test|describe)([.][A-Za-z_][A-Za-z0-9_]*)*[ \t]*[(][ \t]*"
+      declre = head qc
+      openre = head "$"
+      contopen = "^[ \t]*" qc
+    }
+    { lines[NR] = $0 }
+    END {
+      strung = 0
+      for (i = 1; i <= NR; i++) {
+        if (declares(lines[i])) { strung = 1; break }
+        # Prettier and friends wrap a long title onto its own line, which
+        # leaves it( alone on one line and the title on the next.
+        if (opens(lines[i]) && i < NR && match(lines[i + 1], contopen)) { strung = 1; break }
+      }
+      print "MODE\t" (strung ? "strung" : "plain")
+      if (!strung) exit
+      for (i = 1; i <= NR; i++) {
+        if (declares(lines[i])) {
+          emit_title(i, substr(lines[i], RSTART + RLENGTH))
+          continue
+        }
+        if (i > 1 && opens(lines[i - 1]) && match(lines[i], contopen)) {
+          emit_title(i, substr(lines[i], RSTART + RLENGTH))
+        }
+      }
+    }
+  ' "$1" 2>/dev/null
+}
+
 # @covers FR-GATE-140, AC-GATE-140 -- a task is one logical line to every
 # scan, so a soft-wrapped Carries list reads the same to both of them.
 # A task is one logical line, however many physical lines it occupies.
@@ -590,15 +696,49 @@ cut -d'|' -f3 "$tmp/covers_hits.txt" 2>/dev/null | sort -u > "$tmp/covers.txt" |
 
 # proofs: path|line|id|name
 : > "$tmp/proof_hits.txt"
+: > "$tmp/test_data_mentions.txt"
+TAB="$(printf '\t')"
 while IFS= read -r g; do
   [[ -z "$g" ]] && continue
   while IFS= read -r f; do
     [[ -f "$f" ]] || continue
-    strip_code_spans "$f" | grep -nE "$TEST_AC_RE" 2>/dev/null | while IFS= read -r line; do
+    strip_code_spans "$f" > "$tmp/test_file.txt" 2>/dev/null || continue
+    grep -nE "$TEST_AC_RE" "$tmp/test_file.txt" > "$tmp/test_cand.txt" 2>/dev/null || true
+    [[ -s "$tmp/test_cand.txt" ]] || continue
+    test_name_classify "$tmp/test_file.txt" > "$tmp/test_class.txt" 2>/dev/null || true
+    mode="$(sed -n "1s/^MODE$TAB//p" "$tmp/test_class.txt" 2>/dev/null)"
+    while IFS= read -r line; do
       lineno="${line%%:*}"
       rest="${line#*:}"
-      raw="$(grep -Eo "$TEST_AC_RE" <<<"$rest" | head -1 || true)"
-      [[ -n "$raw" ]] || continue
+      raw=""
+      if [[ "$mode" == "strung" ]]; then
+        title="$(grep -m1 "^T$TAB$lineno$TAB" "$tmp/test_class.txt" 2>/dev/null | cut -d"$TAB" -f3- || true)"
+        if [[ -n "$title" ]]; then
+          raw="$(grep -Eo "^($TEST_AC_RE)" <<<"$title" | head -1 || true)"
+          # The ID must be followed by a delimiter, not by more name: a title
+          # reading AC-MAP-20X names no ID, AC-MAP-20: and AC-MAP-20 ( both do.
+          if [[ -n "$raw" ]]; then
+            case "${title#"$raw"}" in
+              [A-Za-z0-9_]*) raw="" ;;
+            esac
+          fi
+        fi
+      else
+        raw="$(grep -Eo "$TEST_AC_RE" <<<"$rest" | head -1 || true)"
+      fi
+      if [[ -z "$raw" ]]; then
+        # A string-named file, and this line is not a name. Keep it for the
+        # one diagnostic a demoted registry row deserves.
+        if [[ "$mode" == "strung" ]]; then
+          data_raw="$(grep -Eo "$TEST_AC_RE" <<<"$rest" | head -1 || true)"
+          if [[ -n "$data_raw" ]]; then
+            data_id="$(id_for_test_token "$data_raw")"
+            [[ -n "$data_id" ]] || data_id="$(printf '%s' "$data_raw" | tr '_' '-')"
+            printf '%s|%s|%s\n' "$f" "$lineno" "$data_id" >> "$tmp/test_data_mentions.txt"
+          fi
+        fi
+        continue
+      fi
       id="$(id_for_test_token "$raw")"
       # A token the registry cannot claim is untraced scope, and is still
       # reported as such. It falls back to the old character substitution
@@ -610,7 +750,7 @@ while IFS= read -r g; do
       name="$(grep -Eo 'test_[A-Za-z0-9_]+|func test_[A-Za-z0-9_]+' <<<"$rest" | head -1 | sed 's/^func //' || true)"
       [[ -n "$name" ]] || name="$raw"
       printf '%s|%s|%s|%s\n' "$f" "$lineno" "$id" "$name"
-    done
+    done < "$tmp/test_cand.txt"
   done < <(expand_glob "$g")
 done < <(yaml_list test_globs) >> "$tmp/proof_hits.txt" || true
 
@@ -940,6 +1080,19 @@ while IFS= read -r id; do
   [[ -z "$id" ]] && continue
   "$uncovered_recorder" "$uncovered_kind" "$id" "uncovered proof: $id has a passing test but no file's @covers line names it"
 done < <(comm -23 "$tmp/test_acs.txt" "$tmp/covers.txt")
+
+# @covers FR-GATE-220, AC-GATE-220d
+# A registry row whose only appearance in a string-named test file is as
+# data loses nothing it ever honestly had, but it may lose a status the
+# previous release gave it by mistake. The run says so, once per ID, with
+# the file and line to look at, rather than letting a row change status on
+# upgrade without a word.
+while IFS='|' read -r dfile dline did; do
+  [[ -n "$did" ]] || continue
+  grep -qx "$did" "$tmp/registry.txt" 2>/dev/null || continue
+  grep -qx "$did" "$tmp/test_acs.txt" 2>/dev/null && continue
+  record_diagnostic "test-data-not-a-name" "$did" "test data, not a test name: $did appears at $dfile:$dline inside a string-named test file, so it is not counted as proof"
+done < <(sort -u "$tmp/test_data_mentions.txt" 2>/dev/null | awk -F'|' '!seen[$3]++')
 
 # --- Emit trace-manifest.json (always; the manifest should show GAPs even when Gate fails) ---
 export MANIFEST_OUT REGISTRY TARGET_NAME PROJECT_ROOT MATRIX_MODE MATRIX_MD MATRIX_SVG PORTFOLIO_MODE PORTFOLIO_MD PARENT_DERIVATION

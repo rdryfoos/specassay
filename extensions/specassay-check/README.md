@@ -84,6 +84,20 @@ your registry, not by substituting one character for another. Two IDs that
 differ only in punctuation are refused rather than guessed between, and
 `mint-id.sh` refuses to compose an ID your own `id_regex` would reject.
 
+**A name, not a mention.** A criterion is proven by a test whose *name* is
+the ID, and two conventions spell that differently. A function-named suite
+puts it in the function's name (`def test_AC_SYNC_04`). A string-named suite,
+which is every vitest, jest and `node:test` project, puts it in the title
+(`it("AC-SYNC-04: ...")`). The file says which it is: a file that declares
+even one string-titled test is read strictly, so only the start of the first
+string argument to `it`, `test` or `describe` counts, with any delimiter after
+the ID, and an ID anywhere else in that file is data. A fixture row reading
+`row({ id: "AC-SYNC-04" })` is an argument the test was handed, not a claim
+that it was checked. A file with no string-titled test keeps the plain
+reading, because data cannot look like a function name. Where a row loses a
+proof it only ever had by mention, the run names the row, the file and the
+line rather than letting the status move in silence.
+
 The two list keys (`src_globs`, `test_globs`) must be block lists, one `- "glob"` per line. An inline array (`src_globs: ["src/**"]`) is refused before any scanning, on purpose: it used to parse as an empty list and silently mark everything backlog.
 
 ## Running it

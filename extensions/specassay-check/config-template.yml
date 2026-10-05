@@ -39,7 +39,12 @@ carries_regex: "\*\*(Carries|Traces)\*\*:"
 # refuse loudly before any scanning, same as a malformed src_globs/test_globs.
 retires_regex: "\*\*Retires\*\*:"
 
-# How AC IDs appear inside test names (e.g. test_AC_SYNC_04_...)
+# How AC IDs appear inside test names (e.g. test_AC_SYNC_04_...).
+# A string-named suite (vitest, jest, node:test) writes the ID in the title
+# instead, as it("AC-SYNC-04: ..."), and wants the hyphenated shape here:
+#   test_ac_regex: "AC-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?"
+# Either way only a name counts: in a file that declares a string-titled
+# test, an ID anywhere but the start of that title is data, not proof.
 test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
 
 # FR-GATE-10 / FR-GATE-20: --matrix and --portfolio output paths.
