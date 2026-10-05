@@ -464,6 +464,129 @@ strip_code_spans() {
   ' "$1" 2>/dev/null
 }
 
+# @covers FR-GATE-220, AC-GATE-220a, AC-GATE-220b, AC-GATE-220c
+# Name position. A test's name is what a runner prints when the test runs.
+# A string somewhere else in the file is an argument the test was handed,
+# and a row is not proven by being mentioned in one. Two conventions, told
+# apart by the file itself:
+#
+#   def test_AC_SYNC_04(...)           the ID is in the function's name
+#   it("AC-SYNC-04: ...", () => {})    the ID is in the title string
+#
+# A function-named file is read exactly as before: a match anywhere in it
+# is a name, because data cannot look like a function name. A file that
+# declares even one string-titled test is read strictly: only the start of
+# the first string argument to it, test or describe counts, with any
+# delimiter after the ID, and an ID anywhere else in that file is data.
+#
+# Taught by Loupe, 2026-10-02, on 0.5.5: six fixture rows handed to a
+# forest builder, written `row({ id: "AC-UI-40", type: "AC" })`, read as
+# six passing tests and produced twelve findings, because a per-line grep
+# cannot tell a test's name from a test's argument. Loupe's own titles,
+# `it("AC-BUILD-10: ...")` and three in the shape
+# `it("AC-MAP-20 (AMENDED 2026-08-28): ...")`, were right all along; the
+# Gate was reading the whole file as though every string in it were a name.
+#
+# Emits one tab-separated record per line that carries an ID:
+#   H  lineno  id  line    counted: the ID is in a name position
+#   D  lineno  id  line    discarded: a data mention in a string-named file
+test_name_hits() {
+  SPECASSAY_AWK_ACRE="$1" awk '
+    function first_id(s) {
+      if (match(s, acre)) return substr(s, RSTART, RLENGTH)
+      return ""
+    }
+    # The ID must be followed by a delimiter, not by more name. A title
+    # reading AC-MAP-20X names no ID; AC-MAP-20: and AC-MAP-20 ( both do.
+    function id_at_end(s, prefix_re,   st, len, seg, nextch) {
+      if (!match(s, prefix_re)) return ""
+      st = RSTART; len = RLENGTH
+      nextch = substr(s, st + len, 1)
+      if (nextch ~ /[A-Za-z0-9_]/) return ""
+      seg = substr(s, st, len)
+      if (match(seg, acre "$")) return substr(seg, RSTART, RLENGTH)
+      return ""
+    }
+    # Is the character at position p inside a quoted run on this line? The
+    # convention sniff below needs it, because a file may contain test code as
+    # data: this engine own suite writes `it("AC-X-10: ...")` inside a Python
+    # string to feed the Gate a fixture, and that file is a function-named
+    # pytest file, not a string-named one. Line-local on purpose; a sniff that
+    # needs to track a multi-line string to decide is a sniff that should
+    # decline, and declining means the plain reading, which is the old one.
+    function quoted_at(s, p,   i, c, q, esc) {
+      q = ""; esc = 0
+      for (i = 1; i < p; i++) {
+        c = substr(s, i, 1)
+        if (esc) { esc = 0; continue }
+        if (c == "\\") { esc = 1; continue }
+        if (q != "") { if (c == q) q = "" }
+        else if (c == "\042" || c == "\047") q = c
+      }
+      return (q != "")
+    }
+    # Where the keyword itself starts: the declaration patterns open with the
+    # character before it, except at the start of a line.
+    function kw_start(s,   r) {
+      r = RSTART
+      if (substr(s, r, 2) == "it") return r
+      if (substr(s, r, 4) == "test") return r
+      if (substr(s, r, 8) == "describe") return r
+      return r + 1
+    }
+    function comment_line(s) {
+      return (s ~ /^[ \t]*(#|\/\/|\*|--)/)
+    }
+    BEGIN {
+      # Through the environment, not -v: awk escape-processes a -v value, so a
+      # configured pattern reaches the program with its backslashes eaten
+      # (FR-GATE-110, and this suite has a guard against the shape).
+      acre = ENVIRON["SPECASSAY_AWK_ACRE"]
+      qc = "[\042\047]"
+      head = "(^|[^A-Za-z0-9_.$])(it|test|describe)([.][A-Za-z_][A-Za-z0-9_]*)*[ \t]*[(][ \t]*"
+      declre = head qc
+      openre = head "$"
+      titlere = declre "[ \t]*(" acre ")"
+      contre = "^[ \t]*" qc "[ \t]*(" acre ")"
+      contopen = "^[ \t]*" qc
+    }
+    { lines[NR] = $0 }
+    END {
+      strung = 0
+      for (i = 1; i <= NR; i++) {
+        if (comment_line(lines[i])) continue
+        if (match(lines[i], declre) && !quoted_at(lines[i], kw_start(lines[i]))) { strung = 1; break }
+        # Prettier and friends wrap a long title onto its own line, which
+        # leaves it( alone on one line and the title on the next.
+        if (match(lines[i], openre) && !quoted_at(lines[i], kw_start(lines[i])) \
+            && i < NR && match(lines[i + 1], contopen)) { strung = 1; break }
+      }
+      for (i = 1; i <= NR; i++) {
+        line = lines[i]
+        id = ""
+        if (strung) {
+          id = id_at_end(line, titlere)
+          if (id == "" && i > 1 && match(lines[i - 1], openre)) id = id_at_end(line, contre)
+          if (id == "") {
+            other = first_id(line)
+            if (other != "") emit("D", i, other, line)
+            continue
+          }
+        } else {
+          id = first_id(line)
+          if (id == "") continue
+        }
+        emit("H", i, id, line)
+      }
+    }
+    function emit(tag, no, id, s,   t) {
+      t = s
+      gsub(/\t/, " ", t)
+      printf "%s\t%d\t%s\t%s\n", tag, no, id, t
+    }
+  ' "$2" 2>/dev/null
+}
+
 # @covers FR-GATE-140, AC-GATE-140 -- a task is one logical line to every
 # scan, so a soft-wrapped Carries list reads the same to both of them.
 # A task is one logical line, however many physical lines it occupies.
@@ -590,14 +713,13 @@ cut -d'|' -f3 "$tmp/covers_hits.txt" 2>/dev/null | sort -u > "$tmp/covers.txt" |
 
 # proofs: path|line|id|name
 : > "$tmp/proof_hits.txt"
+: > "$tmp/test_data_mentions.txt"
 while IFS= read -r g; do
   [[ -z "$g" ]] && continue
   while IFS= read -r f; do
     [[ -f "$f" ]] || continue
-    strip_code_spans "$f" | grep -nE "$TEST_AC_RE" 2>/dev/null | while IFS= read -r line; do
-      lineno="${line%%:*}"
-      rest="${line#*:}"
-      raw="$(grep -Eo "$TEST_AC_RE" <<<"$rest" | head -1 || true)"
+    strip_code_spans "$f" > "$tmp/test_file.txt" 2>/dev/null || continue
+    while IFS="$(printf '\t')" read -r tag lineno raw rest; do
       [[ -n "$raw" ]] || continue
       id="$(id_for_test_token "$raw")"
       # A token the registry cannot claim is untraced scope, and is still
@@ -607,10 +729,14 @@ while IFS= read -r g; do
       # substitution is correct, and this path is only ever reached for an
       # ID the registry does not have.
       [[ -n "$id" ]] || id="$(printf '%s' "$raw" | tr '_' '-')"
+      if [[ "$tag" == "D" ]]; then
+        printf '%s|%s|%s\n' "$f" "$lineno" "$id" >> "$tmp/test_data_mentions.txt"
+        continue
+      fi
       name="$(grep -Eo 'test_[A-Za-z0-9_]+|func test_[A-Za-z0-9_]+' <<<"$rest" | head -1 | sed 's/^func //' || true)"
       [[ -n "$name" ]] || name="$raw"
       printf '%s|%s|%s|%s\n' "$f" "$lineno" "$id" "$name"
-    done
+    done < <(test_name_hits "$TEST_AC_RE" "$tmp/test_file.txt")
   done < <(expand_glob "$g")
 done < <(yaml_list test_globs) >> "$tmp/proof_hits.txt" || true
 
@@ -940,6 +1066,19 @@ while IFS= read -r id; do
   [[ -z "$id" ]] && continue
   "$uncovered_recorder" "$uncovered_kind" "$id" "uncovered proof: $id has a passing test but no file's @covers line names it"
 done < <(comm -23 "$tmp/test_acs.txt" "$tmp/covers.txt")
+
+# @covers FR-GATE-220, AC-GATE-220d
+# A registry row whose only appearance in a string-named test file is as
+# data loses nothing it ever honestly had, but it may lose a status the
+# previous release gave it by mistake. The run says so, once per ID, with
+# the file and line to look at, rather than letting a row change status on
+# upgrade without a word.
+while IFS='|' read -r dfile dline did; do
+  [[ -n "$did" ]] || continue
+  grep -qx "$did" "$tmp/registry.txt" 2>/dev/null || continue
+  grep -qx "$did" "$tmp/test_acs.txt" 2>/dev/null && continue
+  record_diagnostic "test-data-not-a-name" "$did" "test data, not a test name: $did appears at $dfile:$dline inside a string-named test file, so it is not counted as proof"
+done < <(sort -u "$tmp/test_data_mentions.txt" 2>/dev/null | awk -F'|' '!seen[$3]++')
 
 # --- Emit trace-manifest.json (always; the manifest should show GAPs even when Gate fails) ---
 export MANIFEST_OUT REGISTRY TARGET_NAME PROJECT_ROOT MATRIX_MODE MATRIX_MD MATRIX_SVG PORTFOLIO_MODE PORTFOLIO_MD PARENT_DERIVATION

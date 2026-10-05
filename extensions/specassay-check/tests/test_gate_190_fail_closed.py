@@ -75,12 +75,20 @@ def test_AC_GATE_190a_an_unparseable_check_is_refused_not_passed(tmp_path):
     as the 0.5.4 defect: bash reports it at a line far from the cause, or at the
     end of the file, and nothing the implementation contains can report it,
     because the implementation never starts.
+
+    Appended rather than inserted at a line number. A fixed line number drifts
+    with every edit to the implementation, and on 2026-10-05 it drifted into a
+    Python here-document, where `if true; then` is text and the copy parsed
+    perfectly well. The control now proves the copy is broken before it asks
+    the launcher to notice.
     """
     ext, proj = _fixture(tmp_path)
     impl = ext / "scripts" / "check-traceability.impl.sh"
-    lines = impl.read_text().splitlines(True)
-    lines.insert(820, "if true; then : # deliberately never closed\n")
-    impl.write_text("".join(lines))
+    impl.write_text(impl.read_text() + "\nif true; then : # deliberately never closed\n")
+    parse = subprocess.run(
+        ["bash", "-n", str(impl)], capture_output=True, text=True, timeout=30
+    )
+    assert parse.returncode != 0, "the broken copy parses; this control proves nothing"
 
     proc = _run(ext, proj)
     assert proc.returncode != 0, "a Gate that cannot run returned success"

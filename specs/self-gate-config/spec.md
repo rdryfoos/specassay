@@ -228,3 +228,12 @@ where that same ID lands once it has.
   Shipped 2026-10-02, proven by `tests/test_catalogs.py`.
   - AC-GATE-210a — proven by `test_AC_GATE_210a_the_catalogs_name_the_release_they_claim`.
   - AC-GATE-210b — proven by `test_AC_GATE_210b_the_catalog_repeats_the_bash_floor`.
+- FR-GATE-220 — An AC ID counts as a test's name only in name position, which in a
+  string-named suite is the start of the first string argument to `it`, `test` or
+  `describe`. Shipped 2026-10-05, proven by
+  `extensions/specassay-check/tests/test_gate_220_name_position.py`.
+  - AC-GATE-220a — proven by `test_AC_GATE_220a_fixture_data_is_not_a_test_name`.
+  - AC-GATE-220b — proven by `test_AC_GATE_220b_a_title_is_a_name_wrapped_or_not`.
+  - AC-GATE-220c — proven by `test_AC_GATE_220c_any_delimiter_after_the_id`.
+  - AC-GATE-220d — proven by `test_AC_GATE_220d_a_row_proven_only_by_data_is_named`.
+  - AC-GATE-220e — proven by `test_AC_GATE_220e_a_function_named_suite_is_unchanged`.

@@ -3,6 +3,40 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## Unreleased
+
+### A test's name, not every string in the file (FR-GATE-220)
+
+A criterion is proven by a test whose *name* is the ID. The scan was a per-line
+grep over the whole test file, which cannot tell a name from an argument, so any
+string that happened to contain an ID read as a passing test.
+
+Found in Loupe, 2026-10-02, running 0.5.5 against it: six IDs that appear nowhere
+but inside fixture rows handed to a forest builder, written
+`row({ id: "AC-UI-40", type: "AC" })`, read as six passing tests and produced 7 of
+the 8 findings that run reported. Five of the six named domains Loupe's registry
+has never had. Loupe's own titles, `it("AC-BUILD-10: ...")`, were right the whole
+time.
+
+The rule now reads the file for its convention. A file that declares even one
+string-titled test is read strictly: only the start of the first string argument
+to `it`, `test` or `describe` counts as a name, with any delimiter after the ID
+(a colon, a space, a parenthesis), and an ID anywhere else in that file is data.
+A file that declares none keeps the plain reading, because data cannot look like a
+function name, so a function-named suite sees no change at all.
+
+Measured on Loupe at `b045352`: **8 findings before, 1 after**, and all 84 of its
+rows hold the status they had, so nothing it had honestly earned was lost. The one
+survivor is Loupe's own, a task whose `**Carries**` reads `n/a` where the Gate
+accepts `none`.
+
+Where a registry row does lose a proof it only ever had by mention, the run says
+so once, naming the row, the file and the line, rather than letting a status move
+on upgrade without a word.
+
+Narrowing `test_ac_regex` was never a workaround for this: every vitest, jest and
+`node:test` project writes its names as strings, and has no shape to narrow to.
+
 ## 0.5.5 (2026-10-02)
 
 Components: bundle 0.5.5, extension 0.5.5, preset 0.5.5.
