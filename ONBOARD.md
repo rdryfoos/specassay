@@ -24,39 +24,42 @@ wrong you can name the block it went wrong in.
 
 ---
 
-## Pinned, as of 2026-10-02
+## Pinned, as of 2026-10-06
 
 | Thing | Pinned to |
 | --- | --- |
-| SpecAssay | **v0.5.5**, released 2026-10-02. <!-- specassay:stale-ok 0.5.6 is being cut and its assets do not exist until the tag; every receipt below was captured on 0.5.5, and the pin moves only when all thirteen blocks are replayed on the published 0.5.6, which is what happened at 0.5.5 and caught a bad capture --> This is what `specify bundle install` gives you, and it is what every receipt below was captured on. |
+| SpecAssay | **v0.5.6**, released 2026-10-06. <!-- specassay:current --> This is what `specify bundle install` gives you, and it is what every receipt below was captured on. |
 | GitHub Spec Kit | **v1.0.4**. SpecAssay's manifests accept `>=0.14.0,<2.0.0`, and the floor was checked at v0.5.1 on 2026-09-17: the bundle installs and the Gate runs on Spec Kit 0.14.0, though that version does not scaffold the settings file, so the Gate there reports `config: MISSING` and continues on defaults. <!-- specassay:stale-ok the 0.14.0 floor claim records a run on v0.5.1 and cannot be re-observed without re-running on that release; the floor itself is re-checked each release in CI --> Newer Spec Kit releases exist and the manifests accept them; 1.0.4 is what this page was captured on, and block 2 pins it. |
 | uv | 0.8.17 |
 | Python | 3.11.15 |
 | git | 2.43.0 |
 
 **Where the receipts come from.** Every block below was run in order on
-2026-10-02, against those exact versions, and the output quoted under each block is
+2026-10-06, against those exact versions, and the output quoted under each block is
 that run's real output, trimmed to the lines that carry the receipt, never a sketch
-of what it might say. All thirteen were replayed that day on **v0.5.5**, installed
-the way block 4 installs it: from the catalogs, carrying the release's sha256, so
-the archive was verified before it was unpacked.
+of what it might say. All thirteen were replayed that day on **v0.5.6**, installed
+the way block 4 installs it, from the catalogs. The install was then repeated
+against the same catalogs carrying the release's sha256, which is how this
+repository leaves them, and the archive verified before it was unpacked: a
+replay run the hour after a tag reads catalogs whose digest the next pull
+request restores, so saying the digest was checked requires checking it.
 
-**What the replay changed, and what it corrected.** Ten blocks reproduced
-unchanged from the v0.5.1 capture. <!-- specassay:stale-ok the sentence records which capture the replay was compared against, which is a fact about that run and not a claim about the current release --> Block 4 now reports seven shipped
-scripts where it reported four, because the Gate was split into a launcher and an
-implementation and two more scripts ship beside them. Block 11's list of changed
-files no requirement claims is back to two, which is what this page said before
-2026-10-02: a capture taken that morning showed seven, because it was taken in a
-project built by hand rather than by block 3, and block 3 writes a `.gitignore`
-that keeps the manifests and Python's `__pycache__` out of the diff. The page was
-right and the capture was wrong, which is the sort of thing only replaying from
-block 1 finds.
+**What the replay found.** All thirteen blocks reproduced unchanged, receipt
+for receipt, including block 4's seven shipped scripts and block 11's two changed
+files no requirement claims. <!-- specassay:stale-ok the sentence records what the replay reproduced, which is a fact about that run and not a claim about the current release --> Both of those were corrections made by the
+previous replay, on v0.5.5: block 4 had reported four scripts before the Gate
+became a launcher and an implementation, and a capture taken by hand rather than
+by block 3 had shown seven off-thread files where the page said two, because
+block 3 writes a `.gitignore` that keeps the manifests and Python's
+`__pycache__` out of the diff. The page was right and that capture was wrong,
+which is the sort of thing only replaying from block 1 finds, and it is why the
+pin moves on a replay rather than on a tag.
 
 Spec Kit 1.0.4 was installed from its own tag for the replay, as block 2 does, so
 the page and the run agree on every version in the table.
 
 An unpinned quickstart rots silently, so this one carries its versions and its
-date. If you are reading it long after 2026-09-17, the versions above are what it
+date. If you are reading it long after 2026-10-06, the versions above are what it
 was true for.
 
 ---

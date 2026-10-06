@@ -2,9 +2,12 @@
 
 A copy-and-paste walk. Each issue is a GitHub issue form on the Spec Kit repo;
 open the form, then work down this page filling each field in the order the form
-asks for it. The values below are for **v0.5.2**. See **v0.5.2 refiled**, below, for why the
-previous round had to be filed again.
-<!-- specassay:stale-ok the 0.5.2 round these forms served landed 2026-09-24 (#4717, #4735, #4737); these values are the record of what was filed and merged, not a claim about the version being cut -->
+asks for it. The values below are for **v0.5.6** <!-- specassay:current -->,
+prepared 2026-10-06 and not yet filed.
+
+The sections further down are the record of the rounds that were filed,
+including **v0.5.2 refiled**, which says why that round had to be filed twice.
+<!-- specassay:provenance -->
 
 **The issue route is the only route.** A direct pull request against
 `presets/catalog.community.json` and its siblings is triaged out of scope and
@@ -31,14 +34,14 @@ Form: <https://github.com/github/spec-kit/issues/new?template=extension_submissi
 Title:
 
 ```
-[Extension]: Add SpecAssay Check (update to 0.5.2)
+[Extension]: Add SpecAssay Check (update to 0.5.6)
 ```
 
 Then, in the form's own order:
 
 1. **Extension ID**: `specassay-check`
 2. **Extension Name**: `SpecAssay Check`
-3. **Version**: `0.5.2` <!-- specassay:stale-ok the 0.5.2 round these forms served landed 2026-09-24 (#4717, #4735, #4737); these values are the record of what was filed and merged, not a claim about the version being cut -->
+3. **Version**: `0.5.6` <!-- specassay:current -->
 4. **Description**, **Author**, **Repository URL**, **Download URL**, **License**: paste-from doc
 5. **Homepage**, **Documentation URL**, **Changelog URL** (all optional): paste-from doc
 6. **Required Spec Kit Version**: paste-from doc
@@ -47,7 +50,7 @@ Then, in the form's own order:
 9. **Testing Checklist**: tick all 5
 10. **Submission Requirements**: tick all 6
 11. **Testing Details**, **Example Usage**, **Proposed Catalog Entry**: paste-from doc
-12. **Additional Context**: paste-from doc; say it updates **#4252**
+12. **Additional Context**: paste-from doc; say it updates **#4711**
 
 Note the issue number the form gives you. It is the extension number the bundle
 issue must name.
@@ -59,18 +62,18 @@ Form: <https://github.com/github/spec-kit/issues/new?template=preset_submission.
 Title:
 
 ```
-[Preset]: Add SpecAssay (update to 0.5.2)
+[Preset]: Add SpecAssay (update to 0.5.6)
 ```
 
 Then, in the form's own order:
 
 1. **Preset ID**: `specassay`
 2. **Preset Name**: `SpecAssay`
-3. **Version**: `0.5.2` <!-- specassay:stale-ok the 0.5.2 round these forms served landed 2026-09-24 (#4717, #4735, #4737); these values are the record of what was filed and merged, not a claim about the version being cut -->
+3. **Version**: `0.5.6` <!-- specassay:current -->
 4. **Description**, **Author**, **Repository URL**, **Download URL**: paste-from doc
 5. **Documentation URL**, **License**, **Required Spec Kit Version**: paste-from doc
 6. **Required Extensions** (optional), **Templates Provided** (`3`), **Commands Provided** (`0`), **Number of Scripts** (optional, `0`)
-7. **Tags**, **Key Features**: paste-from doc; say it updates **#4253**
+7. **Tags**, **Key Features**: paste-from doc; say it updates **#4713**
 8. **Testing Checklist**: tick all 4
 9. **Submission Requirements**: tick all 5
 
@@ -86,14 +89,14 @@ File this **last**. Form:
 Title:
 
 ```
-[Bundle]: Add SpecAssay (update to 0.5.2)
+[Bundle]: Add SpecAssay (update to 0.5.6)
 ```
 
 Then, in the form's own order:
 
 1. **Bundle ID**: `specassay`
 2. **Bundle Name**: `SpecAssay`
-3. **Version**: `0.5.2` <!-- specassay:stale-ok the 0.5.2 round these forms served landed 2026-09-24 (#4717, #4735, #4737); these values are the record of what was filed and merged, not a claim about the version being cut -->
+3. **Version**: `0.5.6` <!-- specassay:current -->
 4. **Role or Team**: `developer`
 5. **Description**, **Author**, **Repository URL**, **Download URL**: paste-from doc
 6. **Documentation URL**, **License**, **Required Spec Kit Version**: paste-from doc
@@ -106,7 +109,7 @@ Then, in the form's own order:
 11. **Testing Checklist**: tick all 7
 12. **Submission Requirements**: tick all 5
 13. **Testing Details**, **Example Usage**, **Proposed Catalog Entry**: paste-from doc
-14. **Additional Context**: paste-from doc; say it updates **#4255**, and name
+14. **Additional Context**: paste-from doc; say it updates **#4715**, and name
     the extension and preset issue numbers from steps 1 and 2
 
 ## Tips
