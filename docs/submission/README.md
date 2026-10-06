@@ -126,3 +126,11 @@ trigger it, where the git remote allows tag pushes.)
 
 For a version update in the community catalog: file a new submission issue
 noting it's an update to the existing entry.
+
+**No version bump lands on `main` while a submission is open**, until the
+validator has run on the issues or they are closed. The validator reads
+`bundle.yml` on the **default branch**, not at the tag, so cutting a release
+while an issue is in flight changes the thing it is being checked against: the
+round filed at 0.5.1 was refused on exactly that, 2026-09-23, and had to be
+refiled at 0.5.2. <!-- specassay:provenance --> The open round, and what it is
+waiting on, is at the top of [filing-history.md](filing-history.md).
