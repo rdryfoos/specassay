@@ -239,5 +239,14 @@ where that same ID lands once it has.
   - AC-GATE-220e — proven by `test_AC_GATE_220e_a_function_named_suite_is_unchanged`.
 - FR-DOCS-80 — A mark classifies one claim, and a table row is one claim. Shipped
   2026-10-05, proven by `tests/test_doc_versions.py`.
-  - AC-DOCS-30 — proven by `test_AC_DOCS_30_a_table_row_is_its_own_claim` and
-    `test_AC_DOCS_30_a_row_with_its_own_mark_is_still_accepted`.
+  - AC-DOCS-30 — proven by `test_AC_DOCS_30_a_table_row_is_its_own_claim`,
+    `test_AC_DOCS_30_a_row_with_its_own_mark_is_still_accepted`,
+    `test_AC_DOCS_30_a_list_item_is_its_own_claim` and
+    `test_AC_DOCS_30_a_wrapped_list_item_keeps_its_own_mark`.
+- FR-DOCS-90 — A reason that no longer describes its claim is not a
+  classification: `stale-ok` on the version being cut is a current claim
+  wearing the wrong mark. Shipped 2026-10-06, proven by
+  `tests/test_doc_versions.py`.
+  - AC-DOCS-40 — proven by
+    `test_AC_DOCS_40_stale_ok_on_the_version_being_cut_is_refused` and
+    `test_AC_DOCS_40_stale_ok_on_an_older_version_is_untouched`.

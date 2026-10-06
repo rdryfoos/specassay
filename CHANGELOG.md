@@ -3,6 +3,76 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## Unreleased
+
+Nothing in this entry changes the bundle. Both items are this repository's own
+tooling and its own documents, which is why they land during a release freeze:
+[#4851](https://github.com/github/spec-kit/issues/4851) and
+[#4852](https://github.com/github/spec-kit/issues/4852) are open on the
+community catalog, and a version bump would move what their validator reads.
+
+### A reason that no longer describes its claim is not a classification (FR-DOCS-90)
+
+`stale-ok` says "this old number stays, and here is why". The one number it
+cannot be about is the one being cut: that is a current claim, and the reason
+written beside it belongs to something else. The check now refuses it and names
+both remedies, the `current` mark or splitting a block that makes two kinds of
+claim at once.
+
+Found 2026-10-06 on a question rather than a failure. Asked whether the
+extension submission form still said 0.5.2, it did not: its fields had moved to
+0.5.6 the day before and the marker explaining them still said in so many words
+that those values were the 0.5.2 record. All three forms carried it. Invisible
+when rendered, wrong to anyone reading the file, and accepted by this check,
+because a `stale-ok` satisfied classification and nothing asked whether its
+reason still fitted. <!-- specassay:provenance -->
+
+### A list item is one claim, like a table row (FR-DOCS-80, amended)
+
+Writing the rule above found the third instance of one family, and the biggest.
+A mark covers the block it sits in; `PRD.md`'s rows are list items with no blank
+line between them; so FR-DOCS-70's `stale-ok` covered every DOCS row written
+after it, FR-DOCS-80's included. One punctuation mark from the table shape fixed
+the day before.
+
+Narrowing blocks to list items, with a wrapped row still counting as one row,
+surfaced **21 refusals and 9 warnings** that a neighbour's mark had been hiding.
+All thirty are resolved here:
+
+- **17 lines marked as provenance**, across `PRD.md`, `specs/backlog/tasks.md`
+  and `specs/dig/spec.md`. Every one records when something was found,
+  reproduced or minted: a task line saying what was reproduced on 0.5.4 before
+  it was fixed is a dated record, not a claim about now.
+  <!-- specassay:provenance -->
+- **Three claims re-observed instead**, because a mark on a stale verification
+  is a worse answer than running it again. The README's Spec Kit row now reads
+  **1.0.4 on v0.5.6, 2026-10-06**, from the thirteen-block replay, with the
+  upgrade path split into its own line as the separate check it is; and
+  `specs/docs-authored/spec.md`'s FR-DOCS-60 says the ladder was last run
+  2026-10-06 against the published 0.5.6 rather than against v0.4.13.
+  <!-- specassay:provenance -->
+
+Deliberately not done: putting one marker on a section heading, which would
+have silenced all thirty at a stroke. A heading still scopes its section, so
+that would have worked, and it is the same defect this entry exists to remove.
+
+### The 0.5.6 round, in the community catalog
+
+`docs/submission/filing-history.md` records the validator's verdicts: it passed
+all three, and generated #4853, #4854 and #4855. #4850 closed as completed at
+17:02Z, so **SpecAssay Check 0.5.6 is in the community catalog**.
+
+Read from the catalog files themselves, which this room can reach and which an
+installer actually resolves through: the **extensions** entry reads 0.5.6 with
+this release's digest, the **bundles** entry reads 0.5.6 with this release's
+digest, and the **presets** entry still reads 0.5.2. So the bundle's pull
+request has landed too, ahead of the notification, and the preset's has not.
+While that holds a community-catalog install of the bundle cannot complete,
+since the bundle provides one preset and the preset the catalog can resolve is
+the September one. It resolves itself when #4854 merges, and the community
+source is `discovery-only` regardless, so the path a stranger is told to use is
+this repository's own catalogs, which are whole.
+
 ## 0.5.6 (2026-10-05)
 
 Components: bundle 0.5.6, extension 0.5.6, preset 0.5.6.

@@ -87,8 +87,9 @@ Bundle id: `specassay`.
 
 **Spec Kit versions this release is verified on.** Each line names the SpecAssay release it was observed on, because these are separate observations and not one standing claim:
 
-- **1.0.4** on SpecAssay **v0.5.1**, 2026-09-17: install by catalog, Gate, mint, refusal, and the upgrade from a real published v0.5.0 (`docs/submission/test-evidence.md`).
-- **0.14.0**, the declared floor, on SpecAssay **v0.5.1**, 2026-09-17: the bundle installs and the Gate runs. That version does not scaffold the settings file, so the Gate reports `config: MISSING` and continues on `config-template.yml` defaults.
+- **1.0.4** on SpecAssay **v0.5.6**, 2026-10-06: install by catalog, Gate, mint, the honest refusal and its repair, run as all thirteen blocks of `ONBOARD.md` in order against the published bundle.
+- **1.0.4**, the upgrade path, on SpecAssay **v0.5.1**, 2026-09-17: upgrade from a real published v0.5.0 (`docs/submission/test-evidence.md`). That one is a different thing to check and is not re-run on every release. <!-- specassay:provenance -->
+- **0.14.0**, the declared floor, on SpecAssay **v0.5.1**, 2026-09-17: the bundle installs and the Gate runs. That version does not scaffold the settings file, so the Gate reports `config: MISSING` and continues on `config-template.yml` defaults. Re-observing it means installing Spec Kit 0.14.0, so the floor is re-checked by the manifests and CI rather than by this line. <!-- specassay:provenance -->
 - **0.15.3.dev0** on SpecAssay **v0.4.13**, 2026-09-04: install by catalog and by direct download, Gate, mint, refusal, upgrade from v0.4.12. Not re-checked since. <!-- specassay:stale-ok the only observation of Spec Kit 0.15.3.dev0 there is; kept as the record of that trial rather than deleted -->
 
 The manifests require `>=0.14.0,<2.0.0`.
