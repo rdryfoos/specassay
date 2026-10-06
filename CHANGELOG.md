@@ -16,6 +16,65 @@ third, in the release's own doc-version gate, which had been passing silently ov
 two stale claims since 0.5.1. No command, config key or output line changes shape,
 and the third fix is to this repository's own tooling rather than to the bundle.
 
+### The digests, and the pin table moves to 0.5.6
+
+The three catalog digests, as the release page reports them for the published
+assets rather than from a local build:
+
+```text
+specassay-0.5.6.zip         56d701b47c1482b526dcb27ef4d78a99cb63a1c03ae8cba58097aecba5595e7f
+specassay-check-0.5.6.zip   1f7112e2e550aacc7dd466cc83b315c0d846f318a611fb93c394bde46cea355b
+specassay-preset-0.5.6.zip  6f70580f9b349df8b850f31cf02601a24263b9faaa79c48b14a6d2ff50c1260d
+```
+
+Each confirmed three ways, 2026-10-06: the release API's own `digest` field, a
+`sha256sum` of the downloaded archive, and the CLI's own computation during the
+tamper test below. Sizes 1,962,397, 161,870 and 7,998 bytes, and the three
+unversioned aliases carry the same three digests and sizes, which is what makes
+them aliases rather than rebuilds.
+
+Proved load-bearing rather than merely present: with one hex character changed
+and the catalog served over localhost, the install refuses, names both digests,
+and unpacks nothing. With the real digests in place the same install succeeds and
+resolves 0.5.6.
+
+**ONBOARD's pin table now reads v0.5.6**, because all thirteen blocks were
+replayed on the published bundle, installed from the catalogs as block 4 installs
+it, with Spec Kit pinned at 1.0.4 from its own tag as block 2 says. Every receipt
+reproduced unchanged, block 4's seven shipped scripts and block 11's two
+off-thread files among them, both of which were corrections the 0.5.5 replay
+made. The page needed no correction this time.
+
+One sentence on that page did. It said the replay installed from the catalogs
+"carrying the release's sha256, so the archive was verified before it was
+unpacked". A replay run the hour after a tag reads catalogs whose digest the next
+pull request restores, so that could not have been true as written. The install
+was repeated against the catalogs as this one leaves them, where the digest did
+verify, and the sentence now says both things.
+
+### The submission bodies, prepared at 0.5.6
+
+All three are paste-ready and none is filed.
+
+**A correction first.** `docs/submission/README.md` said each form asks for the
+asset's sha256. Reading the three upstream templates, no field asks for a digest
+at all: it reaches the reviewer only inside the Proposed Catalog Entry textarea,
+which is pasted from `catalogs/*.json`. The dependency is the same and the
+sentence was wrong about where it lives.
+
+So the Proposed Catalog Entry in each body is now pasted verbatim from this
+repository's own catalog file, digest included, which removes the class of drift
+where a form and a catalog disagree. The receipts each form asks to see were
+re-run on 2026-10-06 against the published assets rather than carried over: the
+extension body quotes eight scenarios from the replay, the preset body its real
+install lines, and the bundle body the three `list` commands resolving 0.5.6.
+The 0.5.2 round's values are kept as the record of what was filed, which is what
+they are.
+
+What remains is opening three issues on `github/spec-kit`, extension and preset
+first, bundle last, because the bundle pins its components. That is a human step:
+the repository was not reachable from the session that prepared these.
+
 ### A test's name, not every string in the file (FR-GATE-220)
 
 A criterion is proven by a test whose *name* is the ID. The scan was a per-line

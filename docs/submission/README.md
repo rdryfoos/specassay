@@ -16,23 +16,29 @@ four of them at once. One issue per component, three in all, because the bundle
 pins its own components: a filing that moved one of them would describe a bundle
 that does not exist.
 
-**What the filing needs that does not exist yet.** Each form asks for the asset's
-download URL and its sha256. Those are read from the published release, not
-computed locally, so the three issues can only be prepared after the tag, from the
-release page. The values the forms want, and where each comes from:
+**The three bodies are prepared, at 0.5.6, and filing is the human step.**
+Corrected 2026-10-06: an earlier version of this page said each form asks for the
+asset's sha256. It does not. Reading the three upstream templates
+(`.github/ISSUE_TEMPLATE/{extension,preset,bundle}_submission.yml` on
+`github/spec-kit`), **no field asks for a digest at all**. The digest reaches the
+reviewer only inside the **Proposed Catalog Entry** textarea, which is pasted from
+`catalogs/*.json`, and those carry it only after the digests pull request. The
+dependency is the same; the sentence was wrong about where it lives.
 
-| Field | Source | Available |
+| Field | Source | State |
 | --- | --- | --- |
-| version `0.5.6` | `bundle.yml`, `extension.yml`, `preset.yml` | now |
-| download URL | `catalogs/*.json`, which name the v0.5.6 assets | now |
-| sha256 | the release page's own digest for each asset | after the tag |
-| catalog URL | `catalogs/*.json` on `main` | now |
+| version `0.5.6` | `bundle.yml`, `extension.yml`, `preset.yml` | in the bodies |
+| download URL | `catalogs/*.json`, naming the v0.5.6 assets | in the bodies |
+| Proposed Catalog Entry, digest and all | pasted verbatim from `catalogs/*.json` | in the bodies |
+| the receipts each form asks to see | a run against the published assets | re-run 2026-10-06 |
 
-The digests PR that follows the tag restores `sha256` to the three catalogs from
-the published assets, and the same three values fill the three forms. Nothing in
-this release changes what the forms ask for, so
-[CHEATSHEET.md](CHEATSHEET.md)'s paste-ready blocks need the version and the three
-digests and nothing else.
+So [bundle-submission.md](bundle-submission.md),
+[extension-submission.md](extension-submission.md) and
+[preset-submission.md](preset-submission.md) are paste-ready. What remains is
+opening three issues on `github/spec-kit`, which is a human step: that repository
+was not reachable from the session that prepared these, so nothing was filed.
+Order matters, because the bundle pins its components: the extension and preset
+issues go first, the bundle issue last.
 
 ## v0.5.1, released 2026-09-17: filing not yet done
 
