@@ -34,7 +34,10 @@ dependency is the same; the sentence was wrong about where it lives.
 
 So [bundle-submission.md](bundle-submission.md),
 [extension-submission.md](extension-submission.md) and
-[preset-submission.md](preset-submission.md) are paste-ready. What remains is
+[preset-submission.md](preset-submission.md) are paste-ready, and as of
+2026-10-06 they carry nothing but this round's values: the filing history that
+used to sit above the fields is in
+[filing-history.md](filing-history.md). What remains is
 opening three issues on `github/spec-kit`, which is a human step: that repository
 was not reachable from the session that prepared these, so nothing was filed.
 Order matters, because the bundle pins its components: the extension and preset

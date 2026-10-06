@@ -19,7 +19,9 @@ numbers, then name both in the bundle issue. The bundle pins its component
 versions, so a partial landing leaves `specify bundle install` unable to resolve.
 
 Full field-by-field values live in the three paste-from docs, which mirror each
-form exactly, catalog JSON included:
+form exactly, catalog JSON included, and carry this round's values and nothing
+else. What each round was filed as is in
+[filing-history.md](filing-history.md).
 
 | # | Issue | Form | Paste from | Filed 2026-09-23 at 0.5.2 <!-- specassay:provenance --> | Landed by | Supersedes |
 | --- | --- | --- | --- | --- | --- | --- |
