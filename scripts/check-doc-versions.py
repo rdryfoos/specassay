@@ -91,6 +91,13 @@ PROVENANCE = re.compile(r"<!--\s*specassay:provenance\s*-->")
 # classifies that row and nothing else.
 TABLE_ROW = re.compile(r"^\s*\|")
 
+# A Markdown list item, bulleted or numbered, at any indentation. One item is
+# one claim: a registry row, a checklist line, a bullet in a release note.
+LIST_ITEM = re.compile(r"^\s*([-*+]|\d+[.)])\s")
+
+# Named so a refusal can quote the mark it is talking about.
+STALE_OK_NAME = "<!-- specassay:stale-ok why -->"
+
 # A token sitting inside a range expression is a declared constraint, not a
 # claim about what was observed. `>=0.14.0,<2.0.0` says what the manifests
 # accept; it is checked against the manifests instead of against the tag.
@@ -224,9 +231,34 @@ def scan(path: Path, current: str, order: list[str], root: Path):
             for n in range(start, idx):
                 block_marks[n + 1] = block
             start = idx + 1
+    # A table row, and a list item with whatever it wraps onto, are each one
+    # claim, so each is its own block. @covers FR-DOCS-80, AC-DOCS-30.
+    #
+    # The list half was found by the rule below, on 2026-10-06, firing on this
+    # repository's own registry: PRD.md's rows are list items with no blank
+    # lines between them, so FR-DOCS-70's stale-ok covered every DOCS row
+    # after it, FR-DOCS-80's included. The same shape as the table, one
+    # punctuation mark apart.
+    item = None
     for n, line in enumerate(lines, 1):
         if TABLE_ROW.match(line):
             block_marks[n] = line
+            item = None
+            continue
+        if not line.strip():
+            item = None
+            continue
+        if LIST_ITEM.match(line):
+            item = [n, line]
+            block_marks[n] = line
+            continue
+        if item is not None:
+            # A wrap. It belongs to the item above it, and the item's own
+            # block grows to include it, so a mark at the end of a wrapped
+            # row still classifies the row.
+            item[1] += "\n" + line
+            for k in range(item[0], n + 1):
+                block_marks[k] = item[1]
 
     in_fence = False
     # A date on a heading classifies everything under it, and a sub-heading does
@@ -293,6 +325,26 @@ def scan(path: Path, current: str, order: list[str], root: Path):
             # refused as unclassified, which read as the checker ignoring the
             # answer it had asked for.
             if STALE_OK.search(block):
+                # ... unless the number is not old. stale-ok says "this old
+                # number stays, and here is why", so a token equal to the
+                # version being cut is the one thing it cannot be about: that
+                # is a current claim, and the reason written beside it is a
+                # reason for something else.
+                # @covers FR-DOCS-90, AC-DOCS-40. Found 2026-10-06, when Rik
+                # asked whether the extension submission form still said
+                # 0.5.2. It did not; its fields had been moved to 0.5.6 and
+                # the marker explaining them, which said in so many words that
+                # these values were the 0.5.2 record, had been left behind on
+                # all three forms. Invisible when rendered, wrong to anyone
+                # reading the file, and accepted by this checker, because a
+                # stale-ok satisfied classification and nothing asked whether
+                # its reason still described the claim.
+                if token == current:
+                    yield ("REFUSE", i, token,
+                           f"{STALE_OK_NAME} says an old number stays, but "
+                           f"{token} is the version being cut. Mark it "
+                           f"{CURRENT_MARK}; if the block makes both kinds of "
+                           "claim, split it, because they are different kinds")
                 continue
 
             if CURRENT_MARK in block:

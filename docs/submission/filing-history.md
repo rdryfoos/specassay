@@ -16,11 +16,39 @@ next release", and the refusal is in the sections below.
 
 ## The round now open: 0.5.6, filed 2026-10-06 <!-- specassay:current -->
 
-- **Extension, `specassay-check`**, filed 2026-10-06 at 0.5.6 as [github/spec-kit#4850](https://github.com/github/spec-kit/issues/4850), updating #4711. **Open.** Filed by hand from the sheet in #68, which carries 0.5.6 read from the published release and the Proposed Catalog Entry pasted from `catalogs/extensions.json`.
+- **Extension, `specassay-check`**, filed 2026-10-06 at 0.5.6 as [github/spec-kit#4850](https://github.com/github/spec-kit/issues/4850), updating #4711. **Closed as completed**, 2026-10-06 at 17:02Z, via [#4853](https://github.com/github/spec-kit/pull/4853). Filed by hand from the sheet in #68, which carries 0.5.6 read from the published release and the Proposed Catalog Entry pasted from `catalogs/extensions.json`.
 - **Preset, `specassay`**, filed 2026-10-06 at 0.5.6 as [github/spec-kit#4851](https://github.com/github/spec-kit/issues/4851), updating #4713. **Open.** Filed by hand from the sheet in #68, which carries 0.5.6 read from the published release and the Proposed Catalog Entry pasted from `catalogs/presets.json`.
 - **Bundle, `specassay`**, filed 2026-10-06 at 0.5.6 as [github/spec-kit#4852](https://github.com/github/spec-kit/issues/4852), updating #4715. **Open.** Filed by hand from the sheet in #68, which carries 0.5.6 read from the published release and the Proposed Catalog Entry pasted from `catalogs/bundles.json`. It went last of the three, after the component issues, because the bundle pins them.
 
-The state above is as reported on 2026-10-06 and is not read from the issue: this room cannot reach `github/spec-kit`, because a repository of the same name is already attached to its session and the environment checks every repository out at one path. Whoever next touches this page should read the three issues and say what the validator did. <!-- specassay:provenance -->
+**The validator passed all three**, and generated a catalog pull request for each: #4853 for the extension, #4854 for the preset, #4855 for the bundle.
+
+- **#4850, the extension: closed as completed 2026-10-06 at 17:02Z**, via [github/spec-kit#4853](https://github.com/github/spec-kit/pull/4853), merged by a maintainer. **SpecAssay Check 0.5.6 is in the community catalog.**
+- **#4851, the preset: open**, with [#4854](https://github.com/github/spec-kit/pull/4854) pending.
+- **#4852, the bundle: open**, with [#4855](https://github.com/github/spec-kit/pull/4855) pending. It lands last by design, because it pins both component versions, so `specify bundle install` cannot resolve 0.5.6 until the preset's pull request merges too.
+
+The issue states above were read from GitHub's notifications by Rik on 2026-10-06; this room cannot reach `github/spec-kit`, because a repository of the same name is already attached to its session and the environment checks every repository out at one path. <!-- specassay:provenance -->
+
+**What the catalog itself says, read 2026-10-06** from
+`raw.githubusercontent.com/github/spec-kit/main/{extensions,presets,bundles}/catalog.community.json`,
+which this room can read and which is the file an installer actually resolves
+through:
+
+| Catalog | Version | Digest |
+| --- | --- | --- |
+| `extensions` | **0.5.6** | `1f7112e2e550...`, which is this release's extension digest |
+| `bundles` | **0.5.6** | `56d701b47c14...`, which is this release's bundle digest |
+| `presets` | 0.5.2 | the September round's digest |
+
+So the bundle entry has landed too, ahead of the notification Rik read, and
+the preset's has not. **While that holds, a community-catalog install of the
+bundle cannot complete**: the bundle at 0.5.6 provides one extension and one
+preset, and the preset the catalog can resolve is 0.5.2. Nothing of ours is
+wrong and nothing needs doing; it resolves itself when
+[#4854](https://github.com/github/spec-kit/pull/4854) merges. Worth knowing
+because the community source is `discovery-only` anyway, so the path a
+stranger is told to use is this repository's own catalogs, which are whole.
+
+**The freeze holds until #4851 and #4852 close.** No version bump lands on `main` while they are open, for the reason in `README.md` under "Cutting the next release": the validator reads `bundle.yml` on the default branch, not at the tag.
 
 ## Extension (specassay-check): earlier rounds <!-- specassay:stale-ok earlier rounds, kept as the record of what was filed and what closed it; the issue numbers and the versions they carried do not move -->
 

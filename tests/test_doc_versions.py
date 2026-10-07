@@ -175,6 +175,73 @@ def test_AC_DOCS_30_a_table_row_is_its_own_claim(tmp_path):
     assert "current claim says 0.5.0" in out, out
 
 
+def test_AC_DOCS_30_a_list_item_is_its_own_claim(tmp_path):
+    """@covers AC-DOCS-30
+
+    The table's shape, one punctuation mark apart, and found by AC-DOCS-40's
+    rule firing on this repository's own registry: PRD.md's rows are list items
+    with no blank line between them, so one row's stale-ok covered every row
+    written after it. Narrowing blocks to list items surfaced 21 refusals and 9
+    warnings that a neighbour's mark had been hiding.
+    """
+    proc = run(build(tmp_path,
+        "# T\n\n"
+        "- Ours reads 0.5.0 <!-- specassay:current -->\n"
+        "- Theirs reads 1.0.4 <!-- specassay:stale-ok a neighbour -->\n"))
+    out = proc.stdout + proc.stderr
+    assert proc.returncode != 0, (
+        "a stale-ok on one list item still exempts the item below it:\n" + out
+    )
+    assert "current claim says 0.5.0" in out, out
+
+
+def test_AC_DOCS_30_a_wrapped_list_item_keeps_its_own_mark(tmp_path):
+    """@covers AC-DOCS-30
+
+    The other half of narrowing: a row that wraps is still one row, and a mark
+    at the end of it still classifies the version at the start. Breaking that
+    would have made the checker demand authors stop wrapping their prose, which
+    is the checker serving itself.
+    """
+    proc = run(build(tmp_path,
+        "# T\n\n"
+        "- A long row that mentions 0.4.13 and then wraps\n"
+        "  onto a second line. <!-- specassay:provenance -->\n"))
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
+def test_AC_DOCS_40_stale_ok_on_the_version_being_cut_is_refused(tmp_path):
+    """@covers AC-DOCS-40
+
+    stale-ok says "this old number stays, and here is why". A number equal to
+    the version being cut is not old, so the reason beside it belongs to
+    something else. Found 2026-10-06 on a question rather than a failure: three
+    submission forms whose fields had moved to the version being cut still
+    carried a marker calling those values the record of an older round.
+    """
+    proc = run(build(tmp_path,
+        "# T\n\nThe values here are for 0.5.1. "
+        "<!-- specassay:stale-ok the record of an older round -->\n"))
+    out = proc.stdout + proc.stderr
+    assert proc.returncode != 0, "a current number wearing a stale-ok passed:\n" + out
+    assert "is the version being cut" in out, out
+    # Both remedies, because which one is right depends on the block.
+    assert "specassay:current" in out, out
+    assert "split it" in out, out
+
+
+def test_AC_DOCS_40_stale_ok_on_an_older_version_is_untouched(tmp_path):
+    """@covers AC-DOCS-40
+
+    The rule is about the one number it cannot be about. Everything stale-ok
+    was for keeps working, or this is a new restriction rather than a fix.
+    """
+    proc = run(build(tmp_path,
+        "# T\n\nWe verified this on 0.4.13 and it stands. "
+        "<!-- specassay:stale-ok re-observing it would mean re-running on that release -->\n"))
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
 def test_AC_DOCS_30_a_row_with_its_own_mark_is_still_accepted(tmp_path):
     """@covers AC-DOCS-30
 
