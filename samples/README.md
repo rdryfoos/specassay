@@ -5,6 +5,7 @@ All five are **real Gate 2 emits** — no hand-curated JSON.
 | File | What |
 |------|------|
 | `homesflow.trace-manifest.json` | Real emit against HomesFlow — 82 rows, `gate.ok: true`, 0 GAP. The production-scale baseline. |
+| `HomesFlow.refused.trace-manifest.json` | The same project at production scale with exactly one proof removed on purpose — 82 rows, `gate.ok: false`, 1 GAP (`AC-GUEST-05`). Made for a picture of a refusal that can be re-made; how, and what was prepared first, is in [`HomesFlow.refused.md`](HomesFlow.refused.md). |
 | `sample.trace-manifest.json` | Real emit from the shipped [`examples/example-app`](../examples/example-app) playground — 10 rows (3 proven / 1 tracked-debt / 6 backlog), `gate.ok: true`. The shareable "shape" artifact and Loupe's preview fallback. |
 | `sample-gap.trace-manifest.json` | The same `example-app` emit with one acceptance criterion's proof removed, so it gilts into a silent **GAP** — `gate.ok: false`, one frayed row. Demos the refusal / broken-thread state. |
 | `sample-duplicate-id.trace-manifest.json` | The same `example-app` emit with a second, independently-minted `AC-SYNC-01` definition line appended (a different statement, same ID — the two-branch-collision shape) — `gate.ok: false`, one `duplicate-id` failure naming both line numbers. Demos the v0.4.0 refusal that closes the `sort -u` silent-collision hole. |

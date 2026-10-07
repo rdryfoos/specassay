@@ -1,0 +1,3751 @@
+{
+  "schemaVersion": 4,
+  "format": "trace-manifest",
+  "emitter": "specassay-check",
+  "targetName": "HomesFlow",
+  "repoPath": "/home/user/HomesFlow.refused",
+  "generatedAt": "2026-10-07T00:32:41.991Z",
+  "gate": {
+    "ok": false,
+    "failures": [
+      {
+        "kind": "silent-gap",
+        "detail": "silent gap: AC-GUEST-05 has no test and no open tracked-debt task",
+        "id": "AC-GUEST-05"
+      }
+    ],
+    "diagnostics": [
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-A11Y-01",
+        "detail": "authorship unassigned: AC-A11Y-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-A11Y-02",
+        "detail": "authorship unassigned: AC-A11Y-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-A11Y-03",
+        "detail": "authorship unassigned: AC-A11Y-03 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-CLEW-01",
+        "detail": "authorship unassigned: AC-CLEW-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-GUEST-01",
+        "detail": "authorship unassigned: AC-GUEST-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-GUEST-02",
+        "detail": "authorship unassigned: AC-GUEST-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-GUEST-03",
+        "detail": "authorship unassigned: AC-GUEST-03 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-GUEST-04",
+        "detail": "authorship unassigned: AC-GUEST-04 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-GUEST-05",
+        "detail": "authorship unassigned: AC-GUEST-05 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-01",
+        "detail": "authorship unassigned: AC-HOME-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-02",
+        "detail": "authorship unassigned: AC-HOME-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-03",
+        "detail": "authorship unassigned: AC-HOME-03 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-04",
+        "detail": "authorship unassigned: AC-HOME-04 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-05",
+        "detail": "authorship unassigned: AC-HOME-05 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-06",
+        "detail": "authorship unassigned: AC-HOME-06 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-07",
+        "detail": "authorship unassigned: AC-HOME-07 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-08",
+        "detail": "authorship unassigned: AC-HOME-08 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-09",
+        "detail": "authorship unassigned: AC-HOME-09 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-10",
+        "detail": "authorship unassigned: AC-HOME-10 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-11",
+        "detail": "authorship unassigned: AC-HOME-11 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-12",
+        "detail": "authorship unassigned: AC-HOME-12 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-13",
+        "detail": "authorship unassigned: AC-HOME-13 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-HOME-14",
+        "detail": "authorship unassigned: AC-HOME-14 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-LOG-01",
+        "detail": "authorship unassigned: AC-LOG-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-LOG-02",
+        "detail": "authorship unassigned: AC-LOG-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-LOG-03",
+        "detail": "authorship unassigned: AC-LOG-03 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-LOG-04",
+        "detail": "authorship unassigned: AC-LOG-04 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-LOG-05",
+        "detail": "authorship unassigned: AC-LOG-05 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-LOG-06",
+        "detail": "authorship unassigned: AC-LOG-06 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-PROC-01",
+        "detail": "authorship unassigned: AC-PROC-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-PROC-02",
+        "detail": "authorship unassigned: AC-PROC-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-PROC-03",
+        "detail": "authorship unassigned: AC-PROC-03 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-PROC-04",
+        "detail": "authorship unassigned: AC-PROC-04 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-PROC-05",
+        "detail": "authorship unassigned: AC-PROC-05 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-PROC-06",
+        "detail": "authorship unassigned: AC-PROC-06 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-PROC-07",
+        "detail": "authorship unassigned: AC-PROC-07 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-PROC-08",
+        "detail": "authorship unassigned: AC-PROC-08 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-SYNC-01",
+        "detail": "authorship unassigned: AC-SYNC-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-SYNC-02",
+        "detail": "authorship unassigned: AC-SYNC-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-SYNC-03",
+        "detail": "authorship unassigned: AC-SYNC-03 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-SYNC-04",
+        "detail": "authorship unassigned: AC-SYNC-04 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-SYNC-05",
+        "detail": "authorship unassigned: AC-SYNC-05 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-SYNC-06",
+        "detail": "authorship unassigned: AC-SYNC-06 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-SYNC-07",
+        "detail": "authorship unassigned: AC-SYNC-07 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-USER-01",
+        "detail": "authorship unassigned: AC-USER-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-USER-02",
+        "detail": "authorship unassigned: AC-USER-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-USER-03",
+        "detail": "authorship unassigned: AC-USER-03 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-USER-04",
+        "detail": "authorship unassigned: AC-USER-04 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-USER-05",
+        "detail": "authorship unassigned: AC-USER-05 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-USER-06",
+        "detail": "authorship unassigned: AC-USER-06 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-USER-07",
+        "detail": "authorship unassigned: AC-USER-07 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-AUTH-01",
+        "detail": "authorship unassigned: FR-AUTH-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-CLEW-01",
+        "detail": "authorship unassigned: FR-CLEW-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-GUEST-01",
+        "detail": "authorship unassigned: FR-GUEST-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-GUEST-02",
+        "detail": "authorship unassigned: FR-GUEST-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-HOME-01",
+        "detail": "authorship unassigned: FR-HOME-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-HOME-02",
+        "detail": "authorship unassigned: FR-HOME-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-HOME-03",
+        "detail": "authorship unassigned: FR-HOME-03 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-LOG-01",
+        "detail": "authorship unassigned: FR-LOG-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-LOG-02",
+        "detail": "authorship unassigned: FR-LOG-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-NAV-01",
+        "detail": "authorship unassigned: FR-NAV-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-NOTIF-01",
+        "detail": "authorship unassigned: FR-NOTIF-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-PROC-01",
+        "detail": "authorship unassigned: FR-PROC-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-PROC-02",
+        "detail": "authorship unassigned: FR-PROC-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-PROC-03",
+        "detail": "authorship unassigned: FR-PROC-03 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-USER-01",
+        "detail": "authorship unassigned: FR-USER-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-USER-02",
+        "detail": "authorship unassigned: FR-USER-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "NFR-A11Y-01",
+        "detail": "authorship unassigned: NFR-A11Y-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "NFR-OFFL-01",
+        "detail": "authorship unassigned: NFR-OFFL-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "NFR-PERF-01",
+        "detail": "authorship unassigned: NFR-PERF-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "NFR-REL-01",
+        "detail": "authorship unassigned: NFR-REL-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "NFR-SCALE-01",
+        "detail": "authorship unassigned: NFR-SCALE-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "NFR-SEC-01",
+        "detail": "authorship unassigned: NFR-SEC-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "NFR-SYNC-01",
+        "detail": "authorship unassigned: NFR-SYNC-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "US-ADMIN-01",
+        "detail": "authorship unassigned: US-ADMIN-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "US-ADMIN-02",
+        "detail": "authorship unassigned: US-ADMIN-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "US-ADMIN-03",
+        "detail": "authorship unassigned: US-ADMIN-03 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "US-CLEW-01",
+        "detail": "authorship unassigned: US-CLEW-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "US-EDIT-01",
+        "detail": "authorship unassigned: US-EDIT-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "US-EDIT-02",
+        "detail": "authorship unassigned: US-EDIT-02 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "US-GUEST-01",
+        "detail": "authorship unassigned: US-GUEST-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "US-GUEST-02",
+        "detail": "authorship unassigned: US-GUEST-02 declares no **Authorship** on its registry line"
+      }
+    ],
+    "executionVerified": false
+  },
+  "totals": {
+    "carriesNoneCount": 8,
+    "registryIdCount": 82,
+    "acCount": 51,
+    "coveredCount": 44,
+    "retiredCount": 0
+  },
+  "statusCounts": {
+    "proven": 64,
+    "tracked-debt": 13,
+    "GAP": 1,
+    "backlog": 4
+  },
+  "rows": [
+    {
+      "id": "AC-A11Y-01",
+      "type": "AC",
+      "statement": "AC-A11Y-01** \u2014 Given the user has increased text size via iOS Settings (Dynamic Type / Accessibility sizes), when they view dashboard, home detail, or procedure screens, then primary text and controls scale, layouts reflow without clipping essential actions, and primary reading content does not require horizontal scrolling.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 290
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/UI/AccessibilityBaseline.swift",
+          "line": 3,
+          "excerpt": "// @covers NFR-A11Y-01, AC-A11Y-01, AC-A11Y-02, AC-A11Y-03"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Home/HomeHeroCard.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-HOME-01, AC-HOME-07, AC-A11Y-01, NFR-A11Y-01"
+        },
+        {
+          "path": "ios/HomesFlowTests/AccessibilityBaselineTests.swift",
+          "line": 5,
+          "excerpt": "// @covers NFR-A11Y-01, AC-A11Y-01, AC-A11Y-02, AC-A11Y-03"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_A11Y_01_hero_height_grows_with_text_size",
+          "path": "ios/HomesFlowTests/AccessibilityBaselineTests.swift",
+          "line": 11
+        },
+        {
+          "name": "test_AC_A11Y_01_scale_factor_is_monotonic_across_sizes",
+          "path": "ios/HomesFlowTests/AccessibilityBaselineTests.swift",
+          "line": 22
+        }
+      ],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 245,
+          "excerpt": "- [ ] T069a [P] Manual accessibility pass: largest Dynamic Type + VoiceOver on dashboard, home sections, procedure checklist \u2014 **Traces**: AC-A11Y-01, AC-A11Y-02, AC-A11Y-03"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-A11Y-02",
+      "type": "AC",
+      "statement": "AC-A11Y-02** \u2014 Given VoiceOver is enabled, when the user navigates home section tabs (horizontal on iPhone, vertical on iPad), then each tab exposes a combined accessibility label (section name + role), selected state is announced, and interactive controls have meaningful hints where non-obvious.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 291
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/UI/AccessibilityBaseline.swift",
+          "line": 3,
+          "excerpt": "// @covers NFR-A11Y-01, AC-A11Y-01, AC-A11Y-02, AC-A11Y-03"
+        },
+        {
+          "path": "ios/HomesFlow/Features/HomeDetail/HomeDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, FR-NAV-01, FR-USER-02, AC-HOME-09, AC-HOME-10, AC-HOME-11, AC-A11Y-02, AC-A11Y-03, NFR-A11Y-01, AC-GUEST-01, AC-USER-05"
+        },
+        {
+          "path": "ios/HomesFlowTests/AccessibilityBaselineTests.swift",
+          "line": 5,
+          "excerpt": "// @covers NFR-A11Y-01, AC-A11Y-01, AC-A11Y-02, AC-A11Y-03"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_A11Y_02_every_section_tab_has_meaningful_voiceover_text",
+          "path": "ios/HomesFlowTests/AccessibilityBaselineTests.swift",
+          "line": 34
+        },
+        {
+          "name": "test_AC_A11Y_02_step_status_values_cover_all_statuses",
+          "path": "ios/HomesFlowTests/AccessibilityBaselineTests.swift",
+          "line": 42
+        }
+      ],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 245,
+          "excerpt": "- [ ] T069a [P] Manual accessibility pass: largest Dynamic Type + VoiceOver on dashboard, home sections, procedure checklist \u2014 **Traces**: AC-A11Y-01, AC-A11Y-02, AC-A11Y-03"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-A11Y-03",
+      "type": "AC",
+      "statement": "AC-A11Y-03** \u2014 Given Reduce Motion is enabled in iOS Settings, when the user navigates between sections or primary screens, then non-essential motion animations are omitted or reduced per system preference.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 292
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/UI/AccessibilityBaseline.swift",
+          "line": 3,
+          "excerpt": "// @covers NFR-A11Y-01, AC-A11Y-01, AC-A11Y-02, AC-A11Y-03"
+        },
+        {
+          "path": "ios/HomesFlow/Features/HomeDetail/HomeDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, FR-NAV-01, FR-USER-02, AC-HOME-09, AC-HOME-10, AC-HOME-11, AC-A11Y-02, AC-A11Y-03, NFR-A11Y-01, AC-GUEST-01, AC-USER-05"
+        },
+        {
+          "path": "ios/HomesFlowTests/AccessibilityBaselineTests.swift",
+          "line": 5,
+          "excerpt": "// @covers NFR-A11Y-01, AC-A11Y-01, AC-A11Y-02, AC-A11Y-03"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_A11Y_03_reduce_motion_disables_animation",
+          "path": "ios/HomesFlowTests/AccessibilityBaselineTests.swift",
+          "line": 53
+        }
+      ],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 245,
+          "excerpt": "- [ ] T069a [P] Manual accessibility pass: largest Dynamic Type + VoiceOver on dashboard, home sections, procedure checklist \u2014 **Traces**: AC-A11Y-01, AC-A11Y-02, AC-A11Y-03"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-CLEW-01",
+      "type": "AC",
+      "statement": "AC-CLEW-01** \u2014 Given a home display name string, when `HomeDisplayName.normalized(_:)` runs, then leading and trailing whitespace are stripped and any internal run of whitespace collapses to a single space. [TOMBSTONED 2026-08-18: cold-agent probe concluded; tooling archived at tag clew-era-final; retirement carried by T900, pending the retired state.]",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 298
+      },
+      "status": "tracked-debt",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/backlog/tasks.md",
+          "line": 8,
+          "excerpt": "- [ ] T900 Retirement carrier: cold-agent probe concluded 2026-08-18, intent deliberately withdrawn, never to be built; tooling archived at tag clew-era-final. This task closes when SpecAssay ships th"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-GUEST-01",
+      "type": "AC",
+      "statement": "AC-GUEST-01** \u2014 Given a Guest signs in to a home, when they view info, then only fields marked for Guest visibility are shown and edit controls are disabled.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 258
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Documents/DocumentRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-03, AC-GUEST-01, FR-GUEST-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Documents/DocumentDTO.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-03, AC-GUEST-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Providers/ServiceProviderRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-02, AC-HOME-04, AC-GUEST-01, FR-GUEST-01, AC-HOME-05, AC-SYNC-01, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Documents/FilesView.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-03, FR-NAV-01, AC-HOME-11, AC-HOME-12, AC-HOME-13, AC-HOME-14, AC-GUEST-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/HomeDetail/HomeDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, FR-NAV-01, FR-USER-02, AC-HOME-09, AC-HOME-10, AC-HOME-11, AC-A11Y-02, AC-A11Y-03, NFR-A11Y-01, AC-GUEST-01, AC-USER-05"
+        },
+        {
+          "path": "ios/HomesFlowTests/GuestTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-GUEST-01, AC-GUEST-02, AC-GUEST-03, AC-GUEST-04, AC-GUEST-05, AC-USER-05"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_GUEST_01_guest_fields_only",
+          "path": "ios/HomesFlowTests/GuestTests.swift",
+          "line": 10
+        }
+      ],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 221,
+          "excerpt": "- [ ] T064 [US-GUEST-01] XCUITest: guest cannot edit provider \u2014 **Traces**: AC-GUEST-01, SC-03"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-GUEST-02",
+      "type": "AC",
+      "statement": "AC-GUEST-02** \u2014 Given a Guest tries to access a restricted procedure or document via deep link, when the app evaluates permissions, then access is denied and a clear message is shown explaining limitations.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 259
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Models/EntityAccessState.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-GUEST-02"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Permissions/PermissionService.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-01, FR-GUEST-01, AC-PROC-02, AC-PROC-04, AC-PROC-07, AC-GUEST-02"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Guest/GuestAccessDeniedView.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-GUEST-02, FR-GUEST-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProceduresView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-PROC-01, FR-PROC-02, NFR-PERF-01, AC-GUEST-02, AC-GUEST-04"
+        },
+        {
+          "path": "ios/HomesFlowTests/GuestTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-GUEST-01, AC-GUEST-02, AC-GUEST-03, AC-GUEST-04, AC-GUEST-05, AC-USER-05"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_GUEST_02_restricted_deep_link_denied",
+          "path": "ios/HomesFlowTests/GuestTests.swift",
+          "line": 40
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-GUEST-03",
+      "type": "AC",
+      "statement": "AC-GUEST-03** \u2014 Given the Guest receives updated guest-visibility content while offline and another actor changes visibility before sync, when devices sync, then the most recent timestamp determines visibility and Guests see the latest allowed content.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 260
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlowTests/GuestTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-GUEST-01, AC-GUEST-02, AC-GUEST-03, AC-GUEST-04, AC-GUEST-05, AC-USER-05"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_GUEST_03_offline_visibility_sync",
+          "path": "ios/HomesFlowTests/GuestTests.swift",
+          "line": 50
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-GUEST-04",
+      "type": "AC",
+      "statement": "AC-GUEST-04** \u2014 Given a Guest opens a guest procedure, when they view it, then they can see step descriptions and read-only status but cannot change step statuses.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 264
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProcedureDetailView.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-PROC-02, FR-PROC-03, FR-LOG-01, AC-PROC-01, AC-PROC-02, AC-PROC-04, AC-PROC-05, AC-PROC-07, AC-PROC-08, AC-GUEST-04, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProceduresView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-PROC-01, FR-PROC-02, NFR-PERF-01, AC-GUEST-02, AC-GUEST-04"
+        },
+        {
+          "path": "ios/HomesFlowTests/GuestTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-GUEST-01, AC-GUEST-02, AC-GUEST-03, AC-GUEST-04, AC-GUEST-05, AC-USER-05"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_GUEST_04_guest_procedure_read_only",
+          "path": "ios/HomesFlowTests/GuestTests.swift",
+          "line": 71
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-GUEST-05",
+      "type": "AC",
+      "statement": "AC-GUEST-05** \u2014 Given a Guest attempts to mark a guest step complete, when they submit, then the app rejects the change and logs the attempted unauthorized action for audit.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 265
+      },
+      "status": "GAP",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlowTests/GuestTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-GUEST-01, AC-GUEST-02, AC-GUEST-03, AC-GUEST-04, AC-GUEST-05, AC-USER-05"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-01",
+      "type": "AC",
+      "statement": "AC-HOME-01** \u2014 Given an authenticated Owner on a connected device, when they submit valid home details and photos, then the home is created and visible in their dashboard with correct data.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 214
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Storage/HomePhotoService.swift",
+          "line": 5,
+          "excerpt": "// @covers AC-HOME-01, AC-HOME-06, AC-HOME-07, FR-HOME-01, NFR-PERF-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Home/HomeRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers FR-HOME-01, AC-HOME-01, AC-HOME-02, AC-HOME-08"
+        },
+        {
+          "path": "ios/HomesFlow/Features/HomeSetup/HomeSetupView.swift",
+          "line": 5,
+          "excerpt": "// @covers AC-HOME-01, AC-HOME-02, AC-HOME-03, FR-HOME-01"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_HOME_01_valid_home_passes_validation",
+          "path": "ios/HomesFlowTests/HomeValidatorTests.swift",
+          "line": 5
+        }
+      ],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 96,
+          "excerpt": "- [ ] T022 [P] [US-ADMIN-01] Unit test `test_AC_HOME_01_valid_home_created` \u2014 **Traces**: AC-HOME-01 \u2014 *validator only; integration test pending*"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-02",
+      "type": "AC",
+      "statement": "AC-HOME-02** \u2014 Given an Owner submits incomplete/invalid home details, when they attempt to save, then validation errors are shown and the home is not created.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 215
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Home/HomeRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers FR-HOME-01, AC-HOME-01, AC-HOME-02, AC-HOME-08"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Home/HomeDTO.swift",
+          "line": 70,
+          "excerpt": "/// @covers AC-HOME-02"
+        },
+        {
+          "path": "ios/HomesFlow/Features/HomeSetup/HomeSetupView.swift",
+          "line": 5,
+          "excerpt": "// @covers AC-HOME-01, AC-HOME-02, AC-HOME-03, FR-HOME-01"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_HOME_02_empty_name_rejected",
+          "path": "ios/HomesFlowTests/HomeValidatorTests.swift",
+          "line": 10
+        },
+        {
+          "name": "test_AC_HOME_02_empty_address_rejected",
+          "path": "ios/HomesFlowTests/HomeValidatorTests.swift",
+          "line": 17
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-03",
+      "type": "AC",
+      "statement": "AC-HOME-03** \u2014 Given an Owner edits home details while offline and another device edits the same home before sync, when both devices reconnect, then the version with the most recent timestamp is applied and a conflict log entry is created for audit.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 216
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Sync/OutboxSyncPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-SYNC-01, AC-HOME-03"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Home/HomeRepository.swift",
+          "line": 96,
+          "excerpt": "/// @covers AC-HOME-03"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Home/HomeConflictResolver.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-HOME-03"
+        },
+        {
+          "path": "ios/HomesFlow/Features/HomeSetup/HomeSetupView.swift",
+          "line": 5,
+          "excerpt": "// @covers AC-HOME-01, AC-HOME-02, AC-HOME-03, FR-HOME-01"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_HOME_03_older_pending_edit_does_not_push_over_newer_server",
+          "path": "ios/HomesFlowTests/SyncConflictMatrixTests.swift",
+          "line": 146
+        },
+        {
+          "name": "test_AC_HOME_03_server_newer_overwrites_pending_local",
+          "path": "ios/HomesFlowTests/HomeConflictResolverTests.swift",
+          "line": 5
+        },
+        {
+          "name": "test_AC_HOME_03_local_newer_keeps_pending_local",
+          "path": "ios/HomesFlowTests/HomeConflictResolverTests.swift",
+          "line": 17
+        },
+        {
+          "name": "test_AC_HOME_03_synced_home_applies_server",
+          "path": "ios/HomesFlowTests/HomeConflictResolverTests.swift",
+          "line": 29
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-04",
+      "type": "AC",
+      "statement": "AC-HOME-04** \u2014 Given a Manager user opens the service provider directory, when they search and select a provider, then they can edit contact details and changes are saved and propagated to permitted users.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 253
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Providers/ProviderConflictResolver.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-HOME-04, AC-HOME-05, AC-SYNC-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Providers/ServiceProviderFieldMerge.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-HOME-04, AC-SYNC-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Providers/ServiceProviderRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-02, AC-HOME-04, AC-GUEST-01, FR-GUEST-01, AC-HOME-05, AC-SYNC-01, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Providers/ServiceProviderDTO.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-02, AC-HOME-04"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Providers/ContactsView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-02, FR-NAV-01, AC-HOME-04, AC-HOME-12, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlowTests/ProviderTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-04, AC-HOME-05, FR-HOME-02"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_HOME_04_provider_edit_propagates",
+          "path": "ios/HomesFlowTests/ProviderTests.swift",
+          "line": 10
+        },
+        {
+          "name": "test_AC_HOME_04_local_newer_edit_is_kept",
+          "path": "ios/HomesFlowTests/ProviderTests.swift",
+          "line": 29
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-05",
+      "type": "AC",
+      "statement": "AC-HOME-05** \u2014 Given a Manager user edits a provider entry that an Owner later deletes on another device before sync, when both devices sync, then the most recent timestamp between edit and delete determines final state; if delete is most recent the provider is removed and the editor receives a notification that their edit was removed due to delete.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 254
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Providers/ProviderConflictResolver.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-HOME-04, AC-HOME-05, AC-SYNC-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Providers/ServiceProviderRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-02, AC-HOME-04, AC-GUEST-01, FR-GUEST-01, AC-HOME-05, AC-SYNC-01, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlowTests/ProviderTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-04, AC-HOME-05, FR-HOME-02"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_HOME_05_delete_wins_over_edit",
+          "path": "ios/HomesFlowTests/ProviderTests.swift",
+          "line": 42
+        },
+        {
+          "name": "test_AC_HOME_05_synced_row_removed_silently",
+          "path": "ios/HomesFlowTests/ProviderTests.swift",
+          "line": 52
+        },
+        {
+          "name": "test_AC_HOME_05_local_only_insert_survives_pull",
+          "path": "ios/HomesFlowTests/ProviderTests.swift",
+          "line": 62
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-06",
+      "type": "AC",
+      "statement": "AC-HOME-06** \u2014 Given an Owner or Manager user uploads a home photo, when the photo is saved to Storage, then the client uploads a display-optimized JPEG bounded to a maximum pixel dimension (not full camera resolution).",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 217
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Documents/DocumentStorageService.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-HOME-03, AC-HOME-06"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Storage/HomePhotoCache.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-06, AC-HOME-07, FR-HOME-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Storage/HomePhotoService.swift",
+          "line": 5,
+          "excerpt": "// @covers AC-HOME-01, AC-HOME-06, AC-HOME-07, FR-HOME-01, NFR-PERF-01"
+        },
+        {
+          "path": "ios/HomesFlowTests/HomePhotoTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-06, AC-HOME-07, AC-HOME-08"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_HOME_06_upload_resizes_before_storage",
+          "path": "ios/HomesFlowTests/HomePhotoTests.swift",
+          "line": 10
+        },
+        {
+          "name": "test_AC_HOME_06_small_image_not_upscaled",
+          "path": "ios/HomesFlowTests/HomePhotoTests.swift",
+          "line": 25
+        },
+        {
+          "name": "test_AC_HOME_06_invalid_image_data_rejected",
+          "path": "ios/HomesFlowTests/HomePhotoTests.swift",
+          "line": 33
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-07",
+      "type": "AC",
+      "statement": "AC-HOME-07** \u2014 Given a user has previously loaded a home photo on this device, when they view the dashboard or home detail again, then the hero photo renders from local cache without re-downloading from Storage.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 218
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Storage/HomePhotoCache.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-06, AC-HOME-07, FR-HOME-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Storage/HomePhotoService.swift",
+          "line": 5,
+          "excerpt": "// @covers AC-HOME-01, AC-HOME-06, AC-HOME-07, FR-HOME-01, NFR-PERF-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Home/HomeHeroCard.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-HOME-01, AC-HOME-07, AC-A11Y-01, NFR-A11Y-01"
+        },
+        {
+          "path": "ios/HomesFlowTests/HomePhotoTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-06, AC-HOME-07, AC-HOME-08"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_HOME_07_hero_renders_from_local_cache",
+          "path": "ios/HomesFlowTests/HomePhotoTests.swift",
+          "line": 46
+        },
+        {
+          "name": "test_AC_HOME_07_removed_photo_no_longer_cached",
+          "path": "ios/HomesFlowTests/HomePhotoTests.swift",
+          "line": 66
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-08",
+      "type": "AC",
+      "statement": "AC-HOME-08** \u2014 Given a home record has not yet synced to the server, when an Owner or Manager user attempts to upload a photo, then the upload is blocked and the user sees actionable guidance to sync first (e.g., pull to refresh while online).",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 219
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Home/HomeRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers FR-HOME-01, AC-HOME-01, AC-HOME-02, AC-HOME-08"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Home/HomePhotoSyncGate.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-HOME-08"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Dashboard/DashboardView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, US-ADMIN-01, AC-HOME-08, AC-SYNC-04, FR-NAV-01"
+        },
+        {
+          "path": "ios/HomesFlowTests/HomePhotoTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-06, AC-HOME-07, AC-HOME-08"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_HOME_08_photo_blocked_until_home_synced",
+          "path": "ios/HomesFlowTests/HomePhotoTests.swift",
+          "line": 83
+        },
+        {
+          "name": "test_AC_HOME_08_offline_edit_without_photo_defers_sync",
+          "path": "ios/HomesFlowTests/HomePhotoTests.swift",
+          "line": 103
+        },
+        {
+          "name": "test_AC_HOME_08_connected_upload_runs_sync_then_passes_when_synced",
+          "path": "ios/HomesFlowTests/HomePhotoTests.swift",
+          "line": 110
+        },
+        {
+          "name": "test_AC_HOME_08_blocked_errors_carry_actionable_guidance",
+          "path": "ios/HomesFlowTests/HomePhotoTests.swift",
+          "line": 118
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-09",
+      "type": "AC",
+      "statement": "AC-HOME-09** \u2014 Given a user views home detail on iPad (regular horizontal size class), when any section is selected, then the trailing area shows section content only \u2014 no full-bleed home hero and no horizontal section tab bar at the home level (nested section list | detail splits are allowed inside the trailing area).",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 220
+      },
+      "status": "tracked-debt",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Features/HomeDetail/HomeDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, FR-NAV-01, FR-USER-02, AC-HOME-09, AC-HOME-10, AC-HOME-11, AC-A11Y-02, AC-A11Y-03, NFR-A11Y-01, AC-GUEST-01, AC-USER-05"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 102,
+          "excerpt": "- [ ] T024d [P] [US-ADMIN-01] Snapshot or UI test: iPad home detail trailing column has no hero/segmented tabs \u2014 **Traces**: AC-HOME-09 \u2014 *deferred: needs snapshot/XCUITest infra; manual iPad pass unt"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-10",
+      "type": "AC",
+      "statement": "AC-HOME-10** \u2014 Given a user opens a home on iPad, when home detail is shown, then the leading column displays a compact home hero (photo, name, address) and vertically stacked tappable section entries with icon and label for Procedures, Contacts, Files, and People; the trailing area shows the selected section using a three-panel layout (sidebar already visible + section list + section detail) for **all four** sections.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 221
+      },
+      "status": "tracked-debt",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Members/PeopleSelection.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-NAV-01, AC-USER-02, AC-HOME-10"
+        },
+        {
+          "path": "ios/HomesFlow/Features/HomeDetail/HomeDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, FR-NAV-01, FR-USER-02, AC-HOME-09, AC-HOME-10, AC-HOME-11, AC-A11Y-02, AC-A11Y-03, NFR-A11Y-01, AC-GUEST-01, AC-USER-05"
+        },
+        {
+          "path": "ios/HomesFlowTests/PeopleSelectionTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-10, AC-USER-02"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 103,
+          "excerpt": "- [ ] T024e [P] [US-ADMIN-01] Snapshot or UI test: iPad leading column shows compact home hero + vertical icon section tabs \u2014 **Traces**: AC-HOME-10 \u2014 *deferred: needs snapshot/XCUITest infra; manual "
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-11",
+      "type": "AC",
+      "statement": "AC-HOME-11** \u2014 Given a user views home detail on any device, when section navigation is shown, then section labels read Procedures, Contacts, Files, and People (Files implements the document library).",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 222
+      },
+      "status": "tracked-debt",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Features/Documents/FilesView.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-03, FR-NAV-01, AC-HOME-11, AC-HOME-12, AC-HOME-13, AC-HOME-14, AC-GUEST-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/HomeDetail/HomeDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, FR-NAV-01, FR-USER-02, AC-HOME-09, AC-HOME-10, AC-HOME-11, AC-A11Y-02, AC-A11Y-03, NFR-A11Y-01, AC-GUEST-01, AC-USER-05"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 104,
+          "excerpt": "- [ ] T024f [P] [US-ADMIN-01] UI test: Contacts, Files, and People sections use the three-panel layout on iPad \u2014 **Traces**: AC-HOME-11 \u2014 *deferred: needs snapshot/XCUITest infra; manual iPad pass unt"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-12",
+      "type": "AC",
+      "statement": "AC-HOME-12** \u2014 Given a user with permission to add content views a home section list (Contacts, Files, People), when the section is shown, then a single add action appears as the toolbar primary action using a parallel construction across sections \u2014 a plus icon with an accessible label naming the action (e.g., Add contact, Add file, Invite member) that opens the section's create sheet; users without permission see no add action.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 223
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/UI/SectionAddAction.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-HOME-12"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Documents/FilesView.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-03, FR-NAV-01, AC-HOME-11, AC-HOME-12, AC-HOME-13, AC-HOME-14, AC-GUEST-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Providers/ContactsView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-02, FR-NAV-01, AC-HOME-04, AC-HOME-12, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Members/MembersView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-02, AC-USER-01, AC-USER-02, AC-USER-04\u202606, FR-NAV-01, AC-HOME-12, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-12, AC-HOME-13, AC-HOME-14"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_HOME_12_section_add_actions_use_parallel_construction",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 11
+        },
+        {
+          "name": "test_AC_HOME_12_contacts_and_files_add_for_owner_and_manager",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 20
+        },
+        {
+          "name": "test_AC_HOME_12_people_add_owner_only",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 33
+        },
+        {
+          "name": "test_AC_HOME_12_guest_has_no_section_add_actions",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 39
+        },
+        {
+          "name": "test_AC_HOME_12_matches_repository_manage_flags",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 48
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-13",
+      "type": "AC",
+      "statement": "AC-HOME-13** \u2014 Given a user opens a file's detail, when they tap **Preview**, then the system Quick Look preview opens with zoom, scroll, and playback for supported types (images, PDFs, video, audio); detail shows a file summary, metadata, Preview action, share/download, and management actions below.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 224
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Documents/DocumentPreviewSupport.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-13, AC-HOME-14"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Documents/DocumentQuickLookPreview.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-03, AC-HOME-13, NFR-PERF-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Documents/FilesView.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-03, FR-NAV-01, AC-HOME-11, AC-HOME-12, AC-HOME-13, AC-HOME-14, AC-GUEST-01"
+        },
+        {
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-12, AC-HOME-13, AC-HOME-14"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_HOME_13_preview_icon_maps_by_extension",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 61
+        },
+        {
+          "name": "test_AC_HOME_13_local_file_name_uses_storage_path",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 70
+        },
+        {
+          "name": "test_AC_HOME_13_local_file_name_falls_back_to_id_and_extension",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 85
+        },
+        {
+          "name": "test_AC_HOME_13_streams_download_to_preview_directory",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 101
+        },
+        {
+          "name": "test_AC_HOME_13_non_success_download_throws",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 136
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-HOME-14",
+      "type": "AC",
+      "statement": "AC-HOME-14** \u2014 Given an Owner or Manager adds a file, when they choose the file source, then camera capture, photo library, and file browser options are all offered, and content from any source uploads through the same metadata flow (title, category, visibility).",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 225
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Documents/DocumentPreviewSupport.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-13, AC-HOME-14"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Documents/FilesView.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-03, FR-NAV-01, AC-HOME-11, AC-HOME-12, AC-HOME-13, AC-HOME-14, AC-GUEST-01"
+        },
+        {
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-12, AC-HOME-13, AC-HOME-14"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_HOME_14_offers_library_and_file_browser_sources",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 173
+        },
+        {
+          "name": "test_AC_HOME_14_includes_camera_when_available",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 178
+        },
+        {
+          "name": "test_AC_HOME_14_apply_pick_fills_title_from_file_name",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 183
+        },
+        {
+          "name": "test_AC_HOME_14_apply_pick_preserves_existing_title",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 196
+        },
+        {
+          "name": "test_AC_HOME_14_upload_requires_valid_draft_and_file_data",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 207
+        },
+        {
+          "name": "test_AC_HOME_14_camera_file_name_is_dated_jpeg",
+          "path": "ios/HomesFlowTests/FilesFeatureTests.swift",
+          "line": 217
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-LOG-01",
+      "type": "AC",
+      "statement": "AC-LOG-01** \u2014 Given an Owner or Manager opens the Log Book for a home, when they write and save a household-scope entry, then the entry appears in the unified log with author and timestamp.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 281
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookEntryDTO.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-03"
+        },
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-03, AC-LOG-04, AC-LOG-06"
+        },
+        {
+          "path": "ios/HomesFlow/Features/LogBook/LogEntryEditorSheet.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-04"
+        },
+        {
+          "path": "ios/HomesFlow/Features/LogBook/CommunicationsLogView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-05, AC-LOG-06"
+        },
+        {
+          "path": "ios/HomesFlowTests/LogBookTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-LOG-01, AC-LOG-02, AC-LOG-03, AC-LOG-04, AC-LOG-05, AC-LOG-06, FR-LOG-02"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_LOG_01_household_entry_appears_in_log",
+          "path": "ios/HomesFlowTests/LogBookTests.swift",
+          "line": 9
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-LOG-02",
+      "type": "AC",
+      "statement": "AC-LOG-02** \u2014 Given an Owner or Manager views a procedure, when they write a procedure-scope log entry, then the entry is attached to that procedure and also appears in the unified log.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 282
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookEntryDTO.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-03"
+        },
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-03, AC-LOG-04, AC-LOG-06"
+        },
+        {
+          "path": "ios/HomesFlow/Features/LogBook/LogEntryEditorSheet.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-04"
+        },
+        {
+          "path": "ios/HomesFlow/Features/LogBook/CommunicationsLogView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-05, AC-LOG-06"
+        },
+        {
+          "path": "ios/HomesFlowTests/LogBookTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-LOG-01, AC-LOG-02, AC-LOG-03, AC-LOG-04, AC-LOG-05, AC-LOG-06, FR-LOG-02"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_LOG_02_procedure_entry_attached_and_in_log",
+          "path": "ios/HomesFlowTests/LogBookTests.swift",
+          "line": 28
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-LOG-03",
+      "type": "AC",
+      "statement": "AC-LOG-03** \u2014 Given a permitted user writes a log entry while offline, when the device reconnects, then the entry syncs append-only (no conflict resolution needed) and appears for other permitted users.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 283
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookEntryDTO.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-03"
+        },
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-03, AC-LOG-04, AC-LOG-06"
+        },
+        {
+          "path": "ios/HomesFlowTests/LogBookTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-LOG-01, AC-LOG-02, AC-LOG-03, AC-LOG-04, AC-LOG-05, AC-LOG-06, FR-LOG-02"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_LOG_03_offline_entry_syncs_append_only",
+          "path": "ios/HomesFlowTests/LogBookTests.swift",
+          "line": 51
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-LOG-04",
+      "type": "AC",
+      "statement": "AC-LOG-04** \u2014 Given a log entry has synced to the server, when the author attempts to edit it, then editing is allowed only within a **10-minute** grace window that starts at server receipt; after the window the entry is immutable.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 284
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-03, AC-LOG-04, AC-LOG-06"
+        },
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookGraceWindowPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-LOG-04, FR-LOG-02"
+        },
+        {
+          "path": "ios/HomesFlow/Features/LogBook/LogEntryEditorSheet.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-04"
+        },
+        {
+          "path": "ios/HomesFlowTests/LogBookTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-LOG-01, AC-LOG-02, AC-LOG-03, AC-LOG-04, AC-LOG-05, AC-LOG-06, FR-LOG-02"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_LOG_04_edit_only_within_grace_window",
+          "path": "ios/HomesFlowTests/LogBookTests.swift",
+          "line": 58
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-LOG-05",
+      "type": "AC",
+      "statement": "AC-LOG-05** \u2014 Given a permitted user opens the unified log view, when entries exist at both household and procedure scope, then entries are shown chronologically and can be filtered by scope.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 285
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookScopeFilter.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-LOG-05, FR-LOG-02"
+        },
+        {
+          "path": "ios/HomesFlow/Features/LogBook/CommunicationsLogView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-05, AC-LOG-06"
+        },
+        {
+          "path": "ios/HomesFlowTests/LogBookTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-LOG-01, AC-LOG-02, AC-LOG-03, AC-LOG-04, AC-LOG-05, AC-LOG-06, FR-LOG-02"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_LOG_05_unified_log_chronological_and_filterable",
+          "path": "ios/HomesFlowTests/LogBookTests.swift",
+          "line": 77
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-LOG-06",
+      "type": "AC",
+      "statement": "AC-LOG-06** \u2014 Given a Guest is signed in, when they attempt to view the Log Book directly or via deep link, then access is denied with a clear message.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 286
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-03, AC-LOG-04, AC-LOG-06"
+        },
+        {
+          "path": "ios/HomesFlow/Features/LogBook/CommunicationsLogView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-05, AC-LOG-06"
+        },
+        {
+          "path": "ios/HomesFlowTests/LogBookTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-LOG-01, AC-LOG-02, AC-LOG-03, AC-LOG-04, AC-LOG-05, AC-LOG-06, FR-LOG-02"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_LOG_06_guest_denied_log_access",
+          "path": "ios/HomesFlowTests/LogBookTests.swift",
+          "line": 107
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-PROC-01",
+      "type": "AC",
+      "statement": "AC-PROC-01** \u2014 Given a Manager user views a procedure, when they mark a step Complete, then the step status updates for all users with appropriate visibility, the procedure's aggregate status and progress in the procedures list update immediately, and an activity log entry is created.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 242
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/ActivityLog/ActivityLogService.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-LOG-01, AC-PROC-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProcedureDetailView.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-PROC-02, FR-PROC-03, FR-LOG-01, AC-PROC-01, AC-PROC-02, AC-PROC-04, AC-PROC-05, AC-PROC-07, AC-PROC-08, AC-GUEST-04, AC-SYNC-07"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_PROC_01_completed_step_counts_toward_progress",
+          "path": "ios/HomesFlowTests/ProcedureTests.swift",
+          "line": 5
+        },
+        {
+          "name": "test_AC_PROC_01_final_step_completion_marks_procedure_complete",
+          "path": "ios/HomesFlowTests/ProcedureTests.swift",
+          "line": 16
+        },
+        {
+          "name": "test_AC_PROC_01_complete_and_na_steps_mark_procedure_complete",
+          "path": "ios/HomesFlowTests/ProcedureTests.swift",
+          "line": 25
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-PROC-02",
+      "type": "AC",
+      "statement": "AC-PROC-02** \u2014 Given a Manager user attempts to update a step beyond their permission (e.g., another home's owner-only procedure or step), when they submit the change, then the app blocks the update and shows a permission error.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 243
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Permissions/PermissionService.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-01, FR-GUEST-01, AC-PROC-02, AC-PROC-04, AC-PROC-07, AC-GUEST-02"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProcedureDetailView.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-PROC-02, FR-PROC-03, FR-LOG-01, AC-PROC-01, AC-PROC-02, AC-PROC-04, AC-PROC-05, AC-PROC-07, AC-PROC-08, AC-GUEST-04, AC-SYNC-07"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_PROC_02_manager_cannot_update_owner_only_step",
+          "path": "ios/HomesFlowTests/PermissionServiceTests.swift",
+          "line": 27
+        },
+        {
+          "name": "test_AC_PROC_02_guest_cannot_update_guest_visible_step",
+          "path": "ios/HomesFlowTests/PermissionServiceTests.swift",
+          "line": 37
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-PROC-03",
+      "type": "AC",
+      "statement": "AC-PROC-03** \u2014 Given a Manager user updates a step while offline and another user updates the same step before sync, when both devices reconnect, then the update with the most recent timestamp is persisted and the other user receives a notification about the overwritten change with reference to the activity log.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 244
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_PROC_03_server_newer_overwrites_pending_local",
+          "path": "ios/HomesFlowTests/ProcedureTests.swift",
+          "line": 48
+        },
+        {
+          "name": "test_AC_PROC_03_local_newer_keeps_pending_local",
+          "path": "ios/HomesFlowTests/ProcedureTests.swift",
+          "line": 60
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-PROC-04",
+      "type": "AC",
+      "statement": "AC-PROC-04** \u2014 Given an Owner or Manager user long-presses a step on a procedure they can modify, when the context menu appears, then Edit, Delete, Move Up, and Move Down are available.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 245
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Permissions/PermissionService.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-01, FR-GUEST-01, AC-PROC-02, AC-PROC-04, AC-PROC-07, AC-GUEST-02"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProcedureDetailView.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-PROC-02, FR-PROC-03, FR-LOG-01, AC-PROC-01, AC-PROC-02, AC-PROC-04, AC-PROC-05, AC-PROC-07, AC-PROC-08, AC-GUEST-04, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlowTests/StepStructureTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_PROC_04_owner_can_manage_step_structure",
+          "path": "ios/HomesFlowTests/StepStructureTests.swift",
+          "line": 10
+        },
+        {
+          "name": "test_AC_PROC_04_manager_can_manage_step_structure",
+          "path": "ios/HomesFlowTests/StepStructureTests.swift",
+          "line": 23
+        },
+        {
+          "name": "test_AC_PROC_04_manager_cannot_manage_owner_only_procedure_steps",
+          "path": "ios/HomesFlowTests/StepStructureTests.swift",
+          "line": 36
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-PROC-05",
+      "type": "AC",
+      "statement": "AC-PROC-05** \u2014 Given an Owner or Manager user taps Add on the Steps section, when they enter a title and save, then a new step is appended at the next sort order and appears for permitted users after sync.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 246
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureDTO.swift",
+          "line": 97,
+          "excerpt": "/// @covers AC-PROC-05, AC-PROC-06"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProcedureDetailView.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-PROC-02, FR-PROC-03, FR-LOG-01, AC-PROC-01, AC-PROC-02, AC-PROC-04, AC-PROC-05, AC-PROC-07, AC-PROC-08, AC-GUEST-04, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlowTests/StepStructureTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_PROC_05_new_step_appends_at_end",
+          "path": "ios/HomesFlowTests/StepStructureTests.swift",
+          "line": 68
+        },
+        {
+          "name": "test_AC_PROC_05_move_up_swaps_with_previous_step",
+          "path": "ios/HomesFlowTests/StepStructureTests.swift",
+          "line": 74
+        },
+        {
+          "name": "test_AC_PROC_05_move_down_swaps_with_next_step",
+          "path": "ios/HomesFlowTests/StepStructureTests.swift",
+          "line": 80
+        },
+        {
+          "name": "test_AC_PROC_05_move_is_noop_at_list_boundaries",
+          "path": "ios/HomesFlowTests/StepStructureTests.swift",
+          "line": 86
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-PROC-06",
+      "type": "AC",
+      "statement": "AC-PROC-06** \u2014 Given an Owner or Manager user creates, renames, reorders, or deletes a step, when the change syncs, then it persists for permitted users and an activity log entry is created.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 247
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureDTO.swift",
+          "line": 97,
+          "excerpt": "/// @covers AC-PROC-05, AC-PROC-06"
+        },
+        {
+          "path": "ios/HomesFlowTests/StepStructureTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_PROC_06_structure_changes_produce_activity_summaries",
+          "path": "ios/HomesFlowTests/StepStructureTests.swift",
+          "line": 93
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-PROC-07",
+      "type": "AC",
+      "statement": "AC-PROC-07** \u2014 Given a Guest views a procedure, when they interact with steps, then step structure controls (long-press menu, Add step) are not available and step status remains read-only.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 248
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 87,
+          "excerpt": "// @covers AC-PROC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Permissions/PermissionService.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-01, FR-GUEST-01, AC-PROC-02, AC-PROC-04, AC-PROC-07, AC-GUEST-02"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProcedureDetailView.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-PROC-02, FR-PROC-03, FR-LOG-01, AC-PROC-01, AC-PROC-02, AC-PROC-04, AC-PROC-05, AC-PROC-07, AC-PROC-08, AC-GUEST-04, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlowTests/StepStructureTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_PROC_07_guest_cannot_manage_step_structure",
+          "path": "ios/HomesFlowTests/StepStructureTests.swift",
+          "line": 50
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-PROC-08",
+      "type": "AC",
+      "statement": "AC-PROC-08** \u2014 Given a user views a step with an attached photo, when they tap **Photo attached**, then the photo opens in a modal preview; step rows show notes below the title, a tappable photo indicator when present, a pencil **Edit** control (when permitted) to the left of the status ellipsis menu, and the ellipsis menu remains rightmost.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 249
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Procedures/StepRowPresentation.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-PROC-08"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProcedureDetailView.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-PROC-02, FR-PROC-03, FR-LOG-01, AC-PROC-01, AC-PROC-02, AC-PROC-04, AC-PROC-05, AC-PROC-07, AC-PROC-08, AC-GUEST-04, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlowTests/StepRowPresentationTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-PROC-08"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_PROC_08_photo_indicator_and_edit_controls",
+          "path": "ios/HomesFlowTests/StepRowPresentationTests.swift",
+          "line": 10
+        },
+        {
+          "name": "test_AC_PROC_08_terminal_statuses_strike_through",
+          "path": "ios/HomesFlowTests/StepRowPresentationTests.swift",
+          "line": 24
+        },
+        {
+          "name": "test_AC_PROC_08_tap_toggle_status_mapping",
+          "path": "ios/HomesFlowTests/StepRowPresentationTests.swift",
+          "line": 31
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-SYNC-01",
+      "type": "AC",
+      "statement": "AC-SYNC-01** \u2014 Given any user makes an update while offline, when the device reconnects, then the client syncs changes and the server resolves conflicts with most-recent timestamp wins; the client surfaces a notification when their offline change was overwritten.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 271
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Sync/OverwriteNotificationPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-SYNC-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Sync/SyncEngine.swift",
+          "line": 5,
+          "excerpt": "// @covers NFR-OFFL-01, AC-SYNC-01, AC-SYNC-02, AC-SYNC-03"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Sync/OutboxSyncPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-SYNC-01, AC-HOME-03"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Providers/ProviderConflictResolver.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-HOME-04, AC-HOME-05, AC-SYNC-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Providers/ServiceProviderFieldMerge.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-HOME-04, AC-SYNC-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Providers/ServiceProviderRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-02, AC-HOME-04, AC-GUEST-01, FR-GUEST-01, AC-HOME-05, AC-SYNC-01, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_SYNC_01_home_timestamp_wins_matrix",
+          "path": "ios/HomesFlowTests/SyncConflictMatrixTests.swift",
+          "line": 38
+        },
+        {
+          "name": "test_AC_SYNC_01_provider_timestamp_wins_matrix",
+          "path": "ios/HomesFlowTests/SyncConflictMatrixTests.swift",
+          "line": 48
+        },
+        {
+          "name": "test_AC_SYNC_01_conflict_decision_is_idempotent",
+          "path": "ios/HomesFlowTests/SyncConflictMatrixTests.swift",
+          "line": 60
+        },
+        {
+          "name": "test_AC_SYNC_01_server_delete_matrix",
+          "path": "ios/HomesFlowTests/SyncConflictMatrixTests.swift",
+          "line": 80
+        },
+        {
+          "name": "test_AC_SYNC_01_offline_overwrite_notifies_loser",
+          "path": "ios/HomesFlowTests/SyncConflictMatrixTests.swift",
+          "line": 109
+        }
+      ],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 116,
+          "excerpt": "- [ ] T027 [US-ADMIN-02] Offline invite conflict resolution \u2014 **Traces**: AC-USER-03, AC-SYNC-01"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-SYNC-02",
+      "type": "AC",
+      "statement": "AC-SYNC-02** \u2014 Given two users modify different fields of the same entity while offline, when sync occurs, then both non-conflicting changes are merged and persisted, and an audit record notes the combined update. *(Deferred to post-MVP phase \u2014 see conflict model evolution note.)*",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 272
+      },
+      "status": "tracked-debt",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Sync/SyncEngine.swift",
+          "line": 5,
+          "excerpt": "// @covers NFR-OFFL-01, AC-SYNC-01, AC-SYNC-02, AC-SYNC-03"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 139,
+          "excerpt": "- [ ] T035 [NFR-OFFL-01] Field-level merge for non-conflicting offline edits \u2014 **Traces**: AC-SYNC-02 \u2014 *deferred post-MVP (2026-07-03 conflict model decision); pairs with version vectors*"
+        },
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 146,
+          "excerpt": "- [ ] T039 [P] [NFR-OFFL-01] Unit test `test_AC_SYNC_02_disjoint_fields_merge` \u2014 **Traces**: AC-SYNC-02 \u2014 *deferred post-MVP with T035*"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-SYNC-03",
+      "type": "AC",
+      "statement": "AC-SYNC-03** \u2014 Given a user attempts an action that depends on stale permissions cached offline, when syncing, then if the server denies the action, the client reverts the change and shows a permission error with guidance to retry.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 273
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Sync/PermissionRevertPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-SYNC-03"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Sync/SyncEngine.swift",
+          "line": 5,
+          "excerpt": "// @covers NFR-OFFL-01, AC-SYNC-01, AC-SYNC-02, AC-SYNC-03"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_SYNC_03_permission_denied_revert_matrix",
+          "path": "ios/HomesFlowTests/SyncConflictMatrixTests.swift",
+          "line": 160
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-SYNC-04",
+      "type": "AC",
+      "statement": "AC-SYNC-04** \u2014 Given local changes or homes are pending sync to the server, when the user views the dashboard, then unsynced homes are visibly indicated and the user can pull to refresh to retry sync while online.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 274
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Sync/SyncIndicatorPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-SYNC-04"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Dashboard/DashboardView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, US-ADMIN-01, AC-HOME-08, AC-SYNC-04, FR-NAV-01"
+        },
+        {
+          "path": "ios/HomesFlowTests/SyncIndicatorTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-SYNC-04"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_SYNC_04_pending_sync_visible_on_dashboard",
+          "path": "ios/HomesFlowTests/SyncIndicatorTests.swift",
+          "line": 19
+        },
+        {
+          "name": "test_AC_SYNC_04_pending_state_announced_to_voiceover",
+          "path": "ios/HomesFlowTests/SyncIndicatorTests.swift",
+          "line": 34
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-SYNC-05",
+      "type": "AC",
+      "statement": "AC-SYNC-05** \u2014 Given a step is marked Complete or N/A on one device, when a concurrent offline update from another device would change that step's status, then sync never silently regresses the Complete/N/A status; the conflicting update is surfaced instead of auto-applied.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 275
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Procedures/StepStatusConflictPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-SYNC-05, AC-SYNC-06"
+        },
+        {
+          "path": "ios/HomesFlowTests/StepStatusConflictPolicyTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-SYNC-05, AC-SYNC-06"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_SYNC_05_terminal_step_protection_matrix",
+          "path": "ios/HomesFlowTests/SyncConflictMatrixTests.swift",
+          "line": 185
+        },
+        {
+          "name": "test_AC_SYNC_05_terminal_status_never_silently_regressed",
+          "path": "ios/HomesFlowTests/StepStatusConflictPolicyTests.swift",
+          "line": 14
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-SYNC-06",
+      "type": "AC",
+      "statement": "AC-SYNC-06** \u2014 Given two devices make conflicting status changes to the same step or procedure while offline, when both sync, then the server resolves automatically (most-recent timestamp, subject to AC-SYNC-05 terminal-status protection) and the user whose change lost receives a notification with an activity-log reference and guidance to re-apply their change if still needed.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 276
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Procedures/StepStatusConflictPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-SYNC-05, AC-SYNC-06"
+        },
+        {
+          "path": "ios/HomesFlowTests/StepStatusConflictPolicyTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-SYNC-05, AC-SYNC-06"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_SYNC_06_losing_user_notified_with_reapply_guidance",
+          "path": "ios/HomesFlowTests/StepStatusConflictPolicyTests.swift",
+          "line": 90
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-SYNC-07",
+      "type": "AC",
+      "statement": "AC-SYNC-07** \u2014 Given a device is offline, when the user attempts a structural action (create/rename/reorder/delete steps, procedures, providers, or membership changes), then the action is disabled or blocked with clear messaging; structural actions require connectivity.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 277
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Sync/StructuralActionPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-SYNC-07, NFR-OFFL-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Providers/ServiceProviderRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-02, AC-HOME-04, AC-GUEST-01, FR-GUEST-01, AC-HOME-05, AC-SYNC-01, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Members/MemberRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-USER-02, AC-USER-01, AC-USER-02, AC-USER-04\u202606, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Providers/ContactsView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-02, FR-NAV-01, AC-HOME-04, AC-HOME-12, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProcedureDetailView.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-PROC-02, FR-PROC-03, FR-LOG-01, AC-PROC-01, AC-PROC-02, AC-PROC-04, AC-PROC-05, AC-PROC-07, AC-PROC-08, AC-GUEST-04, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Members/InviteMemberView.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-USER-01, AC-USER-07, FR-GUEST-02, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Members/MembersView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-02, AC-USER-01, AC-USER-02, AC-USER-04\u202606, FR-NAV-01, AC-HOME-12, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlowTests/StructuralActionPolicyTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-SYNC-07"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_SYNC_07_structural_offline_gate_matrix",
+          "path": "ios/HomesFlowTests/SyncConflictMatrixTests.swift",
+          "line": 246
+        },
+        {
+          "name": "test_AC_SYNC_07_structural_actions_blocked_offline",
+          "path": "ios/HomesFlowTests/StructuralActionPolicyTests.swift",
+          "line": 8
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-USER-01",
+      "type": "AC",
+      "statement": "AC-USER-01** \u2014 Given an Owner provides an email/phone and role and sends an invite, when the invite is accepted, then the invitee is added to the home with the assigned role and receives appropriate permissions immediately.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 229
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Members/InvitePolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-USER-01, AC-USER-02, AC-USER-06, AC-USER-07"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Members/MemberRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-USER-02, AC-USER-01, AC-USER-02, AC-USER-04\u202606, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Members/InviteMemberView.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-USER-01, AC-USER-07, FR-GUEST-02, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Members/MembersView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-02, AC-USER-01, AC-USER-02, AC-USER-04\u202606, FR-NAV-01, AC-HOME-12, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlowTests/MemberInviteTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-USER-01, AC-USER-02, AC-USER-04, AC-USER-06, AC-USER-07"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_USER_01_invite_accepted_grants_role",
+          "path": "ios/HomesFlowTests/MemberInviteTests.swift",
+          "line": 11
+        },
+        {
+          "name": "test_AC_USER_01_invite_email_validation_and_token_shape",
+          "path": "ios/HomesFlowTests/MemberInviteTests.swift",
+          "line": 52
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-USER-02",
+      "type": "AC",
+      "statement": "AC-USER-02** \u2014 Given an Owner re-sends or revokes an invite before acceptance, when they revoke, then the invite token becomes invalid and the invitee cannot join with that token.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 231
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Members/InvitePolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-USER-01, AC-USER-02, AC-USER-06, AC-USER-07"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Members/PeopleSelection.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-NAV-01, AC-USER-02, AC-HOME-10"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Members/MemberRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-USER-02, AC-USER-01, AC-USER-02, AC-USER-04\u202606, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Members/PendingInviteDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-USER-02, AC-USER-07, FR-GUEST-02"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Members/MembersView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-02, AC-USER-01, AC-USER-02, AC-USER-04\u202606, FR-NAV-01, AC-HOME-12, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlowTests/PeopleSelectionTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-10, AC-USER-02"
+        },
+        {
+          "path": "ios/HomesFlowTests/MemberInviteTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-USER-01, AC-USER-02, AC-USER-04, AC-USER-06, AC-USER-07"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_USER_02_revoked_token_invalid",
+          "path": "ios/HomesFlowTests/MemberInviteTests.swift",
+          "line": 70
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-USER-03",
+      "type": "AC",
+      "statement": "AC-USER-03** \u2014 Given an Owner invites a user while offline and the invite is processed on another device first, when sync occurs, then the most recent action (invite or revoke) by timestamp determines invite state and the Owner receives a notification of the resolved outcome.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 232
+      },
+      "status": "tracked-debt",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 116,
+          "excerpt": "- [ ] T027 [US-ADMIN-02] Offline invite conflict resolution \u2014 **Traces**: AC-USER-03, AC-SYNC-01"
+        },
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 126,
+          "excerpt": "- [ ] T033a [P] [US-ADMIN-02] Unit test `test_AC_USER_03_offline_invite_conflict` \u2014 **Traces**: AC-USER-03"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-USER-04",
+      "type": "AC",
+      "statement": "AC-USER-04** \u2014 Given an Owner assigns a Manager role to a user, when the user signs in, then they can create and modify procedures and service providers for that home.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 236
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Members/MemberRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-USER-02, AC-USER-01, AC-USER-02, AC-USER-04\u202606, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Members/MembersView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-02, AC-USER-01, AC-USER-02, AC-USER-04\u202606, FR-NAV-01, AC-HOME-12, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlowTests/MemberInviteTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-USER-01, AC-USER-02, AC-USER-04, AC-USER-06, AC-USER-07"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_USER_04_manager_can_update_step",
+          "path": "ios/HomesFlowTests/PermissionServiceTests.swift",
+          "line": 17
+        },
+        {
+          "name": "test_AC_USER_04_edit_role_can_modify_procedures",
+          "path": "ios/HomesFlowTests/MemberInviteTests.swift",
+          "line": 84
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-USER-05",
+      "type": "AC",
+      "statement": "AC-USER-05** \u2014 Given an Owner assigns a Guest role to a user, when the guest signs in, then they see only guest-appropriate fields (e.g., WiFi, guest procedures) and cannot edit protected data.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 237
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Features/HomeDetail/HomeDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, FR-NAV-01, FR-USER-02, AC-HOME-09, AC-HOME-10, AC-HOME-11, AC-A11Y-02, AC-A11Y-03, NFR-A11Y-01, AC-GUEST-01, AC-USER-05"
+        },
+        {
+          "path": "ios/HomesFlowTests/GuestTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-GUEST-01, AC-GUEST-02, AC-GUEST-03, AC-GUEST-04, AC-GUEST-05, AC-USER-05"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_USER_05_guest_role_read_only",
+          "path": "ios/HomesFlowTests/GuestTests.swift",
+          "line": 88
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-USER-06",
+      "type": "AC",
+      "statement": "AC-USER-06** \u2014 Given concurrent role changes occur on multiple devices, when devices sync, then the change with the most recent timestamp wins and an owner-visible audit entry records the prior role.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 238
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Members/InvitePolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-USER-01, AC-USER-02, AC-USER-06, AC-USER-07"
+        },
+        {
+          "path": "ios/HomesFlowTests/MemberInviteTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-USER-01, AC-USER-02, AC-USER-04, AC-USER-06, AC-USER-07"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_USER_06_concurrent_role_change_audit",
+          "path": "ios/HomesFlowTests/MemberInviteTests.swift",
+          "line": 106
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "AC-USER-07",
+      "type": "AC",
+      "statement": "AC-USER-07** \u2014 Given an Owner creates an invite in MVP, when the invitee receives the shared invite link or token and signs in with the invited email, then they can accept the invite (paste token or open link) and join the home with the assigned role.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 230
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Members/InvitePolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-USER-01, AC-USER-02, AC-USER-06, AC-USER-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Members/InviteMemberView.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-USER-01, AC-USER-07, FR-GUEST-02, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Members/PendingInviteDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-USER-02, AC-USER-07, FR-GUEST-02"
+        },
+        {
+          "path": "ios/HomesFlowTests/MemberInviteTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-USER-01, AC-USER-02, AC-USER-04, AC-USER-06, AC-USER-07"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_USER_07_paste_token_accepts_invite",
+          "path": "ios/HomesFlowTests/MemberInviteTests.swift",
+          "line": 141
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-AUTH-01",
+      "type": "FR",
+      "statement": "FR-AUTH-01** (Priority: Critical) \u2014 Secure user authentication via OAuth or Apple ID sign-in.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 54
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Supabase/SupabaseConfig.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-AUTH-01, NFR-SEC-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Supabase/SupabaseClientProvider.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-AUTH-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Auth/AppleSignInPolicy.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-AUTH-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Sync/LocalDataStore.swift",
+          "line": 4,
+          "excerpt": "// @covers NFR-SEC-01, FR-AUTH-01"
+        },
+        {
+          "path": "ios/HomesFlow/App/AppRouter.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-AUTH-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Auth/AuthView.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-AUTH-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Settings/SettingsView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-NOTIF-01, FR-AUTH-01"
+        },
+        {
+          "path": "ios/HomesFlowTests/AppleSignInPolicyTests.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-AUTH-01"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 75,
+          "excerpt": "- [ ] T017 [P] [US-ADMIN-01] XCUITest: sign-in with email \u2192 dashboard visible \u2014 **Traces**: FR-AUTH-01"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-CLEW-01",
+      "type": "FR",
+      "statement": "FR-CLEW-01** (Priority: Low) \u2014 **Clewseau trial.** Pure helper `HomeDisplayName.normalized(_:)` collapses whitespace in home display names (no UI, no sync). Temporary probe ID \u2014 tombstone after the cold-agent trial. [TOMBSTONED 2026-08-18: cold-agent probe concluded; tooling archived at tag clew-era-final; retirement carried by T900, pending the retired state.]",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 68
+      },
+      "status": "tracked-debt",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/backlog/tasks.md",
+          "line": 8,
+          "excerpt": "- [ ] T900 Retirement carrier: cold-agent probe concluded 2026-08-18, intent deliberately withdrawn, never to be built; tooling archived at tag clew-era-final. This task closes when SpecAssay ships th"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-GUEST-01",
+      "type": "FR",
+      "statement": "FR-GUEST-01** (Priority: Medium) \u2014 Guest users view only approved procedures and info.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 63
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Documents/DocumentRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-03, AC-GUEST-01, FR-GUEST-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Providers/ServiceProviderRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-02, AC-HOME-04, AC-GUEST-01, FR-GUEST-01, AC-HOME-05, AC-SYNC-01, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Permissions/PermissionService.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-01, FR-GUEST-01, AC-PROC-02, AC-PROC-04, AC-PROC-07, AC-GUEST-02"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Guest/GuestAccessDeniedView.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-GUEST-02, FR-GUEST-01"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 252,
+          "excerpt": "- [ ] T071 [P] RLS integration tests against contracts/rls-permissions.md \u2014 **Traces**: FR-USER-01, FR-GUEST-01"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-GUEST-02",
+      "type": "FR",
+      "statement": "FR-GUEST-02** (Priority: Medium) \u2014 Quick guest onboarding via email or SMS invite.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 64
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Features/Members/InviteMemberView.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-USER-01, AC-USER-07, FR-GUEST-02, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Members/PendingInviteDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-USER-02, AC-USER-07, FR-GUEST-02"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-HOME-01",
+      "type": "FR",
+      "statement": "FR-HOME-01** (Priority: High) \u2014 Add/edit home properties with address, photos (display-optimized at upload and cached locally for hero display), and key info.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 56
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Storage/HomePhotoCache.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-06, AC-HOME-07, FR-HOME-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Storage/HomePhotoService.swift",
+          "line": 5,
+          "excerpt": "// @covers AC-HOME-01, AC-HOME-06, AC-HOME-07, FR-HOME-01, NFR-PERF-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Models/SwiftDataModels.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-HOME-01, FR-USER-01, FR-PROC-01, NFR-OFFL-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Home/HomeRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers FR-HOME-01, AC-HOME-01, AC-HOME-02, AC-HOME-08"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Home/HomeHeroCard.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-HOME-01, AC-HOME-07, AC-A11Y-01, NFR-A11Y-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/HomeSetup/HomeSetupView.swift",
+          "line": 5,
+          "excerpt": "// @covers AC-HOME-01, AC-HOME-02, AC-HOME-03, FR-HOME-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Dashboard/DashboardView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, US-ADMIN-01, AC-HOME-08, AC-SYNC-04, FR-NAV-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/HomeDetail/HomeDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, FR-NAV-01, FR-USER-02, AC-HOME-09, AC-HOME-10, AC-HOME-11, AC-A11Y-02, AC-A11Y-03, NFR-A11Y-01, AC-GUEST-01, AC-USER-05"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-HOME-02",
+      "type": "FR",
+      "statement": "FR-HOME-02** (Priority: High) \u2014 Service provider directory (propane, electric, internet, lawn care, etc.) with contacts and notes.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 57
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Providers/ServiceProviderRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-02, AC-HOME-04, AC-GUEST-01, FR-GUEST-01, AC-HOME-05, AC-SYNC-01, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Providers/ServiceProviderDTO.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-02, AC-HOME-04"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Providers/ContactsView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-02, FR-NAV-01, AC-HOME-04, AC-HOME-12, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlowTests/ProviderTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-HOME-04, AC-HOME-05, FR-HOME-02"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-HOME-03",
+      "type": "FR",
+      "statement": "FR-HOME-03** (Priority: High) \u2014 Editable, categorized documents for important details (UI section label: **Files**). Permitted users add files from the **camera**, **photo library**, or **file browser**; file detail offers **Preview** via system Quick Look (zoom, PDF, video, audio where supported), with metadata and actions below.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 58
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Documents/DocumentStorageService.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-HOME-03, AC-HOME-06"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Documents/DocumentRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-03, AC-GUEST-01, FR-GUEST-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Documents/DocumentDTO.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-03, AC-GUEST-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Documents/DocumentQuickLookPreview.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-03, AC-HOME-13, NFR-PERF-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Documents/FilesView.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-03, FR-NAV-01, AC-HOME-11, AC-HOME-12, AC-HOME-13, AC-HOME-14, AC-GUEST-01"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-LOG-01",
+      "type": "FR",
+      "statement": "FR-LOG-01** (Priority: Medium) \u2014 History log of changes for accountability.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 66
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/ActivityLog/ActivityLogDTO.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/ActivityLog/ActivityLogService.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-LOG-01, AC-PROC-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProcedureDetailView.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-PROC-02, FR-PROC-03, FR-LOG-01, AC-PROC-01, AC-PROC-02, AC-PROC-04, AC-PROC-05, AC-PROC-07, AC-PROC-08, AC-GUEST-04, AC-SYNC-07"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-LOG-02",
+      "type": "FR",
+      "statement": "FR-LOG-02** (Priority: Medium) \u2014 User-authored **Log Book**: Owners and Managers write free-form log entries at household scope or attached to a procedure, viewable in a unified chronological log alongside activity history. Entries are append-only offline, editable only within a 10-minute grace window that starts at server receipt. Guests have no Log Book access.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 67
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookScopeFilter.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-LOG-05, FR-LOG-02"
+        },
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookEntryDTO.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-03"
+        },
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-03, AC-LOG-04, AC-LOG-06"
+        },
+        {
+          "path": "ios/HomesFlow/Core/LogBook/LogBookGraceWindowPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-LOG-04, FR-LOG-02"
+        },
+        {
+          "path": "ios/HomesFlow/Features/LogBook/LogEntryEditorSheet.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-04"
+        },
+        {
+          "path": "ios/HomesFlow/Features/LogBook/CommunicationsLogView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-LOG-02, AC-LOG-01, AC-LOG-02, AC-LOG-05, AC-LOG-06"
+        },
+        {
+          "path": "ios/HomesFlowTests/LogBookTests.swift",
+          "line": 4,
+          "excerpt": "// @covers AC-LOG-01, AC-LOG-02, AC-LOG-03, AC-LOG-04, AC-LOG-05, AC-LOG-06, FR-LOG-02"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-NAV-01",
+      "type": "FR",
+      "statement": "FR-NAV-01** (Priority: High) \u2014 Home detail MUST expose four sections labeled **Procedures**, **Contacts**, **Files**, and **People** with device-appropriate navigation (iPhone: hero + horizontal tabs; iPad: compact left-column hero + vertical icon tabs, with a **three-panel** layout \u2014 sidebar, section list, and section detail \u2014 for every section).",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 59
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Members/PeopleSelection.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-NAV-01, AC-USER-02, AC-HOME-10"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Documents/FilesView.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-03, FR-NAV-01, AC-HOME-11, AC-HOME-12, AC-HOME-13, AC-HOME-14, AC-GUEST-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Providers/ContactsView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-02, FR-NAV-01, AC-HOME-04, AC-HOME-12, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Dashboard/DashboardView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, US-ADMIN-01, AC-HOME-08, AC-SYNC-04, FR-NAV-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Members/MembersView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-02, AC-USER-01, AC-USER-02, AC-USER-04\u202606, FR-NAV-01, AC-HOME-12, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/HomeDetail/HomeDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, FR-NAV-01, FR-USER-02, AC-HOME-09, AC-HOME-10, AC-HOME-11, AC-A11Y-02, AC-A11Y-03, NFR-A11Y-01, AC-GUEST-01, AC-USER-05"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-NOTIF-01",
+      "type": "FR",
+      "statement": "FR-NOTIF-01** (Priority: Medium) \u2014 Optional push notifications for changed statuses and new assignments.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 65
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Features/Settings/SettingsView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-NOTIF-01, FR-AUTH-01"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-PROC-01",
+      "type": "FR",
+      "statement": "FR-PROC-01** (Priority: High) \u2014 Add/edit procedure lists (e.g., winterizing, arrival prep) with persistent status (Not Started / In Progress / Complete / N/A).",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 60
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Models/SwiftDataModels.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-HOME-01, FR-USER-01, FR-PROC-01, NFR-OFFL-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureDTO.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-PROC-01, FR-PROC-02"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProceduresView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-PROC-01, FR-PROC-02, NFR-PERF-01, AC-GUEST-02, AC-GUEST-04"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-PROC-02",
+      "type": "FR",
+      "statement": "FR-PROC-02** (Priority: High) \u2014 Procedures contain ordered steps, each with its own status. Owner and Manager users can **create, rename, reorder, and delete** steps on procedures they can modify (per visibility). Guests have read-only access to step content and status.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 61
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureDTO.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-PROC-01, FR-PROC-02"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProcedureDetailView.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-PROC-02, FR-PROC-03, FR-LOG-01, AC-PROC-01, AC-PROC-02, AC-PROC-04, AC-PROC-05, AC-PROC-07, AC-PROC-08, AC-GUEST-04, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProceduresView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-PROC-01, FR-PROC-02, NFR-PERF-01, AC-GUEST-02, AC-GUEST-04"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-PROC-03",
+      "type": "FR",
+      "statement": "FR-PROC-03** (Priority: High) \u2014 Attach optional notes and photos to individual procedure steps (document attachments remain on the Files tab per FR-HOME-03).",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 62
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Storage/ProcedureAttachmentService.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-PROC-03"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Procedures/ProcedureRepository.swift",
+          "line": 6,
+          "excerpt": "// @covers AC-PROC-01, FR-PROC-01, FR-PROC-02, FR-PROC-03, AC-PROC-02, AC-PROC-03, AC-PROC-04, AC-PROC-05, AC-PROC-06, AC-PROC-07, AC-GUEST-03, AC-GUEST-05, FR-"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProcedureDetailView.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-PROC-02, FR-PROC-03, FR-LOG-01, AC-PROC-01, AC-PROC-02, AC-PROC-04, AC-PROC-05, AC-PROC-07, AC-PROC-08, AC-GUEST-04, AC-SYNC-07"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-USER-01",
+      "type": "FR",
+      "statement": "FR-USER-01** (Priority: Critical) \u2014 Multi-role (Owner, Manager, Guest) invitation and access logic, scoped per home.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 53
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Models/SwiftDataModels.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-HOME-01, FR-USER-01, FR-PROC-01, NFR-OFFL-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Permissions/PermissionService.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-01, FR-GUEST-01, AC-PROC-02, AC-PROC-04, AC-PROC-07, AC-GUEST-02"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Home/HomeAccessPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers NFR-SEC-01, FR-USER-01"
+        },
+        {
+          "path": "ios/HomesFlowTests/HomeAccessPolicyTests.swift",
+          "line": 4,
+          "excerpt": "// @covers NFR-SEC-01, FR-USER-01"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 252,
+          "excerpt": "- [ ] T071 [P] RLS integration tests against contracts/rls-permissions.md \u2014 **Traces**: FR-USER-01, FR-GUEST-01"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "FR-USER-02",
+      "type": "FR",
+      "statement": "FR-USER-02** (Priority: Critical) \u2014 Owners can add, edit, remove users and assign roles.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 55
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Members/MemberRemovalPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-02"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Members/MemberRepository.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-USER-02, AC-USER-01, AC-USER-02, AC-USER-04\u202606, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Members/MembersView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-USER-02, AC-USER-01, AC-USER-02, AC-USER-04\u202606, FR-NAV-01, AC-HOME-12, AC-SYNC-07"
+        },
+        {
+          "path": "ios/HomesFlow/Features/HomeDetail/HomeDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, FR-NAV-01, FR-USER-02, AC-HOME-09, AC-HOME-10, AC-HOME-11, AC-A11Y-02, AC-A11Y-03, NFR-A11Y-01, AC-GUEST-01, AC-USER-05"
+        },
+        {
+          "path": "ios/HomesFlowTests/MemberRemovalTests.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-USER-02"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "NFR-A11Y-01",
+      "type": "NFR",
+      "statement": "NFR-A11Y-01** \u2014 UI MUST respect iOS accessibility settings (Dynamic Type, VoiceOver, Reduce Motion, contrast) and remain usable at all supported content size categories",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 145
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/UI/AccessibilityBaseline.swift",
+          "line": 3,
+          "excerpt": "// @covers NFR-A11Y-01, AC-A11Y-01, AC-A11Y-02, AC-A11Y-03"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Home/HomeHeroCard.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-HOME-01, AC-HOME-07, AC-A11Y-01, NFR-A11Y-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/HomeDetail/HomeDetailView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, FR-NAV-01, FR-USER-02, AC-HOME-09, AC-HOME-10, AC-HOME-11, AC-A11Y-02, AC-A11Y-03, NFR-A11Y-01, AC-GUEST-01, AC-USER-05"
+        },
+        {
+          "path": "ios/HomesFlowTests/AccessibilityBaselineTests.swift",
+          "line": 5,
+          "excerpt": "// @covers NFR-A11Y-01, AC-A11Y-01, AC-A11Y-02, AC-A11Y-03"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "NFR-OFFL-01",
+      "type": "NFR",
+      "statement": "NFR-OFFL-01** \u2014 Local data caching and offline sync as a core requirement from day one",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 164
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Models/SwiftDataModels.swift",
+          "line": 4,
+          "excerpt": "// @covers FR-HOME-01, FR-USER-01, FR-PROC-01, NFR-OFFL-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Sync/SyncEngine.swift",
+          "line": 5,
+          "excerpt": "// @covers NFR-OFFL-01, AC-SYNC-01, AC-SYNC-02, AC-SYNC-03"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Sync/StructuralActionPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers AC-SYNC-07, NFR-OFFL-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Sync/NetworkMonitor.swift",
+          "line": 4,
+          "excerpt": "// @covers NFR-OFFL-01"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 139,
+          "excerpt": "- [ ] T035 [NFR-OFFL-01] Field-level merge for non-conflicting offline edits \u2014 **Traces**: AC-SYNC-02 \u2014 *deferred post-MVP (2026-07-03 conflict model decision); pairs with version vectors*"
+        },
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 146,
+          "excerpt": "- [ ] T039 [P] [NFR-OFFL-01] Unit test `test_AC_SYNC_02_disjoint_fields_merge` \u2014 **Traces**: AC-SYNC-02 \u2014 *deferred post-MVP with T035*"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "NFR-PERF-01",
+      "type": "NFR",
+      "statement": "NFR-PERF-01** \u2014 Sub-2s average screen load times (across devices); client streams large file previews to disk (avoids holding entire files in memory) and limits concurrent home-photo prefetch.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 144
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Storage/HomePhotoService.swift",
+          "line": 5,
+          "excerpt": "// @covers AC-HOME-01, AC-HOME-06, AC-HOME-07, FR-HOME-01, NFR-PERF-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Documents/DocumentQuickLookPreview.swift",
+          "line": 5,
+          "excerpt": "// @covers FR-HOME-03, AC-HOME-13, NFR-PERF-01"
+        },
+        {
+          "path": "ios/HomesFlow/Features/Procedures/ProceduresView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-PROC-01, FR-PROC-02, NFR-PERF-01, AC-GUEST-02, AC-GUEST-04"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 254,
+          "excerpt": "- [ ] T072a [P] Performance smoke: screen load & sync latency baselines \u2014 **Traces**: NFR-PERF-01, NFR-SYNC-01"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "NFR-REL-01",
+      "type": "NFR",
+      "statement": "NFR-REL-01** \u2014 99.9% crash-free sessions",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 142
+      },
+      "status": "tracked-debt",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 256,
+          "excerpt": "- [ ] T072c [P] Enable Xcode crash report collection / document NFR-REL-01 monitoring path \u2014 **Traces**: NFR-REL-01"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "NFR-SCALE-01",
+      "type": "NFR",
+      "statement": "NFR-SCALE-01** \u2014 Designed for 100,000 concurrent users",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 181
+      },
+      "status": "tracked-debt",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 255,
+          "excerpt": "- [ ] T072b [P] Document NFR-SCALE-01 architecture assumptions in plan.md (no load test in MVP) \u2014 **Traces**: NFR-SCALE-01"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "NFR-SEC-01",
+      "type": "NFR",
+      "statement": "NFR-SEC-01** \u2014 Encrypted storage for all personal/home/procedure data",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 175
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Core/Supabase/SupabaseConfig.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-AUTH-01, NFR-SEC-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Sync/LocalDataStore.swift",
+          "line": 4,
+          "excerpt": "// @covers NFR-SEC-01, FR-AUTH-01"
+        },
+        {
+          "path": "ios/HomesFlow/Core/Home/HomeAccessPolicy.swift",
+          "line": 3,
+          "excerpt": "// @covers NFR-SEC-01, FR-USER-01"
+        },
+        {
+          "path": "ios/HomesFlowTests/HomeAccessPolicyTests.swift",
+          "line": 4,
+          "excerpt": "// @covers NFR-SEC-01, FR-USER-01"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 304,
+          "excerpt": "- [ ] T087 [P] Enforce PR-only merge to `main`: branch protection requires pull request, `craft-gate` + `SonarCloud Code Analysis`, and disallow admin bypass \u2014 **Traces**: NFR-SEC-01 \u2014 plan Phase 0 (i"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "NFR-SYNC-01",
+      "type": "NFR",
+      "statement": "NFR-SYNC-01** \u2014 Time-to-sync for updates below 1 second",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 143
+      },
+      "status": "tracked-debt",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 254,
+          "excerpt": "- [ ] T072a [P] Performance smoke: screen load & sync latency baselines \u2014 **Traces**: NFR-PERF-01, NFR-SYNC-01"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "US-ADMIN-01",
+      "type": "US",
+      "statement": "US-ADMIN-01** \u2014 As an Owner, I want to add my second home's details, so that I can manage it remotely.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 31
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "ios/HomesFlow/Features/Dashboard/DashboardView.swift",
+          "line": 3,
+          "excerpt": "// @covers FR-HOME-01, US-ADMIN-01, AC-HOME-08, AC-SYNC-04, FR-NAV-01"
+        }
+      ],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 75,
+          "excerpt": "- [ ] T017 [P] [US-ADMIN-01] XCUITest: sign-in with email \u2192 dashboard visible \u2014 **Traces**: FR-AUTH-01"
+        },
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 96,
+          "excerpt": "- [ ] T022 [P] [US-ADMIN-01] Unit test `test_AC_HOME_01_valid_home_created` \u2014 **Traces**: AC-HOME-01 \u2014 *validator only; integration test pending*"
+        },
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 102,
+          "excerpt": "- [ ] T024d [P] [US-ADMIN-01] Snapshot or UI test: iPad home detail trailing column has no hero/segmented tabs \u2014 **Traces**: AC-HOME-09 \u2014 *deferred: needs snapshot/XCUITest infra; manual iPad pass unt"
+        },
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 103,
+          "excerpt": "- [ ] T024e [P] [US-ADMIN-01] Snapshot or UI test: iPad leading column shows compact home hero + vertical icon section tabs \u2014 **Traces**: AC-HOME-10 \u2014 *deferred: needs snapshot/XCUITest infra; manual "
+        },
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 104,
+          "excerpt": "- [ ] T024f [P] [US-ADMIN-01] UI test: Contacts, Files, and People sections use the three-panel layout on iPad \u2014 **Traces**: AC-HOME-11 \u2014 *deferred: needs snapshot/XCUITest infra; manual iPad pass unt"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "US-ADMIN-02",
+      "type": "US",
+      "statement": "US-ADMIN-02** \u2014 As an Owner, I want to invite adult children and service providers as users, so that they can help manage the home or access info they need.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 32
+      },
+      "status": "tracked-debt",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 116,
+          "excerpt": "- [ ] T027 [US-ADMIN-02] Offline invite conflict resolution \u2014 **Traces**: AC-USER-03, AC-SYNC-01"
+        },
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 126,
+          "excerpt": "- [ ] T033a [P] [US-ADMIN-02] Unit test `test_AC_USER_03_offline_invite_conflict` \u2014 **Traces**: AC-USER-03"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "US-ADMIN-03",
+      "type": "US",
+      "statement": "US-ADMIN-03** \u2014 As an Owner, I want to assign permissions to Manager or Guest users for each home, so that only trusted users see confidential info.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 33
+      },
+      "status": "backlog",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "US-CLEW-01",
+      "type": "US",
+      "statement": "US-CLEW-01** \u2014 As a developer validating Clewseau, I want a tiny pure display-name normalizer with durable IDs, so a stock Spec Kit + Clewseau agent can take one AC from registry through proof without UI or sync scope. [TOMBSTONED 2026-08-18: cold-agent probe concluded; tooling archived at tag clew-era-final; retirement carried by T900, pending the retired state.]",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 47
+      },
+      "status": "tracked-debt",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/backlog/tasks.md",
+          "line": 8,
+          "excerpt": "- [ ] T900 Retirement carrier: cold-agent probe concluded 2026-08-18, intent deliberately withdrawn, never to be built; tooling archived at tag clew-era-final. This task closes when SpecAssay ships th"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "US-EDIT-01",
+      "type": "US",
+      "statement": "US-EDIT-01** \u2014 As a Manager user, I want to update maintenance tasks, so that others can see what's done or outstanding.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 37
+      },
+      "status": "backlog",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "US-EDIT-02",
+      "type": "US",
+      "statement": "US-EDIT-02** \u2014 As a Manager user, I want to view and modify service provider details, so I can coordinate repairs or services if needed.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 38
+      },
+      "status": "backlog",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "US-GUEST-01",
+      "type": "US",
+      "statement": "US-GUEST-01** \u2014 As a Guest, I want to see only guest-appropriate information (like WiFi codes/rules), so my access is controlled and simple.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 42
+      },
+      "status": "tracked-debt",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [
+        {
+          "path": "specs/001-mvp/tasks.md",
+          "line": 221,
+          "excerpt": "- [ ] T064 [US-GUEST-01] XCUITest: guest cannot edit provider \u2014 **Traces**: AC-GUEST-01, SC-03"
+        }
+      ],
+      "attestedBy": null,
+      "parent": null
+    },
+    {
+      "id": "US-GUEST-02",
+      "type": "US",
+      "statement": "US-GUEST-02** \u2014 As a Guest, I want to view house procedures for guests, so I know what is expected during my stay.",
+      "registry": {
+        "path": "HomesFlow.prd.md",
+        "line": 43
+      },
+      "status": "backlog",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "parent": null
+    }
+  ],
+  "retired": []
+}
