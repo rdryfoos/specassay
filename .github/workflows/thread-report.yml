@@ -38,6 +38,13 @@ jobs:
           SPECASSAY_CONFIG="$APP/specassay-check-config.yml" \
             bash extensions/specassay-check/scripts/check-traceability.sh || true
           cp "$APP/trace-manifest.json" /tmp/head.json
+          # The authorship sentence reads the v5 sidecar, which thread-report.py
+          # looks for beside --head. Without it the report says "No author
+          # counts: the v5 manifest was not found beside the head manifest"
+          # directly under the verdict line. The shipped ci-thread-report.sh has
+          # always copied it; this workflow predates that script and was still
+          # copying by hand, so it lost the sentence on every comment it posted.
+          cp "$APP/trace-manifest.v5beta.json" /tmp/head.v5beta.json
 
       - name: Gate 2 — emit the base manifest (from the PR base commit)
         run: |
