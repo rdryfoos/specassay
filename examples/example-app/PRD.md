@@ -9,19 +9,19 @@ an open `- [ ] … **Carries**:` TODO).
 
 ## Sync
 
-- US-SYNC-01 — As a user, I keep my lists in sync across devices.
-- FR-SYNC-01 — Two-way sync reconciles list changes across devices.
-- AC-SYNC-01 — A change made offline appears on a second device within 5s of reconnect.
-- AC-SYNC-02 — Disjoint field edits on two devices merge without conflict.
-- AC-OFFL-01 — The app is fully usable with no network; edits queue locally.
+- US-SYNC-01 — As a user, I keep my lists in sync across devices. **Authorship**: case
+- FR-SYNC-01 — Two-way sync reconciles list changes across devices. **Authorship**: design
+- AC-SYNC-01 — A change made offline appears on a second device within 5s of reconnect. **Authorship**: design
+- AC-SYNC-02 — Disjoint field edits on two devices merge without conflict. **Authorship**: design
+- AC-OFFL-01 — The app is fully usable with no network; edits queue locally. **Authorship**: case
 
 ## Inline edit
 
-- US-EDIT-01 — As a user, I can edit a list item inline.
-- FR-EDIT-01 — Inline edit commits on blur and is undoable.
-- AC-EDIT-01 — Undo restores the prior value within one step after an inline edit.
+- US-EDIT-01 — As a user, I can edit a list item inline. **Authorship**: case
+- FR-EDIT-01 — Inline edit commits on blur and is undoable. **Authorship**: design
+- AC-EDIT-01 — Undo restores the prior value within one step after an inline edit. **Authorship**: design
 
 ## Cross-cutting
 
-- NFR-PERF-01 — List view renders 1,000 items at 60fps on a mid-range device.
-- AC-A11Y-01 — All list actions are reachable by keyboard and announced to assistive tech.
+- NFR-PERF-01 — List view renders 1,000 items at 60fps on a mid-range device. **Authorship**: constitution
+- AC-A11Y-01 — All list actions are reachable by keyboard and announced to assistive tech. **Authorship**: constitution
