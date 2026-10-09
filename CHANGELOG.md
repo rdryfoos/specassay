@@ -5,11 +5,41 @@ the bundle version leads, component versions are listed per release.
 
 ## Unreleased
 
-Nothing in this entry changes the bundle. Both items are this repository's own
-tooling and its own documents, which is why they land during a release freeze:
+One item here changes the bundle: the Thread Report's authorship sentence. The
+two below it are this repository's own tooling and its own documents, which is
+why they landed while the release was frozen:
 [#4851](https://github.com/github/spec-kit/issues/4851) and
-[#4852](https://github.com/github/spec-kit/issues/4852) are open on the
-community catalog, and a version bump would move what their validator reads.
+[#4852](https://github.com/github/spec-kit/issues/4852) were open on the
+community catalog, and a version bump would have moved what their validator
+reads. Both are closed now, and the freeze with them.
+
+### Nobody named is not a breakdown of zeros (AC-GATE-160d, amended)
+
+A fifth form of the authorship sentence, for the registry where no row carries a
+mark at all:
+
+> No author named on any of the 10 requirements.
+
+The four forms that stand are untouched. Until now the all-unassigned case fell
+into the partial form, which exists to stop a breakdown of a handful of rows
+being read as the whole registry, and which therefore ends by counting the rest:
+
+> No author named on 10 of 10 requirements; of the rest, 0 came from the case, 0 from the project (design 0, retrospective 0, constitution 0).
+
+Four zeros measuring a remainder that does not exist, offered in the same voice
+as a real count. The reader it lands on is the one who has not met the field
+yet, and it says the tool has measured something about their project rather than
+that there is nothing yet to measure.
+
+Found 2026-10-09 on the sixth demo specimen's own comment, posted by the 0.5.6
+workflow, where the example app's ten rows carried no marks and the sentence
+spent most of its length on zeros. The second sentence above is that comment's,
+verbatim; the first is what the same ten rows now give.
+<!-- specassay:provenance -->
+
+One wording in the fifth form was not ruled: a single unassigned row reads `No
+author named on the one requirement.`, because `any of the 1 requirements` is
+not English, and one row is what a cold project has after its first mint.
 
 ### A reason that no longer describes its claim is not a classification (FR-DOCS-90)
 

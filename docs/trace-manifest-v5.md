@@ -129,12 +129,16 @@ claiming an author that does not exist reads as answered.
 
 **What the Thread Report says.** One sentence above the table, this shape and no other:
 
-> 10 promises from the case, 21 from the project (design 19, retrospective 2, constitution 0).
+> 10 requirements came from the case, 21 from the project (design 19, retrospective 2, constitution 0).
 
 While any row is unassigned the sentence says how many instead of presenting part of the
 registry as the whole:
 
-> Authorship unassigned on 99 of 104 rows; of the rest, 0 promises from the case, 5 from the project (design 0, retrospective 5, constitution 0).
+> No author named on 99 of 104 requirements; of the rest, 0 came from the case, 5 from the project (design 0, retrospective 5, constitution 0).
+
+When *every* row is unassigned there is no rest to count, and the sentence says only that:
+
+> No author named on any of the 104 requirements.
 
 ### `origin`: generalized ID provenance
 

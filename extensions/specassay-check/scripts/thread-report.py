@@ -82,7 +82,9 @@ def authorship_sentence(rows: list) -> str:
     A row with no `authorship` is not silently dropped into "the project". While
     any row is unassigned the sentence says how many, because a breakdown of 5
     requirements presented as the whole of 104 is a lie of omission dressed as a
-    count.
+    count. When *every* row is unassigned there is no breakdown to give, and the
+    fifth form says only that: ruled 2026-10-09, after the partial form counted
+    four zeros for a remainder that did not exist.
     """
     if not rows:
         # No rows to count is not "none from the case": it is not knowing.
@@ -101,8 +103,21 @@ def authorship_sentence(rows: list) -> str:
     tail = (f"from the project (design {counts['design']}, "
             f"retrospective {counts['retrospective']}, "
             f"constitution {counts['constitution']})")
+    total = len(rows)
+    if unassigned == total:
+        # The fifth form, ruled 2026-10-09. The partial form below would count
+        # zeros for a rest that does not exist: "No author named on 10 of 10
+        # requirements; of the rest, 0 came from the case, 0 from the project
+        # (design 0, retrospective 0, constitution 0)" is four numbers
+        # measuring an empty remainder. Seen on the live comment on #74.
+        #
+        # One registry row is reachable and common: it is what a cold project
+        # has after its first mint, which is why the singular is written out
+        # rather than left to read "any of the 1 requirements".
+        if total == 1:
+            return "No author named on the one requirement."
+        return f"No author named on any of the {total} requirements."
     if unassigned:
-        total = len(rows)
         return (f"No author named on {unassigned} of {total} requirements; of the rest, "
                 f"{case} came from the case, {project} {tail}.")
     if case == 0:
