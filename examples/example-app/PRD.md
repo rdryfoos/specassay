@@ -19,7 +19,7 @@ an open `- [ ] … **Carries**:` TODO).
 
 - US-EDIT-01 — As a user, I can edit a list item inline.
 - FR-EDIT-01 — Inline edit commits on blur and is undoable.
-- AC-EDIT-01 — Undo restores the prior value within one step after an inline edit.
+- AC-EDIT-01 — Undo restores the last committed value in one call, and discards any uncommitted draft with it.
 
 ## Cross-cutting
 
