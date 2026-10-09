@@ -111,3 +111,34 @@ def test_the_note_owns_up_to_the_preparation(note):
     assert "already refused by the released Gate" in note
     assert "ten" in note.lower()
     assert "FR-GATE-170" in note
+
+
+# --- this repository's own demo workflow -------------------------------------
+
+WORKFLOW = ROOT / ".github" / "workflows" / "thread-report.yml"
+
+
+def test_the_demo_workflow_copies_the_v5_sidecar_beside_the_head_manifest():
+    """Without it, every Thread Report this repo posts loses its author counts.
+
+    `thread-report.py` reads authorship from the v5 manifest sitting beside
+    `--head`. This workflow copies the manifests by hand, predating the shipped
+    `ci-thread-report.sh` that does the same job correctly, and for as long as
+    it copied only `trace-manifest.json` the comment carried "No author counts:
+    the v5 manifest was not found beside the head manifest" directly under the
+    verdict line. Seen on the live comment on PR #74, 2026-10-09.
+    """
+    body = WORKFLOW.read_text(encoding="utf-8")
+    assert 'cp "$APP/trace-manifest.json" /tmp/head.json' in body
+    assert 'cp "$APP/trace-manifest.v5beta.json" /tmp/head.v5beta.json' in body, (
+        "the head manifest is copied without its v5 sidecar, so the report "
+        "cannot read authorship"
+    )
+
+
+def test_the_shipped_ci_copies_the_sidecar_too():
+    """The adopters' path, which was never broken, pinned so it stays that way."""
+    shipped = ROOT / "extensions" / "specassay-check" / "scripts" / "ci-thread-report.sh"
+    body = shipped.read_text(encoding="utf-8")
+    assert 'v5="${HEAD_REL%.json}.v5beta.json"' in body
+    assert 'cp "$ROOT/$v5" "$OUT_DIR/head.v5beta.json"' in body
