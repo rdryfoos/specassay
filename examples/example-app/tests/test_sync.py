@@ -34,7 +34,7 @@ def test_AC_SYNC_01_offline_change_appears_on_second_device():
     elapsed = time.monotonic() - start
 
     assert value_of(laptop.items, "item-1", "title") == "Buy oat milk"
-    assert elapsed < 5.0  # AC-SYNC-01: within 5s of reconnect
+    assert elapsed < 2.0  # AC-SYNC-01: within 2s of reconnect
 
 
 def test_AC_OFFL_01_edits_queue_locally_with_no_network():
