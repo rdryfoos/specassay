@@ -202,6 +202,40 @@ def test_AC_GATE_160d_the_report_sentence_says_how_many_are_unassigned(tmp_path)
             ) in report
 
 
+def test_AC_GATE_160d_the_sentence_counts_no_rest_when_there_is_none(tmp_path):
+    """The fifth form, ruled 2026-10-09.
+
+    Every row unassigned used to land in the partial form, whose tail counted
+    four zeros for a remainder that does not exist. A project that has not
+    filled the field in is told so plainly instead.
+    """
+    ids = ["AC-A-10", "AC-B-10", "AC-C-10"]
+    v5 = [{"id": i} for i in ids]
+    report = _report(tmp_path, _v4_rows(ids), v5)
+    assert "No author named on any of the 3 requirements." in report
+    # Specifically not the partial form's empty breakdown.
+    assert "of the rest" not in report
+    assert "came from the case" not in report
+
+
+def test_AC_GATE_160d_the_fifth_form_reads_as_English_for_one_row(tmp_path):
+    """One unassigned row is what a cold project has after its first mint."""
+    report = _report(tmp_path, _v4_rows(["AC-A-10"]), [{"id": "AC-A-10"}])
+    assert "No author named on the one requirement." in report
+    assert "any of the 1" not in report
+
+
+def test_AC_GATE_160d_one_mark_among_many_keeps_the_partial_form(tmp_path):
+    """The boundary: the fifth form fires only when every row lacks a mark."""
+    ids = ["AC-A-10", "AC-B-10", "AC-C-10"]
+    v5 = [{"id": "AC-A-10", "authorship": "design"}, {"id": "AC-B-10"}, {"id": "AC-C-10"}]
+    report = _report(tmp_path, _v4_rows(ids), v5)
+    assert ("No author named on 2 of 3 requirements; of the rest, 0 came from the "
+            "case, 1 from the project (design 1, retrospective 0, constitution 0)."
+            ) in report
+    assert "any of the" not in report
+
+
 def test_AC_GATE_160d_a_missing_v5_file_loses_the_numbers_not_the_report(tmp_path):
     """Illuminate, never refuse: with no v5 manifest beside the head, every row
     is unassigned, which is what the sentence then says."""
