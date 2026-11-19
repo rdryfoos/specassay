@@ -155,6 +155,12 @@ def authorship_rows(head_path: str, override: str | None) -> list:
     v5 sibling of --head is read when it is there, which is where the Gate
     writes it. An explicit --head-v5 wins, and a missing file is not an
     error: the sentence then reports every row as unassigned, which is true.
+
+    Objective rows are left out (2026-11-19, when the tier shipped). The
+    sentence counts who authored the project's REQUIREMENTS, and an objective
+    is not one: it is defined in the case, it carries no `**Authorship**`
+    field to fill in, and counting it would report a project with three
+    objectives as having three requirements whose author nobody named.
     """
     if override:
         candidate = Path(override)
@@ -164,7 +170,8 @@ def authorship_rows(head_path: str, override: str | None) -> list:
     if not candidate.is_file():
         return []
     try:
-        return load_manifest(str(candidate)).get("rows", []) or []
+        rows = load_manifest(str(candidate)).get("rows", []) or []
+        return [r for r in rows if r.get("tier") != "objective"]
     except (OSError, json.JSONDecodeError):
         # Illuminate, never refuse: a bad v5 file loses the sentence's numbers,
         # not the report.

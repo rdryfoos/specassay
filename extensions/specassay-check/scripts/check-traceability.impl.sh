@@ -256,6 +256,15 @@ MATRIX_MD="$(yaml_scalar matrix_md)"
 MATRIX_SVG="$(yaml_scalar matrix_svg)"
 PORTFOLIO_MD="$(yaml_scalar portfolio_md)"
 PARENT_DERIVATION="$(yaml_scalar parent_derivation)"
+# FR-CASE-20 -- the objective tier's second registry path. The config names
+# it or the tier is off: "the config has to say which is which rather than
+# leaving the Gate to infer it from a filename" (FR-CASE-20), which is also
+# what keeps every project that has not asked for this reading exactly as it
+# did before the tier existed.
+CASE_FILE="$(yaml_scalar case)"
+OBJ_RE="$(yaml_scalar objective_regex)"
+SERVES_RE="$(yaml_scalar serves_regex)"
+BLOCK_ORPHAN_STORY="$(yaml_scalar block_orphan_story)"
 
 [[ -n "$REGISTRY" ]] || { echo "FAIL: config missing registry" >&2; exit 2; }
 [[ -n "$ID_RE" ]] || ID_RE='(FR|NFR|AC|US)-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?'
@@ -274,6 +283,16 @@ PARENT_DERIVATION="$(yaml_scalar parent_derivation)"
 [[ -n "$MATRIX_SVG" ]] || MATRIX_SVG='coverage.svg'
 [[ -n "$PORTFOLIO_MD" ]] || PORTFOLIO_MD='portfolio-snapshot.md'
 [[ -n "$TARGET_NAME" ]] || TARGET_NAME="$(basename "$PROJECT_ROOT")"
+# FR-CASE-10's shape: OBJ-<DOMAIN>-NN, the same grammar the registry's own
+# IDs use one tier down, so a project that has configured its own grammar
+# can admit the new prefix the same way. `Serves` is read with no colon as
+# well as with one: the first real cross-cutting registry writes
+# "Serves OBJ-LEND-10, OBJ-TRUST-20" on the story's own line, and a mark a
+# hand already writes is worth reading as written. Both patterns are read by
+# the same Python regex engine that parses a Carries value, so keep them to
+# syntax both grep and Python accept: no POSIX classes such as [[:space:]].
+[[ -n "$OBJ_RE" ]] || OBJ_RE='OBJ-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}'
+[[ -n "$SERVES_RE" ]] || SERVES_RE='\*\*Serves\*\*:?|Serves:?'
 
 # Every yaml_list() consumer, present and future: not a special case for
 # the one that bit us.
@@ -1096,6 +1115,7 @@ done < <(sort -u "$tmp/test_data_mentions.txt" 2>/dev/null | awk -F'|' '!seen[$3
 
 # --- Emit trace-manifest.json (always; the manifest should show GAPs even when Gate fails) ---
 export MANIFEST_OUT REGISTRY TARGET_NAME PROJECT_ROOT MATRIX_MODE MATRIX_MD MATRIX_SVG PORTFOLIO_MODE PORTFOLIO_MD PARENT_DERIVATION
+export CASE_FILE OBJ_RE SERVES_RE BLOCK_ORPHAN_STORY
 export MANIFEST_TMP="$tmp"
 export MANIFEST_FAIL="$fail"
 export EXT_VERSION="$(awk '/^  version:/{gsub(/"/,""); print $2; exit}' "$EXT_DIR/extension.yml" 2>/dev/null || echo 0.0.0)"
@@ -1230,6 +1250,53 @@ AUTHORSHIP_RE = re.compile(r"\*\*Authorship\*\*:\s*([A-Za-z-]+)\s*\.?\s*$")
 authorship = {}
 authorship_bad = {}
 
+# @covers FR-CASE-50, AC-CASE-30a -- `Serves` on a registry line names the
+# objectives that line serves, and it is read from the line itself for the
+# same reason Carries is read from the task: the hand already writes it
+# there. Both spellings are accepted, the housestyle `**Serves**:` and the
+# bare `Serves` the first real cross-cutting registry uses.
+#
+# AC-CASE-30a as amended 2026-11-19 reads the declaration on the story's own
+# registry line. Its first draft said "in the spec", and the amendment is
+# recorded in PRD.md: the edge belongs beside the row's definition, where
+# every other line-level declaration this tool reads already lives, and
+# reading one edge from two sites invites a disagreement about which site
+# wins. Nesting under an objective (AC-CASE-30b) stays backlog.
+#
+# The run after the mark is read while the tokens are objective-shaped and
+# stopped at the first that is not, exactly as a Carries value is read, so a
+# line can name its objectives and then say why in prose. A mark with NO
+# objective-shaped token after it is not treated as a declaration at all:
+# "Serves" occurs in English, and reading a sentence as a broken link would
+# refuse a project for its prose. A story that declares nothing is still
+# caught, by the missing-Serves refusal below, which is the check that
+# matters.
+OBJECTIVES_ON = bool(os.environ.get("CASE_FILE"))
+OBJ_RE_RAW = os.environ.get("OBJ_RE") or "OBJ-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}"
+OBJ_ID_RE = re.compile(r"^(?:%s)$" % OBJ_RE_RAW)
+SERVES_MARK_RE = re.compile(os.environ.get("SERVES_RE") or r"\*\*Serves\*\*:?|Serves:?")
+serves_by_id = {}
+
+def read_serves(s):
+    """Return (served objective ids, the statement with the declaration cut out)."""
+    m = SERVES_MARK_RE.search(s)
+    if not m:
+        return [], s
+    rest = s[m.end():]
+    served, consumed = [], 0
+    for tok in re.finditer(r"[^\s,;]+", rest):
+        bare = tok.group(0).strip("`*.()[]").strip()
+        if OBJ_ID_RE.match(bare):
+            if bare not in served:
+                served.append(bare)
+            consumed = tok.end()
+            continue
+        break
+    if not served:
+        return [], s
+    cleaned = (s[:m.start()].rstrip() + " " + rest[consumed:].lstrip()).strip()
+    return served, re.sub(r"\s{2,}", " ", cleaned).strip()
+
 for id_ in ids:
     statements[id_] = id_
     n = def_line_by_id.get(id_)
@@ -1247,6 +1314,12 @@ for id_ in ids:
                 authorship[id_] = raw.lower()
             else:
                 authorship_bad[id_] = raw
+        if OBJECTIVES_ON:
+            # Same reasoning as authorship's strip, and after it: the edge is
+            # metadata about the row, not part of the promise it states.
+            served, s = read_serves(s)
+            if served:
+                serves_by_id[id_] = served
         statements[id_] = s or id_
         registry_refs[id_] = {"path": registry_rel, "line": n}
 
@@ -1279,6 +1352,141 @@ for id_ in sorted(ids):
 # file, not a second parse.
 if authorship_bad:
     (tmp / "authorship_fail.txt").write_text("1\n", encoding="utf-8", newline="\n")
+
+# @covers FR-CASE-20, AC-CASE-20a, AC-CASE-20c -- THE OBJECTIVE TIER. The
+# objectives live in the case file, because the case is where the project's
+# reasons live and the registry below it holds the work. An objective's
+# definition line is its own line in that file, the ID first after any
+# bullet, number or heading mark: the same definition-line doctrine the
+# registry uses, and for the same reason. A case's prose cites its own
+# objectives, and a citation is not a mint. Any numbering a hand puts on
+# those lines is decoration and is read past (AC-CASE-20c), which is the
+# ruling of 2026-09-22: a reader that keyed on the number would make one
+# house style a requirement and silently lose every objective written in
+# the other.
+#
+# Read anywhere in the file, not only under one question's heading. The
+# amendment is recorded in PRD.md beside FR-CASE-20: keying on a heading's
+# wording makes one version of the case template a requirement, which is the
+# argument that row already makes about numbering, one level in.
+objectives = {}
+objective_order = []
+objective_dupes = []
+case_rel = None
+if OBJECTIVES_ON:
+    case_path = Path(os.environ["CASE_FILE"])
+    if not case_path.is_absolute():
+        case_path = Path(repo) / case_path
+    if case_path.is_file():
+        try:
+            case_rel = os.path.relpath(os.path.realpath(case_path), os.path.realpath(repo))
+        except ValueError:
+            case_rel = str(case_path)
+        OBJ_DEF_RE = re.compile(
+            # The dashes are escaped rather than literal so this script stays
+            # ASCII on the wire: it travels through a bash heredoc, under
+            # LC_ALL=C, to whatever interpreter the host found.
+            r"^[\s#>*\-]*(?:\d+[.)]\s*)?(%s)\b[\s:.—–-]*(.*)$" % OBJ_RE_RAW
+        )
+        for n, line in enumerate(
+            case_path.read_text(encoding="utf-8", errors="replace").splitlines(), start=1
+        ):
+            dm = OBJ_DEF_RE.match(line)
+            if not dm:
+                continue
+            oid = dm.group(1)
+            if oid in objectives:
+                # The same two-sided rule the ID registry gets: a second
+                # definition of one ID is drift, not a second row.
+                objective_dupes.append((oid, n))
+                continue
+            objectives[oid] = {"statement": dm.group(2).strip() or oid, "line": n}
+            objective_order.append(oid)
+
+# @covers FR-CASE-40, AC-CASE-20b, AC-CASE-40a, AC-CASE-40b -- the two sides
+# of the tier's refusal, and they are deliberately not symmetrical:
+#
+#   a story that serves nothing -> DIAGNOSTIC by default, FAILURE under the
+#     project's own ratchet (block_orphan_story: true). FR-CASE-40 ruled this
+#     and said why: a real registry carries a backlog of orphan stories the
+#     first time this runs, because the tier did not exist when those stories
+#     were written, and a check that reds every adopter on first contact is a
+#     check they turn off. Report-only makes the backlog countable; the
+#     switch is how an estate that has burned it down keeps it down.
+#   an objective no story serves -> DIAGNOSTIC, always, and never a refusal.
+#     FR-CASE-20 states the asymmetry as the whole design: an unserved
+#     objective is a promise nobody has started, which is honest and common,
+#     while a story serving nothing is work whose reason has gone missing.
+#
+# A story naming an objective the case does not hold is a third thing, and it
+# is a refusal on its own terms: not an unfilled field but a false one, the
+# same reason an authorship value outside the four is refused rather than
+# reported. Only the intent tier is held to the missing-Serves finding at
+# all: a criterion reaches an objective through its requirement and its
+# story, and making every row restate the link would turn one edge into four.
+orphan_stories = []
+if OBJECTIVES_ON:
+    for oid, n in objective_dupes:
+        detail = f"duplicate objective: {oid} is defined again at {case_rel}:{n}"
+        failures.append({"kind": "objective-duplicate", "id": oid, "detail": detail})
+        sys.stderr.write(f"FAIL: {detail}\n")
+    if not objectives and not objective_dupes:
+        detail = (
+            f"no objective found: the config names {case_rel or os.environ['CASE_FILE']} "
+            f"as the objective registry and no line in it defines one"
+        )
+        diagnostics.append({"kind": "objectives-none-found", "id": "", "detail": detail})
+        sys.stderr.write(f"DIAGNOSTIC: {detail}\n")
+    if objectives:
+        for id_ in sorted(serves_by_id):
+            for oid in serves_by_id[id_]:
+                if oid in objectives:
+                    continue
+                detail = (
+                    f"serves an objective the case does not hold: {id_} names "
+                    f"{oid}, which is not defined in {case_rel}"
+                )
+                failures.append({"kind": "objective-unknown", "id": id_, "detail": detail})
+                sys.stderr.write(f"FAIL: {detail}\n")
+        for id_ in sorted(ids):
+            if id_.split("-", 1)[0] != "US" or serves_by_id.get(id_):
+                continue
+            orphan_stories.append(id_)
+        blocking = os.environ.get("BLOCK_ORPHAN_STORY") == "true"
+        for id_ in orphan_stories:
+            detail = (
+                f"orphan story: {id_} serves no objective, and {case_rel} defines "
+                f"{len(objectives)} ({', '.join(objective_order)})"
+            )
+            if blocking:
+                failures.append({"kind": "orphan-story", "id": id_, "detail": detail})
+                sys.stderr.write(f"FAIL: {detail}\n")
+            else:
+                diagnostics.append({"kind": "orphan-story", "id": id_, "detail": detail})
+                sys.stderr.write(f"DIAGNOSTIC: {detail}\n")
+        if orphan_stories and not blocking:
+            # Named in the run's own output as a count, per AC-CASE-40a: a
+            # backlog nobody can count is a backlog nobody burns down.
+            sys.stderr.write(
+                f"DIAGNOSTIC: orphan stories: {len(orphan_stories)} of "
+                f"{len([i for i in ids if i.startswith('US-')])} stories serve no objective "
+                f"(set block_orphan_story: true to refuse them)\n"
+            )
+        served_any = {oid for served in serves_by_id.values() for oid in served}
+        for oid in objective_order:
+            if oid in served_any:
+                continue
+            detail = f"unserved objective: {oid} is defined in {case_rel} and no story serves it"
+            diagnostics.append({"kind": "objective-unserved", "id": oid, "detail": detail})
+            sys.stderr.write(f"DIAGNOSTIC: {detail}\n")
+
+# The verdict crosses back to bash the way authorship's does, a marker file
+# rather than a second parse, because the exit code lives there.
+if any(
+    f["kind"] in ("objective-unknown", "objective-duplicate", "orphan-story")
+    for f in failures
+):
+    (tmp / "objectives_fail.txt").write_text("1\n", encoding="utf-8", newline="\n")
 
 impl_by = {i: [] for i in ids}
 seen_impl = set()
@@ -1774,7 +1982,20 @@ if MATRIX_MODE_ON or PORTFOLIO_MODE_ON:
 # derivation: the rows have carried real edges since, under a name the spec
 # does not use. A comment that outlives its own subject is how a reader
 # concludes a field is missing when it is merely misspelled.
-tier_by_type = {"US": "intent", "FR": "requirement", "NFR": "requirement", "AC": "criterion"}
+#
+# THE OBJECTIVE TIER (2026-11-19, FR-CASE-50). v5's three tiers stopped one
+# short of the question every reader of a thread eventually asks, which is
+# why this work exists at all: a walk up from a test reached the story and
+# stopped, because the row above the story had nowhere to live. It lives here
+# now, as a row like any other with `tier: "objective"`, defined in the case
+# file rather than the registry.
+tier_by_type = {
+    "US": "intent",
+    "FR": "requirement",
+    "NFR": "requirement",
+    "AC": "criterion",
+    "OBJ": "objective",
+}
 v5_rows = []
 for row in rows:
     v5_row = dict(row)
@@ -1791,9 +2012,84 @@ for row in rows:
     # the domain-grouping convention", the same absence the scalar's null
     # meant. The singular does not travel into the v5 file at all, so no
     # reader has two spellings to choose between.
+    #
+    # @covers AC-CASE-30a, AC-CASE-30c
+    # MORE THAN ONE PARENT, AND THE ORDER MATTERS (FR-CASE-50). A story can
+    # serve several objectives: that is what a cross-cutting case means, and
+    # the list spelling has been waiting for it since v5 was drafted.
+    #
+    # The order is not cosmetic. The viewer built to walk these edges walks
+    # the FIRST parent at each hop, so the first parent has to be the next
+    # tier up. For a story that is the objective it serves. For anything
+    # below the story it is the row above it in the registry document, and
+    # the objectives that row also serves ride after: put an objective first
+    # on a requirement and the walk jumps the story tier, which is how a
+    # descent that names four levels ends up showing three.
     parent = v5_row.pop("parent", None)
-    v5_row["parents"] = [parent] if parent else []
+    derived = [parent] if parent else []
+    served = serves_by_id.get(row["id"], [])
+    ordered = (served + derived) if v5_row["tier"] == "intent" else (derived + served)
+    seen_parent = set()
+    v5_row["parents"] = [
+        p for p in ordered if p and not (p in seen_parent or seen_parent.add(p))
+    ]
     v5_rows.append(v5_row)
+
+# @covers FR-CASE-50, AC-CASE-50a, AC-CASE-50b -- the objective rows
+# themselves, and the colour they roll up to.
+#
+# THE COLOUR RULE, ratified 2026-09-22 and written here once: an objective's
+# status is the WEAKEST STARTED status beneath it, in the order GAP,
+# tracked-debt, proven; `backlog` and `retired` are counted but never
+# coloured; an objective with nothing started is `backlog`. It is stated in
+# full in docs/trace-manifest-v5.md's rollup section as well, which is where
+# a viewer looks, so that two renderings of one manifest cannot disagree
+# about a colour each had to invent.
+#
+# The basis is the subtree, not the children alone, which is the basis the
+# rollup already published: a mid-tier GAP must not vanish from an
+# ancestor's count. The children themselves are exactly the stories that
+# cite the objective (AC-CASE-50a), by the citation and never by a shared
+# domain; a requirement that also declares `Serves` keeps that edge as a
+# parent without becoming a child of the objective, so the tier's children
+# stay one level.
+#
+# CYCLE SAFETY, because docs/trace-manifest-schema.md cites single-parent as
+# the reason the recursive rollup is safe: these edges never make a cycle,
+# since they only ever point from a registry row up into the case and no
+# objective has a parent. What they do break is partition. A story cited by
+# two objectives sits in both subtrees, so an objective's rollup is a count
+# over its own subtree and must never be summed with another objective's.
+# The registry tree's own rollup is untouched and still single-parent.
+OBJECTIVE_WEAKNESS = ("GAP", "tracked-debt", "proven")
+stories_by_objective = {}
+for row_id, served_ids in serves_by_id.items():
+    if row_id.split("-", 1)[0] != "US":
+        continue
+    for oid in served_ids:
+        stories_by_objective.setdefault(oid, []).append(row_id)
+
+objective_rows = []
+for oid in objective_order:
+    kids = sorted(stories_by_objective.get(oid, []))
+    counts = {k: 0 for k in ROLLUP_STATUSES}
+    for kid in kids:
+        kid_counts = subtree_counts(kid)
+        for k in ROLLUP_STATUSES:
+            counts[k] += kid_counts[k]
+    obj_row = {
+        "id": oid,
+        "type": "OBJ",
+        "tier": "objective",
+        "statement": objectives[oid]["statement"],
+        "origin": {"kind": "case-line", "path": case_rel, "line": objectives[oid]["line"]},
+        "parents": [],
+        "status": next((s for s in OBJECTIVE_WEAKNESS if counts[s]), "backlog"),
+    }
+    if kids:
+        obj_row["rollup"] = {"rows": sum(counts.values()), **counts}
+    objective_rows.append(obj_row)
+v5_rows = objective_rows + v5_rows
 
 ext_version = os.environ.get("EXT_VERSION", "0.0.0")
 v5_doc = {
@@ -1804,7 +2100,12 @@ v5_doc = {
     "repoPath": repo,
     "generatedAt": doc["generatedAt"],
     "gate": doc["gate"],
-    "totals": doc["totals"],
+    # A copy, with the objective count beside the registry count: `rows` now
+    # holds both kinds, and statusCounts still counts the registry's rows
+    # only, so a reader comparing the two can see where the difference comes
+    # from instead of inferring it. An objective's status is a rollup of rows
+    # already counted there; adding it would count the same work twice.
+    "totals": {**doc["totals"], "objectiveCount": len(objective_rows)},
     # Full 5-value counts (retired included) -- v4's doc carries the
     # 4-value-only view (v4_status_counts) instead; the two documents
     # disagree on this by design, per the version-boundary ruling.
@@ -1835,6 +2136,13 @@ fi
 # @covers FR-GATE-160, AC-GATE-160b -- an authorship value outside the four is
 # a refusal, and the refusal is raised by the one block that parses the field.
 if [[ -f "$tmp/authorship_fail.txt" ]]; then
+  fail=1
+fi
+
+# @covers FR-CASE-40, AC-CASE-40b -- a false link, and an orphan story under
+# a project's own ratchet, are refusals raised by the one block that parses
+# `Serves` and the case file.
+if [[ -f "$tmp/objectives_fail.txt" ]]; then
   fail=1
 fi
 
