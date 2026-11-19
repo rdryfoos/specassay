@@ -236,6 +236,24 @@ def test_AC_GATE_160d_one_mark_among_many_keeps_the_partial_form(tmp_path):
     assert "any of the" not in report
 
 
+def test_AC_GATE_160d_an_objective_row_is_not_a_requirement(tmp_path):
+    """The objective tier shipped 2026-11-19 and put a new kind of row in the
+    v5 file. The sentence counts who authored the project's requirements, and
+    an objective is not one: it is defined in the case, it has no
+    `**Authorship**` field to fill in, and counting it would tell a project
+    with three objectives that three of its requirements have no author."""
+    ids = ["AC-A-10", "AC-B-10"]
+    v5 = [
+        {"id": "OBJ-AIM-10", "tier": "objective", "statement": "A bet."},
+        {"id": "AC-A-10", "tier": "criterion", "authorship": "case"},
+        {"id": "AC-B-10", "tier": "criterion", "authorship": "design"},
+    ]
+    report = _report(tmp_path, _v4_rows(ids), v5)
+    assert ("1 requirement came from the case, 1 from the project "
+            "(design 1, retrospective 0, constitution 0).") in report
+    assert "No author named" not in report
+
+
 def test_AC_GATE_160d_a_missing_v5_file_loses_the_numbers_not_the_report(tmp_path):
     """Illuminate, never refuse: with no v5 manifest beside the head, every row
     is unassigned, which is what the sentence then says."""

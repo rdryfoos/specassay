@@ -250,3 +250,47 @@ where that same ID lands once it has.
   - AC-DOCS-40 — proven by
     `test_AC_DOCS_40_stale_ok_on_the_version_being_cut_is_refused` and
     `test_AC_DOCS_40_stale_ok_on_an_older_version_is_untouched`.
+- FR-CASE-20 — The objective tier's second registry: the case document, named
+  by the config's own `case:` key, read for objective definition lines. The
+  tier is off until a project names the file. Shipped 2026-11-19, proven by
+  `extensions/specassay-check/tests/test_case_objective_tier.py`.
+  - AC-CASE-20a — proven by
+    `test_AC_CASE_20a_the_true_fixture_stays_green`,
+    `test_AC_CASE_20a_a_second_definition_of_one_objective_is_refused`,
+    `test_AC_CASE_20a_the_tier_is_off_until_the_config_names_the_case`,
+    `test_AC_CASE_20a_a_case_with_no_objectives_says_so_and_refuses_nothing`
+    and `test_AC_CASE_20a_a_missing_case_file_refuses_nothing`.
+  - AC-CASE-20b — proven by
+    `test_AC_CASE_20b_an_objective_no_story_serves_is_backlog_and_named`.
+  - AC-CASE-20c — proven by
+    `test_AC_CASE_20c_numbering_on_the_case_headings_is_decoration`.
+  - AC-CASE-30a — proven by
+    `test_AC_CASE_30a_a_story_carries_its_objective_as_its_first_parent`,
+    `test_AC_CASE_30a_a_walk_from_a_test_reaches_an_objective`,
+    `test_AC_CASE_30a_the_declaration_does_not_survive_into_the_statement`
+    and `test_AC_CASE_30a_an_objective_the_case_does_not_hold_turns_the_check_red`.
+    Read on the story's own registry line, per that criterion's amendment of
+    the same date.
+  - AC-CASE-30c — proven by `test_AC_CASE_30c_a_shared_domain_is_not_an_edge`.
+- FR-CASE-40 — A story that serves nothing is report-only by default and a
+  refusal under the project's own `block_orphan_story` ratchet. Shipped
+  2026-11-19, proven by
+  `extensions/specassay-check/tests/test_case_objective_tier.py`.
+  - AC-CASE-40a — proven by
+    `test_AC_CASE_40a_a_story_that_serves_nothing_is_reported_not_refused`
+    and `test_AC_CASE_40a_the_word_serves_in_prose_is_not_a_declaration`.
+  - AC-CASE-40b — proven by
+    `test_AC_CASE_40b_the_ratchet_turns_an_orphan_story_red`.
+- FR-CASE-50 — The manifest carries objective rows: `tier: "objective"`,
+  parents from the citation and ordered so the first parent is the next tier
+  up, and a status rolled up by the ratified colour rule. Shipped 2026-11-19,
+  proven by `extensions/specassay-check/tests/test_case_objective_tier.py`
+  and `tests/test_case_colour_rule_doc.py`.
+  - AC-CASE-50a — proven by
+    `test_AC_CASE_50a_the_case_defines_the_objective_rows`.
+  - AC-CASE-50b — proven by
+    `test_AC_CASE_50b_the_colour_rule_is_the_weakest_started_status` and
+    `test_AC_CASE_50b_a_gap_beneath_a_story_colours_its_objective`.
+  - AC-CASE-50c — proven by
+    `test_AC_CASE_50c_the_colour_rule_is_stated_in_the_v5_schema_page` and
+    `test_AC_CASE_50c_the_rule_is_dated_so_a_reader_can_place_it`.

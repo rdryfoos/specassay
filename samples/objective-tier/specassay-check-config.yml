@@ -1,0 +1,17 @@
+# Gate 2 config for the objective-tier sample. The one line that matters for
+# the tier is `case:`; everything else is the ordinary shape.
+registry: "PRD.md"
+case: "CASE.md"
+target_name: "night-walk"
+manifest_path: "trace-manifest.json"
+specs: "specs/**/spec.md"
+tasks: "specs/**/tasks.md"
+src_globs:
+  - "src/**"
+test_globs:
+  - "tests/**"
+id_regex: "(FR|NFR|AC|US)-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}[a-z]?"
+covers_regex: "@covers[[:space:]]+.*"
+carries_regex: "\*\*(Carries|Traces)\*\*:"
+test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
+parent_derivation: heading-nesting

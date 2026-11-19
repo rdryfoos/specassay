@@ -154,6 +154,19 @@ guess (em-dash law). Document structure yields a tree by construction:
 each ID is assigned at most one parent, so single-parent holds for v1;
 multi-parent/DAG is deferred until a real cross-cutting case forces it.
 
+**The cross-cutting case arrived (2026-11-19), and it did not relax this
+one.** A registry whose stories each serve several objectives is the case
+the sentence above was waiting for, and the edges it needs are the objective
+edges, which live in `trace-manifest.v5beta.json` only: a story's row there
+carries `parents: ["OBJ-…", "OBJ-…"]`. This file is unchanged by it. `parent`
+here is still the heading-derived scalar, still at most one per row, still
+the only tree the rollup below walks. The two facts a reader needs: the
+objective edges never make a cycle, since they only ever point from a
+registry row up into the case document and no objective has a parent; and
+they do not partition, so an objective's rollup covers its own subtree and
+must never be summed with another objective's. See
+`docs/trace-manifest-v5.md`, *The objective tier*.
+
 Every row with at least one descendant carries a `rollup`: status
 counts over **its entire subtree, at any depth** — not leaves-only. A
 non-leaf's own status counts alongside its descendants', so a mid-tier
