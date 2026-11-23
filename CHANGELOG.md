@@ -175,6 +175,25 @@ the September one. It resolves itself when #4854 merges, and the community
 source is `discovery-only` regardless, so the path a stranger is told to use is
 this repository's own catalogs, which are whole.
 
+### A dot-directory keeps its dot in the Thread Report
+
+`norm()` in the Thread Report was `p.lstrip("./")`, and `lstrip` takes a set of
+characters rather than a prefix: every leading dot and slash came off, so a
+changed `.ci/workflows/check.yml` printed as `ci/workflows/check.yml`, and the
+blob and hunk links were built from the same string, pointing at a path no
+repository has. It now drops a leading `./` and nothing else. Both sides of
+the path matching ran through `norm()`, so the mangling cancelled out when two
+normalized paths were compared and no classification was wrong because of it.
+
+One place did lean on the old behavior. With `--config` given and no
+`--project-root`, the project root is `Path(config).parent`, which at a
+repository root is exactly `.`, and the prefix matching needs the empty string
+there; `norm()` supplied it by eating the dot. A project root now normalizes
+through `norm_root()`, where ``""``, `.` and `./` all mean the repository root.
+Without that, every changed file read as one outside the governed project and
+the report said every changed file was claimed. The cold-path end-to-end test
+is what caught it, and a display test now holds all three spellings of the root.
+
 ## 0.5.6 (2026-10-05)
 
 Components: bundle 0.5.6, extension 0.5.6, preset 0.5.6.

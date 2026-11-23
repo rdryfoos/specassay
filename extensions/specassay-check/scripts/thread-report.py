@@ -235,7 +235,31 @@ def glob_to_regex(glob: str) -> re.Pattern:
 
 
 def norm(p: str) -> str:
-    return p.lstrip("./").replace("\\", "/")
+    """Separators forward, and a leading `./` dropped. Nothing else.
+
+    This was `p.lstrip("./")`, and `lstrip` takes a set of characters rather
+    than a prefix: it ate every leading dot and slash, so `.github/workflows/x`
+    normalized to `github/workflows/x`. The report printed that, and the blob
+    and hunk links were built from the same string, so they pointed at a path
+    the repository does not have. Both sides of the path matching run through
+    here, so the mangling cancelled out when two normalized paths were compared;
+    what it did not do is survive being read or clicked.
+    """
+    p = p.replace("\\", "/")
+    return p[2:] if p.startswith("./") else p
+
+
+def norm_root(p: str) -> str:
+    """The project root as a path prefix: ``""``, ``"."`` and ``"./"`` all mean
+    the repository root, and all three normalize to the empty prefix.
+
+    The prefix matching below leaned on the old `norm()` eating a bare dot:
+    `--config specassay-check-config.yml` with no `--project-root` makes the
+    project root exactly ".", and "" is what the matching needs. With `norm()`
+    no longer eating dots, the root says it here instead of relying on a bug.
+    """
+    p = norm(p).rstrip("/")
+    return "" if p == "." else p
 
 
 def norm_ws(s: str) -> str:
@@ -296,7 +320,7 @@ class Linker:
         self.pr_url = pr_url.rstrip("/")
         self.repo_url = m.group(1) if m else ""
         self.head_sha = head_sha or "HEAD"
-        self.prefix = norm(project_prefix).rstrip("/")
+        self.prefix = norm_root(project_prefix)
 
     def _repo_rel(self, project_rel: str) -> str:
         p = norm(project_rel)
@@ -349,7 +373,7 @@ def classify_changed(changed: list, head: dict, cfg: dict, project_prefix: str =
     reg = norm(cfg.get("registry", ""))
     spec_re = glob_to_regex(cfg.get("specs", "specs/**/spec.md"))
     task_re = glob_to_regex(cfg.get("tasks", "specs/**/tasks.md"))
-    pref = norm(project_prefix).rstrip("/")
+    pref = norm_root(project_prefix)
 
     near, far = [], []
     for raw in changed:
