@@ -68,9 +68,9 @@ drive the rev:
 | ----------------- | ------------------------------------------------------------ | -- |
 | `id`              | Durable ID                                                   |   |
 | `type`            | Emitter dialect kind (`AC`/`FR`/`NFR`/`US` for SpecAssay). Free-form; the portable altitude is `tier`. |   |
-| `tier`            | **NEW.** Portable altitude, decoupled from prefix: `"intent" \| "requirement" \| "criterion"`. SpecAssay maps `US→intent`, `FR/NFR→requirement`, `AC→criterion`; clew maps its own kinds. Viewers order the descent by `tier`, falling back to `type` prefix when absent. | ＋ |
+| `tier`            | **NEW.** Portable altitude, decoupled from prefix: `"objective" \| "intent" \| "requirement" \| "criterion"`. SpecAssay maps `OBJ→objective`, `US→intent`, `FR/NFR→requirement`, `AC→criterion`; clew maps its own kinds. Viewers order the descent by `tier`, falling back to `type` prefix when absent. | ＋ |
 | `statement`       | Best-effort prose from the source                            |   |
-| `parents`         | **NEW.** `[id]`: the upward edges (a criterion's requirement, a requirement's intent), declared not inferred. Empty/absent ⇒ fall back to the domain-grouping convention. | ＋ |
+| `parents`         | **NEW.** `[id]`: the upward edges (a criterion's requirement, a requirement's intent, an intent's objective), declared not inferred, **more than one allowed**, and **ordered: the first parent is the next tier up**. Empty/absent ⇒ fall back to the domain-grouping convention. | ＋ |
 | `origin`          | **NEW.** Where the ID comes from (see below). Generalizes `registry`. **Where the row lives, never who wrote it** — see `authorship`. | ＋ |
 | `authorship`      | **NEW.** `"case" \| "design" \| "retrospective" \| "constitution"`: **who authored the row** (see below). Absent when undeclared. | ＋ |
 | `registry`        | `{ path, line }`: retained. Equivalent to `origin` with `kind: "registry-line"`; readers alias one to the other. |   |
@@ -140,6 +140,49 @@ When *every* row is unassigned there is no rest to count, and the sentence says 
 
 > No author named on any of the 104 requirements.
 
+### The objective tier: the row above the story
+
+<!-- @covers AC-CASE-50c -->
+
+v5's first three tiers stopped one short of the question a reader of a thread ends up
+asking. A walk up from a test reached the story and stopped, because the row above the
+story had nowhere to live, and a registry can be entirely green while nobody can say what
+any of it was for. `tier: "objective"` is that row.
+
+An objective is **not a registry row**. It is defined in the project's *case* (the document
+that holds the bets), where SpecAssay reads it by its own definition line, and it reaches
+the manifest as a row like any other:
+
+```jsonc
+{
+  "id": "OBJ-WALK-10",
+  "type": "OBJ",
+  "tier": "objective",
+  "statement": "A walker gets home without stopping to read a map.",
+  "origin": { "kind": "case-line", "path": "CASE.md", "line": 5 },
+  "parents": [],
+  "status": "proven",
+  "rollup": { "rows": 3, "proven": 1, "tracked-debt": 0, "backlog": 2, "GAP": 0, "retired": 0 }
+}
+```
+
+Four things a reader of this file needs to know about those rows:
+
+- **`rows` holds both kinds.** `statusCounts` still counts the registry's rows only, and
+  `totals.objectiveCount` says how many of the rows are objectives. An objective's status
+  is a rollup of rows already counted, so adding it would count the same work twice.
+- **An objective has no parent.** The tier is the top, and `parents` is `[]`.
+- **A story's first parent is its objective**, declared on the story's own line and never
+  inferred from a shared ID family: `US-WALK-01` and `OBJ-WALK-10` share a domain and that
+  is all they share. Below the story the first parent is the row above it in the registry
+  document, with any objectives that row also serves riding after it.
+- **The edges are many-to-one, so they do not partition.** A story cited by two objectives
+  sits in both their rollups. An objective's rollup is a count over its own subtree and
+  must never be summed with another objective's. The registry document's own parent tree is
+  unaffected and stays single-parent, which is what keeps its recursive rollup cycle-safe
+  (see `docs/trace-manifest-schema.md`). These edges cannot make a cycle: they only ever
+  point from a registry row up into the case, and no objective has a parent.
+
 ### `origin`: generalized ID provenance
 
 ```jsonc
@@ -182,6 +225,42 @@ debt). The `children` are derivable from the `parents` edges; `rollup` carries t
 own answer so a viewer need not recompute. **The edges are canonical**: if `rollup.covered`
 contradicts what the edges imply, a viewer trusts the edges and may flag the disagreement.
 
+SpecAssay's own emitter carries the count form instead, which is the shape a renderer can
+name its basis from: per-status counts over the whole subtree at any depth, plus `rows` for
+the subtree's total.
+
+```jsonc
+"rollup": { "rows": 3, "proven": 1, "tracked-debt": 0, "backlog": 2, "GAP": 0, "retired": 0 }
+```
+
+#### The colour rule
+
+<!-- @covers AC-CASE-50c -->
+
+A count does not tell a renderer what colour to paint, so every viewer that wanted one has
+so far decided for itself, which is how two renderings of one manifest come to disagree.
+**The rule, ratified 2026-09-22, in full, so no viewer has to invent one:**
+
+> A parent's colour is the **weakest started** status beneath it, in this order of
+> weakness: **`GAP`, then `tracked-debt`, then `proven`**. `backlog` and `retired` are
+> **counted but never coloured**. A parent with nothing started beneath it is
+> **`backlog`**.
+
+Read it as: if anything beneath the parent is a `GAP`, the parent is a `GAP`, whatever else
+is green; if nothing is a `GAP` but something is tracked debt, the parent is tracked debt;
+if the only started rows are proven, the parent is proven; and a parent whose subtree is
+entirely backlog or retired is backlog, not green and not red.
+
+Two notes a viewer needs:
+
+- **The basis is the subtree, not the children alone**, which is the same basis the counts
+  use: a mid-tier `GAP` must not vanish from an ancestor because the row between them is
+  green.
+- **An emitter may publish the colour as the parent row's own `status`.** SpecAssay does
+  exactly that on objective rows, and nowhere else: registry rows carry their own measured
+  status, and `rollup` beside it. Where a row's `status` is a rolled-up colour rather than
+  its own, the row is an objective, which `tier` already says.
+
 ## Status core (unchanged) + native mapping
 
 The four core statuses and their colors are fixed; this is Loupe's contract:
@@ -218,10 +297,10 @@ contract.
 - [ ] `gate: { ok: boolean, failures: [] }`: `ok` drives braid-vs-fray; `failures` may be empty.
 - [ ] `rows[]`, each with:
   - [ ] `id`: a durable, stable token.
-  - [ ] `tier`: `intent` \| `requirement` \| `criterion` (or a `type` prefix Loupe can map).
+  - [ ] `tier`: `objective` \| `intent` \| `requirement` \| `criterion` (or a `type` prefix Loupe can map).
   - [ ] `status`: one of the four core values.
   - [ ] `statement`: human-readable prose (best effort).
-  - [ ] `parents: [id]` for anything below the top tier: **the edges Loupe draws the thread from.**
+  - [ ] `parents: [id]` for anything below the top tier: **the edges Loupe draws the thread from**, first parent = the next tier up.
 - [ ] Proofs/implementations as anchors (`{ path, line? }` minimum) where they exist.
 - [ ] `origin` (or `registry`) where an ID is locatable: optional, purely a courtesy link.
 - [ ] `rollup` on requirements: optional; Loupe recomputes from edges if absent.

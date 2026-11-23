@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 5,
+  "format": "trace-manifest",
+  "emitter": {
+    "name": "specassay-check",
+    "version": "0.5.6"
+  },
+  "targetName": "night-walk",
+  "repoPath": "/home/user/specassay/samples/objective-tier",
+  "generatedAt": "2026-11-19T22:37:11.634Z",
+  "gate": {
+    "ok": true,
+    "failures": [],
+    "diagnostics": [
+      {
+        "kind": "authorship-unassigned",
+        "id": "AC-WALK-01",
+        "detail": "authorship unassigned: AC-WALK-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "FR-WALK-01",
+        "detail": "authorship unassigned: FR-WALK-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "US-PHONE-01",
+        "detail": "authorship unassigned: US-PHONE-01 declares no **Authorship** on its registry line"
+      },
+      {
+        "kind": "authorship-unassigned",
+        "id": "US-WALK-01",
+        "detail": "authorship unassigned: US-WALK-01 declares no **Authorship** on its registry line"
+      }
+    ],
+    "executionVerified": false
+  },
+  "totals": {
+    "carriesNoneCount": 0,
+    "registryIdCount": 4,
+    "acCount": 1,
+    "coveredCount": 1,
+    "retiredCount": 0,
+    "objectiveCount": 3
+  },
+  "statusCounts": {
+    "proven": 1,
+    "tracked-debt": 0,
+    "GAP": 0,
+    "backlog": 3,
+    "retired": 0
+  },
+  "rows": [
+    {
+      "id": "OBJ-WALK-10",
+      "type": "OBJ",
+      "tier": "objective",
+      "statement": "A walker gets home without stopping to read a map.",
+      "origin": {
+        "kind": "case-line",
+        "path": "CASE.md",
+        "line": 10
+      },
+      "parents": [],
+      "status": "proven",
+      "rollup": {
+        "rows": 3,
+        "proven": 1,
+        "tracked-debt": 0,
+        "backlog": 2,
+        "GAP": 0,
+        "retired": 0
+      }
+    },
+    {
+      "id": "OBJ-POWER-10",
+      "type": "OBJ",
+      "tier": "objective",
+      "statement": "A walker's phone still has charge at the end of the night.",
+      "origin": {
+        "kind": "case-line",
+        "path": "CASE.md",
+        "line": 11
+      },
+      "parents": [],
+      "status": "backlog"
+    },
+    {
+      "id": "OBJ-TRUST-10",
+      "type": "OBJ",
+      "tier": "objective",
+      "statement": "Nothing about a walk leaves the walker's own phone.",
+      "origin": {
+        "kind": "case-line",
+        "path": "CASE.md",
+        "line": 12
+      },
+      "parents": [],
+      "status": "backlog",
+      "rollup": {
+        "rows": 1,
+        "proven": 0,
+        "tracked-debt": 0,
+        "backlog": 1,
+        "GAP": 0,
+        "retired": 0
+      }
+    },
+    {
+      "id": "AC-WALK-01",
+      "type": "AC",
+      "statement": "AC-WALK-01 \u2014 Given a turn fifty metres ahead, when the walker is moving, then the turn is spoken once.",
+      "registry": {
+        "path": "PRD.md",
+        "line": 9
+      },
+      "status": "proven",
+      "implementations": [
+        {
+          "path": "src/walk.py",
+          "line": 4,
+          "excerpt": "# @covers AC-WALK-01"
+        }
+      ],
+      "proofs": [
+        {
+          "name": "test_AC_WALK_01_speaks_the_turn_once",
+          "path": "tests/test_walk.py",
+          "line": 11
+        }
+      ],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "tier": "criterion",
+      "origin": {
+        "kind": "registry-line",
+        "path": "PRD.md",
+        "line": 9
+      },
+      "parents": [
+        "FR-WALK-01"
+      ]
+    },
+    {
+      "id": "FR-WALK-01",
+      "type": "FR",
+      "statement": "FR-WALK-01 \u2014 Turns are spoken, never shown.",
+      "registry": {
+        "path": "PRD.md",
+        "line": 8
+      },
+      "status": "backlog",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "rollup": {
+        "rows": 2,
+        "proven": 1,
+        "tracked-debt": 0,
+        "backlog": 1,
+        "GAP": 0,
+        "retired": 0
+      },
+      "tier": "requirement",
+      "origin": {
+        "kind": "registry-line",
+        "path": "PRD.md",
+        "line": 8
+      },
+      "parents": [
+        "US-WALK-01",
+        "OBJ-WALK-10",
+        "OBJ-POWER-10"
+      ]
+    },
+    {
+      "id": "US-PHONE-01",
+      "type": "US",
+      "statement": "US-PHONE-01 \u2014 As a walker, I can see how much night the battery has left.",
+      "registry": {
+        "path": "PRD.md",
+        "line": 13
+      },
+      "status": "backlog",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "tier": "intent",
+      "origin": {
+        "kind": "registry-line",
+        "path": "PRD.md",
+        "line": 13
+      },
+      "parents": [
+        "OBJ-TRUST-10"
+      ]
+    },
+    {
+      "id": "US-WALK-01",
+      "type": "US",
+      "statement": "US-WALK-01 \u2014 As a walker, I am told the next turn out loud.",
+      "registry": {
+        "path": "PRD.md",
+        "line": 7
+      },
+      "status": "backlog",
+      "implementations": [],
+      "proofs": [],
+      "carryingTasks": [],
+      "attestedBy": null,
+      "rollup": {
+        "rows": 3,
+        "proven": 1,
+        "tracked-debt": 0,
+        "backlog": 2,
+        "GAP": 0,
+        "retired": 0
+      },
+      "tier": "intent",
+      "origin": {
+        "kind": "registry-line",
+        "path": "PRD.md",
+        "line": 7
+      },
+      "parents": [
+        "OBJ-WALK-10"
+      ]
+    }
+  ]
+}

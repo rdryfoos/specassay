@@ -5,13 +5,85 @@ the bundle version leads, component versions are listed per release.
 
 ## Unreleased
 
-One item here changes the bundle: the Thread Report's authorship sentence. The
-two below it are this repository's own tooling and its own documents, which is
-why they landed while the release was frozen:
+Two items here change the bundle: the objective tier and the Thread Report's
+authorship sentence. The two below them are this repository's own tooling and
+its own documents, which is why they landed while the release was frozen:
 [#4851](https://github.com/github/spec-kit/issues/4851) and
 [#4852](https://github.com/github/spec-kit/issues/4852) were open on the
 community catalog, and a version bump would have moved what their validator
 reads. Both are closed now, and the freeze with them.
+
+### A walk from a test now reaches an objective (FR-CASE-20, FR-CASE-40, FR-CASE-50)
+
+v5 named three tiers, intent, requirement and criterion, so a walk up from a
+test reached the story and stopped: the row above the story had nowhere to live,
+and a registry could be entirely green while nobody could say what any of it
+was for. The objective tier was ratified 2026-09-22 and minted as intent, before
+any code, as `FR-CASE-10` through `FR-CASE-60`. This is its read half, built on
+Rik's word of 2026-11-19.
+
+What a project turns on, and the whole switch is one key:
+
+```yaml
+case: "CASE.md"
+```
+
+With it set, three things follow. Objectives are read from that file by their
+own definition lines, `OBJ-<DOMAIN>-NN`, numbering on the heading read past as
+decoration. A `Serves` declaration on a story's own registry line becomes a
+parent edge, more than one objective allowed, which is what the list spelling of
+`parents` was drafted for in v5 and never had an emitter for:
+
+```
+- US-WALK-01 — As a walker, I am told the next turn out loud. Serves OBJ-WALK-10
+  - FR-WALK-01 — Turns are spoken, never shown. **Serves**: OBJ-WALK-10, OBJ-POWER-10
+```
+
+And `trace-manifest.v5beta.json` gains a row per objective, `tier: "objective"`,
+with `origin: {kind: "case-line", …}`, `totals.objectiveCount` beside the
+registry count, and a status rolled up by the colour rule ratified the same day:
+the weakest started status beneath it, `GAP` then `tracked-debt` then `proven`,
+with `backlog` and `retired` counted and never coloured. That rule is now
+written out in full in `docs/trace-manifest-v5.md`, where a viewer looks,
+because a count does not tell a renderer what colour to paint and every viewer
+that wanted one has so far had to invent it.
+
+**The order of `parents` is load-bearing.** The viewer built to walk these edges
+walks the first parent at each hop, so the first parent is the next tier up: for
+a story that is its objective, and below the story it is the row above it in the
+registry document, with any objectives that row also serves riding after. Put an
+objective first on a requirement and the walk jumps the story tier, which is how
+a descent that names four levels ends up showing three.
+
+**Two sides, deliberately not symmetrical.** A story naming an objective the
+case does not define is a refusal: not an unfilled field but a false one, which
+reads as answered. A story serving nothing is report-only, counted in the run's
+own output, and becomes a refusal on a project's own word with
+`block_orphan_story: true`. `FR-CASE-40` ruled that and said why: a real
+registry carries a backlog of orphan stories the first time this runs, because
+the tier did not exist when those stories were written, and a check that reds
+every adopter on first contact is a check they turn off. An objective no story
+serves is reported and never refused, because an unserved objective is a promise
+nobody has started, which is honest and common.
+
+Nothing changes for a project that does not name a case file. No objective rows,
+no `Serves` findings, and a story's parents are what heading nesting alone gave
+them.
+
+`samples/objective-tier/` is an invented night-walking project with the tier
+turned on, and `samples/objective-tier.trace-manifest.v5beta.json` is the
+manifest a real run emitted from it, committed so the tier can be read rather
+than described. A test re-runs the Gate on the sample and compares, so the file
+cannot drift from the emitter.
+
+Still carried by `T929`, and named here so nobody reads the tier as finished:
+objective IDs assigned by the Gate and written back into the case
+(`FR-CASE-10`), which is why the sample's IDs are typed by a hand; nesting as a
+second citation form (`AC-CASE-30b`); and measures as objective-level proof
+(`FR-CASE-60`), still deliberately unbuilt. Two criteria were amended on the
+build rather than worked around, both recorded in `PRD.md`: the declaration is
+read on the story's own registry line, and objectives are read anywhere in the
+case rather than under one question's heading.
 
 ### Nobody named is not a breakdown of zeros (AC-GATE-160d, amended)
 

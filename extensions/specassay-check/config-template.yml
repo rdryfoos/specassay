@@ -68,6 +68,42 @@ test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
 # not your registry nests IDs this way.
 # parent_derivation: heading-nesting
 
+# FR-CASE-20: the objective tier. The case document is a second registry one
+# tier above this one: it holds the objectives (the bets), the registry above
+# holds the promises, and a story says which objective it serves with a
+# `Serves` declaration on its own registry line:
+#
+#   - US-WALK-01 — As a walker, I am told the next turn out loud. Serves OBJ-WALK-10
+#   - FR-WALK-01 — Turns are spoken, never shown. **Serves**: OBJ-WALK-10, OBJ-POWER-10
+#
+# Naming the file here is what turns the tier on; the Gate never infers it
+# from a filename it happens to find. With the key unset, nothing about this
+# tier runs. With it set, `trace-manifest.v5beta.json` gains a row per
+# objective (`tier: "objective"`), every `Serves` line becomes a parent edge,
+# a story naming an objective the case does not define FAILS, and a story
+# serving nothing is reported (see block_orphan_story below).
+#
+# More than one objective per story is allowed and is the point. The edge is
+# always declared: an ID family is never read as an edge, so US-WALK-01 and
+# OBJ-WALK-10 share a domain and nothing else.
+# case: "CASE.md"
+
+# The objective ID grammar, the same shape as id_regex one tier down. Set it
+# if your case mints a different shape. Both this and serves_regex are read
+# by the same regex engine that parses a Carries value, so keep them to
+# syntax both grep and Python accept (no POSIX classes such as [[:space:]]).
+# objective_regex: "OBJ-[A-Z][A-Z0-9]{1,5}-[0-9]{2,}"
+# serves_regex: "\\*\\*Serves\\*\\*:?|Serves:?"
+
+# FR-CASE-40: a story that serves no objective is report-only by default,
+# under gate.diagnostics[], and the run says how many there are. The reason
+# is the same as block_uncovered_proof's below: a real registry carries a
+# backlog of orphan stories the first time this runs, because the tier did
+# not exist when those stories were written, and a check that reds every
+# adopter on first contact is a check they turn off. Flip this once your own
+# backlog is a verified zero, and record the date and reason on this line.
+# block_orphan_story: true
+
 # Rule 4a (PROMOTION-CONTRACT.md): uncovered-proof (an ID with a real,
 # passing test but no file's @covers line names it) is report-only by
 # default -- it never fails the Gate on its own, only appears under
