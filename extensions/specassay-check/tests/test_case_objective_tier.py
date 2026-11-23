@@ -431,13 +431,55 @@ def test_AC_CASE_20a_a_case_with_no_objectives_says_so_and_refuses_nothing(proje
     assert not any(d["kind"] == "orphan-story" for d in manifest["gate"]["diagnostics"])
 
 
-def test_AC_CASE_20a_a_missing_case_file_refuses_nothing(project):
-    """Illuminate, never refuse: the key set and no case file at all is the
-    state a project passes through while it is being set up."""
-    _fixture(project, case="NOT-THERE.md")
+def test_AC_CASE_20d_a_configured_case_file_that_is_not_there_is_refused(project):
+    """Ruled 2026-11-23 and shipped in 0.6.0, reversing this room's own first
+    call that a missing case file should refuse nothing.
+
+    The first reading was "illuminate, never refuse": the key set and no file
+    yet is a state a project passes through while being set up. What that
+    missed is what the silence says. The config declares that this project's
+    objectives matter; with the file gone the tier switches itself off and the
+    run comes back green, so a project that moved or renamed its case is told
+    that every link in it is fine when nothing was checked at all. That is the
+    one shape of silence this tool exists to refuse.
+    """
+    _fixture(project, case="objectives/CASE.md")
+    proc, manifest = project.run()
+
+    assert proc.returncode != 0, "a case: key naming a file that is not there must fail"
+    assert manifest["gate"]["ok"] is False
+    bad = [f for f in manifest["gate"]["failures"] if f["kind"] == "case-missing"]
+    assert len(bad) == 1, manifest["gate"]["failures"]
+    assert bad[0]["detail"] == "case not found: objectives/CASE.md"
+
+    # In plain words, naming the file it looked for, with the path it looked
+    # at and all three ways out: create it, repoint the key, or remove it.
+    assert "objectives/CASE.md" in proc.stderr
+    assert "The config's case: key names the file that holds your objectives" in proc.stderr
+    assert "Nothing was checked against your objectives" in proc.stderr
+    assert "remove the case: key to turn the objective tier off" in proc.stderr
+
+    # One fault, one finding: the empty-case diagnostic is not also raised.
+    assert not any(
+        d["kind"] == "objectives-none-found" for d in manifest["gate"]["diagnostics"]
+    )
+    # And the manifest is still written, the way registry-missing writes it.
+    assert _v5(project)["totals"]["objectiveCount"] == 0
+
+
+def test_AC_CASE_20d_the_same_fixture_with_the_file_back_is_green(project):
+    """The other half of the pair: nothing else about the project changed."""
+    _fixture(project, case="objectives/CASE.md")
+    project.write("objectives/CASE.md", CASE)
     proc, manifest = project.run()
 
     assert proc.returncode == 0, proc.stderr
     assert manifest["gate"]["ok"] is True
     assert manifest["gate"]["failures"] == []
-    assert _v5(project)["totals"]["objectiveCount"] == 0
+    assert not any(f["kind"] == "case-missing" for f in manifest["gate"]["failures"])
+
+    v5 = _v5(project)
+    assert v5["totals"]["objectiveCount"] == 3
+    # Read from where the key points, and the origin says so.
+    assert _row(v5, "OBJ-WALK-10")["origin"]["path"] == "objectives/CASE.md"
+    assert _row(v5, "US-WALK-01")["parents"] == ["OBJ-WALK-10"]

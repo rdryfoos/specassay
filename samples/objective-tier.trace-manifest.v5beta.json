@@ -3,11 +3,11 @@
   "format": "trace-manifest",
   "emitter": {
     "name": "specassay-check",
-    "version": "0.5.6"
+    "version": "0.6.0"
   },
   "targetName": "night-walk",
   "repoPath": "/home/user/specassay/samples/objective-tier",
-  "generatedAt": "2026-11-19T22:37:11.634Z",
+  "generatedAt": "2026-11-23T17:51:44.861Z",
   "gate": {
     "ok": true,
     "failures": [],

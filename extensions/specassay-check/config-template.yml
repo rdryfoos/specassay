@@ -78,7 +78,10 @@ test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
 #
 # Naming the file here is what turns the tier on; the Gate never infers it
 # from a filename it happens to find. With the key unset, nothing about this
-# tier runs. With it set, `trace-manifest.v5beta.json` gains a row per
+# tier runs. Naming a file that is not there is a refusal, not silence: the
+# Gate says which file it looked for, because a tier that switched itself off
+# would report green while checking nothing. With it set,
+# `trace-manifest.v5beta.json` gains a row per
 # objective (`tier: "objective"`), every `Serves` line becomes a parent edge,
 # a story naming an objective the case does not define FAILS, and a story
 # serving nothing is reported (see block_orphan_story below).

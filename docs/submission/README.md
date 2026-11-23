@@ -91,7 +91,7 @@ catalog entry and URLs (3–7 business days; they do not audit code).
 | Item | Where | Verified |
 | --- | --- | --- |
 | `bundle.yml` / `extension.yml` / `preset.yml` manifests | repo root, `extensions/specassay-check/`, `presets/specassay/` | `specify bundle validate` ✓ |
-| Versioned release with the `specify bundle build` artifact | [latest release](https://github.com/rdryfoos/specassay/releases/latest): v0.5.5's three assets, observed 2026-10-05. v0.5.6's are built and published by the Release workflow at the tag, which is why this row names the last one published rather than the one being cut. | built in CI by the real CLI |
+| Versioned release with the `specify bundle build` artifact | [latest release](https://github.com/rdryfoos/specassay/releases/latest): v0.5.6's three assets, re-observed 2026-11-23 on the release page, published 2026-10-06. The release being cut has none until its own tag, which the Release workflow builds and publishes, so this row names the last one published rather than the one being cut. | built in CI by the real CLI |
 | Hosted catalogs with live download URLs | [`catalogs/*.json`](https://github.com/rdryfoos/specassay/tree/main/catalogs) | assets download and install ✓ |
 | Clean-project install, end to end, by bundle ID | — | [test-evidence.md](https://github.com/rdryfoos/specassay/blob/main/docs/submission/test-evidence.md) |
 | LICENSE (MIT) · README · CHANGELOG | repo root | — |

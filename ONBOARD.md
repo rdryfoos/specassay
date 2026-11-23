@@ -28,7 +28,7 @@ wrong you can name the block it went wrong in.
 
 | Thing | Pinned to |
 | --- | --- |
-| SpecAssay | **v0.5.6**, released 2026-10-06. <!-- specassay:current --> This is what `specify bundle install` gives you, and it is what every receipt below was captured on. |
+| SpecAssay | **v0.5.6**, released 2026-10-06. <!-- specassay:stale-ok the release being cut has no published assets until its tag, so this pin stays on the release every receipt below was captured on; it moves only when all thirteen blocks are replayed on the new one, which is what happened at the last two cuts and caught a bad capture once --> This is what `specify bundle install` gives you, and it is what every receipt below was captured on. |
 | GitHub Spec Kit | **v1.0.4**. SpecAssay's manifests accept `>=0.14.0,<2.0.0`, and the floor was checked at v0.5.1 on 2026-09-17: the bundle installs and the Gate runs on Spec Kit 0.14.0, though that version does not scaffold the settings file, so the Gate there reports `config: MISSING` and continues on defaults. <!-- specassay:stale-ok the 0.14.0 floor claim records a run on v0.5.1 and cannot be re-observed without re-running on that release; the floor itself is re-checked each release in CI --> Newer Spec Kit releases exist and the manifests accept them; 1.0.4 is what this page was captured on, and block 2 pins it. |
 | uv | 0.8.17 |
 | Python | 3.11.15 |

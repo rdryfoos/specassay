@@ -350,6 +350,24 @@ if [[ ! -f "$REGISTRY" ]]; then
   # Still try to emit an empty-ish manifest below if possible; exit after emit.
 fi
 
+# @covers FR-CASE-20, AC-CASE-20d -- the second registry gets the first one's
+# refusal. A `case:` key naming a file that is not there was silence until
+# 0.6.0: the tier switched itself off and the run stayed green, so a project
+# that moved or renamed its case file was told that every link in it was fine.
+# A configured path that does not resolve is the one state where silence is
+# worse than a refusal, because the config says the objectives matter and the
+# Gate then checks nothing against them. Mirrors registry-missing exactly,
+# including emitting the manifest anyway, so the refusal is in the record and
+# not only on a terminal.
+if [[ -n "$CASE_FILE" && ! -f "$CASE_FILE" ]]; then
+  record_fail "case-missing" "" "case not found: $CASE_FILE"
+  echo "  The config's case: key names the file that holds your objectives, and this run looked for it at:" >&2
+  echo "    $PROJECT_ROOT/$CASE_FILE" >&2
+  echo "  Nothing was checked against your objectives, because none were read. Either create that file and define its objectives, one to a line:" >&2
+  echo "    - OBJ-EXAMPLE-10 — The outcome this project is betting on." >&2
+  echo "  or point case: at the document that already holds them, or remove the case: key to turn the objective tier off. Then rerun." >&2
+fi
+
 # Registry extraction is scoped to definition-shaped lines only (shared
 # with mint-id.sh's own style-detection pattern), not a blind grep over
 # the whole file. A registry row's own prose can legitimately cite
@@ -1373,11 +1391,13 @@ objectives = {}
 objective_order = []
 objective_dupes = []
 case_rel = None
+case_found = False
 if OBJECTIVES_ON:
     case_path = Path(os.environ["CASE_FILE"])
     if not case_path.is_absolute():
         case_path = Path(repo) / case_path
-    if case_path.is_file():
+    case_found = case_path.is_file()
+    if case_found:
         try:
             case_rel = os.path.relpath(os.path.realpath(case_path), os.path.realpath(repo))
         except ValueError:
@@ -1430,10 +1450,13 @@ if OBJECTIVES_ON:
         detail = f"duplicate objective: {oid} is defined again at {case_rel}:{n}"
         failures.append({"kind": "objective-duplicate", "id": oid, "detail": detail})
         sys.stderr.write(f"FAIL: {detail}\n")
-    if not objectives and not objective_dupes:
+    if case_found and not objectives and not objective_dupes:
+        # Only when the file is there and holds nothing. A file that is not
+        # there at all is `case-missing`, raised in bash above, and saying
+        # both would offer a reader two findings for one fault.
         detail = (
-            f"no objective found: the config names {case_rel or os.environ['CASE_FILE']} "
-            f"as the objective registry and no line in it defines one"
+            f"no objective found: the config names {case_rel} as the objective "
+            f"registry and no line in it defines one"
         )
         diagnostics.append({"kind": "objectives-none-found", "id": "", "detail": detail})
         sys.stderr.write(f"DIAGNOSTIC: {detail}\n")
