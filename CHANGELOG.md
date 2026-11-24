@@ -64,11 +64,13 @@ case: "CASE.md"
 # block_orphan_story: true
 ```
 
-**What else is in this release.** Two more changes to the bundle, both landed
-before this cut: the objective tier itself, below, and the fifth form of the
-Thread Report's authorship sentence. Two to this repository's own tooling and
-documents, `FR-DOCS-90` and `FR-DOCS-80` amended, which landed while the
-community-catalog freeze held and could not move a version:
+**What else is in this release.** Three more changes to the bundle: the
+objective tier itself, below; the fifth form of the Thread Report's authorship
+sentence; and a dot-directory keeping its dot in the Thread Report, which
+landed between the cut and the tag and is the last section under this release.
+Two to this repository's own tooling and documents, `FR-DOCS-90` and
+`FR-DOCS-80` amended, which landed while the community-catalog freeze held and
+could not move a version:
 [#4851](https://github.com/github/spec-kit/issues/4851) and
 [#4852](https://github.com/github/spec-kit/issues/4852) were open then and are
 closed now. Each has its own section below, as written when it landed.
