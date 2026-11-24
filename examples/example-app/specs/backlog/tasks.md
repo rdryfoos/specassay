@@ -6,4 +6,4 @@ TODO. It is deliberately *not* in any spec, has no `@covers` mark, and no
 keeps Gate 2 from flagging it as drift. Pick it up end-to-end and watch the
 status flip from `backlog` → `proven`.
 
-- [ ] T900 Deliver inline-edit undo end-to-end — **Carries**: AC-EDIT-01 (anointed backlog)
+- [x] T900 Deliver inline-edit undo end-to-end — **Carries**: AC-EDIT-01 (was anointed backlog; built, marked and proved in this change)
