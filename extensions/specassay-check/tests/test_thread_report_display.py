@@ -218,6 +218,45 @@ def test_the_off_thread_files_are_still_named_under_the_fold(tmp_path):
     assert "docs/notes.md" in out and "Makefile" in out
 
 
+def test_a_changed_path_keeps_the_dot_its_name_begins_with(tmp_path):
+    """A leading `./` is noise and comes off; a leading `.` is the name.
+
+    `norm()` dropped both, because `lstrip` takes a set of characters and not a
+    prefix, so every dot-directory in the repository printed one character short
+    and the links built from the same string pointed at a path that is not there.
+    """
+    base = head = [row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))]
+    out, _ = report(tmp_path, base, head,
+                    [".ci/workflows/check.yml", "./docs/notes.md", "...dots/odd.md"])
+
+    lines = out.splitlines()
+    assert "- `.ci/workflows/check.yml`" in lines, (
+        "the dot the name begins with was eaten:\n"
+        + "\n".join(ln for ln in lines if "check.yml" in ln))
+    assert "- `...dots/odd.md`" in lines, "every leading dot came off, not just the first"
+    # The noise still goes: `./docs/notes.md` is `docs/notes.md`.
+    assert "- `docs/notes.md`" in lines
+    assert "- `./docs/notes.md`" not in lines
+
+
+def test_a_project_root_of_one_dot_still_means_the_repository_root(tmp_path):
+    """`--config specassay-check-config.yml` and no `--project-root` makes the
+    project root exactly `.`, and the prefix matching needs the empty prefix.
+
+    The old `norm()` supplied that by eating the dot. Dropping the dot-eating
+    without saying so turned every changed file into one outside the governed
+    project, and the report then claimed every changed file was claimed. This
+    holds the answer whichever spelling of the root arrives.
+    """
+    base = head = [row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))]
+    for root in (".", "./", ""):
+        out, _ = report(tmp_path, base, head, ["docs/notes.md"], project_root=root)
+        assert "**1** changed file no requirement claims" in verdict_line(out), (
+            f"with project_root={root!r} an unclaimed file went missing:\n"
+            + verdict_line(out))
+        assert "- `docs/notes.md`" in out.splitlines()
+
+
 # --- what must not fold ----------------------------------------------------
 
 
