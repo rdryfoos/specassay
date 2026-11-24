@@ -2,8 +2,12 @@
 
 A copy-and-paste walk. Each issue is a GitHub issue form on the Spec Kit repo;
 open the form, then work down this page filling each field in the order the form
-asks for it. The values below are for **v0.5.6** <!-- specassay:current -->,
-prepared 2026-10-06 and not yet filed.
+asks for it. The values below are the ones filed on 2026-10-06, for **v0.5.6**
+<!-- specassay:provenance --> and `docs/submission/filing-history.md` says what
+became of them. **The next round is not prepared here.** The release cut on
+2026-11-23 moves the arrears on by one, and a round for it wants its own
+published assets and its own re-reading of the community catalog, which is the
+work this page's own process says to do rather than to assume.
 
 The sections further down are the record of the rounds that were filed,
 including **v0.5.2 refiled**, which says why that round had to be filed twice.
@@ -43,7 +47,7 @@ Then, in the form's own order:
 
 1. **Extension ID**: `specassay-check`
 2. **Extension Name**: `SpecAssay Check`
-3. **Version**: `0.5.6` <!-- specassay:current -->
+3. **Version**: `0.5.6` <!-- specassay:provenance -->
 4. **Description**, **Author**, **Repository URL**, **Download URL**, **License**: paste-from doc
 5. **Homepage**, **Documentation URL**, **Changelog URL** (all optional): paste-from doc
 6. **Required Spec Kit Version**: paste-from doc
@@ -71,7 +75,7 @@ Then, in the form's own order:
 
 1. **Preset ID**: `specassay`
 2. **Preset Name**: `SpecAssay`
-3. **Version**: `0.5.6` <!-- specassay:current -->
+3. **Version**: `0.5.6` <!-- specassay:provenance -->
 4. **Description**, **Author**, **Repository URL**, **Download URL**: paste-from doc
 5. **Documentation URL**, **License**, **Required Spec Kit Version**: paste-from doc
 6. **Required Extensions** (optional), **Templates Provided** (`3`), **Commands Provided** (`0`), **Number of Scripts** (optional, `0`)
@@ -98,7 +102,7 @@ Then, in the form's own order:
 
 1. **Bundle ID**: `specassay`
 2. **Bundle Name**: `SpecAssay`
-3. **Version**: `0.5.6` <!-- specassay:current -->
+3. **Version**: `0.5.6` <!-- specassay:provenance -->
 4. **Role or Team**: `developer`
 5. **Description**, **Author**, **Repository URL**, **Download URL**: paste-from doc
 6. **Documentation URL**, **License**, **Required Spec Kit Version**: paste-from doc

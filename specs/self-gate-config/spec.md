@@ -264,6 +264,11 @@ where that same ID lands once it has.
     `test_AC_CASE_20b_an_objective_no_story_serves_is_backlog_and_named`.
   - AC-CASE-20c — proven by
     `test_AC_CASE_20c_numbering_on_the_case_headings_is_decoration`.
+  - AC-CASE-20d — proven by
+    `test_AC_CASE_20d_a_configured_case_file_that_is_not_there_is_refused`
+    and `test_AC_CASE_20d_the_same_fixture_with_the_file_back_is_green`.
+    Shipped 2026-11-23 in 0.6.0, and it replaces this room's own first call
+    that the state should refuse nothing.
   - AC-CASE-30a — proven by
     `test_AC_CASE_30a_a_story_carries_its_objective_as_its_first_parent`,
     `test_AC_CASE_30a_a_walk_from_a_test_reaches_an_objective`,

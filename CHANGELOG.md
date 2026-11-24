@@ -3,15 +3,75 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
-## Unreleased
+## 0.6.0 (2026-11-23)
 
-Two items here change the bundle: the objective tier and the Thread Report's
-authorship sentence. The two below them are this repository's own tooling and
-its own documents, which is why they landed while the release was frozen:
+Components: bundle 0.6.0, extension 0.6.0, preset 0.6.0.
+
+**The objective tier, released.** A walk up from a test now reaches the reason
+the work exists, which is the one question the thread could not answer before.
+Rik's word, 2026-11-23: release the tier.
+
+**Why the minor digit moves.** This estate's practice, written down under 0.5.1
+when the question last came up, is that the minor digit moves for
+newly-possible refusals. This release makes four refusals possible that 0.5.6
+could not make: a story naming an objective the case does not define, a
+duplicate objective definition, an orphan story under a project's own
+`block_orphan_story` ratchet, and a `case:` key naming a file that is not
+there. Strict semver agrees by a different road, a new feature being a MINOR
+bump, so the two rules that disagreed at 0.5.1 point the same way here. All
+three components move together, per the versioning law recorded under 0.3.3.
+
+**Nothing changes for a project that does not name a case file.** No objective
+rows, no `Serves` findings, no new refusals, and a story's parents are what
+heading nesting alone gave them. The tier is reached by adding one key, and
+until a project adds it this release behaves as 0.5.6 did.
+
+### A `case:` key naming a file that is not there is a refusal (AC-CASE-20d)
+
+Found by Rik on the merged tier, 2026-11-23: with the tier on, removing the
+case file turned the tier's checks off and the run stayed green. The first
+build's own call was that the state should refuse nothing, on this room's
+standing reading, illuminate never refuse, and on the grounds that a key set
+before its file exists is a state a project passes through while being set up.
+
+The reversal is right, and what the first reading missed is what the silence
+says. The config declares that this project's objectives matter; with the file
+gone the tier switches itself off and the verdict comes back **green**, so a
+project that moved or renamed its case is told that every link in it is fine
+when nothing was checked against any objective at all. The second registry now
+gets the first one's refusal, `registry-missing`'s own shape: the file it looked
+for, the path it looked at, all three ways out (create it, repoint the key, or
+remove the key and turn the tier off), and the manifest written either way so
+the refusal is in the record and not only on a terminal.
+
+### Upgrading
+
+A project on 0.5.6 takes this with:
+
+```bash
+specify bundle update specassay
+```
+
+Nothing else is required, and nothing in a project's own files has to change.
+To turn the objective tier on afterwards, add to
+`specassay-check-config.yml`:
+
+```yaml
+case: "CASE.md"
+# Only if your objectives are not OBJ-<DOMAIN>-NN, e.g. OBJ-1, OBJ-2:
+# objective_regex: "OBJ-[0-9]+"
+# Once your orphan stories are a verified zero, with the date and reason here:
+# block_orphan_story: true
+```
+
+**What else is in this release.** Two more changes to the bundle, both landed
+before this cut: the objective tier itself, below, and the fifth form of the
+Thread Report's authorship sentence. Two to this repository's own tooling and
+documents, `FR-DOCS-90` and `FR-DOCS-80` amended, which landed while the
+community-catalog freeze held and could not move a version:
 [#4851](https://github.com/github/spec-kit/issues/4851) and
-[#4852](https://github.com/github/spec-kit/issues/4852) were open on the
-community catalog, and a version bump would have moved what their validator
-reads. Both are closed now, and the freeze with them.
+[#4852](https://github.com/github/spec-kit/issues/4852) were open then and are
+closed now. Each has its own section below, as written when it landed.
 
 ### A walk from a test now reaches an objective (FR-CASE-20, FR-CASE-40, FR-CASE-50)
 
