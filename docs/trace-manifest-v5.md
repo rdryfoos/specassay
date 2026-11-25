@@ -166,7 +166,7 @@ the manifest as a row like any other:
 }
 ```
 
-Four things a reader of this file needs to know about those rows:
+Five things a reader of this file needs to know about those rows:
 
 - **`rows` holds both kinds.** `statusCounts` still counts the registry's rows only, and
   `totals.objectiveCount` says how many of the rows are objectives. An objective's status
@@ -182,6 +182,22 @@ Four things a reader of this file needs to know about those rows:
   unaffected and stays single-parent, which is what keeps its recursive rollup cycle-safe
   (see `docs/trace-manifest-schema.md`). These edges cannot make a cycle: they only ever
   point from a registry row up into the case, and no objective has a parent.
+- **An objective can be called off, and says so.** A bet a project no longer holds is
+  marked `**Superseded**: (YYYY-MM-DD): reason` on its own definition line in the case.
+  Its row keeps its ID and its statement, carries `"superseded": {"date", "reason"}`,
+  reads `status: "retired"`, and is not counted as unserved: a finished bet is not a
+  neglected one. The alternative, deleting the objective, loses both the ID and the
+  record of the change of mind, which is the thing a case is kept for.
+
+  ```jsonc
+  {
+    "id": "OBJ-GROUP-10",
+    "tier": "objective",
+    "statement": "A walker can see where the rest of the group is.",
+    "status": "retired",
+    "superseded": { "date": "2026-11-25", "reason": "nobody walked in a group" }
+  }
+  ```
 
 ### `origin`: generalized ID provenance
 
@@ -260,6 +276,12 @@ Two notes a viewer needs:
   exactly that on objective rows, and nowhere else: registry rows carry their own measured
   status, and `rollup` beside it. Where a row's `status` is a rolled-up colour rather than
   its own, the row is an objective, which `tier` already says.
+- **A superseded objective takes no colour at all.** Where an objective carries
+  `superseded`, its `status` is `retired` and the rule above is not applied to it: a
+  called-off bet must not be painted by the state of work that outlived it, and `retired`
+  is the status core's own word for a row that is no longer measured. This is the rule's
+  only exception, added 2026-11-25 with `FR-CASE-70`; every other objective row's status
+  is the colour the rule gives.
 
 ## Status core (unchanged) + native mapping
 

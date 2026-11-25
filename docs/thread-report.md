@@ -93,6 +93,52 @@ their badges are **manifest values**, not display words: a viewer renders them a
 [`trace-manifest-schema.md`](trace-manifest-schema.md) defines them, so the
 plain-words pass left them exactly as they were.
 
+### What refused, and what the case defines
+
+Two sentences sit between the verdict line and the sections, in this order, and
+each is absent when it has nothing to say.
+
+**A red verdict names the refusal.** `🔴 Do not merge yet` says the separate
+check is red; it never said what the check found, so a reader had to open the
+job log to learn it. The line under it names each kind of refusal and how many
+of it there are, biggest kind first, ties alphabetical:
+
+```
+The Gate refused: 9 refusals, **9** `objective-duplicate`.
+```
+
+The kind is the Gate's own word for it, printed as code, not a translation:
+the same string appears in the check's own output and in the manifest's
+`gate.failures`, so a reader can search for it. The sentence **reports and
+never prescribes** — the comment is the illuminate rung, so it says what the
+Gate said and not what to do about it. A green run prints no such line.
+
+**A project with objectives says what its case defines.** Where the head
+manifest carries objective rows, one sentence counts them:
+
+```
+The case defines 3 objectives, 2 that no story serves, 1 story serving none.
+```
+
+Every objective the case defines, then how many of them nothing serves, then —
+only when it is non-zero — how many stories serve no objective. A superseded
+objective is counted as superseded rather than as unserved, and the unserved
+count is then measured over the live ones and says so:
+
+```
+The case defines 3 objectives, 1 of them superseded, 1 live that no story serves.
+```
+
+The subject is what the case **defines**, superseded objectives included,
+because that is what the sentence says it is counting. An earlier draft led
+with the live count and put the superseded number in brackets after it, which
+rendered on a four-objective case as `3 objectives (1 superseded)` — a number a
+reader would have had to check against the manifest.
+
+A project that has not turned the tier on has no objective rows, and the
+sentence does not appear at all: a count of nothing reads as a measurement, and
+the authorship sentence beside it already taught this room that.
+
 ### 1. Reworded requirements
 
 The one section that is about the requirement itself, not the code. When a pull

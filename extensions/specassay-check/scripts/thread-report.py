@@ -210,12 +210,22 @@ def objectives_line(rows: list, head: dict) -> str | None:
         if d.get("kind") == "orphan-story"
     )
 
-    n = len(live)
-    bits = [f"{n} {'objective' if n == 1 else 'objectives'}"]
-    if len(objectives) != n:
-        bits[0] += f" ({len(superseded)} superseded)"
+    # The subject is every objective the case DEFINES, because that is what the
+    # sentence says it is counting. The superseded ones are then named as a
+    # subtraction from it, and the unserved count is measured over what is
+    # left. An earlier draft led with the live count and put the superseded
+    # number in brackets after it: rendered on the sample that reads "3
+    # objectives (1 superseded)" over a case that defines four, which is a
+    # number a reader would have had to check against the manifest.
+    total = len(objectives)
+    bits = [f"{total} {'objective' if total == 1 else 'objectives'}"]
+    if superseded:
+        bits.append(f"{len(superseded)} of them superseded")
     if unserved:
-        bits.append(f"{len(unserved)} that no story serves")
+        word = "live " if superseded else ""
+        bits.append(f"{len(unserved)} {word}that no story serves")
+    elif superseded:
+        bits.append("every live one served")
     else:
         bits.append("every one of them served")
     if orphans:

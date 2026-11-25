@@ -132,7 +132,34 @@ def test_AC_THREAD_30b_a_superseded_objective_is_counted_as_superseded(tmp_path)
          "authorship": "design"},
     ]
     report = _report(tmp_path, _head(rows=["AC-WALK-01"]), v5)
-    assert "The case defines 1 objective (1 superseded), every one of them served." in report
+    # Two objectives are DEFINED here and one of them is called off. The
+    # subject of the sentence is what the case defines, so it counts both and
+    # names the superseded one as a subtraction: a sentence that led with the
+    # live count would read "1 objective (1 superseded)" over a case holding
+    # two, and the reader would have to open the manifest to find that out.
+    assert ("The case defines 2 objectives, 1 of them superseded, "
+            "every live one served.") in report
+    assert "(1 superseded)" not in report
+
+
+def test_AC_THREAD_30b_an_unserved_live_objective_beside_a_superseded_one(tmp_path):
+    """The unserved count is measured over the live objectives only, and says
+    so in the word `live` once a superseded one is in the sentence."""
+    v5 = [
+        {"id": "OBJ-WALK-10", "tier": "objective", "status": "proven"},
+        {"id": "OBJ-POWER-10", "tier": "objective", "status": "backlog"},
+        {"id": "OBJ-TRUST-10", "tier": "objective", "status": "retired",
+         "superseded": {"date": "2026-11-24", "reason": "the aim was dropped"}},
+        {"id": "US-WALK-01", "tier": "intent", "parents": ["OBJ-WALK-10"]},
+        {"id": "AC-WALK-01", "tier": "criterion", "parents": ["US-WALK-01"],
+         "authorship": "design"},
+    ]
+    report = _report(tmp_path, _head(rows=["AC-WALK-01"]), v5)
+    # Three defined, one called off, and of the two live one is unserved: the
+    # superseded one is NOT among the unserved, which is the whole point of
+    # FR-CASE-70.
+    assert ("The case defines 3 objectives, 1 of them superseded, "
+            "1 live that no story serves.") in report
 
 
 def test_AC_THREAD_30b_no_objectives_means_no_sentence(tmp_path):
