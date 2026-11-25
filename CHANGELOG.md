@@ -3,6 +3,69 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## 0.6.1 (2026-11-25)
+
+Components: bundle 0.6.1, extension 0.6.1, preset 0.6.1.
+
+**A case can keep its own history.** The first room to take the objective tier
+had a case that defined seven objectives once each, quoted its own superseded
+wording under a history heading, and was refused nine times for duplicates it
+did not have: the first build's definition pattern read a quoted line as a
+second definition. A line a case **quotes** — a `>` blockquote — or fences in a
+code block is now not a definition at all, neither a first nor a second one, so
+superseded wording and a worked example can sit in the file beside the live
+objectives. Rik's word, 2026-11-25: fix it in SpecAssay.
+
+This is the release's blocker and its reason. A case that cannot hold the record
+of a change of mind is not a case; the workaround was to delete the history or
+to stay off the tier.
+
+**An objective can be called off.** `**Superseded**: (YYYY-MM-DD): reason` on an
+objective's own definition line keeps the ID and the record, reads
+`status: "retired"`, carries `superseded: {date, reason}` in the v5 manifest, and
+takes the objective out of the unserved count: a finished bet is not a neglected
+one. The tier shipped with no way to do this, and the two options without it were
+to delete the objective, losing both the ID and the reason, or to be told for
+ever that nothing serves it. The colour rule does not touch a superseded row —
+its one exception, and `docs/trace-manifest-v5.md` says so where the rule is
+stated.
+
+**A red Thread Report says what refused.** `🔴 Do not merge yet` said the
+separate check was red and never what it found; nine findings of one kind lived
+only in the job log. The line under the verdict now names each kind of refusal
+and how many of it there are, biggest kind first, in the Gate's own word for the
+kind. It reports and does not prescribe: the comment is the illuminate rung. A
+project with objectives also gets one sentence saying how many its case defines,
+how many of them are superseded, how many live ones nothing serves, and how many
+stories serve none. Neither sentence appears when it would be a count of
+nothing.
+
+This row widens past the objective tier that found it on purpose. A report that
+explained only the newest refusals would be the same defect with a shorter list.
+
+**An anchor is not part of the statement.** `- OBJ-WALK-10 {#walk} — ...` reads
+as the objective it is, with the anchor read past rather than carried into the
+statement text.
+
+**Why the patch digit and not the minor.** The test this estate set under 0.5.1
+is whether anything the release ships can refuse something that passed before.
+Two of the four changes remove a refusal or touch only the report. The third
+adds one refusal kind, a malformed `**Superseded**` record, and it can only fire
+on a line carrying a mark that did not exist until today — with one remote
+exception, named rather than waved off: a case whose objective line already read
+`**Superseded**:` as prose would newly be refused for a record it never meant to
+write. No published case is known to do that, and the alternative, reading a
+half-written record loosely, loses the reason, which is the one thing the record
+is kept for. All three components move together, per the versioning law recorded
+under 0.3.3.
+
+**Registry.** `AC-CASE-20e`, `AC-CASE-20f`, `FR-CASE-70` with
+`AC-CASE-70a`/`b`/`c`, and `FR-THREAD-30` with `AC-THREAD-30a`/`b`, minted before
+the code and carried by `T957`. `FR-CASE-20` is amended: a quoted line is not a
+definition. `samples/objective-tier/` now demonstrates both the history and the
+called-off objective in a committed manifest, and `samples/objective-tier.md`
+reads it.
+
 ## 0.6.0 (2026-11-23)
 
 Components: bundle 0.6.0, extension 0.6.0, preset 0.6.0.
