@@ -7,7 +7,7 @@
   },
   "targetName": "night-walk",
   "repoPath": "/home/user/specassay/samples/objective-tier",
-  "generatedAt": "2026-11-23T17:51:44.861Z",
+  "generatedAt": "2026-11-25T03:37:47.681Z",
   "gate": {
     "ok": true,
     "failures": [],
@@ -41,7 +41,7 @@
     "acCount": 1,
     "coveredCount": 1,
     "retiredCount": 0,
-    "objectiveCount": 3
+    "objectiveCount": 4
   },
   "statusCounts": {
     "proven": 1,
@@ -104,6 +104,23 @@
         "backlog": 1,
         "GAP": 0,
         "retired": 0
+      }
+    },
+    {
+      "id": "OBJ-GROUP-10",
+      "type": "OBJ",
+      "tier": "objective",
+      "statement": "A walker can see where the rest of the group is.",
+      "origin": {
+        "kind": "case-line",
+        "path": "CASE.md",
+        "line": 13
+      },
+      "parents": [],
+      "status": "retired",
+      "superseded": {
+        "date": "2026-11-25",
+        "reason": "nobody walked in a group; the aim was mine, not theirs"
       }
     },
     {

@@ -188,6 +188,12 @@ def objectives_line(rows: list, head: dict) -> str | None:
     a sentence about a tier nobody has turned on is noise, and the authorship
     sentence beside it already taught this room that a count of nothing reads
     as a measurement.
+
+    "Served" counts a declaration from ANY row, which is what the Gate's own
+    unserved finding has counted since the tier shipped. Two numbers in one
+    comment must not be measured differently, and the registry's own words say
+    *story* where the shipped reading says *any row*: AC-THREAD-30b names that
+    disagreement rather than resolving it here.
     """
     objectives = [r for r in rows if r.get("tier") == "objective"]
     if not objectives:

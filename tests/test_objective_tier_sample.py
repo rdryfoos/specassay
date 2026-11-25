@@ -66,13 +66,45 @@ def test_the_committed_sample_is_what_the_gate_emits_today(committed, emitted):
 
 def test_the_sample_carries_the_objective_rows(committed):
     objectives = [r for r in committed["rows"] if r["tier"] == "objective"]
-    assert [r["id"] for r in objectives] == ["OBJ-WALK-10", "OBJ-POWER-10", "OBJ-TRUST-10"]
-    assert committed["totals"]["objectiveCount"] == 3
+    assert [r["id"] for r in objectives] == [
+        "OBJ-WALK-10", "OBJ-POWER-10", "OBJ-TRUST-10", "OBJ-GROUP-10",
+    ]
+    assert committed["totals"]["objectiveCount"] == 4
     assert committed["totals"]["registryIdCount"] == 4
     for row in objectives:
         assert row["origin"]["kind"] == "case-line"
         assert row["origin"]["path"] == "CASE.md"
         assert row["parents"] == []
+
+
+def test_the_sample_shows_a_case_keeping_its_own_history(committed):
+    """The case quotes three objectives' superseded wording and fences an
+    example. Four definitions outside the quotes, four rows, no duplicate."""
+    case = (SAMPLE / "CASE.md").read_text(encoding="utf-8")
+    assert "## History" in case
+    assert "> - OBJ-WALK-10 The walker is never lost" in case
+    assert "> OBJ-TRUST-10." in case
+    assert "- OBJ-EXAMPLE-10" in case  # the fenced example
+
+    assert committed["gate"]["ok"] is True
+    assert len([r for r in committed["rows"] if r["tier"] == "objective"]) == 4
+    # The quoted IDs are the ones already defined above, and the fenced one is
+    # defined nowhere: a mint from either would show up here.
+    assert "OBJ-EXAMPLE-10" not in [r["id"] for r in committed["rows"]]
+
+
+def test_the_sample_shows_an_objective_that_was_called_off(committed):
+    rows = {r["id"]: r for r in committed["rows"]}
+    row = rows["OBJ-GROUP-10"]
+    assert row["status"] == "retired"
+    assert row["superseded"]["date"] == "2026-11-25"
+    assert row["superseded"]["reason"]
+    assert "Superseded" not in row["statement"]
+    # Nothing serves it and nothing complains about that.
+    assert not any(
+        d.get("kind") == "objective-unserved" and d.get("id") == "OBJ-GROUP-10"
+        for d in (committed["gate"].get("diagnostics") or [])
+    )
 
 
 def test_the_sample_walks_from_a_test_up_to_an_objective(committed):
@@ -113,7 +145,8 @@ def test_the_note_describes_the_manifest_beside_it(committed):
     assert rows["OBJ-WALK-10"]["rollup"]["backlog"] == 2
     assert "rollup" not in rows["OBJ-POWER-10"]
     assert rows["OBJ-POWER-10"]["status"] == "backlog"
-    assert "`OBJ-POWER-10` has no story serving it and reads `backlog`" in note
+    assert "`OBJ-POWER-10` is served by a requirement rather than by a" in note
+    assert "reads `backlog` with no rollup at all" in note
 
 
 def test_the_note_owns_up_to_what_the_sample_does_not_show(committed):

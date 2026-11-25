@@ -21,12 +21,12 @@ Run from the repository root, with the extension in this working tree. The
 verdict, verbatim:
 
 ```
-Wrote trace-manifest.v5beta.json (7 rows, schemaVersion 5, beta)
+Wrote trace-manifest.v5beta.json (8 rows, schemaVersion 5, beta)
 Wrote trace-manifest.json (4 rows) gate.ok=True
 SpecAssay Check (Gate 2): OK (4 registry IDs)
 ```
 
-Seven rows in v5 and four in v4: the three objective rows live in the v5 file
+Eight rows in v5 and four in v4: the four objective rows live in the v5 file
 only, because v4 is a frozen contract. The project's own emitted manifests are
 git-ignored like every other project's; the copy committed here is the one
 with the sample's name on it.
@@ -59,15 +59,31 @@ until now.
 **The colour rule, rolled up.** `OBJ-WALK-10` reads `proven` and carries
 `rollup: {rows: 3, proven: 1, backlog: 2, ...}`: the weakest *started* status
 beneath it is `proven`, and the two planning-altitude rows are counted without
-being coloured. `OBJ-POWER-10` has no story serving it and reads `backlog`
-with no rollup at all. The rule is stated in full in
-`docs/trace-manifest-v5.md`.
+being coloured. `OBJ-POWER-10` is served by a requirement rather than by a
+story, so it has no child and reads `backlog` with no rollup at all. The rule
+is stated in full in `docs/trace-manifest-v5.md`.
+
+**A case that keeps its own history.** The `## History` section quotes the
+superseded wording of three objectives, in the three shapes a hand writes: a
+quoted list item, a quoted sentence that begins with an ID, and a quoted line
+that is an ID and a full stop. None of them mints anything, and nor does the
+fenced example beneath them. Four objectives are defined in this case and four
+rows come out. Before 0.6.1 every one of those quoted lines read as a second
+definition, and a case like this one was refused for duplicates it did not
+have.
+
+**An objective that was called off.** `OBJ-GROUP-10` carries
+`**Superseded**: (2026-11-25): reason` on its own line, so its row reads
+`retired` and carries `superseded: {date, reason}`. Nothing serves it and
+nothing complains: a superseded objective is finished, not neglected. The
+colour rule does not touch it, because a called-off bet takes no colour from
+the work beneath it.
 
 **Where an objective comes from.** Each objective row's `origin` is
 `{"kind": "case-line", "path": "CASE.md", "line": N}`. Objectives are not
 registry rows; they are defined in the case, which is why `statusCounts` still
 counts the registry's four rows and `totals.objectiveCount` says there are
-three more.
+four more.
 
 ## What this sample does not show
 
