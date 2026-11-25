@@ -207,6 +207,21 @@ where that same ID lands once it has.
     and `test_AC_THREAD_20b_the_footer_defines_the_three_words_it_uses`.
   - AC-THREAD-20c — proven by `test_AC_THREAD_20c_every_count_of_one_agrees_in_number`.
   - AC-THREAD-20d — proven by `test_AC_THREAD_20d_a_required_tick_keeps_the_shape_the_workflows_match`.
+- FR-THREAD-30 — A red report says what refused, by kind and count, in the
+  first line under the verdict, and a report on a project with objectives says
+  what the case defines. Shipped 2026-11-25 in 0.6.1, proven by
+  `extensions/specassay-check/tests/test_thread_30_red_says_why.py`.
+  - AC-THREAD-30a — proven by
+    `test_AC_THREAD_30a_a_red_report_names_the_refusal_and_counts_it`, which
+    reproduces the nine-duplicate shape that minted the row,
+    `test_AC_THREAD_30a_several_kinds_lead_with_the_biggest`,
+    `test_AC_THREAD_30a_one_refusal_reads_as_one` and
+    `test_AC_THREAD_30a_a_green_report_says_nothing_of_refusals`.
+  - AC-THREAD-30b — proven by
+    `test_AC_THREAD_30b_the_comment_says_what_the_case_defines`,
+    `test_AC_THREAD_30b_a_superseded_objective_is_counted_as_superseded`,
+    `test_AC_THREAD_30b_no_objectives_means_no_sentence` and
+    `test_AC_THREAD_30b_no_v5_file_means_no_sentence`.
 - FR-GATE-190 — A check that cannot run is red: the entry point refuses an
   unparseable implementation, an exit 0 with no manifest, and silence on either
   stream. Shipped 2026-10-02, proven by `@covers` in
@@ -269,6 +284,18 @@ where that same ID lands once it has.
     and `test_AC_CASE_20d_the_same_fixture_with_the_file_back_is_green`.
     Shipped 2026-11-23 in 0.6.0, and it replaces this room's own first call
     that the state should refuse nothing.
+  - AC-CASE-20e — proven by
+    `test_AC_CASE_20e_a_quoted_line_in_the_case_is_history`,
+    `test_AC_CASE_20e_a_quoted_line_is_not_a_first_definition_either` and
+    `test_AC_CASE_20e_a_real_second_definition_is_still_refused` — the last of
+    the three is the control, because a reader of the other two would be right
+    to ask whether the duplicate refusal had simply been turned off.
+    Shipped 2026-11-25 in 0.6.1, and it amends this criterion's parent: a line
+    a case quotes is not a definition at all, so neither the first nor the
+    second reading of one mints anything.
+  - AC-CASE-20f — proven by
+    `test_AC_CASE_20f_an_anchor_after_the_id_is_read_past`. Shipped
+    2026-11-25 in 0.6.1.
   - AC-CASE-30a — proven by
     `test_AC_CASE_30a_a_story_carries_its_objective_as_its_first_parent`,
     `test_AC_CASE_30a_a_walk_from_a_test_reaches_an_objective`,
@@ -299,3 +326,17 @@ where that same ID lands once it has.
   - AC-CASE-50c — proven by
     `test_AC_CASE_50c_the_colour_rule_is_stated_in_the_v5_schema_page` and
     `test_AC_CASE_50c_the_rule_is_dated_so_a_reader_can_place_it`.
+- FR-CASE-70 — An objective can be called off: `**Superseded**: (YYYY-MM-DD):
+  reason` on its own definition line makes its row read `retired`, keeps the ID
+  and the record, and takes it out of the unserved count. Shipped 2026-11-25 in
+  0.6.1, proven by `extensions/specassay-check/tests/test_case_objective_tier.py`
+  and `tests/test_objective_tier_sample.py`.
+  - AC-CASE-70a — proven by
+    `test_AC_CASE_70a_a_superseded_objective_is_a_retired_row` and, on a
+    committed artifact, `test_the_sample_shows_an_objective_that_was_called_off`.
+  - AC-CASE-70b — proven by
+    `test_AC_CASE_70b_a_superseded_objective_is_not_unserved`, which carries its
+    own one-line control: the same fixture without the mark is still named.
+  - AC-CASE-70c — proven by
+    `test_AC_CASE_70c_a_record_with_no_date_or_no_reason_is_refused`, over the
+    three malformed shapes a hand writes.

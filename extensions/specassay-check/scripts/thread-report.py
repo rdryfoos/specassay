@@ -147,6 +147,92 @@ def carries_none_sentence(head: dict) -> str | None:
     return f"{word.capitalize()} task {lines} {names} no requirement, declared as `none`."
 
 
+def refusal_line(head: dict) -> str | None:
+    """@covers FR-THREAD-30, AC-THREAD-30a -- a red report says what refused.
+
+    Until 2026-11-25 the verdict said `Do not merge yet` and then counted what
+    the change did to the thread, which on a refused run is often nothing: a
+    reader was told the state and never the cause, and had to open the job log
+    to find that nine findings of one kind had come from a file the comment
+    never mentioned.
+
+    By kind and count, in the Gate's own words for the kind, because those are
+    the words the log and the manifest use and a reader who goes looking should
+    be looking for the same string. The sentence reports and never prescribes:
+    this comment has never told anyone what to do about a refusal, and a line
+    that started would be the blocking rung wearing the illuminate rung's
+    clothes.
+    """
+    failures = ((head.get("gate") or {}).get("failures")) or []
+    if not failures:
+        return None
+    counted: dict[str, int] = {}
+    for f in failures:
+        kind = str(f.get("kind") or "unnamed")
+        counted[kind] = counted.get(kind, 0) + 1
+    # Most-numerous first, then alphabetically, so the biggest cause leads and
+    # two runs with the same findings read the same way.
+    parts = [
+        f"**{n}** `{kind}`" for kind, n in
+        sorted(counted.items(), key=lambda kv: (-kv[1], kv[0]))
+    ]
+    total = sum(counted.values())
+    noun = "refusal" if total == 1 else "refusals"
+    return f"The Gate refused: {total} {noun}, " + ", ".join(parts) + "."
+
+
+def objectives_line(rows: list, head: dict) -> str | None:
+    """@covers FR-THREAD-30, AC-THREAD-30b -- what the comment says of the tier.
+
+    Absent entirely when a project has no objectives, which is most of them:
+    a sentence about a tier nobody has turned on is noise, and the authorship
+    sentence beside it already taught this room that a count of nothing reads
+    as a measurement.
+
+    "Served" counts a declaration from ANY row, which is what the Gate's own
+    unserved finding has counted since the tier shipped. Two numbers in one
+    comment must not be measured differently, and the registry's own words say
+    *story* where the shipped reading says *any row*: AC-THREAD-30b names that
+    disagreement rather than resolving it here.
+    """
+    objectives = [r for r in rows if r.get("tier") == "objective"]
+    if not objectives:
+        return None
+    superseded = [r for r in objectives if r.get("status") == "retired"]
+    live = [r for r in objectives if r.get("status") != "retired"]
+    served = {
+        p for r in rows if r.get("tier") != "objective"
+        for p in (r.get("parents") or [])
+    }
+    unserved = [r for r in live if r["id"] not in served]
+    orphans = sum(
+        1 for d in ((head.get("gate") or {}).get("diagnostics") or [])
+        if d.get("kind") == "orphan-story"
+    )
+
+    # The subject is every objective the case DEFINES, because that is what the
+    # sentence says it is counting. The superseded ones are then named as a
+    # subtraction from it, and the unserved count is measured over what is
+    # left. An earlier draft led with the live count and put the superseded
+    # number in brackets after it: rendered on the sample that reads "3
+    # objectives (1 superseded)" over a case that defines four, which is a
+    # number a reader would have had to check against the manifest.
+    total = len(objectives)
+    bits = [f"{total} {'objective' if total == 1 else 'objectives'}"]
+    if superseded:
+        bits.append(f"{len(superseded)} of them superseded")
+    if unserved:
+        word = "live " if superseded else ""
+        bits.append(f"{len(unserved)} {word}that no story serves")
+    elif superseded:
+        bits.append("every live one served")
+    else:
+        bits.append("every one of them served")
+    if orphans:
+        bits.append(f"{orphans} {'story' if orphans == 1 else 'stories'} serving none")
+    return "The case defines " + ", ".join(bits) + "."
+
+
 def authorship_rows(head_path: str, override: str | None) -> list:
     """The rows to count authorship from.
 
@@ -156,11 +242,14 @@ def authorship_rows(head_path: str, override: str | None) -> list:
     writes it. An explicit --head-v5 wins, and a missing file is not an
     error: the sentence then reports every row as unassigned, which is true.
 
-    Objective rows are left out (2026-11-19, when the tier shipped). The
-    sentence counts who authored the project's REQUIREMENTS, and an objective
-    is not one: it is defined in the case, it carries no `**Authorship**`
-    field to fill in, and counting it would report a project with three
-    objectives as having three requirements whose author nobody named.
+    Every row, objective rows included: two sentences read this list now, and
+    each filters for itself. The authorship sentence drops the objective rows
+    at its call site, because it counts who authored the project's
+    REQUIREMENTS and an objective is not one (it is defined in the case and
+    carries no `**Authorship**` field); the objectives sentence wants exactly
+    the rows the other one drops. Filtering here, as this function did between
+    2026-11-19 and 2026-11-25, left the objectives sentence reading a list its
+    own subject had been removed from.
     """
     if override:
         candidate = Path(override)
@@ -170,8 +259,7 @@ def authorship_rows(head_path: str, override: str | None) -> list:
     if not candidate.is_file():
         return []
     try:
-        rows = load_manifest(str(candidate)).get("rows", []) or []
-        return [r for r in rows if r.get("tier") != "objective"]
+        return load_manifest(str(candidate)).get("rows", []) or []
     except (OSError, json.JSONDecodeError):
         # Illuminate, never refuse: a bad v5 file loses the sentence's numbers,
         # not the report.
@@ -542,11 +630,33 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
         tally.append("**every changed file is claimed**")
     out.append(" · ".join([verdict] + tally))
     out.append("")
+    # @covers FR-THREAD-30, AC-THREAD-30a -- the first thing under the verdict,
+    # because a reader who has just been told not to merge is owed the reason
+    # before anything else on the page.
+    refused = refusal_line(head)
+    if refused:
+        out.append(refused)
+        out.append("")
+    # @covers FR-THREAD-30, AC-THREAD-30b
+    if authorship is not None:
+        objectives = objectives_line(authorship, head)
+        if objectives:
+            out.append(objectives)
+            out.append("")
     # @covers FR-GATE-160, AC-GATE-160d -- above the table, unfolded, so who
     # authored the registry is read without opening anything.
+    #
+    # The objective rows come out here: the sentence counts who authored the
+    # project's requirements, and an objective is defined in the case and
+    # carries no `**Authorship**` field to fill in. A list that was non-empty
+    # and is now empty held nothing but objectives, in which case there are no
+    # requirements to count and the sentence is left out rather than reporting
+    # a registry it cannot see.
     if authorship is not None:
-        out.append(authorship_sentence(authorship))
-        out.append("")
+        requirements = [r for r in authorship if r.get("tier") != "objective"]
+        if requirements or not authorship:
+            out.append(authorship_sentence(requirements))
+            out.append("")
     carries_none = carries_none_sentence(head)
     if carries_none:
         out.append(carries_none)

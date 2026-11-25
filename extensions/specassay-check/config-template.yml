@@ -89,6 +89,24 @@ test_ac_regex: "AC_[A-Z][A-Z0-9]{1,5}_[0-9]{2,}[a-z]?"
 # More than one objective per story is allowed and is the point. The edge is
 # always declared: an ID family is never read as an edge, so US-WALK-01 and
 # OBJ-WALK-10 share a domain and nothing else.
+#
+# A case may keep its own history. A line the case QUOTES (a `>` blockquote)
+# or fences in a code block is not a definition at all, so superseded wording
+# and a worked example can sit in the file beside the live objectives without
+# minting anything or raising a duplicate. An anchor straight after the ID
+# (`- OBJ-WALK-10 {#walk} — ...`) is read past and never becomes part of the
+# statement.
+#
+# FR-CASE-70: an objective can be called off, on its own definition line:
+#
+#   - OBJ-GROUP-10 — A walker can see the group. **Superseded**: (2026-11-25): nobody walked in a group
+#
+# Shape: **Superseded**: (<YYYY-MM-DD>): <reason>, the same shape as a
+# Retires value one tier down. The row keeps its ID and its statement, carries
+# `superseded: {date, reason}`, reads `status: "retired"`, and is NOT counted
+# as unserved: a finished bet is not a neglected one. A record missing the
+# date or the reason is refused rather than read loosely, because a
+# half-written record is the one case where silence would lose the reason.
 # case: "CASE.md"
 
 # The objective ID grammar, the same shape as id_regex one tier down. Set it

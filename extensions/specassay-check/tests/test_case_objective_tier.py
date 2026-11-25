@@ -431,6 +431,186 @@ def test_AC_CASE_20a_a_case_with_no_objectives_says_so_and_refuses_nothing(proje
     assert not any(d["kind"] == "orphan-story" for d in manifest["gate"]["diagnostics"])
 
 
+# A case that keeps its own superseded wording, the way a project that has
+# changed its mind writes it: the live objectives defined once each, and the
+# old text quoted under a history heading. Invented whole; the three quoted
+# shapes are the ones a hand actually writes.
+CASE_WITH_HISTORY = CASE + """
+## History
+
+The first pass aimed at the phone rather than the walk, and the wording below
+is kept so the change of mind can be read.
+
+> - OBJ-WALK-10 An older wording of the first objective
+> - OBJ-POWER-10 An older wording of the second
+> OBJ-POWER-10 through OBJ-TRUST-10 were seeded from a page that no longer exists
+> OBJ-TRUST-10.
+
+A fenced example of the shape, which teaches and mints nothing:
+
+```
+- OBJ-WALK-10 — the shape an objective line takes
+```
+"""
+
+
+def test_AC_CASE_20e_a_quoted_line_in_the_case_is_history(project):
+    """The blocker, found by the first room to take the tier: its case defines
+    seven objectives once each and quotes its own superseded wording, and every
+    quoted line read as a second definition. Nine refusals on a right file.
+
+    All three shapes are here, and the fenced example with them."""
+    _fixture(project, case_text=CASE_WITH_HISTORY)
+    proc, manifest = project.run()
+
+    assert proc.returncode == 0, proc.stderr
+    assert manifest["gate"]["ok"] is True
+    assert not any(
+        f["kind"] == "objective-duplicate" for f in manifest["gate"]["failures"]
+    ), manifest["gate"]["failures"]
+
+    # The three objectives are the three defined outside the quotes, each once,
+    # and each keeps the statement its own definition line gives it.
+    v5 = _v5(project)
+    objectives = [r for r in v5["rows"] if r["tier"] == "objective"]
+    assert [r["id"] for r in objectives] == ["OBJ-WALK-10", "OBJ-POWER-10", "OBJ-TRUST-10"]
+    assert objectives[0]["statement"] == "A walker gets home without stopping to read a map."
+    assert objectives[0]["origin"]["line"] == 5
+    assert v5["totals"]["objectiveCount"] == 3
+
+
+def test_AC_CASE_20e_a_quoted_line_is_not_a_first_definition_either(project):
+    """The rule is about what a quoted line is, not about which one came first:
+    an objective that appears ONLY inside a quote is history too, and is not
+    minted at all."""
+    case = CASE.replace(
+        "- OBJ-TRUST-10 — Nothing about a walk leaves the walker's own phone.",
+        "> - OBJ-TRUST-10 — An aim this case only ever quoted.",
+    )
+    lines = list(TRUE_REGISTRY)
+    lines[8] = "- US-PHONE-01 — As a walker, I can see how much night the battery has left. Serves OBJ-POWER-10"
+    _fixture(project, lines, case_text=case)
+    proc, manifest = project.run()
+
+    assert proc.returncode == 0, proc.stderr
+    v5 = _v5(project)
+    assert [r["id"] for r in v5["rows"] if r["tier"] == "objective"] == [
+        "OBJ-WALK-10", "OBJ-POWER-10",
+    ]
+    # And a story serving it would now be serving an objective the case does
+    # not hold, which is the refusal that already exists.
+    assert manifest["gate"]["ok"] is True
+
+
+def test_AC_CASE_20e_a_real_second_definition_is_still_refused(project):
+    """The narrowing does not blunt the rule it narrows: two definitions of one
+    objective, neither quoted nor fenced, is still drift."""
+    _fixture(project, case_text=CASE_WITH_HISTORY + "\n- OBJ-WALK-10 — Said twice, by accident.\n")
+    proc, manifest = project.run()
+
+    assert proc.returncode != 0
+    bad = [f for f in manifest["gate"]["failures"] if f["kind"] == "objective-duplicate"]
+    assert [f["id"] for f in bad] == ["OBJ-WALK-10"], manifest["gate"]["failures"]
+
+
+def test_AC_CASE_20f_an_anchor_after_the_id_is_read_past(project):
+    """A deep-link anchor a hand hangs on the ID is not the first word of the
+    objective, and nor is the punctuation holding it."""
+    case = CASE.replace(
+        "- OBJ-WALK-10 — A walker gets home without stopping to read a map.",
+        "- OBJ-WALK-10 {#obj-walk-10}, A walker gets home without stopping to read a map.",
+    )
+    _fixture(project, case_text=case)
+    proc, _ = project.run()
+    assert proc.returncode == 0, proc.stderr
+
+    row = _row(_v5(project), "OBJ-WALK-10")
+    assert row["statement"] == "A walker gets home without stopping to read a map."
+
+
+SUPERSEDED = (
+    "- OBJ-TRUST-10 — Nothing about a walk leaves the walker's own phone. "
+    "**Superseded**: (2026-11-24): the walk app stopped holding anything worth keeping."
+)
+
+
+def test_AC_CASE_70a_a_superseded_objective_is_a_retired_row(project):
+    """A bet can be called off, and the record says when and why."""
+    case = CASE.replace(
+        "- OBJ-TRUST-10 — Nothing about a walk leaves the walker's own phone.",
+        SUPERSEDED,
+    )
+    lines = list(TRUE_REGISTRY)
+    lines[8] = "- US-PHONE-01 — As a walker, I can see how much night the battery has left. Serves OBJ-POWER-10"
+    _fixture(project, lines, case_text=case)
+    proc, manifest = project.run()
+
+    assert proc.returncode == 0, proc.stderr
+    assert manifest["gate"]["ok"] is True
+
+    row = _row(_v5(project), "OBJ-TRUST-10")
+    assert row["status"] == "retired"
+    assert row["superseded"] == {
+        "date": "2026-11-24",
+        "reason": "the walk app stopped holding anything worth keeping",
+    }
+    # The declaration is metadata about the objective, not part of what it
+    # aimed at, so it is out of the statement the way Authorship is.
+    assert row["statement"] == "Nothing about a walk leaves the walker's own phone."
+    # The objectives that are not superseded are untouched.
+    assert _row(_v5(project), "OBJ-WALK-10")["status"] == "proven"
+    assert "superseded" not in _row(_v5(project), "OBJ-WALK-10")
+
+
+def test_AC_CASE_70b_a_superseded_objective_is_not_unserved(project):
+    """The finding this mark exists to stop: told for ever that nothing serves
+    an aim the project has already called off."""
+    case = CASE.replace(
+        "- OBJ-TRUST-10 — Nothing about a walk leaves the walker's own phone.",
+        SUPERSEDED,
+    )
+    lines = list(TRUE_REGISTRY)
+    lines[8] = "- US-PHONE-01 — As a walker, I can see how much night the battery has left. Serves OBJ-POWER-10"
+    _fixture(project, lines, case_text=case)
+    proc, manifest = project.run()
+
+    assert proc.returncode == 0, proc.stderr
+    unserved = [d["id"] for d in manifest["gate"]["diagnostics"] if d["kind"] == "objective-unserved"]
+    assert unserved == [], manifest["gate"]["diagnostics"]
+
+    # And the control, one line different: without the mark, the same case
+    # reports it, which is what 0.6.0 did and will keep doing.
+    _fixture(project, lines)
+    proc, manifest = project.run()
+    assert proc.returncode == 0, proc.stderr
+    assert [d["id"] for d in manifest["gate"]["diagnostics"] if d["kind"] == "objective-unserved"] == [
+        "OBJ-TRUST-10"
+    ]
+
+
+def test_AC_CASE_70c_a_record_with_no_date_or_no_reason_is_refused(project):
+    """A mark that declares a decision and records neither when nor why is the
+    shape this tool refuses one tier down."""
+    for bad in ("**Superseded**: replaced by something else",
+                "**Superseded**: (2026-11-24):",
+                "**Superseded**:"):
+        case = CASE.replace(
+            "- OBJ-TRUST-10 — Nothing about a walk leaves the walker's own phone.",
+            f"- OBJ-TRUST-10 — Nothing about a walk leaves the walker's own phone. {bad}",
+        )
+        _fixture(project, case_text=case)
+        proc, manifest = project.run()
+
+        assert proc.returncode != 0, f"{bad!r} must fail"
+        bad_found = [
+            f for f in manifest["gate"]["failures"]
+            if f["kind"] == "objective-superseded-malformed"
+        ]
+        assert [f["id"] for f in bad_found] == ["OBJ-TRUST-10"], manifest["gate"]["failures"]
+        assert "**Superseded**: (YYYY-MM-DD): reason" in bad_found[0]["detail"]
+        assert "CASE.md" in bad_found[0]["detail"]
+
+
 def test_AC_CASE_20d_a_configured_case_file_that_is_not_there_is_refused(project):
     """Ruled 2026-11-23 and shipped in 0.6.0, reversing this room's own first
     call that a missing case file should refuse nothing.
