@@ -528,6 +528,89 @@ def test_AC_CASE_20f_an_anchor_after_the_id_is_read_past(project):
     assert row["statement"] == "A walker gets home without stopping to read a map."
 
 
+SUPERSEDED = (
+    "- OBJ-TRUST-10 — Nothing about a walk leaves the walker's own phone. "
+    "**Superseded**: (2026-11-24): the walk app stopped holding anything worth keeping."
+)
+
+
+def test_AC_CASE_70a_a_superseded_objective_is_a_retired_row(project):
+    """A bet can be called off, and the record says when and why."""
+    case = CASE.replace(
+        "- OBJ-TRUST-10 — Nothing about a walk leaves the walker's own phone.",
+        SUPERSEDED,
+    )
+    lines = list(TRUE_REGISTRY)
+    lines[8] = "- US-PHONE-01 — As a walker, I can see how much night the battery has left. Serves OBJ-POWER-10"
+    _fixture(project, lines, case_text=case)
+    proc, manifest = project.run()
+
+    assert proc.returncode == 0, proc.stderr
+    assert manifest["gate"]["ok"] is True
+
+    row = _row(_v5(project), "OBJ-TRUST-10")
+    assert row["status"] == "retired"
+    assert row["superseded"] == {
+        "date": "2026-11-24",
+        "reason": "the walk app stopped holding anything worth keeping",
+    }
+    # The declaration is metadata about the objective, not part of what it
+    # aimed at, so it is out of the statement the way Authorship is.
+    assert row["statement"] == "Nothing about a walk leaves the walker's own phone."
+    # The objectives that are not superseded are untouched.
+    assert _row(_v5(project), "OBJ-WALK-10")["status"] == "proven"
+    assert "superseded" not in _row(_v5(project), "OBJ-WALK-10")
+
+
+def test_AC_CASE_70b_a_superseded_objective_is_not_unserved(project):
+    """The finding this mark exists to stop: told for ever that nothing serves
+    an aim the project has already called off."""
+    case = CASE.replace(
+        "- OBJ-TRUST-10 — Nothing about a walk leaves the walker's own phone.",
+        SUPERSEDED,
+    )
+    lines = list(TRUE_REGISTRY)
+    lines[8] = "- US-PHONE-01 — As a walker, I can see how much night the battery has left. Serves OBJ-POWER-10"
+    _fixture(project, lines, case_text=case)
+    proc, manifest = project.run()
+
+    assert proc.returncode == 0, proc.stderr
+    unserved = [d["id"] for d in manifest["gate"]["diagnostics"] if d["kind"] == "objective-unserved"]
+    assert unserved == [], manifest["gate"]["diagnostics"]
+
+    # And the control, one line different: without the mark, the same case
+    # reports it, which is what 0.6.0 did and will keep doing.
+    _fixture(project, lines)
+    proc, manifest = project.run()
+    assert proc.returncode == 0, proc.stderr
+    assert [d["id"] for d in manifest["gate"]["diagnostics"] if d["kind"] == "objective-unserved"] == [
+        "OBJ-TRUST-10"
+    ]
+
+
+def test_AC_CASE_70c_a_record_with_no_date_or_no_reason_is_refused(project):
+    """A mark that declares a decision and records neither when nor why is the
+    shape this tool refuses one tier down."""
+    for bad in ("**Superseded**: replaced by something else",
+                "**Superseded**: (2026-11-24):",
+                "**Superseded**:"):
+        case = CASE.replace(
+            "- OBJ-TRUST-10 — Nothing about a walk leaves the walker's own phone.",
+            f"- OBJ-TRUST-10 — Nothing about a walk leaves the walker's own phone. {bad}",
+        )
+        _fixture(project, case_text=case)
+        proc, manifest = project.run()
+
+        assert proc.returncode != 0, f"{bad!r} must fail"
+        bad_found = [
+            f for f in manifest["gate"]["failures"]
+            if f["kind"] == "objective-superseded-malformed"
+        ]
+        assert [f["id"] for f in bad_found] == ["OBJ-TRUST-10"], manifest["gate"]["failures"]
+        assert "**Superseded**: (YYYY-MM-DD): reason" in bad_found[0]["detail"]
+        assert "CASE.md" in bad_found[0]["detail"]
+
+
 def test_AC_CASE_20d_a_configured_case_file_that_is_not_there_is_refused(project):
     """Ruled 2026-11-23 and shipped in 0.6.0, reversing this room's own first
     call that a missing case file should refuse nothing.
