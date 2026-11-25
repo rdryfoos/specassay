@@ -431,6 +431,103 @@ def test_AC_CASE_20a_a_case_with_no_objectives_says_so_and_refuses_nothing(proje
     assert not any(d["kind"] == "orphan-story" for d in manifest["gate"]["diagnostics"])
 
 
+# A case that keeps its own superseded wording, the way a project that has
+# changed its mind writes it: the live objectives defined once each, and the
+# old text quoted under a history heading. Invented whole; the three quoted
+# shapes are the ones a hand actually writes.
+CASE_WITH_HISTORY = CASE + """
+## History
+
+The first pass aimed at the phone rather than the walk, and the wording below
+is kept so the change of mind can be read.
+
+> - OBJ-WALK-10 An older wording of the first objective
+> - OBJ-POWER-10 An older wording of the second
+> OBJ-POWER-10 through OBJ-TRUST-10 were seeded from a page that no longer exists
+> OBJ-TRUST-10.
+
+A fenced example of the shape, which teaches and mints nothing:
+
+```
+- OBJ-WALK-10 — the shape an objective line takes
+```
+"""
+
+
+def test_AC_CASE_20e_a_quoted_line_in_the_case_is_history(project):
+    """The blocker, found by the first room to take the tier: its case defines
+    seven objectives once each and quotes its own superseded wording, and every
+    quoted line read as a second definition. Nine refusals on a right file.
+
+    All three shapes are here, and the fenced example with them."""
+    _fixture(project, case_text=CASE_WITH_HISTORY)
+    proc, manifest = project.run()
+
+    assert proc.returncode == 0, proc.stderr
+    assert manifest["gate"]["ok"] is True
+    assert not any(
+        f["kind"] == "objective-duplicate" for f in manifest["gate"]["failures"]
+    ), manifest["gate"]["failures"]
+
+    # The three objectives are the three defined outside the quotes, each once,
+    # and each keeps the statement its own definition line gives it.
+    v5 = _v5(project)
+    objectives = [r for r in v5["rows"] if r["tier"] == "objective"]
+    assert [r["id"] for r in objectives] == ["OBJ-WALK-10", "OBJ-POWER-10", "OBJ-TRUST-10"]
+    assert objectives[0]["statement"] == "A walker gets home without stopping to read a map."
+    assert objectives[0]["origin"]["line"] == 5
+    assert v5["totals"]["objectiveCount"] == 3
+
+
+def test_AC_CASE_20e_a_quoted_line_is_not_a_first_definition_either(project):
+    """The rule is about what a quoted line is, not about which one came first:
+    an objective that appears ONLY inside a quote is history too, and is not
+    minted at all."""
+    case = CASE.replace(
+        "- OBJ-TRUST-10 — Nothing about a walk leaves the walker's own phone.",
+        "> - OBJ-TRUST-10 — An aim this case only ever quoted.",
+    )
+    lines = list(TRUE_REGISTRY)
+    lines[8] = "- US-PHONE-01 — As a walker, I can see how much night the battery has left. Serves OBJ-POWER-10"
+    _fixture(project, lines, case_text=case)
+    proc, manifest = project.run()
+
+    assert proc.returncode == 0, proc.stderr
+    v5 = _v5(project)
+    assert [r["id"] for r in v5["rows"] if r["tier"] == "objective"] == [
+        "OBJ-WALK-10", "OBJ-POWER-10",
+    ]
+    # And a story serving it would now be serving an objective the case does
+    # not hold, which is the refusal that already exists.
+    assert manifest["gate"]["ok"] is True
+
+
+def test_AC_CASE_20e_a_real_second_definition_is_still_refused(project):
+    """The narrowing does not blunt the rule it narrows: two definitions of one
+    objective, neither quoted nor fenced, is still drift."""
+    _fixture(project, case_text=CASE_WITH_HISTORY + "\n- OBJ-WALK-10 — Said twice, by accident.\n")
+    proc, manifest = project.run()
+
+    assert proc.returncode != 0
+    bad = [f for f in manifest["gate"]["failures"] if f["kind"] == "objective-duplicate"]
+    assert [f["id"] for f in bad] == ["OBJ-WALK-10"], manifest["gate"]["failures"]
+
+
+def test_AC_CASE_20f_an_anchor_after_the_id_is_read_past(project):
+    """A deep-link anchor a hand hangs on the ID is not the first word of the
+    objective, and nor is the punctuation holding it."""
+    case = CASE.replace(
+        "- OBJ-WALK-10 — A walker gets home without stopping to read a map.",
+        "- OBJ-WALK-10 {#obj-walk-10}, A walker gets home without stopping to read a map.",
+    )
+    _fixture(project, case_text=case)
+    proc, _ = project.run()
+    assert proc.returncode == 0, proc.stderr
+
+    row = _row(_v5(project), "OBJ-WALK-10")
+    assert row["statement"] == "A walker gets home without stopping to read a map."
+
+
 def test_AC_CASE_20d_a_configured_case_file_that_is_not_there_is_refused(project):
     """Ruled 2026-11-23 and shipped in 0.6.0, reversing this room's own first
     call that a missing case file should refuse nothing.

@@ -1402,15 +1402,49 @@ if OBJECTIVES_ON:
             case_rel = os.path.relpath(os.path.realpath(case_path), os.path.realpath(repo))
         except ValueError:
             case_rel = str(case_path)
+        # @covers AC-CASE-20e, AC-CASE-20f
+        #
+        # A QUOTED LINE IS HISTORY. The first build's leading class admitted
+        # `>`, which is the one mark whose whole job is to say that a line is
+        # quoted, so a case keeping its superseded wording in blockquotes under
+        # a history heading had every quoted line read as a second definition
+        # of the ID it begins with. Seven objectives defined once each, nine
+        # duplicate refusals, and the file was right. A quoted line is read as
+        # history, in all three shapes a hand writes it: a quoted list item, a
+        # quoted sentence beginning with an ID, and a quoted line that is an ID
+        # and a full stop. The explicit skip stays beside the narrowed class on
+        # purpose, because it is the rule a reader of this code needs to see,
+        # and it also covers a nested `>>` and an indented quote.
+        #
+        # A FENCED LINE IS AN EXAMPLE, by the same argument: a case that shows
+        # the shape of an objective in a code block is teaching, not minting.
+        # The registry side has read fences this way since 0.4.2.
+        #
+        # The em and en dashes in the separator class are literal UTF-8 bytes,
+        # and that is safe for the reason that matters rather than the one the
+        # comment here used to give. It claimed they were escapes, which they
+        # never were: a comment asserting the opposite of its own line is worse
+        # than no comment. Why the bytes are fine: Python 3 decodes its source
+        # as UTF-8 whatever the locale says (PEP 3120), so LC_ALL=C and this
+        # bash heredoc do not touch them, and this script's own header comments
+        # have carried the same characters since before the tier existed.
         OBJ_DEF_RE = re.compile(
-            # The dashes are escaped rather than literal so this script stays
-            # ASCII on the wire: it travels through a bash heredoc, under
-            # LC_ALL=C, to whatever interpreter the host found.
-            r"^[\s#>*\-]*(?:\d+[.)]\s*)?(%s)\b[\s:.—–-]*(.*)$" % OBJ_RE_RAW
+            r"^[ \t#*\-]*(?:\d+[.)][ \t]*)?(%s)\b[ \t:.—–-]*(.*)$" % OBJ_RE_RAW
         )
+        QUOTED_RE = re.compile(r"^[ \t]*>")
+        FENCE_RE = re.compile(r"^[ \t]*(?:```|~~~)")
+        # An anchor a hand hangs on the ID for a deep link, with whatever
+        # punctuation holds it, is not the first word of the objective.
+        ANCHOR_RE = re.compile(r"^\{#[^}]*\}[ \t]*[,;:.—–-]*[ \t]*")
+        in_fence = False
         for n, line in enumerate(
             case_path.read_text(encoding="utf-8", errors="replace").splitlines(), start=1
         ):
+            if FENCE_RE.match(line):
+                in_fence = not in_fence
+                continue
+            if in_fence or QUOTED_RE.match(line):
+                continue
             dm = OBJ_DEF_RE.match(line)
             if not dm:
                 continue
@@ -1420,7 +1454,8 @@ if OBJECTIVES_ON:
                 # definition of one ID is drift, not a second row.
                 objective_dupes.append((oid, n))
                 continue
-            objectives[oid] = {"statement": dm.group(2).strip() or oid, "line": n}
+            statement = ANCHOR_RE.sub("", dm.group(2).strip()).strip()
+            objectives[oid] = {"statement": statement or oid, "line": n}
             objective_order.append(oid)
 
 # @covers FR-CASE-40, AC-CASE-20b, AC-CASE-40a, AC-CASE-40b -- the two sides
