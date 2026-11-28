@@ -2,7 +2,7 @@
 
 The test the 2026-09-26 ledger lacked. It builds a throwaway git repository, puts
 the bundle's files where an install puts them, and then walks a stranger's whole
-path to a Thread Report comment using **only commands the bundle ships** plus the
+path to a SpecAssay Report comment using **only commands the bundle ships** plus the
 ordinary git and editor actions any project involves.
 
 How it fails if a step needs a hand: every command is declared in `STEPS` before it

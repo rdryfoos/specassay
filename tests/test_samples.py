@@ -119,7 +119,7 @@ WORKFLOW = ROOT / ".github" / "workflows" / "thread-report.yml"
 
 
 def test_the_demo_workflow_copies_the_v5_sidecar_beside_the_head_manifest():
-    """Without it, every Thread Report this repo posts loses its author counts.
+    """Without it, every SpecAssay Report this repo posts loses its author counts.
 
     `thread-report.py` reads authorship from the v5 manifest sitting beside
     `--head`. This workflow copies the manifests by hand, predating the shipped

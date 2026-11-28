@@ -63,7 +63,7 @@ jobs:
           git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" > /tmp/changed.txt
           echo "Changed:"; cat /tmp/changed.txt
 
-      - name: Build the Thread Report
+      - name: Build the SpecAssay Report
         run: |
           python3 extensions/specassay-check/scripts/thread-report.py \
             --base /tmp/base.json --head /tmp/head.json \
@@ -74,7 +74,7 @@ jobs:
             --out /tmp/report.md
           echo "----- report -----"; cat /tmp/report.md
 
-      - name: Post / update the Thread Report comment (sticky)
+      - name: Post / update the SpecAssay Report comment (sticky)
         uses: actions/github-script@v7
         env:
           REPORT_PATH: /tmp/report.md

@@ -6,7 +6,7 @@
 #
 # The seam that matters in a SpecAssay-governed repo is the registry — the
 # intent side of the thread. Dev, or an agent, may DRAFT a restatement; the
-# owner APPROVES it. The Thread Report's Intent Changed section is the
+# owner APPROVES it. The SpecAssay Report's Intent Changed section is the
 # tripwire (no restatement lands silently); this file is the lock (no
 # restatement merges without a named human). See
 # docs/scope-and-pull-requests.md §5a.

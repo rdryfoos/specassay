@@ -4,7 +4,7 @@ name: SpecAssay
 # One file, two jobs, and nothing for you to wire up:
 #
 #   thread-report  on every pull request: runs the Gate on the PR head and on the
-#                  base commit, posts one sticky Thread Report comment saying what
+#                  base commit, posts one sticky SpecAssay Report comment saying what
 #                  the change did to your promises, sets the ack status when your
 #                  config asks for a human tick, and then fails the job if the
 #                  Gate refused. The comment always posts, even when the Gate is
@@ -50,7 +50,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Gate on the head and the base, and build the Thread Report
+      - name: Gate on the head and the base, and build the SpecAssay Report
         run: |
           set -euo pipefail
           EXT="${SPECASSAY_PROJECT%/}/.specify/extensions/specassay-check"
@@ -71,7 +71,7 @@ jobs:
             --head-sha "${{ github.event.pull_request.head.sha }}"
           echo "----- report -----"; cat /tmp/specassay/report.md
 
-      - name: Post or update the Thread Report comment
+      - name: Post or update the SpecAssay Report comment
         uses: actions/github-script@v7
         env:
           REPORT_PATH: /tmp/specassay/report.md

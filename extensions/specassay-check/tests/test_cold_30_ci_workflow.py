@@ -1,4 +1,4 @@
-"""FR-COLD-30: the bundle ships the CI that posts the Thread Report.
+"""FR-COLD-30: the bundle ships the CI that posts the SpecAssay Report.
 
 Gap (d) and (e) of the cold path. Reproduced 2026-10-02 on 0.5.4: `find .github
 -type f` after a full install returned nothing, so a pull request ran nothing and

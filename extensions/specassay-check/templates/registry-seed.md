@@ -20,7 +20,7 @@ moving it means changing that key too.
   testable assertion).
 - **DOMAIN** is 2 to 6 characters of your own choosing, uppercase, naming the area
   of the product the row belongs to: `GREET`, `AUTH`, `SYNC`. Rows sharing a domain
-  are one family, and the Thread Report groups them that way.
+  are one family, and the SpecAssay Report groups them that way.
 - **NUMBER** is two or more digits, with an optional single lowercase letter for a
   sibling criterion: `AC-AUTH-10`, then `AC-AUTH-10a` beside it.
 

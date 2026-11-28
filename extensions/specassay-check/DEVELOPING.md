@@ -11,7 +11,7 @@ Notes for someone changing this extension, as opposed to using it. The user-faci
 | `scripts/mint-id.sh` | Mints the next ID for a prefix and area; resolves duplicates. |
 | `scripts/lib-def-line.sh` | The one definition-line pattern both scripts above share, so they agree on what a real registry entry looks like. |
 | `scripts/dig.py` | Archaeology mode. Pure Python, no dependencies. |
-| `scripts/thread-report.py` | Builds the PR Thread Report from a base and head manifest. |
+| `scripts/thread-report.py` | Builds the PR SpecAssay Report from a base and head manifest. |
 | `scripts/commit-advisory.sh` | The warn-only `commit-msg` hook. |
 | `commands/*.md` | The agent-facing command files Spec Kit installs as skills. |
 | `config-template.yml` | Scaffolded to `specassay-check-config.yml` on install. Every key commented. |

@@ -119,7 +119,7 @@ refused too: `nothing`, `n/a` and `later` are the same silence under other
 words, and `none` is the one declaration.
 
 `none` lines are counted, never hidden: `totals.carriesNoneCount` carries the
-number, and the Thread Report says it in words beside the authorship sentence,
+number, and the SpecAssay Report says it in words beside the authorship sentence,
 so a registry whose edges are thinning is met as a sentence rather than buried
 in a field.
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Everything a Thread Report comment needs, in one place: the Gate on the head,
+# Everything a SpecAssay Report comment needs, in one place: the Gate on the head,
 # the Gate on the base commit, the changed files, and the report itself.
 #
 # @covers FR-COLD-40, AC-COLD-40a

@@ -119,7 +119,7 @@ chip/checkbox, not a node color.
 
 ## 4. The pull request as a briefing: the *illuminate* rung (shipped)
 
-> The mechanism below now ships as the **Thread Report**: tool, CI workflow,
+> The mechanism below now ships as the **SpecAssay Report**: tool, CI workflow,
 > and a live [PR #1](https://github.com/rdryfoos/specassay/pull/1). This section
 > is the argument; [`thread-report.md`](thread-report.md) is the reference.
 
@@ -151,7 +151,7 @@ cannot tell a legitimate refactor from unwanted scope; both land off-thread.
 What it does is collapse the reviewer's search space from *the whole diff* to
 *the untraced subset*, and label it. For an honest team that is the whole game.
 
-### 4b. The Thread Report (shipped)
+### 4b. The SpecAssay Report (shipped)
 
 On every PR, SpecAssay posts a generated briefing, friction-negative, because
 the developer receives more than they give:
@@ -187,7 +187,7 @@ What SpecAssay can add on top:
 
 - **Legible intent diffs.** A PR touching the registry shows IDs *added*
   (minted), *retired* (tombstoned), *restated* (wording changed). This surfacing
-  **ships** in the Thread Report (*What moved* plus *Intent Changed*). The
+  **ships** in the SpecAssay Report (*What moved* plus *Intent Changed*). The
   immutability **gate** is the proposed part: renumber or reuse an ID → fail
   (cheap, rare, high-value). It almost never fires, so it costs no friction.
 
@@ -196,14 +196,14 @@ What SpecAssay can add on top:
   statement changes, its build and proof (the `@covers` code and the `test_AC_…`
   proof) were written against the *old* wording. SpecAssay lists them and marks
   them **"re-confirm — the intent moved under the proof."** This surfacing
-  **ships** today as the Thread Report's *Intent Changed* section
+  **ships** today as the SpecAssay Report's *Intent Changed* section
   ([`thread-report.md`](thread-report.md)). The **affirm** rung ships too, via
   `intent_ack: off | record | required`, the twin of `offthread_ack`: at
   `required`, a human must tick that each restated intent still holds before
   merge. The PR that changes the intent carries its own list of what it may have
   invalidated.
 
-- **Two honest shapes of intent-PR** (shipped: the Thread Report tells them
+- **Two honest shapes of intent-PR** (shipped: the SpecAssay Report tells them
   apart by whether the carriers moved, and each has a live demo):
   - **PR from Intent** (the wording moves alone; live
     [PR #4](https://github.com/rdryfoos/specassay/pull/4)): a decision lands in
@@ -239,7 +239,7 @@ Three consequences, all healthy:
 - **A discovery PR becomes the ask.** Dev hits ground truth, restates the
   criterion, moves the proof in the same diff, and the CODEOWNERS gate routes
   it to Product automatically. The request arrives *on the diff*, with the
-  Thread Report's was/now and blast radius attached, instead of in a meeting
+  SpecAssay Report's was/now and blast radius attached, instead of in a meeting
   after the code shipped. Product never lost authority by moving into the
   repo; authority became **reviewable** instead of **territorial**.
 - **A proposal-only PR is honest too.** Dev may want the wording changed
