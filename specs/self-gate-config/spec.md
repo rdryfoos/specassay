@@ -202,9 +202,12 @@ where that same ID lands once it has.
     `test_AC_THREAD_20a_a_reworded_requirement_needs_a_person`,
     `test_AC_THREAD_20a_a_required_tick_needs_a_person`, and
     `test_AC_THREAD_20a_a_refusing_gate_says_do_not_merge_yet` — one per state,
-    plus the one that proves a refusal outranks the amber state.
-  - AC-THREAD-20b — proven by `test_AC_THREAD_20b_no_house_word_appears_above_the_footer`
-    and `test_AC_THREAD_20b_the_footer_defines_the_three_words_it_uses`.
+    plus the one that proves a refusal outranks the amber state. Amended
+    2026-11-28 and proven for the two new cases by
+    `test_AC_THREAD_20a_an_added_or_a_retired_requirement_needs_a_person`.
+  - AC-THREAD-20b: amended 2026-11-28, proven by
+    `test_AC_THREAD_20b_no_house_word_appears_anywhere_in_the_comment`
+    and `test_AC_THREAD_20b_the_footer_carries_no_glossary`.
   - AC-THREAD-20c — proven by `test_AC_THREAD_20c_every_count_of_one_agrees_in_number`.
   - AC-THREAD-20d — proven by `test_AC_THREAD_20d_a_required_tick_keeps_the_shape_the_workflows_match`.
   - AC-THREAD-20e: proven by `test_AC_THREAD_20e_the_title_line_is_the_name_and_the_plain_line`,
@@ -212,6 +215,19 @@ where that same ID lands once it has.
   - AC-THREAD-20f: proven by `test_AC_THREAD_20f_the_footer_says_what_blocks_and_what_never_does`.
   - AC-THREAD-20g: proven by `test_AC_THREAD_20g_the_footer_hint_prints_no_configuration_key`,
     whose negative control is the tick line that still ends in its key.
+  - AC-THREAD-20h: proven by
+    `test_AC_THREAD_20h_a_change_to_the_requirements_is_marked_under_the_verdict`,
+    `test_AC_THREAD_20h_a_change_to_code_alone_is_not_marked`, which is the
+    negative control, and
+    `test_AC_THREAD_20h_on_a_refused_run_the_refusal_is_still_named_first`.
+  - AC-THREAD-20i: proven by six tests named `test_AC_THREAD_20i_…`: the owner
+    named, the verb agreeing with two owners and with three, the last matching
+    pattern, the first of the three places, a registry in a subdirectory, and
+    `test_AC_THREAD_20i_with_no_owner_to_name_the_line_is_whole`, which holds
+    the four ways to have no owner.
+  - AC-THREAD-20j: proven by
+    `test_AC_THREAD_20j_a_row_with_nothing_to_point_at_says_none` and
+    `test_AC_THREAD_20j_the_comments_own_words_carry_no_em_dash`.
 - FR-THREAD-30 — A red report says what refused, by kind and count, in the
   first line under the verdict, and a report on a project with objectives says
   what the case defines. Shipped 2026-11-25 in 0.6.1, proven by

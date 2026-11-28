@@ -119,6 +119,7 @@ args=(
   --changed-files "$OUT_DIR/changed.txt"
   --config "$CONFIG"
   --project-root "$PROJECT"
+  --repo-root "$REPO_ROOT"
   --out "$OUT_DIR/report.md"
 )
 [[ -n "$PR_URL" ]] && args+=(--pr-url "$PR_URL")

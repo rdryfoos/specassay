@@ -52,6 +52,10 @@ def report(tmp_path, base_rows, head_rows, changed=(), gate_ok=True, **flags):
            "--base", str(tmp_path / "base.json"),
            "--head", str(tmp_path / "head.json"),
            "--changed-files", str(tmp_path / "changed.txt")]
+    # The script looks for a CODEOWNERS file under the repository root, which
+    # defaults to the directory the test happens to run from. Pointed at the
+    # scratch directory, no test reads this repository's own file by accident.
+    flags.setdefault("repo_root", tmp_path)
     for key, value in flags.items():
         cmd += ["--" + key.replace("_", "-"), str(value)]
     proc = subprocess.run(cmd, capture_output=True, text=True)
@@ -198,16 +202,27 @@ def test_a_minted_row_survives_and_points_at_the_registry(tmp_path):
     assert "**1** new requirement" in verdict_line(out)
 
 
-def test_a_row_that_moved_with_no_carrier_to_point_at_renders_absence_as_absence(tmp_path):
-    # A backlog row gaining an open **Carries** line moves to tracked-debt, and
-    # the task file that moved it carries no mark of its own. The em-dash law:
-    # absence renders as absence, never as an invented link.
+def test_AC_THREAD_20j_a_row_with_nothing_to_point_at_says_none(tmp_path):
+    """@covers AC-THREAD-20j
+
+    A backlog row gaining an open **Carries** line moves to tracked-debt, and
+    the task file that moved it carries no mark of its own. Absence renders as
+    absence, never as an invented link. The cell held an em dash until
+    2026-11-28; it now holds a word, and the cell is not left empty either,
+    because an empty cell reads as a table that failed to fill.
+    """
     base = [row("AC-SYNC-10", "backlog")]
     head = [row("AC-SYNC-10", "tracked-debt")]
     out, _ = report(tmp_path, base, head)
 
     line = next(ln for ln in out.splitlines() if ln.startswith("| `AC-SYNC-10`"))
-    assert line.rstrip().endswith("| — |"), f"expected an em dash for the absent link:\n{line}"
+    assert line.rstrip().endswith("| none |"), f"expected the word none for the absent link:\n{line}"
+
+    # The control: a row that does have a file to point at names the file.
+    head2 = [row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))]
+    out2, _ = report(tmp_path, base, head2, ["tests/test_sync.py"])
+    line2 = next(ln for ln in out2.splitlines() if ln.startswith("| `AC-SYNC-10`"))
+    assert "test_sync.py" in line2 and "| none |" not in line2, line2
 
 
 def test_the_off_thread_files_are_still_named_under_the_fold(tmp_path):
@@ -380,6 +395,28 @@ def test_AC_THREAD_20a_a_reworded_requirement_needs_a_person(tmp_path):
     assert "Ready to review" not in out
 
 
+def test_AC_THREAD_20a_an_added_or_a_retired_requirement_needs_a_person(tmp_path):
+    """@covers AC-THREAD-20a
+
+    Amended 2026-11-28. Each of the two alone, with the gate green and no tick
+    asked for, so neither can pass on the strength of the other or of a
+    rewording.
+    """
+    kept = row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))
+
+    added, _ = report(tmp_path, [kept], [kept, row("AC-NEW-10", "backlog")], ["PRD.md"])
+    assert "🟡 **Needs a person**" in verdict_line(added), verdict_line(added)
+    assert "Ready to review" not in added
+
+    retired, _ = report(tmp_path, [kept, row("AC-OLD-10", "backlog")], [kept], ["PRD.md"])
+    assert "🟡 **Needs a person**" in verdict_line(retired), verdict_line(retired)
+    assert "Ready to review" not in retired
+
+    # The control: the registry file changed and no requirement did.
+    same, _ = report(tmp_path, [kept], [kept], ["PRD.md"])
+    assert "🟢 **Ready to review**" in verdict_line(same), verdict_line(same)
+
+
 def test_AC_THREAD_20a_a_required_tick_needs_a_person(tmp_path):
     """@covers AC-THREAD-20a
 
@@ -416,11 +453,13 @@ def test_AC_THREAD_20a_a_refusing_gate_says_do_not_merge_yet(tmp_path):
     assert "Needs a person" not in out
 
 
-def test_AC_THREAD_20b_no_house_word_appears_above_the_footer(tmp_path):
+def test_AC_THREAD_20b_no_house_word_appears_anywhere_in_the_comment(tmp_path):
     """@covers AC-THREAD-20b
 
     The whole report, in its loudest state: every section rendered, both ticks
-    required, a receipt attached. Nothing above the footer may teach a word.
+    required, a receipt attached. Until 2026-11-28 this read only above the
+    footer, because the footer was where three house words were defined. The
+    footer is read now too.
 
     The fixture statements are deliberately free of house words, because the
     report quotes a requirement's own wording verbatim in the reworded section. A
@@ -441,29 +480,29 @@ def test_AC_THREAD_20b_no_house_word_appears_above_the_footer(tmp_path):
                     offthread_ack="required", intent_ack="required",
                     receipts=str(tmp_path / "run.md"))
 
-    body, footer = out.rsplit("\n---\n", 1)
+    assert "\n---\n" in out, "the footer is gone, so this would read nothing of it"
     for word in HOUSE_WORDS:
-        assert word not in body, (
-            f"the house word {word!r} is above the footer:\n"
-            + "\n".join(ln for ln in body.splitlines() if word in ln)
-        )
+        for spelling in (word, word.capitalize()):
+            assert spelling not in out, (
+                f"the house word {spelling!r} is in the comment:\n"
+                + "\n".join(ln for ln in out.splitlines() if spelling in ln)
+            )
 
 
-def test_AC_THREAD_20b_the_footer_defines_the_three_words_it_uses(tmp_path):
-    """@covers AC-THREAD-20b"""
-    out, _ = report(tmp_path, [row("AC-SYNC-10", "proven", proofs=("tests/t.py",))],
-                    [row("AC-SYNC-10", "proven", proofs=("tests/t.py",))])
-    footer = out.rsplit("\n---\n", 1)[1]
+def test_AC_THREAD_20b_the_footer_carries_no_glossary(tmp_path):
+    """@covers AC-THREAD-20b
 
-    assert "<b>Words used here:</b>" in footer
-    for word, definition in (
-        ("Golden Thread", "the chain from a requirement to the code and test"),
-        ("Off thread", "a changed file no requirement claims"),
-        ("Mint", "to write a new requirement into the registry"),
-    ):
-        assert f"<b>{word}</b>, {definition}" in footer, word
-    # One line, so it reads as a footnote rather than a glossary.
-    assert len([ln for ln in footer.splitlines() if ln.strip()]) == 1
+    The list defined Golden Thread, off thread and mint. With the first two
+    retired from the comment it would have taught one word the comment never
+    prints, so the whole list went.
+    """
+    for out in every_shape(tmp_path):
+        footer = out.rsplit("\n---\n", 1)[1]
+        assert "Words used here" not in footer
+        for word in ("Golden Thread", "Off thread", "Mint"):
+            assert word not in footer, word
+        # Still one line, so it reads as a footnote.
+        assert len([ln for ln in footer.splitlines() if ln.strip()]) == 1
 
 
 # --- the name, and what blocks ---------------------------------------------
@@ -541,6 +580,211 @@ def test_AC_THREAD_20g_the_footer_hint_prints_no_configuration_key(tmp_path):
 
     held, _ = report(tmp_path, quiet, quiet, ["Makefile"], offthread_ack="required")
     assert "`offthread_ack: required`)_" in held
+
+
+# --- who should read it -----------------------------------------------------
+# Added 2026-11-28. A pull request that changes the requirements themselves is
+# a different kind of thing from one that changes code, and one line says so.
+
+CHANGES_LEAD = "⚠️ This pull request changes what the code is required to do."
+NO_OWNER = CHANGES_LEAD + " Someone who owns the requirements should read it before it merges."
+
+
+def non_empty(text: str) -> list:
+    return [ln for ln in text.splitlines() if ln.strip()]
+
+
+def test_AC_THREAD_20h_a_change_to_the_requirements_is_marked_under_the_verdict(tmp_path):
+    """@covers AC-THREAD-20h
+
+    One requirement change at a time, so each of the three is shown to raise
+    the line on its own. The line is the third non-empty one: the title, the
+    verdict, then this.
+    """
+    kept = row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))
+    was = row("AC-SYNC-20", "proven", statement="AC-SYNC-20 — Retries after 5s.",
+              proofs=("tests/test_sync.py",))
+    now = row("AC-SYNC-20", "proven", statement="AC-SYNC-20 — Retries after 2s.",
+              proofs=("tests/test_sync.py",))
+    shapes = {
+        "added": ([kept], [kept, row("AC-NEW-10", "backlog")]),
+        "retired": ([kept, row("AC-OLD-10", "backlog")], [kept]),
+        "reworded": ([kept, was], [kept, now]),
+    }
+    for name, (base, head) in shapes.items():
+        out, _ = report(tmp_path, base, head, ["PRD.md"])
+        lines = non_empty(out)
+        assert lines[2] == NO_OWNER, f"{name}: the third line is\n{lines[2]}"
+        assert out.count(CHANGES_LEAD) == 1, name
+        # No counts: the verdict line above carries them.
+        assert not any(ch.isdigit() for ch in lines[2]), lines[2]
+
+
+def test_AC_THREAD_20h_a_change_to_code_alone_is_not_marked(tmp_path):
+    """@covers AC-THREAD-20h
+
+    The negative control, on the common pull request: a requirement gains its
+    test, a file nobody claims changes, and no requirement is added, retired or
+    reworded.
+    """
+    base = [row("AC-SYNC-10", "backlog")]
+    head = [row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))]
+    out, _ = report(tmp_path, base, head, ["tests/test_sync.py", "Makefile"])
+
+    assert "changes what the code is required to do" not in out
+    assert "🟢 **Ready to review**" in verdict_line(out)
+
+
+def test_AC_THREAD_20h_on_a_refused_run_the_refusal_is_still_named_first(tmp_path):
+    """@covers AC-THREAD-20h
+
+    AC-THREAD-30a keeps the line that names the refusals first under the
+    verdict, so on a red report this line is the fourth, not the third.
+    """
+    (tmp_path / "base.json").write_text(json.dumps(
+        {"rows": [row("AC-SYNC-10", "proven", proofs=("tests/t.py",))],
+         "gate": {"ok": True}}))
+    (tmp_path / "head.json").write_text(json.dumps(
+        {"rows": [row("AC-SYNC-10", "proven", proofs=("tests/t.py",)),
+                  row("AC-NEW-10", "GAP")],
+         "gate": {"ok": False, "failures": [
+             {"id": "AC-NEW-10", "kind": "silent-gap", "detail": "no test names it"}]}}))
+    (tmp_path / "changed.txt").write_text("PRD.md\n")
+    proc = subprocess.run(
+        [sys.executable, str(SCRIPT),
+         "--base", str(tmp_path / "base.json"), "--head", str(tmp_path / "head.json"),
+         "--changed-files", str(tmp_path / "changed.txt"),
+         "--repo-root", str(tmp_path)],
+        capture_output=True, text=True)
+    assert proc.returncode == 0, proc.stderr
+    lines = non_empty(proc.stdout)
+
+    assert lines[1].startswith("🔴 **Do not merge yet**"), lines[1]
+    assert lines[2].startswith("The Gate refused:"), lines[2]
+    assert lines[3] == NO_OWNER, lines[3]
+
+
+def codeowners_report(tmp_path, codeowners, place=".github/CODEOWNERS", **flags):
+    """A report on a pull request that adds one requirement, rendered beside a
+    CODEOWNERS file. Every handle in these files is made up."""
+    target = tmp_path / place
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(codeowners)
+    kept = row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))
+    out, _ = report(tmp_path, [kept], [kept, row("AC-NEW-10", "backlog")],
+                    ["PRD.md"], **flags)
+    return non_empty(out)[2]
+
+
+def test_AC_THREAD_20i_the_line_names_the_owner_codeowners_names(tmp_path):
+    """@covers AC-THREAD-20i"""
+    line = codeowners_report(tmp_path, "# who reviews what\nPRD.md @acme/product\n")
+    assert line == (CHANGES_LEAD + " @acme/product owns the requirements file "
+                    "and should read it before it merges."), line
+
+
+def test_AC_THREAD_20i_the_verb_agrees_with_the_number_of_owners(tmp_path):
+    """@covers AC-THREAD-20i, AC-THREAD-20c"""
+    two = codeowners_report(tmp_path, "/PRD.md @acme/product @river\n")
+    assert "@acme/product and @river own the requirements file and should" in two, two
+
+    three = codeowners_report(tmp_path, "/PRD.md @acme/product @river @acme/qa\n")
+    assert "@acme/product, @river and @acme/qa own the requirements file" in three, three
+
+
+def test_AC_THREAD_20i_the_last_matching_pattern_wins_as_it_does_on_github(tmp_path):
+    """@covers AC-THREAD-20i
+
+    Three rules match the registry file here. GitHub asks the owners on the
+    last of them, so the comment names those and no others.
+    """
+    line = codeowners_report(
+        tmp_path,
+        "*        @acme/everyone\n"
+        "*.md     @acme/docs\n"
+        "/PRD.md  @acme/product   # the requirements\n"
+        "/src/    @acme/engineers\n",
+    )
+    assert "@acme/product owns" in line, line
+    for other in ("@acme/everyone", "@acme/docs", "@acme/engineers"):
+        assert other not in line, line
+
+
+def test_AC_THREAD_20i_the_first_file_github_would_read_is_the_one_read(tmp_path):
+    """@covers AC-THREAD-20i"""
+    (tmp_path / "docs").mkdir()
+    (tmp_path / "docs" / "CODEOWNERS").write_text("PRD.md @acme/from-docs\n")
+    (tmp_path / "CODEOWNERS").write_text("PRD.md @acme/from-root\n")
+    line = codeowners_report(tmp_path, "PRD.md @acme/from-github\n")
+    assert "@acme/from-github owns" in line, line
+
+    (tmp_path / ".github" / "CODEOWNERS").unlink()
+    kept = row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))
+    out, _ = report(tmp_path, [kept], [kept, row("AC-NEW-10", "backlog")], ["PRD.md"])
+    assert "@acme/from-root owns" in non_empty(out)[2]
+
+
+def test_AC_THREAD_20i_a_registry_in_a_subdirectory_is_matched_from_the_root(tmp_path):
+    """@covers AC-THREAD-20i
+
+    CODEOWNERS names paths from the repository root; the config names the
+    registry from the project. A project living in a subdirectory needs the two
+    joined, or its owner is never found.
+    """
+    (tmp_path / "apps" / "lending").mkdir(parents=True)
+    config = tmp_path / "apps" / "lending" / "specassay-check-config.yml"
+    config.write_text('registry: "REQUIREMENTS.md"\n')
+    line = codeowners_report(
+        tmp_path,
+        "/REQUIREMENTS.md               @acme/wrong-project\n"
+        "/apps/lending/REQUIREMENTS.md  @acme/lending\n",
+        config=config, project_root="apps/lending",
+    )
+    assert "@acme/lending owns" in line, line
+
+
+def test_AC_THREAD_20i_with_no_owner_to_name_the_line_is_whole(tmp_path):
+    """@covers AC-THREAD-20i
+
+    Four ways to have no owner, and the line reads the same in each: no file; a
+    file that does not cover the registry; a last match that deliberately names
+    nobody; and an owner given only as an email address, which a public comment
+    does not print.
+    """
+    kept = row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))
+    out, _ = report(tmp_path, [kept], [kept, row("AC-NEW-10", "backlog")], ["PRD.md"])
+    assert non_empty(out)[2] == NO_OWNER
+
+    for codeowners in (
+        "/src/ @acme/engineers\n",
+        "* @acme/everyone\n/PRD.md\n",
+        "/PRD.md owner@example.com\n",
+    ):
+        line = codeowners_report(tmp_path, codeowners)
+        assert line == NO_OWNER, f"{codeowners!r} gave:\n{line}"
+        assert "@" not in line
+
+
+def test_AC_THREAD_20j_the_comments_own_words_carry_no_em_dash(tmp_path):
+    """@covers AC-THREAD-20j
+
+    Every shape, plus the two that print the cell and a retirement. The fixture
+    statements open `ID — text`, which the report strips before quoting, so an
+    em dash found here is one the comment wrote itself.
+    """
+    shapes = list(every_shape(tmp_path))
+    shapes.append(report(tmp_path, [row("AC-SYNC-10", "backlog")],
+                         [row("AC-SYNC-10", "tracked-debt")])[0])
+    kept = row("AC-SYNC-10", "proven", proofs=("tests/t.py",))
+    shapes.append(report(tmp_path, [kept, row("AC-OLD-10", "backlog")], [kept],
+                         ["PRD.md", "Makefile"], offthread_ack="record",
+                         intent_ack="record")[0])
+    for out in shapes:
+        for dash in ("—", "–"):
+            assert dash not in out, (
+                "a dash is in the comment's own words:\n"
+                + "\n".join(ln for ln in out.splitlines() if dash in ln)
+            )
 
 
 def test_AC_THREAD_20c_every_count_of_one_agrees_in_number(tmp_path):

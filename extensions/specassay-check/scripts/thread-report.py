@@ -435,6 +435,137 @@ class Linker:
         return f"{self.repo_url}/blob/{self.head_sha}/{rr}{anchor}"
 
 
+# ---- who owns the requirements file ----
+
+# Where GitHub looks for the file, in the order it looks. The first one that
+# exists is the only one read.
+CODEOWNERS_PLACES = (".github/CODEOWNERS", "CODEOWNERS", "docs/CODEOWNERS")
+
+# A handle as GitHub writes one: a user, or an organization's team. An owner
+# given as an email address is not printed: the comment is public, and a
+# handle is what a reader can act on.
+OWNER_HANDLE = re.compile(r"^@[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:/[A-Za-z0-9._-]+)?$")
+
+
+def codeowners_regex(pattern: str) -> re.Pattern:
+    """One CODEOWNERS pattern as a regex over a repository-relative path.
+
+    The rules are the gitignore ones GitHub keeps: a pattern with a slash
+    anywhere but its end is anchored at the root, and one without matches at
+    any depth; a pattern that names a directory covers everything under it;
+    `*` stays inside one path segment and `**` crosses them. `docs/*` covers
+    the files directly in `docs` and not the ones nested below, which is
+    GitHub's own exception.
+    """
+    anchored = "/" in pattern.rstrip("/")
+    directory = pattern.endswith("/")
+    core = pattern.strip("/")
+    out, i, n = [], 0, len(core)
+    while i < n:
+        c = core[i]
+        if core.startswith("**/", i):
+            out.append("(?:.*/)?"); i += 3
+        elif core.startswith("**", i):
+            out.append(".*"); i += 2
+        elif c == "*":
+            out.append("[^/]*"); i += 1
+        elif c == "?":
+            out.append("[^/]"); i += 1
+        elif c == "\\" and i + 1 < n:
+            out.append(re.escape(core[i + 1])); i += 2
+        else:
+            out.append(re.escape(c)); i += 1
+    head = "^" if anchored else "^(?:.*/)?"
+    if directory:
+        tail = "/.*$"
+    elif core.endswith("/*"):
+        tail = "$"
+    else:
+        tail = "(?:/.*)?$"
+    return re.compile(head + "".join(out) + tail)
+
+
+def registry_owners(repo_root: str, registry_path: str) -> list:
+    """@covers AC-THREAD-20i -- the handles CODEOWNERS names for the registry.
+
+    Read by GitHub's own rules, so the comment names whoever GitHub would ask
+    for a review: the first of the three places that exists, and in it the
+    last pattern that matches. A last match with no owner beside it means the
+    file is deliberately unowned, and that is what is returned.
+
+    Any failure returns no owner. The comment reports and never refuses, and
+    the line this feeds is whole without a name in it.
+    """
+    path = norm(registry_path).lstrip("/")
+    if not path:
+        return []
+    text = None
+    for place in CODEOWNERS_PLACES:
+        try:
+            text = (Path(repo_root or ".") / place).read_text(
+                encoding="utf-8", errors="replace")
+            break
+        except OSError:
+            continue
+    if text is None:
+        return []
+    owners: list = []
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        fields = re.split(r"(?<!\\)\s+", line)
+        pattern, rest = fields[0], fields[1:]
+        named = []
+        for token in rest:
+            if token.startswith("#"):
+                break
+            if OWNER_HANDLE.match(token) and token not in named:
+                named.append(token)
+        try:
+            if codeowners_regex(pattern).match(path):
+                owners = named
+        except re.error:
+            continue
+    return owners
+
+
+def registry_repo_path(cfg: dict, project_root: str, repo_root: str) -> str:
+    """The registry file as CODEOWNERS would name it: relative to the
+    repository root, where the config names it relative to the project."""
+    reg = norm(cfg.get("registry", ""))
+    if not reg:
+        return ""
+    pref = norm_root(project_root)
+    if pref and Path(pref).is_absolute():
+        try:
+            rel = Path(pref).resolve().relative_to(Path(repo_root or ".").resolve())
+        except ValueError:
+            return ""
+        pref = norm_root(rel.as_posix())
+    return f"{pref}/{reg}" if pref else reg
+
+
+def requirements_changed_line(owners: list) -> str:
+    """@covers AC-THREAD-20h, AC-THREAD-20i, AC-THREAD-20c
+
+    The one line that says this pull request is a different kind of thing: it
+    changes what the code is required to do. No counts, because the verdict
+    line above it carries them. Two sentences, so that the first reads whole
+    whether or not anyone is named in the second.
+    """
+    lead = "⚠️ This pull request changes what the code is required to do."
+    if not owners:
+        return (f"{lead} Someone who owns the requirements should read it "
+                "before it merges.")
+    if len(owners) == 1:
+        who, verb = owners[0], "owns"
+    else:
+        who, verb = ", ".join(owners[:-1]) + " and " + owners[-1], "own"
+    return (f"{lead} {who} {verb} the requirements file and should read it "
+            "before it merges.")
+
+
 # ---- classification ----
 
 def on_thread_paths(head: dict) -> set:
@@ -544,7 +675,8 @@ def fold(summary: str, body: list) -> list:
 def render(base: dict, head: dict, near: list, far: list, ack: str,
            link: Linker | None = None, project_root: str = "",
            intent_ack: str = "off", receipts: str = "",
-           authorship: list | None = None) -> str:
+           authorship: list | None = None,
+           owners: list | None = None) -> str:
     moved = what_moved(base, head)
     h = rows_by_id(head)
     gate_ok = head.get("gate", {}).get("ok", True)
@@ -607,7 +739,15 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     required_box = bool(
         (ack == "required" and far) or (intent_ack == "required" and moved["restated"])
     )
-    needs_person = bool(moved["restated"]) or required_box
+    # Amended 2026-11-28: an added or a retired requirement needs a person too,
+    # as a reworded one always did. The line under the verdict asks someone who
+    # owns the requirements to read all three, and a green verdict above that
+    # line would contradict it. Only these words change: no status is set from
+    # them and no workflow reads them.
+    requirements_changed = bool(
+        moved["minted"] or moved["retired"] or moved["restated"]
+    )
+    needs_person = requirements_changed or required_box
     if not gate_ok:
         verdict = "🔴 **Do not merge yet**"
     elif needs_person:
@@ -652,6 +792,11 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     refused = refusal_line(head)
     if refused:
         out.append(refused)
+        out.append("")
+    # @covers AC-THREAD-20h -- directly under the verdict, and on a refused run
+    # after the line that says what refused, which AC-THREAD-30a keeps first.
+    if requirements_changed:
+        out.append(requirements_changed_line(owners or []))
         out.append("")
     # @covers FR-THREAD-30, AC-THREAD-30b
     if authorship is not None:
@@ -701,9 +846,13 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     def changed_in(id_: str) -> str:
         """Where in this PR the change that moved this row lives — the carrier
         files it touched, or the registry file when the move was a mint or a
-        restatement. Blank when the move came from a file carrying no mark of
-        its own (a task line gaining a **Carries**, say): the table says the row
-        moved, and does not invent a link it cannot stand behind."""
+        restatement. The word `none` when the move came from a file carrying no
+        mark of its own (a task line gaining a **Carries**, say): the table says
+        the row moved, and does not invent a link it cannot stand behind.
+
+        @covers AC-THREAD-20j -- this cell held an em dash until 2026-11-28. The
+        word reads as absence where a dash read as punctuation, and it was the
+        last em dash in the comment's own words."""
         hits = changed_carriers(id_)
         if hits:
             return " ".join(
@@ -716,7 +865,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             if reg:
                 label = reg.rsplit("/", 1)[-1]
                 return f"[`{label}`]({link.file_hunk(reg)})" if (link and link.ok) else f"`{label}`"
-        return "—"
+        return "none"
 
     # 1. Intent Changed — restated statements of intent + blast-radius re-confirm list
     if moved["restated"]:
@@ -894,10 +1043,11 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                         receipts.rstrip().split("\n")))
 
     out.append("---")
-    # @covers FR-THREAD-20, AC-THREAD-20b -- the house words live here, each with
-    # its definition beside it, and nowhere above. Ruled 2026-10-02: SpecAssay
-    # speaks in requirements, tests and pull requests, and a word a stranger has
-    # to be taught belongs under the fold with the teaching attached.
+    # @covers FR-THREAD-20, AC-THREAD-20b -- no house word, here or above, and
+    # no list of words to teach. Ruled 2026-10-02: SpecAssay speaks in
+    # requirements, tests and pull requests. Until 2026-11-28 this line defined
+    # three house words; the comment prints none of them now, so it needs no
+    # glossary.
     #
     # @covers AC-THREAD-20f, AC-THREAD-20g -- the footer says what blocks and
     # what never does, and its hint describes the setting in words: a reader
@@ -912,11 +1062,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     out.append(
         "<sub>This comment reports; it never blocks. The check blocks when the "
         "Gate refuses. A changed file no requirement "
-        "claims is a note, not a failure. <b>Words used here:</b> "
-        "<b>Golden Thread</b>, the chain from a requirement to the code and test "
-        "that answer for it. <b>Off thread</b>, a changed file no requirement "
-        "claims. <b>Mint</b>, to write a new requirement into the registry. "
-        f"{ack_note}</sub>"
+        f"claims is a note, not a failure. {ack_note}</sub>"
     )
     return "\n".join(out).rstrip() + "\n"
 
@@ -942,6 +1088,9 @@ def main() -> int:
                     help="project dir within the repo (e.g. examples/example-app); "
                          "defaults to the --config file's directory. Bridges repo-relative "
                          "changed paths to the project-relative manifest paths.")
+    ap.add_argument("--repo-root", default=None,
+                    help="the repository root, where CODEOWNERS is looked for; "
+                         "defaults to the current directory")
     ap.add_argument("--pr-url", default=None,
                     help="PR URL (https://github.com/o/r/pull/N); enables file/ID links")
     ap.add_argument("--head-sha", default=None, help="head commit SHA for blob (ID) links")
@@ -978,9 +1127,13 @@ def main() -> int:
             # the report, and says so on stderr rather than in the reader's face.
             print(f"warning: --receipts {args.receipts}: {exc}", file=sys.stderr)
     near, far = classify_changed(changed, head, cfg, project_root)
+    repo_root = args.repo_root or "."
+    owners = registry_owners(
+        repo_root, registry_repo_path(cfg, project_root, repo_root))
     report = render(base, head, near, far, ack, link, project_root,
                     intent_ack=intent_ack, receipts=receipts,
-                    authorship=authorship_rows(args.head, args.head_v5))
+                    authorship=authorship_rows(args.head, args.head_v5),
+                    owners=owners)
 
     if args.out == "-":
         sys.stdout.write(report)
