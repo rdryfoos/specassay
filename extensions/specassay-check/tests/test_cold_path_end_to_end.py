@@ -204,7 +204,7 @@ def test_AC_COLD_40a_the_cold_path_needs_no_plumbing(cold_repo):
 
     # The comment's text: the verdict line, the row that moved, who authored it,
     # and the file that changed alongside with nothing tying it to the thread.
-    assert "🧵 Thread Report" in report
+    assert report.startswith("## SpecAssay Report")
     assert "🟢 **Ready to review**" in report
     assert re.search(r"`AC-GREET-10` \| `tracked-debt` → .*`proven`", report), report
     assert "came from the case" in report, "the authorship sentence is missing"

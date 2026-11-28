@@ -3,6 +3,36 @@
 All notable changes to the SpecAssay bundle. Versions follow [semver](https://semver.org);
 the bundle version leads, component versions are listed per release.
 
+## Unreleased
+
+**The comment is named the SpecAssay Report.** It was the Thread Report, a name
+taken from its own mechanism, which tells a stranger nothing about what the
+comment is for. The title line now carries the name and one plain line under
+it: *What this change was asked to do, and what it changed that no requirement
+asked for.* The spool of thread is gone from the title; the name says which
+tool wrote the comment.
+
+**The footer says what blocks.** The comment never blocks, the check blocks
+when the Gate refuses, and a changed file no requirement claims is a note and
+not a failure. The footer's hint about the human tick now describes the
+setting in words and prints no configuration key.
+
+**The em dashes are out of what the comment prints**, in seven places: the two
+fold summaries, the reworded list, the two marks beside a file to check, and
+the two required tick lines. The tick lines keep their `- [ ]` prefix and
+their backticked suffix, so the workflows that find them still do. One em dash
+is left on purpose and is still to be settled: the one that fills an empty
+*Where* cell to say that nothing answers for the move.
+
+**What does not change.** The hidden marker the comment is found by, so no
+open pull request gets a second comment. The script's file names. The
+`offthread_ack` and `intent_ack` keys and their flags. Every dated receipt of
+what a past run printed.
+
+Still to come before this is cut: the line that marks a pull request which
+changes the requirements themselves, the job's name in the checks list, and
+the pages and captures that quote the comment.
+
 ## 0.6.1 (2026-11-25)
 
 Components: bundle 0.6.1, extension 0.6.1, preset 0.6.1.

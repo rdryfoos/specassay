@@ -2,7 +2,8 @@
 """thread-report — the SpecAssay *illuminate* rung.
 
 Diffs a base trace-manifest against a PR-head trace-manifest and buckets the
-PR's changed files, then emits a Markdown **Thread Report** for a PR comment:
+PR's changed files, then emits a Markdown **SpecAssay Report** for a PR comment
+(named the Thread Report until 2026-11; this file keeps its name):
 
   0. The verdict line — the thread's state and the counts that answer "what did
      this card do": rows proved, rows moved to admitted debt, files off thread.
@@ -57,6 +58,15 @@ from pathlib import Path
 
 BADGE = {"proven": "🟢", "tracked-debt": "🟠", "backlog": "🔵", "GAP": "🔴"}
 ACK_CHOICES = ("off", "record", "required")
+
+# The comment's name, and the one plain line that says what it is for. The file
+# is still called thread-report.py, and the hidden marker the workflows find the
+# comment by is unchanged: neither is something a reader sees.
+REPORT_NAME = "SpecAssay Report"
+REPORT_PLAIN_LINE = (
+    "What this change was asked to do, and what it changed that no requirement "
+    "asked for."
+)
 
 
 def load_manifest(path: str) -> dict:
@@ -583,7 +593,13 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     # every count agrees in number with itself. The house words moved to the
     # footer's "Words used here", where a reader meets each one with its
     # definition beside it rather than in the line they read first.
-    out.append("## 🧵 Thread Report")
+    #
+    # @covers AC-THREAD-20e -- the name and the plain line that says what the
+    # comment is are ONE source line, because AC-THREAD-10 holds the verdict to
+    # the second non-empty line and nothing may sit between the two. The break
+    # and the small type are inline markup inside the heading; no dash of any
+    # kind joins the name to the line.
+    out.append(f"## {REPORT_NAME}<br><sub>{REPORT_PLAIN_LINE}</sub>")
     out.append("")
     # A required tick is unticked the moment this report renders: a tick attests
     # to a specific head, and the report reposts on every push. So a required
@@ -731,7 +747,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                 return ""
             label = "changed here" if inline else "◀ changed in this pull request"
             body = f"[{label}]({link.file_hunk(p)})" if (link and link.ok) else label
-            return f" ({body})" if inline else f" — {body}"
+            return f" ({body})" if inline else f" · {body}"
 
         out.append("### Reworded requirements")
         n = len(moved["restated"])
@@ -744,7 +760,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
         out.append("")
         for r in moved["restated"]:
             id_ = r["id"]
-            out.append(f"- **{fmt_id(id_)}** — reworded")
+            out.append(f"- **{fmt_id(id_)}**: reworded")
             out.append(f"  - was: _{strip_id_prefix(id_, r['was'])}_")
             out.append(f"  - now: _{strip_id_prefix(id_, r['now'])}_")
             row = h.get(id_) or {}
@@ -774,7 +790,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                 for (p, ln) in carriers:
                     if (p, ln) in hits:
                         matched, mline = hits[(p, ln)]
-                        out.append(f"    - {clink(p, ln, mline)} — ⚠ still contains the old `{matched}`{updated_mark(p)}")
+                        out.append(f"    - {clink(p, ln, mline)} · ⚠ still contains the old `{matched}`{updated_mark(p)}")
                     else:
                         out.append(f"    - {clink(p, ln)}{updated_mark(p)}")
             elif left:  # Tier 2 — value changed, not found verbatim
@@ -797,7 +813,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             out.append("- [ ] **Every reworded requirement still holds: its code and tests checked.** _(tick to record; informational)_")
         elif intent_ack == "required":
             out.append("")
-            out.append("- [ ] **Every reworded requirement still holds: its code and tests checked.** _(a human must tick this before merge — `intent_ack: required`)_")
+            out.append("- [ ] **Every reworded requirement still holds: its code and tests checked.** _(a human must tick this before merge, `intent_ack: required`)_")
         out.append("")
 
     # 2. What moved — the family tables. One section, not two: the table carries
@@ -841,7 +857,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                 )
             body.append("")
         out.extend(fold(
-            f"<b>What changed</b> — {len(moved_ids)} {row_noun} in {fam_count} {fam_noun}",
+            f"<b>What changed</b>: {len(moved_ids)} {row_noun} in {fam_count} {fam_noun}",
             body,
         ))
 
@@ -861,12 +877,12 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             fp = f["path"]
             body.append(f"- [`{fp}`]({link.file_hunk(fp)})" if (link and link.ok) else f"- `{fp}`")
         out.extend(fold(
-            f"<b>Changed files no requirement claims</b> — {n} {noun}", body))
+            f"<b>Changed files no requirement claims</b>: {n} {noun}", body))
         if ack == "record":
             out.append("- [ ] **These unclaimed changes are incidental.** _(tick to record; informational)_")
             out.append("")
         elif ack == "required":
-            out.append("- [ ] **These unclaimed changes are incidental.** _(a human must tick this before merge — `offthread_ack: required`)_")
+            out.append("- [ ] **These unclaimed changes are incidental.** _(a human must tick this before merge, `offthread_ack: required`)_")
             out.append("")
     else:
         out.append("_Every changed file names a requirement. Nothing is unclaimed._")
@@ -882,13 +898,20 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     # its definition beside it, and nowhere above. Ruled 2026-10-02: SpecAssay
     # speaks in requirements, tests and pull requests, and a word a stranger has
     # to be taught belongs under the fold with the teaching attached.
+    #
+    # @covers AC-THREAD-20f, AC-THREAD-20g -- the footer says what blocks and
+    # what never does, and its hint describes the setting in words: a reader
+    # who has not opened the config is not handed one of its keys. The tick
+    # lines above still end in theirs, which AC-THREAD-20d holds.
     ack_note = (
-        "Set `offthread_ack: record|required` in the SpecAssay config to add a human tick."
+        "The SpecAssay config can ask a person to tick off the unclaimed files, "
+        "for the record or before merge."
         if ack == "off"
         else f"Acknowledgement of unclaimed files: **{ack}**."
     )
     out.append(
-        "<sub>This comment reports; it never blocks. A changed file no requirement "
+        "<sub>This comment reports; it never blocks. The check blocks when the "
+        "Gate refuses. A changed file no requirement "
         "claims is a note, not a failure. <b>Words used here:</b> "
         "<b>Golden Thread</b>, the chain from a requirement to the code and test "
         "that answer for it. <b>Off thread</b>, a changed file no requirement "
@@ -907,7 +930,7 @@ def read_changed(arg: str) -> list:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Emit a Thread Report (Markdown).")
+    ap = argparse.ArgumentParser(description=f"Emit a {REPORT_NAME} (Markdown).")
     ap.add_argument("--base", required=True, help="base-branch trace-manifest.json")
     ap.add_argument("--head", required=True, help="PR-head trace-manifest.json")
     ap.add_argument("--changed-files", required=True, help="file with one changed path per line, or - for stdin")

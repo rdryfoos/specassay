@@ -207,6 +207,11 @@ where that same ID lands once it has.
     and `test_AC_THREAD_20b_the_footer_defines_the_three_words_it_uses`.
   - AC-THREAD-20c — proven by `test_AC_THREAD_20c_every_count_of_one_agrees_in_number`.
   - AC-THREAD-20d — proven by `test_AC_THREAD_20d_a_required_tick_keeps_the_shape_the_workflows_match`.
+  - AC-THREAD-20e: proven by `test_AC_THREAD_20e_the_title_line_is_the_name_and_the_plain_line`,
+    which reads the title in three shapes of report and looks for the old name in all of each.
+  - AC-THREAD-20f: proven by `test_AC_THREAD_20f_the_footer_says_what_blocks_and_what_never_does`.
+  - AC-THREAD-20g: proven by `test_AC_THREAD_20g_the_footer_hint_prints_no_configuration_key`,
+    whose negative control is the tick line that still ends in its key.
 - FR-THREAD-30 — A red report says what refused, by kind and count, in the
   first line under the verdict, and a report on a project with objectives says
   what the case defines. Shipped 2026-11-25 in 0.6.1, proven by

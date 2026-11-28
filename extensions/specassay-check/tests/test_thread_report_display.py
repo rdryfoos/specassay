@@ -214,7 +214,7 @@ def test_the_off_thread_files_are_still_named_under_the_fold(tmp_path):
     base = head = [row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))]
     out, _ = report(tmp_path, base, head, ["docs/notes.md", "Makefile"])
 
-    assert "<summary><b>Changed files no requirement claims</b> — 2 files</summary>" in out
+    assert "<summary><b>Changed files no requirement claims</b>: 2 files</summary>" in out
     assert "docs/notes.md" in out and "Makefile" in out
 
 
@@ -306,7 +306,7 @@ def test_a_missing_receipts_file_loses_the_appendix_not_the_report(tmp_path):
     base = head = [row("AC-SYNC-10", "proven", proofs=("tests/test_sync.py",))]
     out, proc = report(tmp_path, base, head, receipts=str(tmp_path / "nope.md"))
 
-    assert "## 🧵 Thread Report" in out
+    assert out.startswith("## SpecAssay Report")
     assert "Receipts" not in out
     assert "warning" in proc.stderr.lower()
 
@@ -466,6 +466,83 @@ def test_AC_THREAD_20b_the_footer_defines_the_three_words_it_uses(tmp_path):
     assert len([ln for ln in footer.splitlines() if ln.strip()]) == 1
 
 
+# --- the name, and what blocks ---------------------------------------------
+# Amended 2026-11-27: the comment is named the SpecAssay Report. Its title line
+# says what it is for, its footer says what blocks and what never does, and the
+# footer's hint stops handing a reader a configuration key.
+
+PLAIN_LINE = ("What this change was asked to do, and what it changed that no "
+              "requirement asked for.")
+
+
+def every_shape(tmp_path):
+    """The report in the shapes that print the most: a quiet green, a refusal,
+    and a reworded requirement with both ticks required and a receipt attached."""
+    (tmp_path / "run.md").write_text("gate: verdict GREEN, exit 0\n")
+    quiet = [row("AC-SYNC-10", "proven", proofs=("tests/t.py",))]
+    yield report(tmp_path, quiet, quiet)[0]
+    yield report(tmp_path, quiet, [row("AC-SYNC-10", "GAP")], gate_ok=False)[0]
+    yield report(
+        tmp_path,
+        [row("AC-SYNC-20", "proven", statement="AC-SYNC-20 — Retries after 5s.",
+             proofs=("tests/test_sync.py",))],
+        [row("AC-SYNC-20", "proven", statement="AC-SYNC-20 — Retries after 2s.",
+             proofs=("tests/test_sync.py",)),
+         row("AC-NEW-10", "backlog")],
+        ["tests/test_sync.py", "PRD.md", "Makefile"],
+        offthread_ack="required", intent_ack="required",
+        receipts=str(tmp_path / "run.md"),
+    )[0]
+
+
+def test_AC_THREAD_20e_the_title_line_is_the_name_and_the_plain_line(tmp_path):
+    """@covers AC-THREAD-20e
+
+    One source line, so the verdict stays where AC-THREAD-10 holds it. The old
+    name is checked in every shape, not in one: a name that survives in a
+    section only a refusal prints is still a name a reader meets.
+    """
+    for out in every_shape(tmp_path):
+        lines = [ln for ln in out.splitlines() if ln.strip()]
+        title = lines[0]
+        assert title.startswith("## SpecAssay Report"), title
+        assert PLAIN_LINE in title, title
+        for dash in ("—", "–", " - "):
+            assert dash not in title, f"a dash joins the name to the plain line: {title}"
+        assert any(lines[1].startswith(dot) for dot in ("🟢", "🟡", "🔴")), (
+            f"the verdict is no longer the second non-empty line:\n{lines[1]}"
+        )
+        assert "Thread Report" not in out
+        assert "🧵" not in out
+
+
+def test_AC_THREAD_20f_the_footer_says_what_blocks_and_what_never_does(tmp_path):
+    """@covers AC-THREAD-20f"""
+    for out in every_shape(tmp_path):
+        footer = out.rsplit("\n---\n", 1)[1]
+        assert "This comment reports; it never blocks." in footer
+        assert "The check blocks when the Gate refuses." in footer
+        assert "A changed file no requirement claims is a note, not a failure." in footer
+
+
+def test_AC_THREAD_20g_the_footer_hint_prints_no_configuration_key(tmp_path):
+    """@covers AC-THREAD-20g
+
+    The negative control is the tick line: with a tick required the key is still
+    printed there, because AC-THREAD-20d holds that suffix for the workflows. So
+    this test cannot be passed by scrubbing the key from the whole comment.
+    """
+    quiet = [row("AC-SYNC-10", "proven", proofs=("tests/t.py",))]
+    out, _ = report(tmp_path, quiet, quiet, ["Makefile"])
+    footer = out.rsplit("\n---\n", 1)[1]
+    assert "can ask a person to tick off the unclaimed files" in footer
+    assert "_ack" not in out, "a configuration key is printed with no tick asked for"
+    assert "`" not in footer, "the footer still prints something as code"
+
+    held, _ = report(tmp_path, quiet, quiet, ["Makefile"], offthread_ack="required")
+    assert "`offthread_ack: required`)_" in held
+
+
 def test_AC_THREAD_20c_every_count_of_one_agrees_in_number(tmp_path):
     """@covers AC-THREAD-20c
 
@@ -483,8 +560,8 @@ def test_AC_THREAD_20c_every_count_of_one_agrees_in_number(tmp_path):
     assert "1 files" not in out
     assert "**1** now has a test" in line
     assert "**1** new requirement" in line
-    assert "— 1 file</summary>" in out
-    assert "— 2 requirements in 2 areas" in out
+    assert "</b>: 1 file</summary>" in out
+    assert "</b>: 2 requirements in 2 areas" in out
 
 
 def test_AC_THREAD_20d_a_required_tick_keeps_the_shape_the_workflows_match(tmp_path):
