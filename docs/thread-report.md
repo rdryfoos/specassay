@@ -72,9 +72,9 @@ reworded requirement has code and tests written against the old wording, and a
 `required` tick is unticked the moment the report renders, since a tick attests to
 one head and the report reposts on every push. A green line in either case would
 have been true about the Gate and misleading about the merge. Since 2026-11-28 an
-added or a retired requirement reads amber too: the line under the verdict asks
-someone who owns the requirements to read all three, and a green verdict above it
-would contradict it. **Amber is words, not a block.** No status is set from the
+added or a retired requirement reads amber too: the line under the verdict says of
+all three that someone who owns the requirements should merge, and a green verdict
+above it would contradict it. **Amber is words, not a block.** No status is set from the
 verdict and no workflow reads it.
 
 No colour on the words; the dot carries it, so the line reads the same in a comment
@@ -158,7 +158,7 @@ changes what the code is required to do, which is a different kind of thing, and
 one line directly under the verdict says so:
 
 ```
-⚠️ This pull request changes what the code is required to do. Someone who owns the requirements should read it before it merges.
+⚠️ This pull request changes what the code is required to do. Someone who owns the requirements should merge.
 ```
 
 It carries no counts, because the verdict line above it has them. On a refused
@@ -169,7 +169,7 @@ requirement does not print it.
 that owner.** The handle below is made up:
 
 ```
-⚠️ This pull request changes what the code is required to do. @acme/product owns the requirements file and should read it before it merges.
+⚠️ This pull request changes what the code is required to do. @acme/product owns the requirements file and should merge.
 ```
 
 The owner is read by GitHub's own rules, so the comment names whoever GitHub
@@ -183,8 +183,9 @@ address is not printed.
 Three things worth knowing before you rely on it. The handle is a live mention,
 so GitHub notifies the person or team it names. The file is read from the pull
 request's own head, so a pull request that edits CODEOWNERS is described by its
-own edit. And the line asks; it does not block. Making an owner's review
-required is GitHub's own setting, *Require review from Code Owners*.
+own edit. And the line asks; it does not block, and nothing checks who merges.
+Making an owner's review required is GitHub's own setting, *Require review from
+Code Owners*.
 
 ### 1. Reworded requirements
 

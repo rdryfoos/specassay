@@ -18,11 +18,11 @@ not a failure. The footer's hint about the human tick now describes the
 setting in words and prints no configuration key.
 
 **A pull request that changes the requirements says so, and says who should
-read it.** When a pull request adds, retires or rewords a requirement, one line
+merge it.** When a pull request adds, retires or rewords a requirement, one line
 directly under the verdict reads: *This pull request changes what the code is
-required to do. Someone who owns the requirements should read it before it
-merges.* Where a CODEOWNERS file names an owner for the registry file, the line
-names that owner instead, read by GitHub's own rules: the first of
+required to do. Someone who owns the requirements should merge.* The line asks;
+nothing checks who merges. Where a CODEOWNERS file names an owner for the
+registry file, the line names that owner instead, read by GitHub's own rules: the first of
 `.github/CODEOWNERS`, `CODEOWNERS` and `docs/CODEOWNERS` that exists, and the
 last pattern in it that matches. The handle is a live mention, so GitHub
 notifies whoever it names. An owner given only as an email address is not

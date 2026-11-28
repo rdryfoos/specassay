@@ -552,18 +552,17 @@ def requirements_changed_line(owners: list) -> str:
     The one line that says this pull request is a different kind of thing: it
     changes what the code is required to do. No counts, because the verdict
     line above it carries them. Two sentences, so that the first reads whole
-    whether or not anyone is named in the second.
+    whether or not anyone is named in the second. The line asks: nothing here
+    or in any workflow checks who merges.
     """
     lead = "⚠️ This pull request changes what the code is required to do."
     if not owners:
-        return (f"{lead} Someone who owns the requirements should read it "
-                "before it merges.")
+        return f"{lead} Someone who owns the requirements should merge."
     if len(owners) == 1:
         who, verb = owners[0], "owns"
     else:
         who, verb = ", ".join(owners[:-1]) + " and " + owners[-1], "own"
-    return (f"{lead} {who} {verb} the requirements file and should read it "
-            "before it merges.")
+    return f"{lead} {who} {verb} the requirements file and should merge."
 
 
 # ---- classification ----
@@ -740,9 +739,9 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
         (ack == "required" and far) or (intent_ack == "required" and moved["restated"])
     )
     # Amended 2026-11-28: an added or a retired requirement needs a person too,
-    # as a reworded one always did. The line under the verdict asks someone who
-    # owns the requirements to read all three, and a green verdict above that
-    # line would contradict it. Only these words change: no status is set from
+    # as a reworded one always did. The line under the verdict says of all three
+    # that someone who owns the requirements should merge, and a green verdict
+    # above that line would contradict it. Only these words change: no status is set from
     # them and no workflow reads them.
     requirements_changed = bool(
         moved["minted"] or moved["retired"] or moved["restated"]

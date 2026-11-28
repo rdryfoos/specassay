@@ -582,12 +582,12 @@ def test_AC_THREAD_20g_the_footer_hint_prints_no_configuration_key(tmp_path):
     assert "`offthread_ack: required`)_" in held
 
 
-# --- who should read it -----------------------------------------------------
+# --- who should merge it ----------------------------------------------------
 # Added 2026-11-28. A pull request that changes the requirements themselves is
 # a different kind of thing from one that changes code, and one line says so.
 
 CHANGES_LEAD = "⚠️ This pull request changes what the code is required to do."
-NO_OWNER = CHANGES_LEAD + " Someone who owns the requirements should read it before it merges."
+NO_OWNER = CHANGES_LEAD + " Someone who owns the requirements should merge."
 
 
 def non_empty(text: str) -> list:
@@ -680,16 +680,19 @@ def test_AC_THREAD_20i_the_line_names_the_owner_codeowners_names(tmp_path):
     """@covers AC-THREAD-20i"""
     line = codeowners_report(tmp_path, "# who reviews what\nPRD.md @acme/product\n")
     assert line == (CHANGES_LEAD + " @acme/product owns the requirements file "
-                    "and should read it before it merges."), line
+                    "and should merge."), line
 
 
 def test_AC_THREAD_20i_the_verb_agrees_with_the_number_of_owners(tmp_path):
     """@covers AC-THREAD-20i, AC-THREAD-20c"""
     two = codeowners_report(tmp_path, "/PRD.md @acme/product @river\n")
-    assert "@acme/product and @river own the requirements file and should" in two, two
+    assert two.endswith(
+        " @acme/product and @river own the requirements file and should merge."), two
 
     three = codeowners_report(tmp_path, "/PRD.md @acme/product @river @acme/qa\n")
-    assert "@acme/product, @river and @acme/qa own the requirements file" in three, three
+    assert three.endswith(
+        " @acme/product, @river and @acme/qa own the requirements file and should merge."
+    ), three
 
 
 def test_AC_THREAD_20i_the_last_matching_pattern_wins_as_it_does_on_github(tmp_path):
