@@ -228,6 +228,9 @@ where that same ID lands once it has.
   - AC-THREAD-20j: proven by
     `test_AC_THREAD_20j_a_row_with_nothing_to_point_at_says_none` and
     `test_AC_THREAD_20j_the_comments_own_words_carry_no_em_dash`.
+  - AC-THREAD-20k: proven by
+    `test_AC_THREAD_20k_the_job_that_posts_the_comment_is_named_for_it`, in
+    `test_cold_30_ci_workflow.py`, which reads both workflows.
 - FR-THREAD-30 — A red report says what refused, by kind and count, in the
   first line under the verdict, and a report on a project with objectives says
   what the case defines. Shipped 2026-11-25 in 0.6.1, proven by

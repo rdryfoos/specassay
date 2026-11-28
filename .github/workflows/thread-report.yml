@@ -1,4 +1,4 @@
-name: Thread Report
+name: SpecAssay Report
 
 # Illuminate first, refuse second — and as separate steps. The report ALWAYS
 # posts a briefing on the PR, even when the Gate is broken (so the comment
@@ -19,7 +19,7 @@ permissions:
   statuses: write
 
 jobs:
-  thread-report:
+  specassay-report:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout PR head (full history for base + head)

@@ -3,7 +3,8 @@ name: SpecAssay
 # Installed by `bash .specify/extensions/specassay-check/scripts/install-ci.sh`.
 # One file, two jobs, and nothing for you to wire up:
 #
-#   thread-report  on every pull request: runs the Gate on the PR head and on the
+#   specassay-report
+#                  on every pull request: runs the Gate on the PR head and on the
 #                  base commit, posts one sticky SpecAssay Report comment saying what
 #                  the change did to your promises, sets the ack status when your
 #                  config asks for a human tick, and then fails the job if the
@@ -41,7 +42,10 @@ env:
   SPECASSAY_PROJECT: "."
 
 jobs:
-  thread-report:
+  # Named for the comment it posts. This is the name a pull request's list of
+  # checks shows. It was `thread-report` until November 2026; if your branch rules
+  # require that check by name, change the name there when you take this file.
+  specassay-report:
     if: github.event_name != 'issue_comment'
     runs-on: ubuntu-latest
     steps:
