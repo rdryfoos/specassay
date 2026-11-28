@@ -45,8 +45,9 @@ written; this spec is where the ID lands once it has.
   the test suite stays green while the Gate refuses, which is the gilt this
   tool exists to catch, on a thread the reader minted themselves. Verified by
   extracting the document's own paste-blocks and running them in order in a
-  clean project; re-run 2026-10-06 against the published SpecAssay v0.5.6 with
-  Spec Kit v1.0.4 pinned from its own tag, where every quoted receipt
-  reproduced unchanged. Distinct from `FR-DOCS-10`, which stays
+  clean project; re-run 2026-11-28 against the published SpecAssay v0.6.1 with
+  Spec Kit v1.0.4 pinned from its own tag, where every quoted receipt of
+  blocks 1 to 12 reproduced, the lines naming the machine's own versions
+  aside; block 13's look in a browser was not repeated on that run. Distinct from `FR-DOCS-10`, which stays
   the README's install quickstart and keeps its own carrier there — one ID,
   one carrier.
