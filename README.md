@@ -77,7 +77,7 @@ Bundle id: `specassay`.
 
 ## Before you install
 
-**Want to be walked through it once, on a toy project?** [`ONBOARD.md`](./ONBOARD.md) is the quickstart in paste-blocks: a blank session to a first Thread Report in one short sitting, pinned to the versions it was verified against, with the Gate's refusal demonstrated on purpose rather than described. This page is the reference; that one is the walk.
+**Want to be walked through it once, on a toy project?** [`ONBOARD.md`](./ONBOARD.md) is the quickstart in paste-blocks: a blank session to a first SpecAssay Report in one short sitting, pinned to the versions it was verified against, with the Gate's refusal demonstrated on purpose rather than described. This page is the reference; that one is the walk.
 
 **New to Spec Kit?** Start with the official [Spec Kit README](https://github.com/github/spec-kit#readme), get one `specify init` project working, then come back here. SpecAssay assumes that vocabulary (spec, plan, tasks, implement) and adds to it.
 

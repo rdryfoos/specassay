@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Everything a Thread Report comment needs, in one place: the Gate on the head,
+# Everything a SpecAssay Report comment needs, in one place: the Gate on the head,
 # the Gate on the base commit, the changed files, and the report itself.
 #
 # @covers FR-COLD-40, AC-COLD-40a
@@ -119,6 +119,7 @@ args=(
   --changed-files "$OUT_DIR/changed.txt"
   --config "$CONFIG"
   --project-root "$PROJECT"
+  --repo-root "$REPO_ROOT"
   --out "$OUT_DIR/report.md"
 )
 [[ -n "$PR_URL" ]] && args+=(--pr-url "$PR_URL")

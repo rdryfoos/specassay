@@ -1,4 +1,4 @@
-"""FR-COLD-30: the bundle ships the CI that posts the Thread Report.
+"""FR-COLD-30: the bundle ships the CI that posts the SpecAssay Report.
 
 Gap (d) and (e) of the cold path. Reproduced 2026-10-02 on 0.5.4: `find .github
 -type f` after a full install returned nothing, so a pull request ran nothing and
@@ -160,3 +160,46 @@ def test_AC_COLD_30c_the_shipped_workflow_is_not_this_repository_s_own():
     # The verdict is a separate step from the comment: the red tick is the block,
     # the comment never is.
     assert text.index("createComment") < text.index("Requirements check failed")
+
+
+def _job_names(workflow: Path) -> list:
+    """The keys directly under `jobs:`, read as text like the rest of this file."""
+    names, inside = [], False
+    for line in workflow.read_text().splitlines():
+        if line.rstrip() == "jobs:":
+            inside = True
+            continue
+        if inside:
+            m = re.match(r"^  ([A-Za-z0-9_-]+):\s*$", line)
+            if m:
+                names.append(m.group(1))
+            elif line and not line.startswith((" ", "#")):
+                inside = False
+    return names
+
+
+def test_AC_THREAD_20k_the_job_that_posts_the_comment_is_named_for_it():
+    """@covers AC-THREAD-20k
+
+    The job's name is what a pull request's list of checks shows, so it is read
+    by the same stranger the comment's own name is for. Both workflows are held:
+    the one the bundle ships, and the one this repository runs on its example.
+
+    The second job in the shipped workflow keeps its name, which is the control:
+    a reader of job names that returned nothing would pass the "no old name"
+    half of this on an empty list.
+    """
+    own = EXT.parents[1] / ".github" / "workflows" / "thread-report.yml"
+
+    shipped = _job_names(WORKFLOW)
+    assert shipped == ["specassay-report", "ack-gate"], shipped
+
+    ours = _job_names(own)
+    assert ours == ["specassay-report"], ours
+
+    for names in (shipped, ours):
+        assert "thread-report" not in names
+
+    # The marker the comment is found by is not the job's name and did not move.
+    assert "<!-- specassay-thread-report -->" in WORKFLOW.read_text()
+    assert "<!-- specassay-thread-report -->" in own.read_text()

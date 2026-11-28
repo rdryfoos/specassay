@@ -2,7 +2,7 @@
 
 The test the 2026-09-26 ledger lacked. It builds a throwaway git repository, puts
 the bundle's files where an install puts them, and then walks a stranger's whole
-path to a Thread Report comment using **only commands the bundle ships** plus the
+path to a SpecAssay Report comment using **only commands the bundle ships** plus the
 ordinary git and editor actions any project involves.
 
 How it fails if a step needs a hand: every command is declared in `STEPS` before it
@@ -204,7 +204,7 @@ def test_AC_COLD_40a_the_cold_path_needs_no_plumbing(cold_repo):
 
     # The comment's text: the verdict line, the row that moved, who authored it,
     # and the file that changed alongside with nothing tying it to the thread.
-    assert "🧵 Thread Report" in report
+    assert report.startswith("## SpecAssay Report")
     assert "🟢 **Ready to review**" in report
     assert re.search(r"`AC-GREET-10` \| `tracked-debt` → .*`proven`", report), report
     assert "came from the case" in report, "the authorship sentence is missing"

@@ -81,7 +81,7 @@ jobs:
             || python3 -m pip install --quiet --break-system-packages pytest
           python3 -m pytest extensions/specassay-check/tests/test_cold_path_end_to_end.py -q
 
-      - name: Extension test suite — check-traceability.sh
+      - name: "Extension test suite: check-traceability.sh"
         run: |
           set -euo pipefail
           # macOS runners ship a PEP 668 "externally managed" Python, which
@@ -94,7 +94,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/check-doc-versions.py
-      - name: Gate 2 — this repo's own registry
+      - name: "Gate 2: this repo's own registry"
         run: |
           set -euo pipefail
           SPECASSAY_PROJECT_ROOT="$PWD" \

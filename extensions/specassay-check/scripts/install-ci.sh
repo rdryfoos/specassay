@@ -10,7 +10,7 @@
 # `.github/hooks/speckit.json` (read from Spec Kit 1.0.5's own source,
 # 2026-10-02). Hooks are agent-side events, not install-time ones. So the bundle
 # ships the workflow and this one command places it, which is the whole of what a
-# stranger has to do by hand to get a Thread Report onto a pull request.
+# stranger has to do by hand to get a SpecAssay Report onto a pull request.
 #
 # Idempotent: refuses rather than overwrite a workflow that differs, and says
 # nothing has changed when the installed copy already matches.
@@ -86,5 +86,5 @@ mkdir -p "$DEST_DIR"
 cp "$rendered" "$DEST"
 
 echo "wrote ${DEST#"$REPO_ROOT"/} (project root: $rel)" >&2
-echo "  On every pull request it runs the Gate on the head and on the base, posts one Thread Report comment saying what the change did to your promises, and fails the check if the Gate refuses. A local run before you push is still worth having; this is the run that protects the thread." >&2
+echo "  On every pull request it runs the Gate on the head and on the base, posts one SpecAssay Report comment saying what the change did to your promises, and fails the check if the Gate refuses. A local run before you push is still worth having; this is the run that protects the thread." >&2
 echo "  Commit it along with .specify/, then open a pull request." >&2

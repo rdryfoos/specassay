@@ -1,4 +1,4 @@
-"""The cold path's own contract: a stranger reaches a Thread Report with no
+"""The cold path's own contract: a stranger reaches a SpecAssay Report with no
 plumbing of their own.
 
 These tests read the shipped files rather than running an install, on purpose.

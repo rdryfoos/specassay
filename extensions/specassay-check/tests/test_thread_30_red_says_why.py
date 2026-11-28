@@ -94,7 +94,11 @@ def test_AC_THREAD_30a_one_refusal_reads_as_one(tmp_path):
 
 def test_AC_THREAD_30a_a_green_report_says_nothing_of_refusals(tmp_path):
     report = _report(tmp_path, _head(rows=["AC-A-10"]))
-    assert "🟢 **Ready to review**" in report
+    # The gate passed. The one row here is new against this fixture's base, so
+    # since 2026-11-28 the verdict reads needs a person rather than ready to
+    # review (AC-THREAD-20a); what this test holds is that it is not the red one.
+    assert "Do not merge yet" not in report
+    assert "🟡 **Needs a person**" in report
     assert "The Gate refused" not in report
 
 

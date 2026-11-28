@@ -2,7 +2,8 @@
 """thread-report — the SpecAssay *illuminate* rung.
 
 Diffs a base trace-manifest against a PR-head trace-manifest and buckets the
-PR's changed files, then emits a Markdown **Thread Report** for a PR comment:
+PR's changed files, then emits a Markdown **SpecAssay Report** for a PR comment
+(named the Thread Report until 2026-11; this file keeps its name):
 
   0. The verdict line — the thread's state and the counts that answer "what did
      this card do": rows proved, rows moved to admitted debt, files off thread.
@@ -57,6 +58,15 @@ from pathlib import Path
 
 BADGE = {"proven": "🟢", "tracked-debt": "🟠", "backlog": "🔵", "GAP": "🔴"}
 ACK_CHOICES = ("off", "record", "required")
+
+# The comment's name, and the one plain line that says what it is for. The file
+# is still called thread-report.py, and the hidden marker the workflows find the
+# comment by is unchanged: neither is something a reader sees.
+REPORT_NAME = "SpecAssay Report"
+REPORT_PLAIN_LINE = (
+    "What this change was asked to do, and what it changed that no requirement "
+    "asked for."
+)
 
 
 def load_manifest(path: str) -> dict:
@@ -425,6 +435,136 @@ class Linker:
         return f"{self.repo_url}/blob/{self.head_sha}/{rr}{anchor}"
 
 
+# ---- who owns the requirements file ----
+
+# Where GitHub looks for the file, in the order it looks. The first one that
+# exists is the only one read.
+CODEOWNERS_PLACES = (".github/CODEOWNERS", "CODEOWNERS", "docs/CODEOWNERS")
+
+# A handle as GitHub writes one: a user, or an organization's team. An owner
+# given as an email address is not printed: the comment is public, and a
+# handle is what a reader can act on.
+OWNER_HANDLE = re.compile(r"^@[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:/[A-Za-z0-9._-]+)?$")
+
+
+def codeowners_regex(pattern: str) -> re.Pattern:
+    """One CODEOWNERS pattern as a regex over a repository-relative path.
+
+    The rules are the gitignore ones GitHub keeps: a pattern with a slash
+    anywhere but its end is anchored at the root, and one without matches at
+    any depth; a pattern that names a directory covers everything under it;
+    `*` stays inside one path segment and `**` crosses them. `docs/*` covers
+    the files directly in `docs` and not the ones nested below, which is
+    GitHub's own exception.
+    """
+    anchored = "/" in pattern.rstrip("/")
+    directory = pattern.endswith("/")
+    core = pattern.strip("/")
+    out, i, n = [], 0, len(core)
+    while i < n:
+        c = core[i]
+        if core.startswith("**/", i):
+            out.append("(?:.*/)?"); i += 3
+        elif core.startswith("**", i):
+            out.append(".*"); i += 2
+        elif c == "*":
+            out.append("[^/]*"); i += 1
+        elif c == "?":
+            out.append("[^/]"); i += 1
+        elif c == "\\" and i + 1 < n:
+            out.append(re.escape(core[i + 1])); i += 2
+        else:
+            out.append(re.escape(c)); i += 1
+    head = "^" if anchored else "^(?:.*/)?"
+    if directory:
+        tail = "/.*$"
+    elif core.endswith("/*"):
+        tail = "$"
+    else:
+        tail = "(?:/.*)?$"
+    return re.compile(head + "".join(out) + tail)
+
+
+def registry_owners(repo_root: str, registry_path: str) -> list:
+    """@covers AC-THREAD-20i -- the handles CODEOWNERS names for the registry.
+
+    Read by GitHub's own rules, so the comment names whoever GitHub would ask
+    for a review: the first of the three places that exists, and in it the
+    last pattern that matches. A last match with no owner beside it means the
+    file is deliberately unowned, and that is what is returned.
+
+    Any failure returns no owner. The comment reports and never refuses, and
+    the line this feeds is whole without a name in it.
+    """
+    path = norm(registry_path).lstrip("/")
+    if not path:
+        return []
+    text = None
+    for place in CODEOWNERS_PLACES:
+        try:
+            text = (Path(repo_root or ".") / place).read_text(
+                encoding="utf-8", errors="replace")
+            break
+        except OSError:
+            continue
+    if text is None:
+        return []
+    owners: list = []
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        fields = re.split(r"(?<!\\)\s+", line)
+        pattern, rest = fields[0], fields[1:]
+        named = []
+        for token in rest:
+            if token.startswith("#"):
+                break
+            if OWNER_HANDLE.match(token) and token not in named:
+                named.append(token)
+        try:
+            if codeowners_regex(pattern).match(path):
+                owners = named
+        except re.error:
+            continue
+    return owners
+
+
+def registry_repo_path(cfg: dict, project_root: str, repo_root: str) -> str:
+    """The registry file as CODEOWNERS would name it: relative to the
+    repository root, where the config names it relative to the project."""
+    reg = norm(cfg.get("registry", ""))
+    if not reg:
+        return ""
+    pref = norm_root(project_root)
+    if pref and Path(pref).is_absolute():
+        try:
+            rel = Path(pref).resolve().relative_to(Path(repo_root or ".").resolve())
+        except ValueError:
+            return ""
+        pref = norm_root(rel.as_posix())
+    return f"{pref}/{reg}" if pref else reg
+
+
+def requirements_changed_line(owners: list) -> str:
+    """@covers AC-THREAD-20h, AC-THREAD-20i, AC-THREAD-20c
+
+    The one line that says this pull request is a different kind of thing: it
+    changes what the code is required to do. No counts, because the verdict
+    line above it carries them. Two sentences, so that the first reads whole
+    whether or not anyone is named in the second. The line asks: nothing here
+    or in any workflow checks who merges.
+    """
+    lead = "⚠️ This pull request changes what the code is required to do."
+    if not owners:
+        return f"{lead} Someone who owns the requirements should merge."
+    if len(owners) == 1:
+        who, verb = owners[0], "owns"
+    else:
+        who, verb = ", ".join(owners[:-1]) + " and " + owners[-1], "own"
+    return f"{lead} {who} {verb} the requirements file and should merge."
+
+
 # ---- classification ----
 
 def on_thread_paths(head: dict) -> set:
@@ -534,7 +674,8 @@ def fold(summary: str, body: list) -> list:
 def render(base: dict, head: dict, near: list, far: list, ack: str,
            link: Linker | None = None, project_root: str = "",
            intent_ack: str = "off", receipts: str = "",
-           authorship: list | None = None) -> str:
+           authorship: list | None = None,
+           owners: list | None = None) -> str:
     moved = what_moved(base, head)
     h = rows_by_id(head)
     gate_ok = head.get("gate", {}).get("ok", True)
@@ -583,7 +724,13 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     # every count agrees in number with itself. The house words moved to the
     # footer's "Words used here", where a reader meets each one with its
     # definition beside it rather than in the line they read first.
-    out.append("## 🧵 Thread Report")
+    #
+    # @covers AC-THREAD-20e -- the name and the plain line that says what the
+    # comment is are ONE source line, because AC-THREAD-10 holds the verdict to
+    # the second non-empty line and nothing may sit between the two. The break
+    # and the small type are inline markup inside the heading; no dash of any
+    # kind joins the name to the line.
+    out.append(f"## {REPORT_NAME}<br><sub>{REPORT_PLAIN_LINE}</sub>")
     out.append("")
     # A required tick is unticked the moment this report renders: a tick attests
     # to a specific head, and the report reposts on every push. So a required
@@ -591,7 +738,15 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     required_box = bool(
         (ack == "required" and far) or (intent_ack == "required" and moved["restated"])
     )
-    needs_person = bool(moved["restated"]) or required_box
+    # Amended 2026-11-28: an added or a retired requirement needs a person too,
+    # as a reworded one always did. The line under the verdict says of all three
+    # that someone who owns the requirements should merge, and a green verdict
+    # above that line would contradict it. Only these words change: no status is set from
+    # them and no workflow reads them.
+    requirements_changed = bool(
+        moved["minted"] or moved["retired"] or moved["restated"]
+    )
+    needs_person = requirements_changed or required_box
     if not gate_ok:
         verdict = "🔴 **Do not merge yet**"
     elif needs_person:
@@ -636,6 +791,11 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     refused = refusal_line(head)
     if refused:
         out.append(refused)
+        out.append("")
+    # @covers AC-THREAD-20h -- directly under the verdict, and on a refused run
+    # after the line that says what refused, which AC-THREAD-30a keeps first.
+    if requirements_changed:
+        out.append(requirements_changed_line(owners or []))
         out.append("")
     # @covers FR-THREAD-30, AC-THREAD-30b
     if authorship is not None:
@@ -685,9 +845,13 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
     def changed_in(id_: str) -> str:
         """Where in this PR the change that moved this row lives — the carrier
         files it touched, or the registry file when the move was a mint or a
-        restatement. Blank when the move came from a file carrying no mark of
-        its own (a task line gaining a **Carries**, say): the table says the row
-        moved, and does not invent a link it cannot stand behind."""
+        restatement. The word `none` when the move came from a file carrying no
+        mark of its own (a task line gaining a **Carries**, say): the table says
+        the row moved, and does not invent a link it cannot stand behind.
+
+        @covers AC-THREAD-20j -- this cell held an em dash until 2026-11-28. The
+        word reads as absence where a dash read as punctuation, and it was the
+        last em dash in the comment's own words."""
         hits = changed_carriers(id_)
         if hits:
             return " ".join(
@@ -700,7 +864,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             if reg:
                 label = reg.rsplit("/", 1)[-1]
                 return f"[`{label}`]({link.file_hunk(reg)})" if (link and link.ok) else f"`{label}`"
-        return "—"
+        return "none"
 
     # 1. Intent Changed — restated statements of intent + blast-radius re-confirm list
     if moved["restated"]:
@@ -731,7 +895,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                 return ""
             label = "changed here" if inline else "◀ changed in this pull request"
             body = f"[{label}]({link.file_hunk(p)})" if (link and link.ok) else label
-            return f" ({body})" if inline else f" — {body}"
+            return f" ({body})" if inline else f" · {body}"
 
         out.append("### Reworded requirements")
         n = len(moved["restated"])
@@ -744,7 +908,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
         out.append("")
         for r in moved["restated"]:
             id_ = r["id"]
-            out.append(f"- **{fmt_id(id_)}** — reworded")
+            out.append(f"- **{fmt_id(id_)}**: reworded")
             out.append(f"  - was: _{strip_id_prefix(id_, r['was'])}_")
             out.append(f"  - now: _{strip_id_prefix(id_, r['now'])}_")
             row = h.get(id_) or {}
@@ -774,7 +938,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                 for (p, ln) in carriers:
                     if (p, ln) in hits:
                         matched, mline = hits[(p, ln)]
-                        out.append(f"    - {clink(p, ln, mline)} — ⚠ still contains the old `{matched}`{updated_mark(p)}")
+                        out.append(f"    - {clink(p, ln, mline)} · ⚠ still contains the old `{matched}`{updated_mark(p)}")
                     else:
                         out.append(f"    - {clink(p, ln)}{updated_mark(p)}")
             elif left:  # Tier 2 — value changed, not found verbatim
@@ -797,7 +961,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             out.append("- [ ] **Every reworded requirement still holds: its code and tests checked.** _(tick to record; informational)_")
         elif intent_ack == "required":
             out.append("")
-            out.append("- [ ] **Every reworded requirement still holds: its code and tests checked.** _(a human must tick this before merge — `intent_ack: required`)_")
+            out.append("- [ ] **Every reworded requirement still holds: its code and tests checked.** _(a human must tick this before merge, `intent_ack: required`)_")
         out.append("")
 
     # 2. What moved — the family tables. One section, not two: the table carries
@@ -841,7 +1005,7 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                 )
             body.append("")
         out.extend(fold(
-            f"<b>What changed</b> — {len(moved_ids)} {row_noun} in {fam_count} {fam_noun}",
+            f"<b>What changed</b>: {len(moved_ids)} {row_noun} in {fam_count} {fam_noun}",
             body,
         ))
 
@@ -861,12 +1025,12 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
             fp = f["path"]
             body.append(f"- [`{fp}`]({link.file_hunk(fp)})" if (link and link.ok) else f"- `{fp}`")
         out.extend(fold(
-            f"<b>Changed files no requirement claims</b> — {n} {noun}", body))
+            f"<b>Changed files no requirement claims</b>: {n} {noun}", body))
         if ack == "record":
             out.append("- [ ] **These unclaimed changes are incidental.** _(tick to record; informational)_")
             out.append("")
         elif ack == "required":
-            out.append("- [ ] **These unclaimed changes are incidental.** _(a human must tick this before merge — `offthread_ack: required`)_")
+            out.append("- [ ] **These unclaimed changes are incidental.** _(a human must tick this before merge, `offthread_ack: required`)_")
             out.append("")
     else:
         out.append("_Every changed file names a requirement. Nothing is unclaimed._")
@@ -878,22 +1042,26 @@ def render(base: dict, head: dict, near: list, far: list, ack: str,
                         receipts.rstrip().split("\n")))
 
     out.append("---")
-    # @covers FR-THREAD-20, AC-THREAD-20b -- the house words live here, each with
-    # its definition beside it, and nowhere above. Ruled 2026-10-02: SpecAssay
-    # speaks in requirements, tests and pull requests, and a word a stranger has
-    # to be taught belongs under the fold with the teaching attached.
+    # @covers FR-THREAD-20, AC-THREAD-20b -- no house word, here or above, and
+    # no list of words to teach. Ruled 2026-10-02: SpecAssay speaks in
+    # requirements, tests and pull requests. Until 2026-11-28 this line defined
+    # three house words; the comment prints none of them now, so it needs no
+    # glossary.
+    #
+    # @covers AC-THREAD-20f, AC-THREAD-20g -- the footer says what blocks and
+    # what never does, and its hint describes the setting in words: a reader
+    # who has not opened the config is not handed one of its keys. The tick
+    # lines above still end in theirs, which AC-THREAD-20d holds.
     ack_note = (
-        "Set `offthread_ack: record|required` in the SpecAssay config to add a human tick."
+        "The SpecAssay config can ask a person to tick off the unclaimed files, "
+        "for the record or before merge."
         if ack == "off"
         else f"Acknowledgement of unclaimed files: **{ack}**."
     )
     out.append(
-        "<sub>This comment reports; it never blocks. A changed file no requirement "
-        "claims is a note, not a failure. <b>Words used here:</b> "
-        "<b>Golden Thread</b>, the chain from a requirement to the code and test "
-        "that answer for it. <b>Off thread</b>, a changed file no requirement "
-        "claims. <b>Mint</b>, to write a new requirement into the registry. "
-        f"{ack_note}</sub>"
+        "<sub>This comment reports; it never blocks. The check blocks when the "
+        "Gate refuses. A changed file no requirement "
+        f"claims is a note, not a failure. {ack_note}</sub>"
     )
     return "\n".join(out).rstrip() + "\n"
 
@@ -907,7 +1075,7 @@ def read_changed(arg: str) -> list:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Emit a Thread Report (Markdown).")
+    ap = argparse.ArgumentParser(description=f"Emit a {REPORT_NAME} (Markdown).")
     ap.add_argument("--base", required=True, help="base-branch trace-manifest.json")
     ap.add_argument("--head", required=True, help="PR-head trace-manifest.json")
     ap.add_argument("--changed-files", required=True, help="file with one changed path per line, or - for stdin")
@@ -919,6 +1087,9 @@ def main() -> int:
                     help="project dir within the repo (e.g. examples/example-app); "
                          "defaults to the --config file's directory. Bridges repo-relative "
                          "changed paths to the project-relative manifest paths.")
+    ap.add_argument("--repo-root", default=None,
+                    help="the repository root, where CODEOWNERS is looked for; "
+                         "defaults to the current directory")
     ap.add_argument("--pr-url", default=None,
                     help="PR URL (https://github.com/o/r/pull/N); enables file/ID links")
     ap.add_argument("--head-sha", default=None, help="head commit SHA for blob (ID) links")
@@ -955,9 +1126,13 @@ def main() -> int:
             # the report, and says so on stderr rather than in the reader's face.
             print(f"warning: --receipts {args.receipts}: {exc}", file=sys.stderr)
     near, far = classify_changed(changed, head, cfg, project_root)
+    repo_root = args.repo_root or "."
+    owners = registry_owners(
+        repo_root, registry_repo_path(cfg, project_root, repo_root))
     report = render(base, head, near, far, ack, link, project_root,
                     intent_ack=intent_ack, receipts=receipts,
-                    authorship=authorship_rows(args.head, args.head_v5))
+                    authorship=authorship_rows(args.head, args.head_v5),
+                    owners=owners)
 
     if args.out == "-":
         sys.stdout.write(report)

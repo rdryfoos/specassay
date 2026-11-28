@@ -92,7 +92,7 @@ treats admitted debt as honest and silence as a refusal.
 
 ## Live with it
 
-Work normally for three to five PRs. Read the Thread Report comment on
+Work normally for three to five PRs. Read the SpecAssay Report comment on
 each one. Do not perform for the tool; the test is what it feels like
 when you forget about it.
 

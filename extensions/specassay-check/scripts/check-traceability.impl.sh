@@ -1324,7 +1324,7 @@ for id_ in ids:
         if m:
             # Strip the declaration out of the statement: it is metadata about
             # the row, not part of the promise, and every consumer that prints
-            # a statement (the matrix, the portfolio, the Thread Report) would
+            # a statement (the matrix, the portfolio, the SpecAssay Report) would
             # otherwise show it as prose.
             s = AUTHORSHIP_RE.sub("", s).strip().rstrip(".").strip()
             raw = m.group(1)

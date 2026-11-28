@@ -1,4 +1,4 @@
-name: Thread Report
+name: SpecAssay Report
 
 # Illuminate first, refuse second — and as separate steps. The report ALWAYS
 # posts a briefing on the PR, even when the Gate is broken (so the comment
@@ -19,7 +19,7 @@ permissions:
   statuses: write
 
 jobs:
-  thread-report:
+  specassay-report:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout PR head (full history for base + head)
@@ -27,7 +27,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Gate 2 — emit the PR-head manifest (tolerate a broken Gate)
+      - name: "Gate 2: emit the PR-head manifest (tolerate a broken Gate)"
         run: |
           set -uo pipefail
           APP="$PWD/examples/example-app"
@@ -46,7 +46,7 @@ jobs:
           # copying by hand, so it lost the sentence on every comment it posted.
           cp "$APP/trace-manifest.v5beta.json" /tmp/head.v5beta.json
 
-      - name: Gate 2 — emit the base manifest (from the PR base commit)
+      - name: "Gate 2: emit the base manifest (from the PR base commit)"
         run: |
           set -uo pipefail
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
@@ -63,7 +63,7 @@ jobs:
           git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" > /tmp/changed.txt
           echo "Changed:"; cat /tmp/changed.txt
 
-      - name: Build the Thread Report
+      - name: Build the SpecAssay Report
         run: |
           python3 extensions/specassay-check/scripts/thread-report.py \
             --base /tmp/base.json --head /tmp/head.json \
@@ -74,7 +74,7 @@ jobs:
             --out /tmp/report.md
           echo "----- report -----"; cat /tmp/report.md
 
-      - name: Post / update the Thread Report comment (sticky)
+      - name: Post / update the SpecAssay Report comment (sticky)
         uses: actions/github-script@v7
         env:
           REPORT_PATH: /tmp/report.md
@@ -93,7 +93,7 @@ jobs:
               await github.rest.issues.createComment({ owner, repo, issue_number, body });
             }
 
-      - name: Ack status — required human ticks (the affirm rung)
+      - name: "Ack status: required human ticks (the affirm rung)"
         uses: actions/github-script@v7
         env:
           REPORT_PATH: /tmp/report.md
@@ -119,7 +119,7 @@ jobs:
               target_url: context.payload.pull_request.html_url,
             });
 
-      - name: Gate verdict — refuse a broken thread (the block, posted separately)
+      - name: "Gate verdict: refuse a broken thread (the block, posted separately)"
         run: |
           set -euo pipefail
           ok=$(python3 -c "import json,sys; print(json.load(open('/tmp/head.json')).get('gate',{}).get('ok', True))")

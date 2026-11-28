@@ -116,7 +116,7 @@ the shape every other line-level declaration in this tool uses (`**Carries**:` o
 ```
 
 The declaration is stripped out of the row's `statement`, so it never appears as prose in
-the coverage matrix, the portfolio snapshot or the Thread Report. The value is matched
+the coverage matrix, the portfolio snapshot or the SpecAssay Report. The value is matched
 without regard to case and stored lowercase: the field is filled by a hand, one row at a
 time, and spending a refusal on a capital letter would teach nothing. Anything that is not
 one of the four is still refused.
@@ -127,7 +127,7 @@ red every adopter on upgrade for work nobody has asked them to do. A row with a 
 **outside the four** fails, naming both the ID and the value it declined, because a row
 claiming an author that does not exist reads as answered.
 
-**What the Thread Report says.** One sentence above the table, this shape and no other:
+**What the SpecAssay Report says.** One sentence above the table, this shape and no other:
 
 > 10 requirements came from the case, 21 from the project (design 19, retrospective 2, constitution 0).
 
