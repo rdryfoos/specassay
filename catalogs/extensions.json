@@ -44,7 +44,8 @@
       ],
       "verified": false,
       "created_at": "2026-08-06T00:00:00Z",
-      "updated_at": "2026-11-25T00:00:00Z"
+      "updated_at": "2026-11-25T00:00:00Z",
+      "sha256": "b8daf85775303771b118559cc6715fc0391abf776782c190dc4f678dd7fe44c0"
     }
   }
 }
