@@ -24,30 +24,35 @@ wrong you can name the block it went wrong in.
 
 ---
 
-## Pinned, as of 2026-10-06
+## Pinned, as of 2026-11-28
 
 | Thing | Pinned to |
 | --- | --- |
-| SpecAssay | **v0.5.6**, released 2026-10-06. <!-- specassay:stale-ok the release being cut has no published assets until its tag, so this pin stays on the release every receipt below was captured on; it moves only when all thirteen blocks are replayed on the new one, which is what happened at the last two cuts and caught a bad capture once --> This is what `specify bundle install` gives you, and it is what every receipt below was captured on. |
+| SpecAssay | **v0.6.1**, published 2026-11-28. <!-- specassay:current --> This is what `specify bundle install` gives you, and it is what every receipt below was captured on. |
 | GitHub Spec Kit | **v1.0.4**. SpecAssay's manifests accept `>=0.14.0,<2.0.0`, and the floor was checked at v0.5.1 on 2026-09-17: the bundle installs and the Gate runs on Spec Kit 0.14.0, though that version does not scaffold the settings file, so the Gate there reports `config: MISSING` and continues on defaults. <!-- specassay:stale-ok the 0.14.0 floor claim records a run on v0.5.1 and cannot be re-observed without re-running on that release; the floor itself is re-checked each release in CI --> Newer Spec Kit releases exist and the manifests accept them; 1.0.4 is what this page was captured on, and block 2 pins it. |
-| uv | 0.8.17 |
-| Python | 3.11.15 |
-| git | 2.43.0 |
+| uv | 0.13.7 |
+| Python | 3.13.5 |
+| git | 2.47.3 |
 
-**Where the receipts come from.** Every block below was run in order on
-2026-10-06, against those exact versions, and the output quoted under each block is
-that run's real output, trimmed to the lines that carry the receipt, never a sketch
-of what it might say. All thirteen were replayed that day on **v0.5.6**, installed
-the way block 4 installs it, from the catalogs. The install was then repeated
-against the same catalogs carrying the release's sha256, which is how this
-repository leaves them, and the archive verified before it was unpacked: a
-replay run the hour after a tag reads catalogs whose digest the next pull
-request restores, so saying the digest was checked requires checking it.
+**Where the receipts come from.** The page's own paste-blocks were extracted
+from this file and run in order on 2026-11-28, on Linux, against those exact
+versions, and the output quoted under each block is that run's real output,
+trimmed to the lines that carry the receipt, never a sketch of what it might
+say. They were replayed that day on **v0.6.1**, installed the way block 4
+installs it, from the catalogs. The replay was held until the catalogs carried
+the release's sha256, which is how this repository leaves them, so the one
+install it made was of an archive Spec Kit checked against that digest before
+unpacking it.
 
-**What the replay found.** All thirteen blocks reproduced unchanged, receipt
-for receipt, including block 4's seven shipped scripts and block 11's two changed
-files no requirement claims. <!-- specassay:stale-ok the sentence records what the replay reproduced, which is a fact about that run and not a claim about the current release --> Both of those were corrections made by the
-previous replay, on v0.5.5: block 4 had reported four scripts before the Gate
+**What the replay found.** Blocks 1 to 12 reproduced, receipt for receipt,
+including block 4's seven shipped scripts and block 11's two changed files no
+requirement claims. Every quoted line was compared with the run's output by
+program rather than by eye. The only lines that differ from the previous
+capture are the ones that name the machine: the three versions in block 1 and
+the Python version in block 5, which are updated here, and the commit hash in
+block 3, which is different on every machine. <!-- specassay:provenance --> The
+previous replay, on v0.5.6, reproduced all of them unchanged too, and the one
+before it corrected two: block 4 had reported four scripts before the Gate
 became a launcher and an implementation, and a capture taken by hand rather than
 by block 3 had shown seven off-thread files where the page said two, because
 block 3 writes a `.gitignore` that keeps the manifests and Python's
@@ -55,11 +60,16 @@ block 3 writes a `.gitignore` that keeps the manifests and Python's
 which is the sort of thing only replaying from block 1 finds, and it is why the
 pin moves on a replay rather than on a tag.
 
-Spec Kit 1.0.4 was installed from its own tag for the replay, as block 2 does, so
-the page and the run agree on every version in the table.
+**Two things this replay did not repeat, said plainly.** Block 2's install
+line was not rerun: Spec Kit 1.0.4 was already on the machine, installed from
+its own tag as block 2 does, and `specify --version` printed the line block 2
+quotes, so the page and the run agree on every version in the table. And
+block 13 ends with a person opening a file in a browser. Its command ran, and
+the file it names was read and holds the one `proven` row the block describes,
+but nobody looked at it in Loupe on this replay.
 
 An unpinned quickstart rots silently, so this one carries its versions and its
-date. If you are reading it long after 2026-10-06, the versions above are what it
+date. If you are reading it long after 2026-11-28, the versions above are what it
 was true for.
 
 ---
@@ -112,9 +122,9 @@ uv --version || echo "uv: not installed — block 2 installs it"
 newer, and either a uv version or the `not installed` note. Ours:
 
 ```text
-git version 2.43.0
-Python 3.11.15
-uv 0.8.17
+git version 2.47.3
+Python 3.13.5
+uv 0.13.7 (x86_64-unknown-linux-gnu)
 ```
 
 Nothing has been installed or changed yet. You have only confirmed the machine
@@ -183,7 +193,7 @@ git log --oneline -1
 and then one commit line like:
 
 ```text
-34e0dd3 Spec Kit project, before SpecAssay
+a434f34 Spec Kit project, before SpecAssay
 ```
 
 If `git commit` stops with *"Please tell me who you are"*, git has no identity on
@@ -312,7 +322,7 @@ wrote PRD.md from the registry seed (64 lines)
   It holds the ID grammar, one fenced example of each kind of row, and no promises: the Gate reads a fenced line as a quotation, so a first run on it is green and says the green proves nothing.
   Mint your first row: mint-id.sh <PREFIX> <AREA> --authorship <case|design|retrospective|constitution> --append "statement"
 SpecAssay Check (Gate 2) starting
-  python: python3 (3.11.15)
+  python: python3 (3.13.5)
   config: .specify/extensions/specassay-check/specassay-check-config.yml (from specassay-check-config.yml)
 Wrote trace-manifest.v5beta.json (0 rows, schemaVersion 5, beta)
 Wrote trace-manifest.json (0 rows) gate.ok=True
