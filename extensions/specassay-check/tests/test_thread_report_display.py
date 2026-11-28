@@ -1,4 +1,4 @@
-"""The Thread Report's display contract.
+"""The SpecAssay Report's display contract.
 
 The report's job is to be read, and the first real one rendered on a live
 estate was longer than a reviewer would read: every moved row appeared twice
