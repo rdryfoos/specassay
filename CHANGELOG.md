@@ -17,21 +17,50 @@ when the Gate refuses, and a changed file no requirement claims is a note and
 not a failure. The footer's hint about the human tick now describes the
 setting in words and prints no configuration key.
 
-**The em dashes are out of what the comment prints**, in seven places: the two
-fold summaries, the reworded list, the two marks beside a file to check, and
-the two required tick lines. The tick lines keep their `- [ ]` prefix and
-their backticked suffix, so the workflows that find them still do. One em dash
-is left on purpose and is still to be settled: the one that fills an empty
-*Where* cell to say that nothing answers for the move.
+**A pull request that changes the requirements says so, and says who should
+read it.** When a pull request adds, retires or rewords a requirement, one line
+directly under the verdict reads: *This pull request changes what the code is
+required to do. Someone who owns the requirements should read it before it
+merges.* Where a CODEOWNERS file names an owner for the registry file, the line
+names that owner instead, read by GitHub's own rules: the first of
+`.github/CODEOWNERS`, `CODEOWNERS` and `docs/CODEOWNERS` that exists, and the
+last pattern in it that matches. The handle is a live mention, so GitHub
+notifies whoever it names. An owner given only as an email address is not
+printed. `thread-report.py` takes `--repo-root` to say where to look, and the
+shipped CI passes it.
+
+**An added or a retired requirement now reads `🟡 Needs a person`**, as a
+reworded one already did. Expect amber on every pull request that adds a
+requirement, the first pull request after an install included, since every
+requirement is new there. Nothing new blocks: only the verdict's words change,
+no status is set from them, and no workflow reads them.
+
+**The em dashes are out of what the comment prints**: the two fold summaries,
+the reworded list, the two marks beside a file to check, the two required tick
+lines, and the *Where* cell that used one to say that nothing answers for the
+move, which now reads `none`. The tick lines keep their `- [ ]` prefix and
+their backticked suffix, so the workflows that find them still do.
+
+**The footer's list of words is gone.** It defined Golden Thread, off thread
+and mint. The comment prints none of the three, so it needs no glossary.
+
+**The job is named `specassay-report`.** It was `thread-report`, and it is the
+name a pull request's list of checks shows. An upgrade alone does not change
+it: `install-ci.sh` will not overwrite a workflow that differs from the one it
+ships, so the new name arrives when you run
+`bash .specify/extensions/specassay-check/scripts/install-ci.sh --force`. **If
+your branch rules require the `thread-report` check by name, change that name
+to `specassay-report` in the same sitting**, or the required check will wait
+for a job that no longer runs. `specassay/ack` keeps its name.
 
 **What does not change.** The hidden marker the comment is found by, so no
-open pull request gets a second comment. The script's file names. The
-`offthread_ack` and `intent_ack` keys and their flags. Every dated receipt of
-what a past run printed.
+open pull request gets a second comment. The script's file names and the
+workflow's file name. The `offthread_ack` and `intent_ack` keys and their
+flags. Every dated receipt of what a past run printed.
 
-Still to come before this is cut: the line that marks a pull request which
-changes the requirements themselves, the job's name in the checks list, and
-the pages and captures that quote the comment.
+Still to come before this is cut: the pages and captures that quote the
+comment as a published release printed it, which wait for a release that
+prints the new text.
 
 ## 0.6.1 (2026-11-25)
 

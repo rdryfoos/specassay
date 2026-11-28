@@ -1,4 +1,4 @@
-# Thread Report: the *illuminate* rung
+# SpecAssay Report: the *illuminate* rung
 
 > **Status: shipped.** The tool
 > (`extensions/specassay-check/scripts/thread-report.py`), the CI workflow
@@ -16,7 +16,9 @@ altitude. But a green check quietly borrows credibility for **everything** in th
 diff, including the changes that answer for no requirement at all. A reviewer still
 has to read the whole diff to find them.
 
-The Thread Report closes that gap without adding a gate. On every pull request,
+The SpecAssay Report closes that gap without adding a gate. (It was named the
+Thread Report until November 2026; this page and the script keep their file
+names.) On every pull request,
 SpecAssay posts **one comment**: what the change did to your requirements, the
 reworded ones with the code and tests that need checking, and the changed files no
 requirement claims. It **reports; it never blocks**. It posts **beside** your pull
@@ -24,9 +26,9 @@ request and changes nothing about it: not the title, not the description, not th
 diff.
 
 **The words it uses are ordinary ones**, ruled 2026-10-02: requirements, tests and
-pull requests. Three house words survive because the comment needs them, and the
-comment defines all three in its own last line (*Golden Thread*, *off thread*,
-*mint*). Nothing above that line asks a reader to learn a word first.
+pull requests. Until 2026-11-28 three house words survived in the comment's last
+line, each with its definition. The comment prints none of them now, so it carries
+no glossary: nothing in it asks a reader to learn a word first.
 
 ## What it posts
 
@@ -36,7 +38,12 @@ down**. The examples below come from green
 off tracked debt (`AC-SYNC-02`, the disjoint-field merge) by adding the proof
 that was owed, and dropped in a small `metrics.py` along the way.
 
-**A note on why it is shaped this way.** The first Thread Report to render on a
+**The quoted blocks that come from that pull request are captures**, taken before
+the rename. They show the old title and the dashes the comment used to print, and
+they stay as captured until a published release prints the new text and the page
+is recaptured from it. The prose around them describes the comment as it is now.
+
+**A note on why it is shaped this way.** The first report to render on a
 real estate (Chalkup, 2026-09-17) was longer than a reviewer would read: every
 moved row appeared twice, once as a bullet and again as a table row marked
 changed; the family tables listed rows that had not moved beside the ones that
@@ -56,15 +63,19 @@ next**, then the counts that say what the change did. Three states, and no more:
 
 | State | When | What it tells the reviewer |
 | --- | --- | --- |
-| `🟢 **Ready to review**` | the Gate passes, nothing was reworded, no required tick is waiting | read the diff as you normally would |
-| `🟡 **Needs a person**` | the Gate passes, but a requirement was reworded or a required tick is waiting | something here cannot be settled by a machine |
+| `🟢 **Ready to review**` | the Gate passes, no requirement was added, retired or reworded, no required tick is waiting | read the diff as you normally would |
+| `🟡 **Needs a person**` | the Gate passes, but a requirement was added, retired or reworded, or a required tick is waiting | something here cannot be settled by a machine |
 | `🔴 **Do not merge yet**` | the Gate refuses | the separate check is red and says why |
 
-The amber state exists because the two facts behind it were known and never said. A
+The amber state exists because the facts behind it were known and never said. A
 reworded requirement has code and tests written against the old wording, and a
 `required` tick is unticked the moment the report renders, since a tick attests to
 one head and the report reposts on every push. A green line in either case would
-have been true about the Gate and misleading about the merge.
+have been true about the Gate and misleading about the merge. Since 2026-11-28 an
+added or a retired requirement reads amber too: the line under the verdict asks
+someone who owns the requirements to read all three, and a green verdict above it
+would contradict it. **Amber is words, not a block.** No status is set from the
+verdict and no workflow reads it.
 
 No colour on the words; the dot carries it, so the line reads the same in a comment
 (where GitHub strips inline colour) and on a page. A passing Gate does **not** mean
@@ -96,7 +107,8 @@ plain-words pass left them exactly as they were.
 ### What refused, and what the case defines
 
 Two sentences sit between the verdict line and the sections, in this order, and
-each is absent when it has nothing to say.
+each is absent when it has nothing to say. The line that marks a change to the
+requirements themselves, described in the next section, sits between the two.
 
 **A red verdict names the refusal.** `🔴 Do not merge yet` says the separate
 check is red; it never said what the check found, so a reader had to open the
@@ -138,6 +150,41 @@ reader would have had to check against the manifest.
 A project that has not turned the tier on has no objective rows, and the
 sentence does not appear at all: a count of nothing reads as a measurement, and
 the authorship sentence beside it already taught this room that.
+
+### A change to the requirements themselves
+
+Most pull requests change code. One that adds, retires or rewords a requirement
+changes what the code is required to do, which is a different kind of thing, and
+one line directly under the verdict says so:
+
+```
+⚠️ This pull request changes what the code is required to do. Someone who owns the requirements should read it before it merges.
+```
+
+It carries no counts, because the verdict line above it has them. On a refused
+run it follows the line that names the refusals. A pull request that changes no
+requirement does not print it.
+
+**Where a CODEOWNERS file names an owner for the registry file, the line names
+that owner.** The handle below is made up:
+
+```
+⚠️ This pull request changes what the code is required to do. @acme/product owns the requirements file and should read it before it merges.
+```
+
+The owner is read by GitHub's own rules, so the comment names whoever GitHub
+would ask for a review: the first of `.github/CODEOWNERS`, `CODEOWNERS` and
+`docs/CODEOWNERS` that exists, and in it the last pattern that matches the
+registry file. Two owners read `@a and @b own`, three or more `@a, @b and @c
+own`. With no CODEOWNERS file, no matching line, or a matching line that names
+nobody, the line reads as the first form above. An owner given only as an email
+address is not printed.
+
+Three things worth knowing before you rely on it. The handle is a live mention,
+so GitHub notifies the person or team it names. The file is read from the pull
+request's own head, so a pull request that edits CODEOWNERS is described by its
+own edit. And the line asks; it does not block. Making an owner's review
+required is GitHub's own setting, *Require review from Code Owners*.
 
 ### 1. Reworded requirements
 
@@ -192,7 +239,8 @@ changed*, marked `✍️ reworded`, pointing at the registry hunk that reworded 
 
 **A reworded requirement always reads `🟡 Needs a person`** on the verdict line, even
 with the Gate green and the tick off, because nothing but a person can say whether
-the old code still answers the new wording.
+the old code still answers the new wording. An added or a retired requirement reads
+the same, for the reason given under *The verdict line*.
 
 **The two shapes, told apart by the carriers.** A rewording arrives either as a
 **pull request from intent** (the wording moves alone: live
@@ -238,8 +286,9 @@ reworded) carries both, separated by `·`, on its one line.
 (its test and `@covers` line), so the reviewer can click straight to the change that
 did the moving. For a new or reworded requirement the move lives in the registry, so
 it points there instead. When the move came from a file that answers for nothing of
-its own, a task line gaining a `**Carries**` say, the cell is an em dash: absence
-renders as absence, never as an invented link.
+its own, a task line gaining a `**Carries**` say, the cell reads `none`: absence
+renders as absence, never as an invented link. (The cell held an em dash until
+2026-11-28. It was the last one in the comment's own words.)
 
 **Requirements this change did not move are footnoted, not listed**, with their
 states counted so the state is still there without the reading. A report about this
@@ -270,8 +319,8 @@ guess. It hands the reviewer a spotlight, not a verdict. If every changed file
 answers for a requirement, the report says so in one unfolded line: *Every changed
 file names a requirement. Nothing is unclaimed.*
 
-The section's own house word, *off thread*, now appears only in the footer, with its
-definition beside it. The section itself says what it means.
+The section's own house word, *off thread*, appears nowhere in the comment. The
+section itself says what it means.
 
 **The human tick never folds.** When `offthread_ack` is `record` or `required`, the
 checkbox renders *outside* the `<details>`, because a `required` tick holds a merge
@@ -287,21 +336,28 @@ run that produced a report, a gate log or a toolchain line, is a receipt rather 
 a headline: worth keeping, not worth leading with. The report never reads, parses or
 reformats what it is given; the caller owns that text.
 
-### 5. The footer, and the three words it defines
+### 5. The footer, which says what blocks
 
-One line, last, and the only place the comment uses a word a stranger would have to
-be taught:
+One line, last, in small type:
 
 ```
-This comment reports; it never blocks. A changed file no requirement claims is a
-note, not a failure. Words used here: Golden Thread, the chain from a requirement
-to the code and test that answer for it. Off thread, a changed file no requirement
-claims. Mint, to write a new requirement into the registry. Set `offthread_ack:
-record|required` in the SpecAssay config to add a human tick.
+This comment reports; it never blocks. The check blocks when the Gate refuses. A
+changed file no requirement claims is a note, not a failure. The SpecAssay config
+can ask a person to tick off the unclaimed files, for the record or before merge.
 ```
 
-Ruled 2026-10-02: the words belong here, with the teaching attached, and not in the
-line a stranger reads first.
+Three statements a reader of a red or an amber comment needs, and one hint. The
+comment never blocks. The check does, when the Gate refuses. A changed file no
+requirement claims never does. The hint describes the setting in words and prints
+no configuration key; the key is `offthread_ack`, under *Configuration* below. When
+that setting is on, the hint is replaced by what it is set to.
+
+The footer does not say the check blocks *only* when the Gate refuses, because that
+is not true for every project: with a tick set to `required` and `specassay/ack`
+made a required check, an unticked box holds a merge too.
+
+Until 2026-11-28 this line also defined three house words. The comment prints none
+of them, so the list went.
 
 ## Clickable: a spotlight you can click
 
@@ -348,7 +404,7 @@ it*.
 ## The broken path: post the report, then block
 
 When the head Gate refuses (a silent AC gap, an invented ID, exact-set drift),
-the Thread Report **still posts**, headed `🔴 Do not merge yet`, with the
+the SpecAssay Report **still posts**, headed `🔴 Do not merge yet`, with the
 offending requirement shown moving *into* `GAP`. That is the most illuminating moment the
 feature has, so it is not silent. The report tool **always exits 0**; refusing
 is not its job.
@@ -386,7 +442,7 @@ Three postures, in increasing intervention and decreasing frequency:
 
 - **`off`** (default). Pure illuminate: the unclaimed-files list is shown, no tick.
 - **`record`**. Adds a *"these unclaimed changes are incidental"* tick to record,
-  informational only. It asks for nothing, so it leaves the verdict green.
+  informational only. It asks for nothing, so it does not change the verdict.
 - **`required`**. The **affirm** rung: a human must tick before merge. The
   report tool itself still exits 0; enforcement is separate wiring, and it
   ships (below).
@@ -432,12 +488,16 @@ python3 extensions/specassay-check/scripts/thread-report.py \
 `--changed-files` takes a file (one path per line) or `-` for stdin. `--pr-url`
 / `--head-sha` are optional (they enable links). `--receipts FILE` appends that
 file's Markdown, folded, at the end of the report; a missing file costs the
-appendix and warns on stderr, never the report. It reads schema v3 / v4
-manifests and has zero dependencies.
+appendix and warns on stderr, never the report. `--repo-root DIR` says where the
+repository root is, which is where CODEOWNERS is looked for; it defaults to the
+directory you run from. It reads schema v3 / v4 manifests and has zero
+dependencies.
 
 ### In CI
 
-`.github/workflows/thread-report.yml` runs on `pull_request` and:
+`.github/workflows/thread-report.yml` runs on `pull_request`. Its one job is named
+`specassay-report`, which is the name a pull request's list of checks shows (it was
+`thread-report` until November 2026; the workflow file keeps its name). It:
 
 1. Emits the **head** manifest with Gate 2 (tolerating a broken Gate; it relies
    on the manifest the Gate always writes).
@@ -456,7 +516,7 @@ It needs `permissions: pull-requests: write`.
 
 This is the mechanical form of the *illuminate* rung argued in
 [`scope-and-pull-requests.md` §4](scope-and-pull-requests.md). The Gate proves
-**completeness of declared intent**, not **minimality**; the Thread Report is
+**completeness of declared intent**, not **minimality**; the SpecAssay Report is
 how the PR (the review unit, the one altitude where *build → intent* is
 affordable) carries the minimality conversation, as a briefing rather than a
 block.
